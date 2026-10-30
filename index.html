@@ -1,434 +1,880 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>İsme Özel Doğal Masif Ahşap Viski Dekantörü | imzahediye</title>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts: Cormorant Garamond & Plus Jakarta Sans & Cinzel -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doğal Ahşap Nargile Sunum Sehpası | İmza Hediye</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            serif: ['"Cormorant Garamond"', 'serif'],
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            engrave: ['"Cinzel"', 'serif']
-          }
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            400: '#e5c05b',
+                            500: '#c59b27',
+                            600: '#a37e1c',
+                            700: '#7e6012'
+                        },
+                        amberWood: '#d97706',
+                        darkCharcoal: '#0b0c10',
+                        surface: '#15171e',
+                        surfaceBorder: '#272a38'
+                    },
+                    fontFamily: {
+                        serif: ['Cinzel', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
+    </script>
 
-  <style>
-    /* Lüks Pirinç Plaka Efekti */
-    .brass-plate {
-      background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
-      box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 6px 14px rgba(0,0,0,0.6);
-    }
-    .engraved-text {
-      color: #2b1803;
-      text-shadow: 0 1px 0 rgba(255,255,255,0.5), inset 0 1px 2px rgba(0,0,0,0.85);
-      letter-spacing: 0.18em;
-    }
-  </style>
+    <style>
+        body {
+            background-color: #0b0c10;
+            color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #fff3c4 0%, #e5c05b 50%, #9e7811 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-glow {
+            box-shadow: 0 0 35px -5px rgba(229, 192, 91, 0.25);
+        }
+
+        .gold-border-glow {
+            border: 1px solid rgba(229, 192, 91, 0.35);
+        }
+
+        .smoke-overlay {
+            background: radial-gradient(circle at 50% 20%, rgba(217, 119, 6, 0.08), transparent 70%);
+        }
+
+        /* Akordeon yumuşak geçiş */
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0, 1, 0, 1);
+        }
+        .faq-content.open {
+            max-height: 500px;
+            transition: max-height 0.4s ease-in-out;
+        }
+
+        /* Resim Zoom Preview */
+        .zoom-img-container {
+            overflow: hidden;
+        }
+        .zoom-img-container img {
+            transition: transform 0.4s ease;
+        }
+        .zoom-img-container:hover img {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
-<body class="bg-[#0c0c0e] text-zinc-100 font-sans antialiased pb-24 lg:pb-0">
+<body class="smoke-overlay antialiased selection:bg-gold-500 selection:text-black">
 
-  <!-- Üst Bilgi Barı -->
-  <div class="bg-gradient-to-r from-amber-700 via-amber-600 to-amber-800 text-black py-2 px-4 text-center text-xs sm:text-sm font-bold tracking-wide">
-    <i class="fa-solid fa-truck-fast mr-1.5"></i> AYNI GÜN ÜCRETSİZ KARGO &nbsp;|&nbsp; KİŞİYE ÖZEL LAZER KAZIMA HEDİYE
-  </div>
+    <!-- ÜST BİLGİ BANT (TOP BANNER) -->
+    <aside aria-label="Kampanya Duyurusu" class="bg-gradient-to-r from-amber-950 via-zinc-900 to-amber-950 text-gold-400 text-xs sm:text-sm py-2 px-4 border-b border-gold-500/30 text-center font-medium tracking-wide flex items-center justify-center gap-3">
+        <span class="inline-flex items-center gap-1.5"><i class="fa-solid fa-truck-fast"></i> Bugün Verilen Siparişlerde <strong>ÜCRETSİZ AYNI GÜN KARGO</strong></span>
+        <span class="hidden md:inline text-white/30">•</span>
+        <span class="hidden md:inline-flex items-center gap-1.5"><i class="fa-solid fa-shield-halved"></i> Kapıda Nakit & Kartla Güvenli Ödeme İmkânı</span>
+    </aside>
 
-  <!-- Header -->
-  <header class="border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md sticky top-0 z-40">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-2">
-        <span class="text-2xl font-serif font-bold text-amber-500 tracking-wider">imza<span class="text-zinc-100">hediye</span></span>
-        <span class="text-[10px] uppercase tracking-widest text-zinc-400 bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800 hidden sm:inline-block">Atölye</span>
-      </div>
-      <div class="flex items-center space-x-4">
-        <a href="https://wa.me/905532285951?text=Merhaba,%20imzahediye.com%20üzerinden%20bilgi%20almak%20istiyorum." target="_blank" class="text-xs sm:text-sm font-medium text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 bg-emerald-950/40 px-3 py-1.5 rounded-full border border-emerald-800/40">
-          <i class="fa-brands fa-whatsapp text-base"></i>
-          <span>0553 228 59 51</span>
+    <!-- HEADER / NAVBAR -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-darkCharcoal/90 border-b border-white/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Marka Logo -->
+            <a href="#" class="flex flex-col">
+                <span class="font-serif text-2xl sm:text-3xl font-extrabold tracking-widest gold-gradient-text uppercase">İMZAHEDİYE</span>
+                <span class="text-[9px] tracking-[0.28em] text-gray-400 font-semibold uppercase -mt-1">Atölye Tasarımı • Özel İşçilik</span>
+            </a>
+
+            <!-- Orta Menü / Vurgular -->
+            <div class="hidden lg:flex items-center space-x-8 text-sm font-medium text-gray-300">
+                <a href="#ozellikler" class="hover:text-gold-400 transition-colors">Özellikler</a>
+                <a href="#detaylar" class="hover:text-gold-400 transition-colors">Teknik Detaylar</a>
+                <a href="#yorumlar" class="hover:text-gold-400 transition-colors">Müşteri Deneyimleri</a>
+                <a href="#sss" class="hover:text-gold-400 transition-colors">Sıkça Sorulanlar</a>
+            </div>
+
+            <!-- Hızlı İletişim / Sipariş Butonu -->
+            <div class="flex items-center gap-3">
+                <a href="https://wa.me/905000000000?text=Merhaba,%20Ahşap%20Nargile%20Sunum%20Sehpası%20(3.990%20TL)%20siparişi%20vermek%20istiyorum." target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 bg-[#25D366]/20 hover:bg-[#25D366]/30 text-[#25D366] border border-[#25D366]/40 text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full transition">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>WhatsApp Sipariş</span>
+                </a>
+                <a href="#siparis" class="inline-flex items-center gap-2 bg-gradient-to-r from-gold-500 to-amberWood hover:from-gold-400 hover:to-amber-500 text-black font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-lg shadow-gold-500/20 transform hover:-translate-y-0.5 transition-all">
+                    <span>Sipariş Ver</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <main>
+    <section class="relative pt-8 pb-16 lg:pt-14 lg:pb-24 overflow-hidden">
+        <!-- Arka Plan Efektleri -->
+        <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+                
+                <!-- SOL KOLON: Ürün Görsel Galerisi -->
+                <div class="lg:col-span-6 flex flex-col gap-4">
+                    <!-- Rozet / Etiketler -->
+                    <div class="flex items-center gap-2 z-10">
+                        <span class="bg-red-950/80 text-red-300 text-xs font-semibold px-3 py-1 rounded-full border border-red-500/30 flex items-center gap-1.5">
+                            <i class="fa-solid fa-fire text-amber-500"></i> Yakma Teknikli El İşçiliği
+                        </span>
+                        <span class="bg-zinc-800/80 text-gold-400 text-xs font-medium px-3 py-1 rounded-full border border-gold-500/20">
+                            %100 Doğal Çam
+                        </span>
+                    </div>
+
+                    <!-- Ana Görsel Çerçevesi -->
+                    <div class="relative bg-gradient-to-b from-surface to-[#0e1017] rounded-3xl p-3 sm:p-5 border border-white/10 gold-glow zoom-img-container group">
+                        <div class="w-full h-[420px] sm:h-[530px] flex items-center justify-center relative overflow-hidden rounded-2xl bg-black/40">
+                            <!-- Gerçek Ürün Ana Görseli (Tam Duruş) -->
+                            <img id="mainProductImage" 
+                                 src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_2.jpg" 
+                                 alt="Doğal Ahşap Nargile Sunum Sehpası Tam Duruş" 
+                                 class="max-h-full max-w-full object-contain rounded-xl drop-shadow-2xl mx-auto transition-all duration-500">
+                            
+                            <!-- Büyüteç Rozeti -->
+                            <div class="absolute bottom-4 right-4 bg-black/80 backdrop-blur-md text-white/90 text-xs px-3.5 py-1.5 rounded-full border border-gold-500/30 pointer-events-none flex items-center gap-1.5 shadow-lg">
+                                <i class="fa-solid fa-magnifying-glass-plus text-gold-400"></i> Yakınlaştır & İncele
+                            </div>
+
+                            <!-- Canlı Detay Etiketi -->
+                            <div class="absolute top-4 left-4 bg-black/75 backdrop-blur-md text-gold-300 text-[11px] font-semibold px-3 py-1 rounded-full border border-white/10 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                                Atölyeden Orijinal Çekim
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Küçük Önizleme Butonları (1: Tam Duruş, 2: Şömine, 3: Çerezlik) -->
+                    <div class="grid grid-cols-3 gap-3">
+                        <button onclick="changeGalleryImage('https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_2.jpg', this)" 
+                                class="thumb-btn active ring-2 ring-gold-500 bg-surface rounded-xl p-1.5 border border-white/10 hover:border-gold-500 transition duration-200">
+                            <img src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_2.jpg" class="w-full h-20 object-cover rounded-lg" alt="Tam Duruş Sehpa">
+                            <span class="block text-[11px] text-center mt-1 text-gold-300 font-medium">Tam Duruş</span>
+                        </button>
+
+                        <button onclick="changeGalleryImage('https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_3-600x900.jpg', this)" 
+                                class="thumb-btn bg-surface rounded-xl p-1.5 border border-white/10 hover:border-gold-500 transition duration-200">
+                            <img src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_3-600x900.jpg" class="w-full h-20 object-cover rounded-lg" alt="Şömine Başı Atmosfer Görünümü">
+                            <span class="block text-[11px] text-center mt-1 text-gray-300 font-medium">Şömine Keyfi</span>
+                        </button>
+
+                        <button onclick="changeGalleryImage('https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_4-600x900.jpg', this)" 
+                                class="thumb-btn bg-surface rounded-xl p-1.5 border border-white/10 hover:border-gold-500 transition duration-200">
+                            <img src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_4-600x900.jpg" class="w-full h-20 object-cover rounded-lg" alt="3 Bölmeli Oyma Çerezlik Üst Açı">
+                            <span class="block text-[11px] text-center mt-1 text-gray-300 font-medium">3'lü Çerezlik</span>
+                        </button>
+                    </div>
+
+                    <!-- Güvenilirlik Rozetleri -->
+                    <div class="grid grid-cols-3 gap-3 pt-2 text-center text-xs text-gray-400">
+                        <div class="bg-surface/60 border border-white/5 p-2.5 rounded-xl">
+                            <i class="fa-solid fa-tree text-gold-400 block text-base mb-1"></i>
+                            %100 Masif Çam
+                        </div>
+                        <div class="bg-surface/60 border border-white/5 p-2.5 rounded-xl">
+                            <i class="fa-solid fa-hand-holding-heart text-gold-400 block text-base mb-1"></i>
+                            Özel El İşçiliği
+                        </div>
+                        <div class="bg-surface/60 border border-white/5 p-2.5 rounded-xl">
+                            <i class="fa-solid fa-box-open text-gold-400 block text-base mb-1"></i>
+                            Korumalı Ambalaj
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SAĞ KOLON: Satış Başlığı, Fiyat, Aciliyet ve Sipariş Çağrısı -->
+                <div class="lg:col-span-6 flex flex-col justify-center">
+                    
+                    <!-- Değerlendirme & Puan -->
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="flex text-amber-400 text-sm">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <span class="text-white font-bold text-sm">4.9</span>
+                        <span class="text-gray-400 text-xs">(148+ Gerçek Müşteri Yorumu)</span>
+                        <span class="ml-auto bg-green-500/20 text-green-400 text-[11px] font-bold px-2 py-0.5 rounded border border-green-500/30">
+                            Stokta Var
+                        </span>
+                    </div>
+
+                    <!-- Ana Başlık -->
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight font-serif mb-4">
+                        Nargile Keyfinizi Bir <br>
+                        <span class="gold-gradient-text">Ritüele Dönüştürün.</span>
+                    </h1>
+
+                    <!-- Açıklama Paragrafı -->
+                    <p class="text-gray-300 text-base sm:text-lg leading-relaxed mb-6 font-light">
+                        Standart sehpalarda yaşanan yer darlığına ve kaza/devrilme korkusuna son verin. 
+                        <strong>El işçiliği yakma desenli doğal çam stand</strong> ile köz, tütün, içecekleriniz ve çerezleriniz artık tek bir şık merkezde bir arada.
+                    </p>
+
+                    <!-- FİYAT KUTUSU & İNDİRİM -->
+                    <div class="bg-surface border border-gold-500/30 rounded-2xl p-5 mb-6 relative overflow-hidden">
+                        <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-gold-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+                        <div class="flex flex-wrap items-baseline justify-between gap-2">
+                            <div>
+                                <span class="text-xs uppercase tracking-wider text-gray-400 block font-semibold">Özel Atölye Satış Fiyatı</span>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">3.990 <span class="text-gold-400 text-2xl font-serif">TL</span></span>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="bg-gold-500/10 text-gold-400 border border-gold-500/30 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-truck"></i> Ücretsiz Kargo
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Stok Uyarısı ve İlerleme Çubuğu -->
+                        <div class="mt-4 pt-4 border-t border-white/10">
+                            <div class="flex items-center justify-between text-xs mb-1.5 font-medium">
+                                <span class="text-amber-400 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-hourglass-half animate-pulse"></i> <strong>Sınırlı Sayıda Üretim</strong>
+                                </span>
+                                <span class="text-gray-400">Atölye El İşçiliği</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ÖNE ÇIKAN KISA MADDELER (BULLET POINTS) -->
+                    <ul class="space-y-3 mb-8 text-sm text-gray-200">
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-gold-500/20 border border-gold-500/40 text-gold-400 flex items-center justify-center text-xs shrink-0">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+                            <span><strong>Devrilmeyi Önleyen Tasarım:</strong> Nargile şişenizi kilitleyen özel alt-üst merkezleme.</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-gold-500/20 border border-gold-500/40 text-gold-400 flex items-center justify-center text-xs shrink-0">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+                            <span><strong>Entegre 3 Bölmeli Oyma Çerezlik:</strong> Tabak aramadan fındık, fıstık ve kuru meyve keyfi.</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="w-6 h-6 rounded-full bg-gold-500/20 border border-gold-500/40 text-gold-400 flex items-center justify-center text-xs shrink-0">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+                            <span><strong>2 Adet Korunaklı Kadeh/Bardak Yuvası:</strong> Hortum çarpmalarına karşı güvenli alan.</span>
+                        </li>
+                    </ul>
+
+                    <!-- CTA BUTONLARI -->
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <a href="#siparis" class="flex-1 bg-gradient-to-r from-gold-500 via-amberWood to-gold-600 hover:brightness-110 text-black font-extrabold text-base py-4 px-6 rounded-xl text-center shadow-xl shadow-gold-500/25 transform hover:-translate-y-0.5 active:translate-y-0 transition duration-200 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bolt-lightning text-lg"></i>
+                            <span>HEMEN SİPARİŞ VER (3.990 TL)</span>
+                        </a>
+
+                        <a href="https://wa.me/905000000000?text=Merhaba,%20Ahşap%20Nargile%20Sunum%20Sehpası%20(3.990%20TL)%20hakkında%20bilgi%20ve%20sipariş%20almak%20istiyorum." target="_blank" rel="noopener noreferrer" class="bg-[#25D366] hover:bg-[#20ba5a] text-black font-bold text-base py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition duration-200">
+                            <i class="fa-brands fa-whatsapp text-2xl"></i>
+                            <span class="hidden sm:inline">WhatsApp</span>
+                        </a>
+                    </div>
+
+                    <!-- Güvenlik Bilgilendirmesi -->
+                    <p class="text-center sm:text-left text-xs text-gray-400 mt-4 flex items-center justify-center sm:justify-start gap-4">
+                        <span><i class="fa-solid fa-lock text-gold-400 mr-1"></i> 256-Bit SSL Güvenlik</span>
+                        <span>•</span>
+                        <span><i class="fa-solid fa-arrow-rotate-left text-gold-400 mr-1"></i> Koşulsuz Kolay Değişim</span>
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEDEN BU ÜRÜNÜ SEÇMELİSİNİZ? (ÖNE ÇIKAN FAYDALAR) -->
+    <section id="ozellikler" class="py-16 bg-gradient-to-b from-darkCharcoal via-[#0f1118] to-darkCharcoal border-y border-white/5 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-gold-400 font-semibold tracking-widest text-xs uppercase">Ayrıcalıklı Mühendislik & Zanaat</span>
+                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-2">Neden Bu Özel Sehpayı Seçmelisiniz?</h2>
+                <p class="text-gray-400 text-sm sm:text-base mt-3">
+                    Geleneksel mobilyalar nargile seansları için tasarlanmamıştır. İmza Hediye atölyesinde, bir nargileseverin ihtiyaç duyduğu her detay milimetrik olarak düşünüldü.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Kart 1: Tam Koruma & Denge -->
+                <div class="bg-surface/80 rounded-2xl p-6 border border-white/5 hover:border-gold-500/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-gold-400 flex items-center justify-center text-2xl mb-5">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Tam Koruma & Denge</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Nargilenizi standın orta merkezine güvenle yerleştirirsiniz. Alt taban ve üst çember desteği sayesinde devrilme ve köz düşme riskini minimize eder.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-white/5 text-xs text-gold-400 font-semibold flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-check"></i> Sarsıntıya Karşı Mukavim
+                    </div>
+                </div>
+
+                <!-- Kart 2: Entegre Sunum Alanı -->
+                <div class="bg-surface/80 rounded-2xl p-6 border border-white/5 hover:border-gold-500/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-gold-400 flex items-center justify-center text-2xl mb-5">
+                            <i class="fa-solid fa-bowl-food"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Entegre 3 Bölmeli Çerezlik</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Üst tablada yer alan 3 bölmeli el oyması çerezlik; fındık, fıstık, meyve ve lokumlarınız için ekstra tabak arama derdine kalıcı son verir.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-white/5 text-xs text-gold-400 font-semibold flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-check"></i> Pratik & Hijyenik Temizleme
+                    </div>
+                </div>
+
+                <!-- Kart 3: İçecekleriniz Güvende -->
+                <div class="bg-surface/80 rounded-2xl p-6 border border-white/5 hover:border-gold-500/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-gold-400 flex items-center justify-center text-2xl mb-5">
+                            <i class="fa-solid fa-wine-glass"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">2 Adet Güvenli Yuva</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Arka kısımda bulunan 2 adet özel kadeh/bardak yuvası; içeceklerinizi marpuç hortumundan ve istemsiz hareketlerden uzak, güvenli bir mesafede tutar.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-white/5 text-xs text-gold-400 font-semibold flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-check"></i> Kadeh ve Meşrubat Uyumlu
+                    </div>
+                </div>
+
+                <!-- Kart 4: Ergonomik Yükseklik -->
+                <div class="bg-surface/80 rounded-2xl p-6 border border-white/5 hover:border-gold-500/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-gold-400 flex items-center justify-center text-2xl mb-5">
+                            <i class="fa-solid fa-ruler-vertical"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">56 cm İdeal Ergonomi</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Koltuk kenarında veya yerde minder üzerinde otururken nargile lülesine, folyoya ve közlere eğilip bükülmeden zahmetsizce müdahale etmenizi sağlar.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-white/5 text-xs text-gold-400 font-semibold flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-check"></i> Bel ve Sırt Rahatlığı
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- DETAYLI GÖRSEL ANLATIM & ATMOSFER BÖLÜMÜ -->
+    <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-gradient-to-r from-surface via-[#1a1c24] to-surface rounded-3xl p-8 sm:p-12 border border-gold-500/20 relative overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                <div>
+                    <span class="text-gold-400 font-semibold tracking-widest text-xs uppercase">Usta Ellerin Dokunuşu</span>
+                    <h3 class="text-2xl sm:text-3xl font-serif font-bold text-white mt-2 mb-4">
+                        Ateşle Şekillenen Doğal Çam Dokusu
+                    </h3>
+                    <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-6 font-light">
+                        Her ürün tek tek atölyemizde özenle seçilen dayanıklı çam ağaçlarından kesilir. Ağacın damarlarını belirginleştiren kadim <strong>"Alev Yakma"</strong> tekniği uygulanır. 
+                        Ardından uygulanan çift kat ipeksi mat vernik sayesinde hem ısıya ve neme dayanıklılık kazanır hem de yaşam alanınıza sıcak bir şömine havası katar.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-dot text-gold-400 mt-1"></i>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Her Ürün Benzersizdir</h4>
+                                <p class="text-gray-400 text-xs">Doğal ahşabın organik hareleri sayesinde sipariş ettiğiniz sehpa yalnızca size özel bir desen haritasına sahiptir.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <i class="fa-solid fa-circle-dot text-gold-400 mt-1"></i>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Kavisli (Lükens) Sağlam Ayaklar</h4>
+                                <p class="text-gray-400 text-xs">Zarif kavisli ayaklar ağırlık merkezini tabana yayarak halı, parke veya bahçe zemininde kusursuz stabilite sağlar.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sağ Taraf Örnek Ortam Görseli (Gerçek Şömine ve Çerezlik Detay Görselleri) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative group bg-black">
+                        <img src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_3-600x900.jpg" 
+                             alt="Şömine Başında Nargile Keyfi" 
+                             class="w-full h-64 sm:h-80 object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-4">
+                            <span class="text-xs text-gold-300 font-semibold flex items-center gap-1.5">
+                                <i class="fa-solid fa-fire text-amber-500"></i> Şömine Başı Konsepti
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative group bg-black">
+                        <img src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_4-600x900.jpg" 
+                             alt="3 Bölmeli Oyma Çerezlik Detay" 
+                             class="w-full h-64 sm:h-80 object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-4">
+                            <span class="text-xs text-gold-300 font-semibold flex items-center gap-1.5">
+                                <i class="fa-solid fa-bowl-food text-amber-500"></i> 3 Bölmeli El Oyması Hazne
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEKNİK ÖZELLİKLER VE EBATLAR -->
+    <section id="detaylar" class="py-16 bg-surface/50 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-gold-400 font-semibold tracking-widest text-xs uppercase">Milimetrik Tasarım</span>
+                <h2 class="text-3xl font-serif font-bold text-white mt-1">Teknik Özellikler & Ölçüler</h2>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-surface border border-white/10 rounded-2xl p-6 sm:p-8 shadow-xl">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-darkCharcoal/60 border border-white/5">
+                        <div class="w-12 h-12 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-tree"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-400 block">Kullanılan Malzeme</span>
+                            <span class="text-white font-bold text-sm sm:text-base">%100 Doğal Çam Ağacı (Yakma Desenli)</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-darkCharcoal/60 border border-white/5">
+                        <div class="w-12 h-12 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-arrows-up-down"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-400 block">Kullanım Yüksekliği</span>
+                            <span class="text-white font-bold text-sm sm:text-base">56 cm (Ergonomik Oturma Seviyesi)</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-darkCharcoal/60 border border-white/5">
+                        <div class="w-12 h-12 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-circle-notch"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-400 block">Tabla Genişliği</span>
+                            <span class="text-white font-bold text-sm sm:text-base">40 cm Çap</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-darkCharcoal/60 border border-white/5">
+                        <div class="w-12 h-12 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-400 block">Depolama & Servis Kapasitesi</span>
+                            <span class="text-white font-bold text-sm sm:text-base">1 Nargile + 2 Kadeh + 3 Çerez Haznesi</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-darkCharcoal/60 border border-white/5">
+                        <div class="w-12 h-12 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-chair"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-400 block">Ayak Tasarımı</span>
+                            <span class="text-white font-bold text-sm sm:text-base">Kavisli (Lükens) Sağlam Ahşap Form</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-4 rounded-xl bg-darkCharcoal/60 border border-white/5">
+                        <div class="w-12 h-12 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl shrink-0">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-400 block">Yüzey Koruması</span>
+                            <span class="text-white font-bold text-sm sm:text-base">Çift Kat Su & Isı Dayanımlı Vernik</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200/90 flex items-start gap-3">
+                    <i class="fa-solid fa-circle-info text-gold-400 text-base mt-0.5 shrink-0"></i>
+                    <span><strong>Paket İçeriği:</strong> 1 Adet Özel Ahşap Nargile Sunum Sehpası. (Fotoğraflarda görünen nargile takımı, bardaklar ve kuruyemişler konsept sunum amaçlıdır, pakete dahil değildir.)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MÜŞTERİ YORUMLARI & KANITLAR -->
+    <section id="yorumlar" class="py-16 bg-darkCharcoal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-gold-400 font-semibold tracking-widest text-xs uppercase">Gerçek Kullanıcı Yorumları</span>
+                <h2 class="text-3xl font-serif font-bold text-white mt-1">Nargile Severler Ne Diyor?</h2>
+                <div class="flex items-center justify-center gap-2 mt-3">
+                    <div class="flex text-amber-400 text-sm">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <span class="text-white font-semibold text-sm">4.9 / 5.0 Memnuniyet</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Yorum 1 -->
+                <div class="bg-surface rounded-2xl p-6 border border-white/5 relative">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center font-bold">
+                                BÖ
+                            </div>
+                            <div>
+                                <h4 class="text-white text-sm font-bold">Burak Öztürk</h4>
+                                <span class="text-gray-400 text-[11px]"><i class="fa-solid fa-circle-check text-green-400"></i> Onaylı Sipariş</span>
+                            </div>
+                        </div>
+                        <span class="text-gray-400 text-xs">2 gün önce</span>
+                    </div>
+                    <div class="flex text-amber-400 text-xs mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        "Koltukta otururken nargile koyacak yer bulamıyorduk, sehpa hep köz tehdidi altındaydı. Bu ürün tam bir kurtarıcı oldu. Yakma dokusu ve verniğin kalitesi fotoğraftakinden bile daha canlı. Teşekkürler İmza Hediye!"
+                    </p>
+                </div>
+
+                <!-- Yorum 2 -->
+                <div class="bg-surface rounded-2xl p-6 border border-white/5 relative">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center font-bold">
+                                EK
+                            </div>
+                            <div>
+                                <h4 class="text-white text-sm font-bold">Emre Kaya</h4>
+                                <span class="text-gray-400 text-[11px]"><i class="fa-solid fa-circle-check text-green-400"></i> Onaylı Sipariş</span>
+                            </div>
+                        </div>
+                        <span class="text-gray-400 text-xs">Geçen hafta</span>
+                    </div>
+                    <div class="flex text-amber-400 text-xs mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        "3 bölmeli çerez oyuntusu fikri dâhice. İçecek koyma delikleri de marpucun takılmasını önlüyor. Şişe merkeze tam kilitleniyor, devrilme ihtimali sıfır. Paketleme aşırı sağlamdı, 24 saatte elime ulaştı."
+                    </p>
+                </div>
+
+                <!-- Yorum 3 -->
+                <div class="bg-surface rounded-2xl p-6 border border-white/5 relative">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center font-bold">
+                                ST
+                            </div>
+                            <div>
+                                <h4 class="text-white text-sm font-bold">Serkan Tekin</h4>
+                                <span class="text-gray-400 text-[11px]"><i class="fa-solid fa-circle-check text-green-400"></i> Onaylı Sipariş</span>
+                            </div>
+                        </div>
+                        <span class="text-gray-400 text-xs">2 hafta önce</span>
+                    </div>
+                    <div class="flex text-amber-400 text-xs mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        "Arkadaşıma ev hediyesi olarak aldım, hayran kaldı. Masif çam kokusu bile harika. Lükens ayaklar çok kaliteli duruyor, salonda lüks bir hava estirdi. Gönül rahatlığıyla tavsiye ederim."
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SİPARİŞ FORMU SECTION (YÜKSEK DÖNÜŞÜMLÜ HIZLI SİPARİŞ) -->
+    <section id="siparis" class="py-16 bg-gradient-to-b from-[#0f1118] to-darkCharcoal relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            
+            <div class="bg-surface border-2 border-gold-500/40 rounded-3xl p-6 sm:p-10 shadow-2xl relative">
+                <div class="text-center mb-8">
+                    <span class="bg-gold-500/10 text-gold-400 border border-gold-500/30 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider inline-block mb-3">
+                        Hızlı & Güvenli Alışveriş
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-serif font-bold text-white">Doğrudan Sipariş Formu</h2>
+                    <p class="text-gray-400 text-sm mt-2">
+                        Bilgilerinizi doldurun, atölyemiz siparişinizi hemen onaylayıp aynı gün kargoya hazırlasın.
+                    </p>
+                </div>
+
+                <!-- Sipariş Özeti Kutusu -->
+                <div class="bg-darkCharcoal rounded-2xl p-4 mb-6 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-16 h-16 rounded-xl bg-surface border border-gold-500/20 overflow-hidden shrink-0">
+                            <img src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_2.jpg" alt="Ahşap Stand" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-sm">Doğal Ahşap Nargile Sunum Sehpası</h4>
+                            <span class="text-xs text-gray-400">Özel Yakma Teknikli & Çift Vernikli Masif Çam</span>
+                        </div>
+                    </div>
+                    <div class="text-right w-full sm:w-auto flex sm:flex-col justify-between items-center sm:items-end border-t sm:border-t-0 pt-2 sm:pt-0 border-white/5">
+                        <span class="text-xl font-extrabold text-gold-400">3.990 TL</span>
+                        <span class="text-[11px] text-green-400 font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-truck"></i> Ücretsiz Kargo
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form id="orderForm" onsubmit="handleOrderSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1.5">Adınız ve Soyadınız *</label>
+                            <input type="text" required placeholder="Örn: Ahmet Yılmaz" 
+                                   class="w-full bg-darkCharcoal border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1.5">Telefon Numaranız *</label>
+                            <input type="tel" required placeholder="05XX XXX XX XX" 
+                                   class="w-full bg-darkCharcoal border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1.5">İl *</label>
+                            <input type="text" required placeholder="İstanbul" 
+                                   class="w-full bg-darkCharcoal border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 mb-1.5">İlçe *</label>
+                            <input type="text" required placeholder="Kadıköy" 
+                                   class="w-full bg-darkCharcoal border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 mb-1.5">Açık Teslimat Adresi *</label>
+                        <textarea rows="3" required placeholder="Mahalle, Cadde, Sokak, Bina No, Daire..." 
+                                  class="w-full bg-darkCharcoal border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition"></textarea>
+                    </div>
+
+                    <!-- Ödeme Yöntemi Seçimi -->
+                    <div class="pt-2">
+                        <label class="block text-xs font-semibold text-gray-300 mb-2">Ödeme Tercihiniz</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="flex items-center gap-3 p-3.5 rounded-xl bg-darkCharcoal border border-gold-500/40 cursor-pointer hover:border-gold-500 transition">
+                                <input type="radio" name="paymentMethod" value="kapida" checked class="text-gold-500 focus:ring-gold-500">
+                                <div>
+                                    <span class="text-sm font-bold text-white block">Kapıda Ödeme (Nakit / Kart)</span>
+                                    <span class="text-[11px] text-gray-400">Kargoyu teslim alırken güvenle ödeyin.</span>
+                                </div>
+                            </label>
+
+                            <label class="flex items-center gap-3 p-3.5 rounded-xl bg-darkCharcoal border border-white/10 cursor-pointer hover:border-gold-500 transition">
+                                <input type="radio" name="paymentMethod" value="havale" class="text-gold-500 focus:ring-gold-500">
+                                <div>
+                                    <span class="text-sm font-bold text-white block">Havale / EFT ile Ödeme</span>
+                                    <span class="text-[11px] text-gray-400">Sipariş sonrasında IBAN bilgisi iletilir.</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" 
+                            class="w-full mt-4 bg-gradient-to-r from-gold-500 via-amberWood to-gold-600 hover:brightness-110 text-black font-extrabold text-lg py-4 px-6 rounded-xl text-center shadow-2xl shadow-gold-500/30 transform hover:-translate-y-0.5 transition duration-200 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-lock text-sm"></i>
+                        <span>SİPARİŞİ TAMAMLA (3.990 TL)</span>
+                    </button>
+                </form>
+
+                <!-- Başarı Mesajı Kutusu (Hidden by default) -->
+                <div id="orderSuccessMessage" class="hidden mt-6 p-6 rounded-2xl bg-green-950/80 border border-green-500/50 text-center animate-fade-in">
+                    <div class="w-12 h-12 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-1">Siparişiniz Başarıyla Alındı!</h3>
+                    <p class="text-gray-300 text-sm">Müşteri temsilcimiz onay ve kargo takip bilgilendirmesi için en kısa sürede telefonla sizinle iletişime geçecektir.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SIKÇA SORULAN SORULAR (SSS - ACCORDION) -->
+    <section id="sss" class="py-16 max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-10">
+            <span class="text-gold-400 font-semibold tracking-widest text-xs uppercase">Merak Edilenler</span>
+            <h2 class="text-3xl font-serif font-bold text-white mt-1">Sıkça Sorulan Sorular</h2>
+        </div>
+
+        <div class="space-y-3">
+            
+            <!-- Soru 1 -->
+            <div class="bg-surface rounded-xl border border-white/5 overflow-hidden">
+                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-semibold text-white flex items-center justify-between gap-4 hover:text-gold-400 transition">
+                    <span>Nargile takımı ve aksesuarlar fiyata dahil mi?</span>
+                    <i class="fa-solid fa-chevron-down text-gold-400 text-sm transition-transform duration-300"></i>
+                </button>
+                <div class="faq-content px-5 pb-5 text-gray-400 text-sm">
+                    Görsellerde yer alan nargile takımı, bardaklar ve kuruyemişler ürünün kullanım konseptini ve boyutlarını göstermek amacıyla dekore edilmiştir. Paket içeriği 1 adet el yapımı doğal ahşap nargile standından oluşmaktadır.
+                </div>
+            </div>
+
+            <!-- Soru 2 -->
+            <div class="bg-surface rounded-xl border border-white/5 overflow-hidden">
+                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-semibold text-white flex items-center justify-between gap-4 hover:text-gold-400 transition">
+                    <span>Ahşap yüzey köz ısısına veya su damlamalarına dayanıklı mı?</span>
+                    <i class="fa-solid fa-chevron-down text-gold-400 text-sm transition-transform duration-300"></i>
+                </button>
+                <div class="faq-content px-5 pb-5 text-gray-400 text-sm">
+                    Evet. Ürünlerimiz önce alevle yakılarak dayanıklılığı artırılır, ardından çift kat özel koruyucu mat vernikle kaplanır. Su lekelerine ve neme karşı dirençlidir; nemli bezle kolayca temizlenir. Közün doğrudan ahşap üzerine düşürülmemesi standart olarak önerilir.
+                </div>
+            </div>
+
+            <!-- Soru 3 -->
+            <div class="bg-surface rounded-xl border border-white/5 overflow-hidden">
+                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-semibold text-white flex items-center justify-between gap-4 hover:text-gold-400 transition">
+                    <span>Her boy nargile takımı bu sehpaya uyum sağlar mı?</span>
+                    <i class="fa-solid fa-chevron-down text-gold-400 text-sm transition-transform duration-300"></i>
+                </button>
+                <div class="faq-content px-5 pb-5 text-gray-400 text-sm">
+                    40 cm geniş tablası ve standart Rus/Türk tipi geçmeli şişe gövdelerine uygun optimize edilen merkezi boşluğu sayesinde piyasada en çok kullanılan küçük, orta ve büyük boy nargile takımlarının %95'i ile kusursuz uyum sağlar.
+                </div>
+            </div>
+
+            <!-- Soru 4 -->
+            <div class="bg-surface rounded-xl border border-white/5 overflow-hidden">
+                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-semibold text-white flex items-center justify-between gap-4 hover:text-gold-400 transition">
+                    <span>Kargo süresi nedir ve nasıl paketleniyor?</span>
+                    <i class="fa-solid fa-chevron-down text-gold-400 text-sm transition-transform duration-300"></i>
+                </button>
+                <div class="faq-content px-5 pb-5 text-gray-400 text-sm">
+                    Saat 15:00'e kadar verilen siparişler aynı iş günü özenle balonlu ambalaj ve koruyucu mukavva kutularla sarılarak kargoya verilir. Teslimat süresi bulunduğunuz ile bağlı olarak genellikle 1-3 iş günüdür.
+                </div>
+            </div>
+
+        </div>
+    </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-darkCharcoal border-t border-white/10 pt-12 pb-24 lg:pb-12 text-center text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col items-center">
+            <span class="font-serif text-xl font-bold gold-gradient-text tracking-widest uppercase mb-2">İMZAHEDİYE.COM</span>
+            <p class="max-w-md mx-auto mb-6 text-gray-400">
+                Özel anlara değer katan, el yapımı masif ahşap ve kişiselleştirilmiş hediyelik ürünler atölyesi.
+            </p>
+            <div class="flex items-center gap-6 mb-6 text-sm text-gray-300">
+                <a href="#ozellikler" class="hover:text-gold-400 transition">Özellikler</a>
+                <a href="#detaylar" class="hover:text-gold-400 transition">Teknik Boyutlar</a>
+                <a href="#siparis" class="hover:text-gold-400 transition">Sipariş Ver</a>
+                <a href="https://wa.me/905000000000" target="_blank" rel="noopener noreferrer" class="hover:text-gold-400 transition">İletişim</a>
+            </div>
+            <p class="text-gray-400">&copy; 2026 imzahediye.com - Tüm Hakları Saklıdır.</p>
+        </div>
+    </footer>
+
+    <!-- MOBİL STICKY BOTTOM BAR (SATIŞ ARTIRICI SABİT ALT ÇUBUK) -->
+    <div class="fixed bottom-0 left-0 right-0 z-50 bg-[#0e1017]/95 backdrop-blur-md border-t border-gold-500/30 p-3 sm:hidden flex items-center justify-between gap-3 shadow-2xl">
+        <div class="flex flex-col pl-2">
+            <span class="text-[10px] text-gray-400 uppercase font-semibold">Net Fiyat</span>
+            <div class="flex items-baseline gap-1.5">
+                <span class="text-xl font-extrabold text-white">3.990 TL</span>
+            </div>
+        </div>
+        <a href="#siparis" class="bg-gradient-to-r from-gold-500 to-amberWood text-black font-extrabold text-sm py-3 px-6 rounded-xl shadow-lg flex items-center gap-2">
+            <span>HEMEN AL</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
         </a>
-      </div>
-    </div>
-  </header>
-
-  <main class="max-w-6xl mx-auto px-4 py-6 lg:py-10">
-    
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-      
-      <!-- GÖRSEL VİTRİNİ (1.jpg - 5.jpg) -->
-      <div class="lg:col-span-7 space-y-4">
-        <div class="relative bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl aspect-[3/4] max-h-[580px] w-full flex items-center justify-center">
-          <img id="mainImage" src="1.jpg" alt="Doğal Masif Ahşap Viski Dekantörü" class="w-full h-full object-cover">
-          <span class="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-amber-500/30 text-amber-400 text-xs font-semibold px-3 py-1 rounded-full">
-            %100 Doğal Masif Çam
-          </span>
-        </div>
-
-        <!-- Küçük Resimler -->
-        <div class="grid grid-cols-5 gap-2 sm:gap-3">
-          <button onclick="changePhoto('1.jpg', this)" class="thumb-btn border-2 border-amber-500 rounded-xl overflow-hidden aspect-square bg-zinc-900 focus:outline-none transition-all">
-            <img src="1.jpg" class="w-full h-full object-cover" alt="Ürün Görseli 1">
-          </button>
-          <button onclick="changePhoto('2.jpg', this)" class="thumb-btn border border-zinc-800 rounded-xl overflow-hidden aspect-square bg-zinc-900 opacity-70 hover:opacity-100 focus:outline-none transition-all">
-            <img src="2.jpg" class="w-full h-full object-cover" alt="Ürün Görseli 2">
-          </button>
-          <button onclick="changePhoto('3.jpg', this)" class="thumb-btn border border-zinc-800 rounded-xl overflow-hidden aspect-square bg-zinc-900 opacity-70 hover:opacity-100 focus:outline-none transition-all">
-            <img src="3.jpg" class="w-full h-full object-cover" alt="Ürün Görseli 3">
-          </button>
-          <button onclick="changePhoto('4.jpg', this)" class="thumb-btn border border-zinc-800 rounded-xl overflow-hidden aspect-square bg-zinc-900 opacity-70 hover:opacity-100 focus:outline-none transition-all">
-            <img src="4.jpg" class="w-full h-full object-cover" alt="Ürün Görseli 4">
-          </button>
-          <button onclick="changePhoto('5.jpg', this)" class="thumb-btn border border-zinc-800 rounded-xl overflow-hidden aspect-square bg-zinc-900 opacity-70 hover:opacity-100 focus:outline-none transition-all">
-            <img src="5.jpg" class="w-full h-full object-cover" alt="Ürün Görseli 5">
-          </button>
-        </div>
-      </div>
-
-      <!-- SAĞ TARAF: ÜRÜN BİLGİSİ & CANLI PLAKA & SİPARİŞ -->
-      <div class="lg:col-span-5 space-y-6">
-        
-        <div>
-          <div class="flex items-center gap-2 mb-2">
-            <div class="flex text-amber-400 text-xs">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-            </div>
-            <span class="text-xs text-zinc-400 font-medium">(48 Değerlendirme • %100 Memnuniyet)</span>
-          </div>
-          <h1 class="text-2xl sm:text-3xl font-serif font-bold text-zinc-100 leading-tight">
-            İsminize Özel Doğal Masif Ahşap Viski Dekantörü & Sunum Standı
-          </h1>
-          <p class="text-xs sm:text-sm text-zinc-400 mt-2">
-            Geleneksel rustik yakma ahşap işçiliği, endüstriyel 3D yazıcı hassasiyetli sızdırmaz üst haznesi ve retro pirinç musluğu ile benzersiz bir prestij hediyesi.
-          </p>
-        </div>
-
-        <!-- Fiyat -->
-        <div class="bg-zinc-900/80 border border-zinc-800 p-4 rounded-2xl flex items-center justify-between">
-          <div>
-            <span class="text-xs text-zinc-400 line-through">2.450 TL</span>
-            <div class="flex items-baseline gap-2">
-              <span class="text-3xl font-bold text-amber-400">1.750 TL</span>
-              <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-semibold">%28 İndirim</span>
-            </div>
-          </div>
-          <span class="text-xs text-emerald-400 font-medium flex items-center gap-1 bg-emerald-950/40 px-3 py-1.5 rounded-lg border border-emerald-800/40">
-            <i class="fa-solid fa-check"></i> Ücretsiz Kargo
-          </span>
-        </div>
-
-        <!-- CANLI PLAKA SİMÜLATÖRÜ -->
-        <div class="bg-gradient-to-b from-zinc-900 to-zinc-950 border-2 border-amber-500/30 rounded-2xl p-4 sm:p-5 shadow-xl space-y-4">
-          <div class="flex items-center justify-between">
-            <label class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-2">
-              <i class="fa-solid fa-signature"></i> Plakaya Yazılacak İsmi Giriniz
-            </label>
-            <span class="text-[10px] text-zinc-400">Canlı Önizleme</span>
-          </div>
-
-          <input 
-            type="text" 
-            id="engraveInput" 
-            placeholder="Örn: HÜSEYİN TONGUÇ" 
-            maxlength="26"
-            class="w-full bg-zinc-950 border border-zinc-700 focus:border-amber-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none uppercase font-medium placeholder-zinc-600 transition-colors"
-            oninput="updatePlatePreview(this.value)"
-          >
-
-          <!-- Pirinç Plaka -->
-          <div class="brass-plate rounded-lg py-4 px-6 text-center border border-amber-200/50 relative overflow-hidden transition-all duration-300">
-            <div class="text-[10px] uppercase tracking-widest text-[#5c3e0e] font-serif font-bold">KİŞİYE ÖZEL LAZER GRAVÜR</div>
-            <div id="plateDisplay" class="engraved-text font-engrave font-bold text-base sm:text-lg tracking-widest truncate mt-1">
-              KİŞİYE ÖZEL
-            </div>
-            <div class="absolute top-1.5 left-2 w-1.5 h-1.5 rounded-full bg-[#5c3e0e]/50"></div>
-            <div class="absolute top-1.5 right-2 w-1.5 h-1.5 rounded-full bg-[#5c3e0e]/50"></div>
-            <div class="absolute bottom-1.5 left-2 w-1.5 h-1.5 rounded-full bg-[#5c3e0e]/50"></div>
-            <div class="absolute bottom-1.5 right-2 w-1.5 h-1.5 rounded-full bg-[#5c3e0e]/50"></div>
-          </div>
-          <p class="text-[11px] text-zinc-400 italic text-center">
-            * Lazer kazıma fırçalanmış pirinç plakaya kalıcı olarak işlenir, silinmez ve solmaz.
-          </p>
-        </div>
-
-        <!-- Butonlar -->
-        <div class="space-y-3 pt-2">
-          <button onclick="openOrderModal()" class="w-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-zinc-950 font-bold py-4 px-6 rounded-xl shadow-lg shadow-amber-500/20 text-center transition-all transform active:scale-[0.99] flex items-center justify-center gap-2 text-base">
-            <i class="fa-solid fa-bag-shopping"></i> HEMEN SİPARİŞ VER (1.750 TL)
-          </button>
-
-          <button onclick="quickWhatsAppOrder()" class="w-full bg-[#1F2C34] hover:bg-[#2A3942] border border-emerald-500/40 text-emerald-400 font-semibold py-3 px-6 rounded-xl text-center transition-all flex items-center justify-center gap-2 text-sm">
-            <i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp ile Hızlıca Yaz & Sipariş Ver
-          </button>
-        </div>
-
-        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-zinc-800 text-center text-zinc-400 text-[11px]">
-          <div class="p-2 bg-zinc-900/50 rounded-lg border border-zinc-800/60">
-            <i class="fa-solid fa-box-open text-amber-400 mb-1 block text-sm"></i>
-            Korumalı Kargo
-          </div>
-          <div class="p-2 bg-zinc-900/50 rounded-lg border border-zinc-800/60">
-            <i class="fa-solid fa-hand-holding-heart text-amber-400 mb-1 block text-sm"></i>
-            El Yapımı Ahşap
-          </div>
-          <div class="p-2 bg-zinc-900/50 rounded-lg border border-zinc-800/60">
-            <i class="fa-solid fa-shield-halved text-amber-400 mb-1 block text-sm"></i>
-            imzahediye Garantisi
-          </div>
-        </div>
-
-      </div>
-
     </div>
 
-    <!-- 3D YAZICI VE MÜHENDİSLİK DETAYI -->
-    <section class="mt-16 pt-12 border-t border-zinc-800">
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <h2 class="text-2xl sm:text-3xl font-serif font-bold text-zinc-100">Özel Tasarım ve Üretim Teknolojisi</h2>
-        <p class="text-zinc-400 text-xs sm:text-sm mt-2">Doğal ahşabın zarafetini endüstriyel 3D yazıcı hassasiyetiyle bir araya getirdik.</p>
-      </div>
+    <!-- JAVASCRIPT ETKİLEŞİM KODLARI -->
+    <script>
+        // Galeri Görsel Değiştirme
+        function changeGalleryImage(imgSrc, btnElement) {
+            const mainImg = document.getElementById('mainProductImage');
+            mainImg.style.opacity = '0.3';
+            setTimeout(() => {
+                mainImg.src = imgSrc;
+                mainImg.style.opacity = '1';
+            }, 150);
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-zinc-900/60 border border-zinc-800 p-6 rounded-2xl">
-          <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl mb-4">
-            <i class="fa-solid fa-cube"></i>
-          </div>
-          <h3 class="text-base font-bold text-zinc-100 mb-2">3D Yazıcı İle Özel İmalat Hazne Yuvası</h3>
-          <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-            Üst cam hazne oturuşu ve iç sıvı akış geometrisi, atölyemizdeki endüstriyel 3D yazıcılarda gıda temasına %100 uygun, mikron toleransla basılır. Asla damlatma veya sızdırma yapmaz.
-          </p>
-        </div>
+            // Thumbnail aktiflik durumu
+            document.querySelectorAll('.thumb-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-gold-500');
+            });
+            btnElement.classList.add('ring-2', 'ring-gold-500');
+        }
 
-        <div class="bg-zinc-900/60 border border-zinc-800 p-6 rounded-2xl">
-          <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl mb-4">
-            <i class="fa-solid fa-fire"></i>
-          </div>
-          <h3 class="text-base font-bold text-zinc-100 mb-2">Rustik Yakma Masif Ahşap</h3>
-          <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-            Her bir stand özel alev yakma tekniği ile yıllanmış vintage bir doku kazanır. Doğal ahşap damarları sayesinde her bir ürün sadece sahibine özel ve tektir.
-          </p>
-        </div>
+        // SSS Akordeon Kontrolü
+        function toggleFaq(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('.fa-chevron-down');
+            const isOpen = content.classList.contains('open');
 
-        <div class="bg-zinc-900/60 border border-zinc-800 p-6 rounded-2xl">
-          <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl mb-4">
-            <i class="fa-solid fa-faucet"></i>
-          </div>
-          <h3 class="text-base font-bold text-zinc-100 mb-2">Retro Pirinç Metal Musluk</h3>
-          <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-            Kontrollü akış sunan nostaljik pirinç musluk, kadeh doldurmayı keyifli bir ritüele dönüştürürken ofis veya salonunuzda lüks bir bar atmosferi yaratır.
-          </p>
-        </div>
-      </div>
-    </section>
+            // Diğer açık olanları kapat
+            document.querySelectorAll('.faq-content').forEach(el => el.classList.remove('open'));
+            document.querySelectorAll('.fa-chevron-down').forEach(el => el.style.transform = 'rotate(0deg)');
 
-    <!-- TEKNİK TABLO -->
-    <section class="mt-12 bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-6">
-      <h3 class="text-lg font-bold text-amber-400 mb-4 font-serif">Teknik Özellikler</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-xs sm:text-sm">
-        <div class="flex justify-between py-1.5 border-b border-zinc-800">
-          <span class="text-zinc-400">Gövde Malzemesi:</span>
-          <span class="text-zinc-200 font-medium">Doğal Masif Çam (Rustik Alev Yakma)</span>
-        </div>
-        <div class="flex justify-between py-1.5 border-b border-zinc-800">
-          <span class="text-zinc-400">Hazne & Yuva:</span>
-          <span class="text-zinc-200 font-medium">Gıdaya Uygun 3D Yazıcı İmalatı & Şık Cam Hazne</span>
-        </div>
-        <div class="flex justify-between py-1.5 border-b border-zinc-800">
-          <span class="text-zinc-400">Musluk Mekanizması:</span>
-          <span class="text-zinc-200 font-medium">Pirinç Kaplama Sızdırmaz Metal Musluk</span>
-        </div>
-        <div class="flex justify-between py-1.5 border-b border-zinc-800">
-          <span class="text-zinc-400">Plaka İşleme:</span>
-          <span class="text-zinc-200 font-medium">Lazer Kazıma Fırçalanmış Altın Metal Plaka</span>
-        </div>
-        <div class="flex justify-between py-1.5 border-b border-zinc-800">
-          <span class="text-zinc-400">Kullanım Alanı:</span>
-          <span class="text-zinc-200 font-medium">Viski, Konyak, Likör ve Tüm Sunumlar</span>
-        </div>
-        <div class="flex justify-between py-1.5 border-b border-zinc-800">
-          <span class="text-zinc-400">Kutu İçeriği:</span>
-          <span class="text-zinc-200 font-medium">1 Adet Cam Hazneli İsme Özel Ahşap Stand</span>
-        </div>
-      </div>
-    </section>
+            if (!isOpen) {
+                content.classList.add('open');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
 
-  </main>
+        // Sipariş Form Gönderimi (Mock Handler)
+        function handleOrderSubmit(e) {
+            e.preventDefault();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Siparişiniz İşleniyor...';
 
-  <!-- MOBİL SABİT SİPARİŞ ÇUBUĞU -->
-  <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-zinc-950/95 backdrop-blur-md border-t border-zinc-800 p-3 z-30 flex items-center justify-between gap-3">
-    <div>
-      <span class="text-[10px] text-zinc-400 block line-through">2.450 TL</span>
-      <span class="text-lg font-bold text-amber-400 leading-none">1.750 TL</span>
-    </div>
-    <button onclick="openOrderModal()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-black font-bold py-3 px-4 rounded-xl text-center text-sm shadow-md">
-      Hemen Sipariş Ver
-    </button>
-  </div>
-
-  <!-- SİPARİŞ MODAL FORMU (DOĞRUDAN WHATSAPP'A GÖNDERİR) -->
-  <div id="orderModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-zinc-900 border border-zinc-700 w-full max-w-lg rounded-2xl p-6 relative max-h-[90vh] overflow-y-auto">
-      
-      <button onclick="closeOrderModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-lg">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-
-      <div class="mb-4">
-        <span class="text-amber-400 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
-          <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i> WhatsApp Hızlı Sipariş Formu
-        </span>
-        <h3 class="text-xl font-serif font-bold text-white mt-1">Sipariş Bilgilerinizi Girin</h3>
-        <p class="text-xs text-zinc-400">Formu doldurduğunuzda siparişiniz doğrudan WhatsApp hattımıza iletilecektir.</p>
-      </div>
-
-      <form onsubmit="submitToWhatsApp(event)" class="space-y-4">
-        
-        <div>
-          <label class="block text-xs font-medium text-zinc-300 mb-1">Plakaya Yazılacak İsim / Metin *</label>
-          <input type="text" id="modalPlateText" required placeholder="Örn: HÜSEYİN TONGUÇ" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-amber-300 font-bold uppercase focus:border-amber-500 focus:outline-none">
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-medium text-zinc-300 mb-1">Adınız Soyadınız *</label>
-            <input type="text" id="modalCustomerName" required placeholder="Ad Soyad" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-amber-500 focus:outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-medium text-zinc-300 mb-1">Telefon Numaranız *</label>
-            <input type="tel" id="modalCustomerPhone" required placeholder="05XX XXX XX XX" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-amber-500 focus:outline-none">
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-medium text-zinc-300 mb-1">Teslimat Adresi (İl, İlçe, Mahalle, Adres) *</label>
-          <textarea id="modalCustomerAddress" rows="2" required placeholder="Kargo teslimatı için açık adresinizi yazınız..." class="w-full bg-zinc-950 border border-zinc-700 rounded-xl px-4 py-2 text-sm text-white focus:border-amber-500 focus:outline-none"></textarea>
-        </div>
-
-        <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 text-xs space-y-1">
-          <div class="flex justify-between text-zinc-400">
-            <span>Ürün:</span>
-            <span class="text-zinc-200">Viski Dekantörü Standı</span>
-          </div>
-          <div class="flex justify-between text-zinc-400">
-            <span>Kargo:</span>
-            <span class="text-emerald-400 font-semibold">ÜCRETSİZ</span>
-          </div>
-          <div class="flex justify-between text-amber-400 font-bold text-sm pt-1 border-t border-zinc-800">
-            <span>Toplam Tutar:</span>
-            <span>1.750 TL</span>
-          </div>
-        </div>
-
-        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-all text-sm shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-2">
-          <i class="fa-brands fa-whatsapp text-lg"></i> WHATSAPP İLE SİPARİŞİ GÖNDER
-        </button>
-
-      </form>
-
-    </div>
-  </div>
-
-  <footer class="border-t border-zinc-800 bg-zinc-950 py-8 text-center text-xs text-zinc-500 mt-16">
-    <p class="font-serif text-sm text-zinc-400 mb-1">imzahediye.com</p>
-    <p>© 2026 Tüm Hakları Saklıdır. El Emeği & Özel Üretim.</p>
-  </footer>
-
-  <!-- JAVASCRIPT: WHATSAPP ENTEGRASYONU -->
-  <script>
-    const TARGET_PHONE = "905532285951";
-
-    // Fotoğraf Değiştirici
-    function changePhoto(src, btn) {
-      document.getElementById('mainImage').src = src;
-      document.querySelectorAll('.thumb-btn').forEach(b => {
-        b.classList.remove('border-amber-500');
-        b.classList.add('border-zinc-800', 'opacity-70');
-      });
-      btn.classList.add('border-amber-500');
-      btn.classList.remove('border-zinc-800', 'opacity-70');
-    }
-
-    // Canlı Plaka Önizleme
-    function updatePlatePreview(val) {
-      const display = document.getElementById('plateDisplay');
-      if (val.trim() === '') {
-        display.innerText = 'KİŞİYE ÖZEL';
-      } else {
-        display.innerText = val.toUpperCase();
-      }
-    }
-
-    // Modalı Aç / Kapat
-    function openOrderModal() {
-      const liveText = document.getElementById('engraveInput').value;
-      if (liveText.trim() !== '') {
-        document.getElementById('modalPlateText').value = liveText.toUpperCase();
-      }
-      document.getElementById('orderModal').classList.remove('hidden');
-    }
-
-    function closeOrderModal() {
-      document.getElementById('orderModal').classList.add('hidden');
-    }
-
-    // Formu WhatsApp Mesajı Olarak Gönderme
-    function submitToWhatsApp(e) {
-      e.preventDefault();
-      
-      const plate = document.getElementById('modalPlateText').value.trim();
-      const name = document.getElementById('modalCustomerName').value.trim();
-      const phone = document.getElementById('modalCustomerPhone').value.trim();
-      const address = document.getElementById('modalCustomerAddress').value.trim();
-
-      const message = 
-`*YENİ SİPARİŞ - imzahediye.com*
-━━━━━━━━━━━━━━━━━━━━
-🏷️ *Ürün:* Doğal Masif Ahşap Viski Dekantörü
-✍️ *Plakaya Yazılacak İsim:* ${plate.toUpperCase()}
-💰 *Tutar:* 1.750 TL (Ücretsiz Kargo)
-━━━━━━━━━━━━━━━━━━━━
-👤 *Alıcı:* ${name}
-📞 *Telefon:* ${phone}
-📍 *Teslimat Adresi:* ${address}
-━━━━━━━━━━━━━━━━━━━━
-_Siparişi onaylıyorum, hesap veya kargo detaylarını iletebilirsiniz._`;
-
-      const waUrl = `https://wa.me/${TARGET_PHONE}?text=${encodeURIComponent(message)}`;
-      window.open(waUrl, '_blank');
-      closeOrderModal();
-    }
-
-    // Hızlı WhatsApp Butonu
-    function quickWhatsAppOrder() {
-      const liveText = document.getElementById('engraveInput').value.trim();
-      const plateText = liveText !== '' ? liveText.toUpperCase() : 'Belirtilmedi';
-
-      const message = 
-`Merhaba *imzahediye.com*, Ahşap Viski Dekantörü standı hakkında bilgi almak ve sipariş vermek istiyorum.
-
-✍️ *Plakaya Yazılacak İsim:* ${plateText}
-💰 *Fiyat:* 1.750 TL`;
-
-      const waUrl = `https://wa.me/${TARGET_PHONE}?text=${encodeURIComponent(message)}`;
-      window.open(waUrl, '_blank');
-    }
-  </script>
-
+            setTimeout(() => {
+                document.getElementById('orderSuccessMessage').classList.remove('hidden');
+                e.target.reset();
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Sipariş Alındı!';
+                
+                // Başarı kutusuna yumuşak kaydır
+                document.getElementById('orderSuccessMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 1000);
+        }
+    </script>
 </body>
 </html>
