@@ -1,1827 +1,1387 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Okey & 101 Okey Canlı Kamera Asistanı (Yerel Motor)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tamamen Yerel / API'siz OCR Motoru (Tarayıcı İçi WASM) -->
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            -webkit-tap-highlight-color: transparent;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            width: 100%;
-            height: 100dvh;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #0c111d;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: #f8fafc;
-            user-select: none;
-        }
-
-        /* iOS Safari Tam Ekran Video Oynatıcı Kontrollerini Gizle */
-        video::-webkit-media-controls,
-        video::-webkit-media-controls-enclosure,
-        video::-webkit-media-controls-panel,
-        video::-webkit-media-controls-play-button,
-        video::-webkit-media-controls-start-playback-button {
-            display: none !important;
-            -webkit-appearance: none !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-
-        /* Gece Laciverti (Midnight Slate) Cam HUD Kartları */
-        .slate-glass-panel {
-            background: linear-gradient(180deg, rgba(19, 27, 46, 0.94) 0%, rgba(12, 17, 29, 0.97) 100%);
-            border: 1px solid rgba(71, 95, 145, 0.42);
-            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-        }
-
-        /* Açık Doğal Kayın Ahşap (Light Beechwood) 2 Katlı Istaka */
-        .beechwood-rack {
-            background: linear-gradient(180deg, #ebd0a8 0%, #dfc091 20%, #cfa66f 58%, #dcba89 88%, #be9158 100%);
-            border: 1.5px solid #f4e2c3;
-            border-radius: 12px;
-            box-shadow: inset 0 2px 3px rgba(255, 252, 245, 0.72),
-                        inset 0 -3px 5px rgba(120, 78, 34, 0.45),
-                        0 8px 20px rgba(0, 0, 0, 0.48);
-        }
-
-        .rack-metal-cap {
-            background: linear-gradient(180deg, #f1f5f9 0%, #cbd5e1 50%, #94a3b8 100%);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 1px 3px rgba(51, 65, 85, 0.38);
-            border-radius: 3px;
-        }
-
-        .rack-shelf-groove {
-            background: linear-gradient(180deg, #b58752 0%, #c69963 72%, #d8b17e 100%);
-            box-shadow: inset 0 2px 4px rgba(92, 58, 22, 0.48), 0 1px 0 rgba(255, 248, 235, 0.6);
-            border-radius: 6px;
-        }
-
-        .rack-slot-cell {
-            background: rgba(120, 78, 34, 0.13);
-            border: 1px dashed rgba(110, 68, 26, 0.24);
-            border-radius: 4px;
-        }
-
-        /* Fildişi Beyazı Okey Taşı */
-        .okey-tile {
-            font-family: 'Oswald', sans-serif;
-            background: linear-gradient(160deg, #ffffff 0%, #faf6ed 78%, #eee6d5 100%);
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(68, 42, 14, 0.42),
-                        inset 0 1px 0.5px rgba(255, 255, 255, 1),
-                        inset 0 -2px 0 #cbbba0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            transition: transform 0.12s ease;
-        }
-
-        .okey-tile:active {
-            transform: scale(0.93);
-        }
-
-        .tile-valid-group {
-            box-shadow: 0 0 0 1.6px #0ea5e9,
-                        0 2px 5px rgba(14, 165, 233, 0.35),
-                        inset 0 -2px 0 #cbbba0;
-        }
-
-        .tile-active-okey {
-            background: linear-gradient(160deg, #fffef7 0%, #fef3c7 100%);
-            box-shadow: 0 0 0 2px #f59e0b,
-                        0 0 10px rgba(245, 158, 11, 0.7),
-                        inset 0 -2px 0 #d97706 !important;
-        }
-
-        /* Taş Sayı Renkleri */
-        .c-kirmizi { color: #dc2626; }
-        .c-mavi    { color: #0284c7; }
-        .c-siyah   { color: #0f172a; }
-        .c-sari    { color: #d97706; }
-        .c-sahte   { color: #7c3aed; }
-
-        /* Vizör Köşe Çizgileri */
-        .reticle-bracket {
-            position: absolute;
-            width: 26px;
-            height: 26px;
-            border-color: rgba(248, 250, 252, 0.72);
-            transition: border-color 0.25s ease;
-        }
-        .reticle-active .reticle-bracket {
-            border-color: #f59e0b;
-        }
-
-        @keyframes scanLaser {
-            0% { top: 8%; opacity: 0; }
-            15% { opacity: 0.95; }
-            85% { opacity: 0.95; }
-            100% { top: 92%; opacity: 0; }
-        }
-        .scan-laser-line {
-            position: absolute;
-            left: 3%;
-            right: 3%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #38bdf8, #fbbf24, #38bdf8, transparent);
-            box-shadow: 0 0 12px #38bdf8;
-            animation: scanLaser 1.4s ease-in-out infinite;
-        }
-
-        .bottom-sheet-modal {
-            background: linear-gradient(180deg, #162038 0%, #0c111d 100%);
-            border-top: 1px solid rgba(245, 158, 11, 0.35);
-            border-top-left-radius: 26px;
-            border-top-right-radius: 26px;
-            box-shadow: 0 -18px 46px rgba(0, 0, 0, 0.85);
-            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
-        }
-        .bottom-sheet-modal.hidden-sheet {
-            transform: translateY(105%);
-            opacity: 0;
-            pointer-events: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Okey & 101 Okey Canlı Kamera Asistanı (Yerel Motor)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+<style>
+* { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+html, body { width: 100%; height: 100dvh; margin: 0; padding: 0; overflow: hidden; background-color: #0c111d; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #f8fafc; user-select: none; }
+video::-webkit-media-controls, video::-webkit-media-controls-enclosure, video::-webkit-media-controls-panel, video::-webkit-media-controls-play-button, video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none !important; opacity: 0 !important; pointer-events: none !important; }
+.slate-glass-panel { background: linear-gradient(180deg, rgba(19, 27, 46, 0.94) 0%, rgba(12, 17, 29, 0.97) 100%); border: 1px solid rgba(71, 95, 145, 0.42); box-shadow: 0 14px 36px rgba(0, 0, 0, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.08); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.beechwood-rack { background: linear-gradient(180deg, #ebd0a8 0%, #dfc091 20%, #cfa66f 58%, #dcba89 88%, #be9158 100%); border: 1.5px solid #f4e2c3; border-radius: 12px; box-shadow: inset 0 2px 3px rgba(255, 252, 245, 0.72), inset 0 -3px 5px rgba(120, 78, 34, 0.45), 0 8px 20px rgba(0, 0, 0, 0.48); }
+.rack-metal-cap { background: linear-gradient(180deg, #f1f5f9 0%, #cbd5e1 50%, #94a3b8 100%); border: 1px solid rgba(255, 255, 255, 0.7); box-shadow: 0 1px 3px rgba(51, 65, 85, 0.38); border-radius: 3px; }
+.rack-shelf-groove { background: linear-gradient(180deg, #b58752 0%, #c69963 72%, #d8b17e 100%); box-shadow: inset 0 2px 4px rgba(92, 58, 22, 0.48), 0 1px 0 rgba(255, 248, 235, 0.6); border-radius: 6px; }
+.rack-slot-cell { background: rgba(120, 78, 34, 0.13); border: 1px dashed rgba(110, 68, 26, 0.24); border-radius: 4px; }
+.okey-tile { font-family: 'Oswald', sans-serif; background: linear-gradient(160deg, #ffffff 0%, #faf6ed 78%, #eee6d5 100%); border-radius: 4px; box-shadow: 0 2px 4px rgba(68, 42, 14, 0.42), inset 0 1px 0.5px rgba(255, 255, 255, 1), inset 0 -2px 0 #cbbba0; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; transition: transform 0.12s ease; }
+.okey-tile:active { transform: scale(0.93); }
+.tile-valid-group { box-shadow: 0 0 0 1.6px #0ea5e9, 0 2px 5px rgba(14, 165, 233, 0.35), inset 0 -2px 0 #cbbba0; }
+.tile-active-okey { background: linear-gradient(160deg, #fffef7 0%, #fef3c7 100%); box-shadow: 0 0 0 2px #f59e0b, 0 0 10px rgba(245, 158, 11, 0.7), inset 0 -2px 0 #d97706 !important; }
+.c-kirmizi { color: #dc2626; } .c-mavi { color: #0284c7; } .c-siyah { color: #0f172a; } .c-sari { color: #d97706; } .c-sahte { color: #7c3aed; }
+.reticle-bracket { position: absolute; width: 26px; height: 26px; border-color: rgba(248, 250, 252, 0.72); transition: border-color 0.25s ease; }
+.reticle-active .reticle-bracket { border-color: #f59e0b; }
+@keyframes scanLaser { 0% { top: 8%; opacity: 0; } 15% { opacity: 0.95; } 85% { opacity: 0.95; } 100% { top: 92%; opacity: 0; } }
+.scan-laser-line { position: absolute; left: 3%; right: 3%; height: 2px; background: linear-gradient(90deg, transparent, #38bdf8, #fbbf24, #38bdf8, transparent); box-shadow: 0 0 12px #38bdf8; animation: scanLaser 1.4s ease-in-out infinite; }
+.bottom-sheet-modal { background: linear-gradient(180deg, #162038 0%, #0c111d 100%); border-top: 1px solid rgba(245, 158, 11, 0.35); border-top-left-radius: 26px; border-top-right-radius: 26px; box-shadow: 0 -18px 46px rgba(0, 0, 0, 0.85); transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease; }
+.bottom-sheet-modal.hidden-sheet { transform: translateY(105%); opacity: 0; pointer-events: none; }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+</style>
 </head>
 <body class="relative w-full h-full">
 
-    <!-- 1. TAM EKRAN CANLI KAMERA & YEREL AR KUTU ÇİZİM KATMANI -->
-    <div id="camera-stage" class="fixed inset-0 w-full h-full bg-[#0c111d] overflow-hidden">
-        <video id="camera-video" autoplay muted playsinline webkit-playsinline class="w-full h-full object-cover"></video>
-        <canvas id="ar-box-canvas" class="absolute inset-0 w-full h-full object-cover pointer-events-none"></canvas>
+<div id="camera-stage" class="fixed inset-0 w-full h-full bg-[#0c111d] overflow-hidden">
+  <video id="camera-video" autoplay muted playsinline webkit-playsinline class="w-full h-full object-cover"></video>
+  <canvas id="ar-box-canvas" class="absolute inset-0 w-full h-full object-cover pointer-events-none"></canvas>
 
-        <!-- Kamera Kapalıysa / İzin Bekleniyorsa Bilgilendirme -->
-        <div id="camera-fallback-screen" class="absolute inset-0 flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_center,_#1a2642_0%,_#0c111d_100%)] text-center px-6">
-            <div class="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-400/35 flex items-center justify-center mb-3 shadow-lg">
-                <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                    <circle cx="12" cy="13" r="3"/>
-                </svg>
-            </div>
-            <p class="text-sm font-bold text-white">Yerel Canlı Kamera Hazır</p>
-            <p class="text-xs text-slate-300 mt-1 max-w-xs leading-relaxed">
-                API anahtarı veya harici sunucu gerekmez. Tüm taş okuma ve dizilim işlemleri doğrudan cihazınızda gerçekleşir.
-            </p>
-            <div class="flex items-center gap-2 mt-4">
-                <button onclick="startRearCamera()" class="px-3.5 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold shadow">Kamerayı Başlat</button>
-                <button onclick="loadSample21Hand()" class="px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-600 text-slate-100 text-xs font-bold">Örnek 21 Taş Yükle</button>
-            </div>
+  <div id="camera-fallback-screen" class="absolute inset-0 flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_center,_#1a2642_0%,_#0c111d_100%)] text-center px-6">
+    <div class="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-400/35 flex items-center justify-center mb-3 shadow-lg">
+      <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg>
+    </div>
+    <p class="text-sm font-bold text-white">Yerel Canlı Kamera Hazır</p>
+    <p class="text-xs text-slate-300 mt-1 max-w-xs leading-relaxed">API anahtarı veya harici sunucu gerekmez. Tüm taş okuma ve dizilim işlemleri doğrudan cihazınızda gerçekleşir.</p>
+    <div class="flex items-center gap-2 mt-4">
+      <button onclick="startRearCamera()" class="px-3.5 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold shadow">Kamerayı Başlat</button>
+      <button onclick="loadSample21Hand()" class="px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-600 text-slate-100 text-xs font-bold">Örnek 21 Taş Yükle</button>
+    </div>
+  </div>
+
+  <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/45 via-transparent to-black/65"></div>
+</div>
+
+<header class="fixed top-0 left-0 right-0 z-30 pt-[max(10px,env(safe-area-inset-top))] px-2.5 sm:px-4">
+  <div class="max-w-xl mx-auto slate-glass-panel rounded-2xl p-2.5 sm:p-3">
+    <div class="flex items-center justify-between gap-1.5 mb-2">
+      <div class="flex items-center gap-1.5">
+        <div id="top-scan-badge" class="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shrink-0">
+          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2"/></svg>
         </div>
-
-        <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/45 via-transparent to-black/65"></div>
+        <div class="flex items-center bg-slate-950/75 p-0.5 rounded-full border border-slate-700/70">
+          <button id="btn-mode-seri" onclick="switchArrangeTab('seri')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow">SERİ</button>
+          <button id="btn-mode-cift" onclick="switchArrangeTab('cift')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white">ÇİFT</button>
+        </div>
+      </div>
+      <div id="top-rack-status" class="text-[11px] sm:text-xs font-semibold text-slate-200 truncate px-1">0/21 · ıstakayı yavaşça tarayın</div>
+      <button onclick="openManualTileModal()" class="px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-600/60 text-[11px] font-bold text-sky-300 shrink-0 transition-all" aria-label="Manuel taş ekle">+ Taş</button>
     </div>
 
-    <!-- 2. ÜST HUD PANELİ: SERİ/ÇİFT + CANLI DURUM + AÇIK KAYIN AHŞAP 2 KATLI ISTAKA -->
-    <header class="fixed top-0 left-0 right-0 z-30 pt-[max(10px,env(safe-area-inset-top))] px-2.5 sm:px-4">
-        <div class="max-w-xl mx-auto slate-glass-panel rounded-2xl p-2.5 sm:p-3">
-            
-            <div class="flex items-center justify-between gap-1.5 mb-2">
-                <div class="flex items-center gap-1.5">
-                    <div id="top-scan-badge" class="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shrink-0">
-                        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2"/>
-                        </svg>
-                    </div>
+    <div class="beechwood-rack p-1.5 sm:p-2 flex items-stretch gap-1">
+      <div class="rack-metal-cap w-1.5 sm:w-2 shrink-0"></div>
+      <div class="flex-1 flex flex-col gap-1.5">
+        <div id="wooden-top-row" class="rack-shelf-groove p-1 grid gap-[3px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));"></div>
+        <div id="wooden-bottom-row" class="rack-shelf-groove p-1 grid gap-[3px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));"></div>
+      </div>
+      <div class="rack-metal-cap w-1.5 sm:w-2 shrink-0"></div>
+    </div>
+  </div>
+</header>
 
-                    <div class="flex items-center bg-slate-950/75 p-0.5 rounded-full border border-slate-700/70">
-                        <button id="btn-mode-seri" onclick="switchArrangeTab('seri')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow">
-                            SERİ
-                        </button>
-                        <button id="btn-mode-cift" onclick="switchArrangeTab('cift')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white">
-                            ÇİFT
-                        </button>
-                    </div>
-                </div>
+<div class="fixed inset-0 z-20 pointer-events-none flex items-center justify-center px-5 pb-32">
+  <div id="camera-reticle" class="relative w-full max-w-lg h-36 sm:h-44 rounded-2xl">
+    <div class="reticle-bracket top-0 left-0 border-t-[3px] border-l-[3px] rounded-tl-xl"></div>
+    <div class="reticle-bracket top-0 right-0 border-t-[3px] border-r-[3px] rounded-tr-xl"></div>
+    <div class="reticle-bracket bottom-0 left-0 border-b-[3px] border-l-[3px] rounded-bl-xl"></div>
+    <div class="reticle-bracket bottom-0 right-0 border-b-[3px] border-r-[3px] rounded-br-xl"></div>
+    <div id="scan-laser" class="hidden scan-laser-line"></div>
 
-                <div id="top-rack-status" class="text-[11px] sm:text-xs font-semibold text-slate-200 truncate px-1">
-                    0/21 · ıstakayı yavaşça tarayın
-                </div>
+    <div class="pointer-events-auto absolute -bottom-11 left-0 right-0 flex items-center justify-between gap-2">
+      <button id="reticle-auto-pill" onclick="toggleAutoScanSetting()" class="px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all" aria-label="Otomatik taramayı aç/kapat">
+        <span id="reticle-auto-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="reticle-auto-label">Oto: Açık</span>
+      </button>
+      <div class="flex items-center gap-1.5">
+        <button id="btn-scan-now" onclick="triggerImmediateScan()" class="px-3.5 py-2 rounded-full bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 text-[11px] font-extrabold shadow-lg transition-all disabled:opacity-40">Şimdi Tara</button>
+        <button id="btn-scan-refresh" onclick="triggerImmediateScan()" title="Yeniden Tara" aria-label="Yeniden Tara" class="w-9 h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 active:scale-95 border border-slate-600/70 flex items-center justify-center text-amber-400 shadow-xl transition-all disabled:opacity-40">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
-                <button onclick="openManualTileModal()" class="px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-600/60 text-[11px] font-bold text-sky-300 shrink-0 transition-all">
-                    + Taş
-                </button>
-            </div>
-
-            <!-- 2 KATLI AÇIK DOĞAL KAYIN AHŞAP ISTAKA -->
-            <div class="beechwood-rack p-1.5 sm:p-2 flex items-stretch gap-1">
-                <div class="rack-metal-cap w-1.5 sm:w-2 shrink-0"></div>
-                <div class="flex-1 flex flex-col gap-1.5">
-                    <div id="wooden-top-row" class="rack-shelf-groove p-1 grid gap-[3px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));"></div>
-                    <div id="wooden-bottom-row" class="rack-shelf-groove p-1 grid gap-[3px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));"></div>
-                </div>
-                <div class="rack-metal-cap w-1.5 sm:w-2 shrink-0"></div>
-            </div>
+<footer class="fixed bottom-0 left-0 right-0 z-30 pb-[max(12px,env(safe-area-inset-bottom))] px-2.5 sm:px-4">
+  <div class="max-w-xl mx-auto flex flex-col gap-2">
+    <div class="slate-glass-panel rounded-2xl p-3">
+      <div class="grid grid-cols-3 items-center gap-2 pb-2.5 border-b border-slate-700/60">
+        <div class="flex flex-col items-start">
+          <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">EN İYİ TOPLAM</span>
+          <div class="flex items-baseline gap-1 mt-0.5">
+            <span id="stat-best-total" class="text-3xl sm:text-4xl font-black text-white leading-none tracking-tight">0</span>
+            <span id="stat-threshold-suffix" class="text-sm sm:text-base font-bold text-slate-400">/101</span>
+          </div>
+          <div class="flex items-center gap-1 mt-1.5">
+            <span id="pill-open-badge" class="px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300">101 Bekliyor</span>
+          </div>
         </div>
-    </header>
-
-    <!-- 3. ORTA VİZÖR ÇERÇEVESİ & YEREL CANLI TARAMA KONTROLLERİ -->
-    <div class="fixed inset-0 z-20 pointer-events-none flex items-center justify-center px-5 pb-32">
-        <div id="camera-reticle" class="relative w-full max-w-lg h-36 sm:h-44 rounded-2xl">
-            <div class="reticle-bracket top-0 left-0 border-t-[3px] border-l-[3px] rounded-tl-xl"></div>
-            <div class="reticle-bracket top-0 right-0 border-t-[3px] border-r-[3px] rounded-tr-xl"></div>
-            <div class="reticle-bracket bottom-0 left-0 border-b-[3px] border-l-[3px] rounded-bl-xl"></div>
-            <div class="reticle-bracket bottom-0 right-0 border-b-[3px] border-r-[3px] rounded-br-xl"></div>
-
-            <div id="scan-laser" class="hidden scan-laser-line"></div>
-
-            <!-- Vizör Altı Hızlı Kontroller -->
-            <div class="pointer-events-auto absolute -bottom-11 left-0 right-0 flex items-center justify-between gap-2">
-                <button id="reticle-auto-pill" onclick="toggleAutoScanSetting()" class="px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all">
-                    <span id="reticle-auto-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="reticle-auto-label">Oto: Açık</span>
-                </button>
-
-                <div class="flex items-center gap-1.5">
-                    <button onclick="triggerImmediateScan()" class="px-3.5 py-2 rounded-full bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 text-[11px] font-extrabold shadow-lg transition-all">
-                        Şimdi Tara
-                    </button>
-                    <button onclick="triggerImmediateScan()" title="Yeniden Tara" class="w-9 h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 active:scale-95 border border-slate-600/70 flex items-center justify-center text-amber-400 shadow-xl transition-all">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
+        <div class="flex flex-col items-center justify-center">
+          <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase mb-1">GÖSTERGE</span>
+          <button onclick="openIndicatorPickerModal()" id="indicator-tile-card" class="okey-tile w-10 h-13 py-1.5 px-2 cursor-pointer border border-amber-400/50 shadow-lg hover:scale-105 transition-transform" title="Gösterge Taşını Seç" aria-label="Gösterge taşını seç">
+            <span id="indicator-card-num" class="text-base font-black text-slate-700 leading-none">?</span>
+            <span id="indicator-card-dot" class="w-1.5 h-1.5 rounded-full bg-slate-400 mt-1"></span>
+          </button>
+          <div class="mt-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-400/40 flex items-center gap-1 text-[11px] font-extrabold text-amber-300">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2"/></svg>
+            <span id="stat-tile-ratio">0/21</span>
+          </div>
         </div>
+        <div class="flex flex-col items-end">
+          <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">ÇİFT</span>
+          <div class="flex items-baseline gap-0.5 mt-0.5">
+            <span id="stat-pair-count" class="text-3xl sm:text-4xl font-black text-white leading-none">0</span>
+            <span class="text-sm sm:text-base font-bold text-slate-400">/5</span>
+          </div>
+          <span id="pill-pair-status" class="mt-1.5 text-[10px] font-bold text-amber-300/90">5 Çift Gerekir</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-2 pt-2 text-center">
+        <div>
+          <div class="text-[10px] font-bold text-slate-400 uppercase">SERİ KALAN</div>
+          <div id="stat-seri-leftover" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div>
+        </div>
+        <div class="border-x border-slate-700/50">
+          <div class="text-[10px] font-bold text-slate-400 uppercase">TÜM TAŞLAR</div>
+          <div id="stat-all-tiles-sum" class="text-sm sm:text-base font-black text-white mt-0.5">0</div>
+        </div>
+        <div>
+          <div class="text-[10px] font-bold text-slate-400 uppercase">ÇİFT CEZA <span class="text-[9px] text-slate-500">×2</span></div>
+          <div id="stat-pair-leftover-x2" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div>
+        </div>
+      </div>
     </div>
 
-    <!-- 4. ALT KAPSAMLI ÖZET PANELİ & KONTROL ÇUBUĞU -->
-    <footer class="fixed bottom-0 left-0 right-0 z-30 pb-[max(12px,env(safe-area-inset-bottom))] px-2.5 sm:px-4">
-        <div class="max-w-xl mx-auto flex flex-col gap-2">
-            
-            <div class="slate-glass-panel rounded-2xl p-3">
-                <div class="grid grid-cols-3 items-center gap-2 pb-2.5 border-b border-slate-700/60">
-                    
-                    <!-- Sol: EN İYİ TOPLAM (/101) -->
-                    <div class="flex flex-col items-start">
-                        <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">EN İYİ TOPLAM</span>
-                        <div class="flex items-baseline gap-1 mt-0.5">
-                            <span id="stat-best-total" class="text-3xl sm:text-4xl font-black text-white leading-none tracking-tight">0</span>
-                            <span id="stat-threshold-suffix" class="text-sm sm:text-base font-bold text-slate-400">/101</span>
-                        </div>
-                        <div class="flex items-center gap-1 mt-1.5">
-                            <span id="pill-open-badge" class="px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300">
-                                101 Bekliyor
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Orta: İnteraktif GÖSTERGE Kartı + Taş Sayacı -->
-                    <div class="flex flex-col items-center justify-center">
-                        <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase mb-1">GÖSTERGE</span>
-                        <button onclick="openIndicatorPickerModal()" id="indicator-tile-card" class="okey-tile w-10 h-13 py-1.5 px-2 cursor-pointer border border-amber-400/50 shadow-lg hover:scale-105 transition-transform" title="Gösterge Taşını Seç">
-                            <span id="indicator-card-num" class="text-base font-black text-slate-700 leading-none">?</span>
-                            <span id="indicator-card-dot" class="w-1.5 h-1.5 rounded-full bg-slate-400 mt-1"></span>
-                        </button>
-                        <div class="mt-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-400/40 flex items-center gap-1 text-[11px] font-extrabold text-amber-300">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2"/>
-                            </svg>
-                            <span id="stat-tile-ratio">0/21</span>
-                        </div>
-                    </div>
-
-                    <!-- Sağ: ÇİFT (X / 5) -->
-                    <div class="flex flex-col items-end">
-                        <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">ÇİFT</span>
-                        <div class="flex items-baseline gap-0.5 mt-0.5">
-                            <span id="stat-pair-count" class="text-3xl sm:text-4xl font-black text-white leading-none">0</span>
-                            <span class="text-sm sm:text-base font-bold text-slate-400">/5</span>
-                        </div>
-                        <span id="pill-pair-status" class="mt-1.5 text-[10px] font-bold text-amber-300/90">
-                            5 Çift Gerekir
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Alt 3 Sütun: SERİ KALAN | TÜM TAŞLAR | ÇİFT KALAN ×2 -->
-                <div class="grid grid-cols-3 gap-2 pt-2 text-center">
-                    <div>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">SERİ KALAN</div>
-                        <div id="stat-seri-leftover" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div>
-                    </div>
-                    <div class="border-x border-slate-700/50">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">TÜM TAŞLAR</div>
-                        <div id="stat-all-tiles-sum" class="text-sm sm:text-base font-black text-white mt-0.5">0</div>
-                    </div>
-                    <div>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">ÇİFT KALAN <span class="text-[9px] text-slate-500">×2</span></div>
-                        <div id="stat-pair-leftover-x2" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Yerel Görüntü İşleme Durum Şeridi -->
-            <div class="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/70 text-[11px] text-slate-300">
-                <div class="flex items-center gap-1.5 truncate">
-                    <span class="text-amber-400 shrink-0">💡</span>
-                    <span id="tip-banner-text" class="truncate">Taşları çerçeveye hizalayın; cihazda anında okunur.</span>
-                </div>
-                <span id="local-engine-badge" class="shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40">
-                    Yerel Vision Hazır ✓
-                </span>
-            </div>
-
-            <!-- En Alt Kontrol Çubuğu: Yazboz | Sıfırla | Ayarlar (⚙️) -->
-            <div class="flex items-center gap-2">
-                <button onclick="openYazbozModal()" class="flex items-center justify-center gap-1.5 px-3.5 py-3 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 text-xs font-extrabold text-white shadow-lg transition-all shrink-0">
-                    <span class="w-5 h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[11px]">✎</span>
-                    <span>Yazboz</span>
-                </button>
-
-                <button onclick="resetScannedHand()" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#f8f6f0] hover:bg-white active:scale-[0.98] text-slate-950 font-extrabold text-sm sm:text-base shadow-xl transition-all">
-                    <svg class="w-4 h-4 text-slate-900" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    <span>Sıfırla</span>
-                </button>
-
-                <button onclick="openSettingsModal()" class="w-12 h-12 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 flex items-center justify-center text-slate-200 shadow-lg transition-all shrink-0" title="Ayarlar">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                        <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </footer>
-
-    <!-- 5. AÇILIŞ OYUN SEÇİM KARTI ("Hangi Okey?") -->
-    <div id="opening-mode-sheet" class="fixed inset-x-0 bottom-0 z-40 bottom-sheet-modal px-5 pt-3 pb-[max(24px,env(safe-area-inset-bottom))]">
-        <div class="max-w-lg mx-auto">
-            <div class="w-10 h-1 rounded-full bg-slate-500/40 mx-auto mb-4"></div>
-
-            <h2 class="text-xl font-extrabold text-white tracking-tight">Hangi Okey?</h2>
-            <p class="text-xs sm:text-sm text-slate-300 mt-1 mb-4">
-                Oynadığın oyunu seç. API anahtarı gerekmeden doğrudan cihazda çalışır.
-            </p>
-
-            <div class="flex flex-col gap-2.5 mb-5">
-                <button type="button" onclick="selectModeRadio('101')" id="mode-card-101" class="w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all">
-                    <div id="mode-radio-101" class="w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0">
-                        <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
-                    </div>
-                    <div>
-                        <div class="text-sm sm:text-base font-bold text-white">101 Okey</div>
-                        <div class="text-xs text-slate-300 mt-0.5">21 taş. Perlerin toplamı 101'i bulunca açarsın.</div>
-                    </div>
-                </button>
-
-                <button type="button" onclick="selectModeRadio('14')" id="mode-card-14" class="w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all">
-                    <div id="mode-radio-14" class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0">
-                        <div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>
-                    </div>
-                    <div>
-                        <div class="text-sm sm:text-base font-bold text-white">Okey</div>
-                        <div class="text-xs text-slate-300 mt-0.5">14 taş. Açma eşiği yok: elin tamamı tutana kadar beklersin.</div>
-                    </div>
-                </button>
-            </div>
-
-            <button type="button" onclick="confirmModeAndBegin()" class="w-full py-3.5 rounded-2xl bg-[#f8f6f0] hover:bg-white active:scale-[0.99] text-slate-950 font-extrabold text-base shadow-xl transition-all">
-                Devam
-            </button>
-        </div>
+    <div class="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/70 text-[11px] text-slate-300">
+      <div class="flex items-center gap-1.5 truncate">
+        <span class="text-amber-400 shrink-0">💡</span>
+        <span id="tip-banner-text" class="truncate">Taşları çerçeveye hizalayın; cihazda anında okunur.</span>
+      </div>
+      <span id="local-engine-badge" class="shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600/60">Yükleniyor…</span>
     </div>
 
-    <!-- 6. AYARLAR PENCERESİ (Tamamen Yerel / API'siz) -->
-    <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='settings-modal') closeSettingsModal()">
-        <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-5 pb-[max(24px,env(safe-area-inset-bottom))] shadow-2xl">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-base font-extrabold text-white">Oyun & Yerel Tarayıcı Ayarları</h3>
-                <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold">✕</button>
-            </div>
-
-            <div class="bg-emerald-500/10 border border-emerald-400/30 rounded-2xl p-3 mb-3 text-xs text-emerald-200 leading-relaxed">
-                <b>100% Cihaz İçi Yerel Motor Aktif:</b> Fildişi taş ayrıştırma, piksel renk tespiti ve yerel rakam tanıma internet veya API anahtarı olmadan doğrudan telefonunuzda çalışır.
-            </div>
-
-            <!-- Canlı Otomatik Tarama Geçişi -->
-            <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
-                <div>
-                    <div class="text-xs font-bold text-white">Otomatik Canlı Tarama</div>
-                    <div class="text-[11px] text-slate-400">Kamerayı ıstakaya tutunca otomatik okur</div>
-                </div>
-                <button id="toggle-autoscan-btn" onclick="toggleAutoScanSetting()" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold">
-                    AÇIK
-                </button>
-            </div>
-
-            <!-- Oyun Modu Geçişi -->
-            <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
-                <div>
-                    <div class="text-xs font-bold text-white">Oyun Türü</div>
-                    <div class="text-[11px] text-slate-400">101 Okey (21 Taş) veya Klasik (14 Taş)</div>
-                </div>
-                <div class="flex gap-1">
-                    <button id="set-mode-101" onclick="changeGameModeFromSettings('101')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">101</button>
-                    <button id="set-mode-14" onclick="changeGameModeFromSettings('14')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">14 Taş</button>
-                </div>
-            </div>
-
-            <!-- Fotoğraf Yükle & Örnek 21 Taş Test -->
-            <div class="grid grid-cols-2 gap-2 mt-3">
-                <label class="cursor-pointer py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-center text-xs font-bold text-white">
-                    📷 Fotoğraftan Oku
-                    <input type="file" accept="image/*" class="hidden" onchange="handleImageFileUpload(event)">
-                </label>
-                <button onclick="loadSample21Hand(); closeSettingsModal();" class="py-2.5 px-3 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-xs font-extrabold text-sky-300">
-                    🧪 Örnek 21 Taş Testi
-                </button>
-            </div>
-        </div>
+    <div class="flex items-center gap-2">
+      <button onclick="openYazbozModal()" class="flex items-center justify-center gap-1.5 px-3.5 py-3 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 text-xs font-extrabold text-white shadow-lg transition-all shrink-0" aria-label="Yazboz">
+        <span class="w-5 h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[11px]">✎</span>
+        <span>Yazboz</span>
+      </button>
+      <button onclick="resetScannedHand()" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#f8f6f0] hover:bg-white active:scale-[0.98] text-slate-950 font-extrabold text-sm sm:text-base shadow-xl transition-all">
+        <svg class="w-4 h-4 text-slate-900" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        <span>Sıfırla</span>
+      </button>
+      <button onclick="openSettingsModal()" class="w-12 h-12 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 flex items-center justify-center text-slate-200 shadow-lg transition-all shrink-0" title="Ayarlar" aria-label="Ayarlar">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
     </div>
+  </div>
+</footer>
 
-    <!-- 7. GÖSTERGE TAŞI SEÇİCİ PENCERESİ -->
-    <div id="indicator-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='indicator-modal') closeIndicatorPickerModal()">
-        <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(20px,env(safe-area-inset-bottom))] shadow-2xl">
-            <div class="flex items-center justify-between mb-2">
-                <div>
-                    <h3 class="text-sm font-extrabold text-white">Gösterge Taşını Seçin</h3>
-                    <p class="text-[11px] text-amber-300" id="modal-okey-preview">Seçili Gösterge Yok</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="clearIndicatorTile()" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">Temizle</button>
-                    <button onclick="closeIndicatorPickerModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Tamam</button>
-                </div>
-            </div>
-            <div id="indicator-palette-container" class="flex flex-col gap-2 mt-2"></div>
-        </div>
+<div id="opening-mode-sheet" class="fixed inset-x-0 bottom-0 z-40 bottom-sheet-modal px-5 pt-3 pb-[max(24px,env(safe-area-inset-bottom))]">
+  <div class="max-w-lg mx-auto">
+    <div class="w-10 h-1 rounded-full bg-slate-500/40 mx-auto mb-4"></div>
+    <h2 class="text-xl font-extrabold text-white tracking-tight">Hangi Okey?</h2>
+    <p class="text-xs sm:text-sm text-slate-300 mt-1 mb-4">Oynadığın oyunu seç. API anahtarı gerekmeden doğrudan cihazda çalışır.</p>
+    <div class="flex flex-col gap-2.5 mb-5">
+      <button type="button" onclick="selectModeRadio('101')" id="mode-card-101" class="w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all">
+        <div id="mode-radio-101" class="w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0"><div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div></div>
+        <div><div class="text-sm sm:text-base font-bold text-white">101 Okey</div><div class="text-xs text-slate-300 mt-0.5">21 taş. Perlerin toplamı 101'i bulunca açarsın.</div></div>
+      </button>
+      <button type="button" onclick="selectModeRadio('14')" id="mode-card-14" class="w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all">
+        <div id="mode-radio-14" class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0"><div class="w-2.5 h-2.5 rounded-full bg-transparent"></div></div>
+        <div><div class="text-sm sm:text-base font-bold text-white">Okey</div><div class="text-xs text-slate-300 mt-0.5">14 taş. Açma eşiği yok: elin tamamı tutana kadar beklersin.</div></div>
+      </button>
     </div>
+    <button type="button" onclick="confirmModeAndBegin()" class="w-full py-3.5 rounded-2xl bg-[#f8f6f0] hover:bg-white active:scale-[0.99] text-slate-950 font-extrabold text-base shadow-xl transition-all">Devam</button>
+  </div>
+</div>
 
-    <!-- 8. MANUEL TAŞ EKLEME PENCERESİ -->
-    <div id="manual-tile-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='manual-tile-modal') closeManualTileModal()">
-        <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(20px,env(safe-area-inset-bottom))] shadow-2xl">
-            <div class="flex items-center justify-between mb-2">
-                <div>
-                    <h3 class="text-sm font-extrabold text-white">Istakaya Taş Ekle</h3>
-                    <p class="text-[11px] text-slate-400">Eksik taşı dokunarak anında ekleyin</p>
-                </div>
-                <button onclick="closeManualTileModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Kapat</button>
-            </div>
-            <div id="manual-tile-palette" class="flex flex-col gap-2 mt-2"></div>
-        </div>
+<div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='settings-modal') closeSettingsModal()">
+  <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-5 pb-[max(24px,env(safe-area-inset-bottom))] shadow-2xl">
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="text-base font-extrabold text-white">Oyun & Yerel Tarayıcı Ayarları</h3>
+      <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold" aria-label="Kapat">✕</button>
     </div>
-
-    <!-- 9. YAZBOZ (4 OYUNCULU SKOR & CEZA TABLOSU) -->
-    <div id="yazboz-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='yazboz-modal') closeYazbozModal()">
-        <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(24px,env(safe-area-inset-bottom))] shadow-2xl">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-base font-extrabold text-white">✎ 101 / Okey Yazboz</h3>
-                <div class="flex items-center gap-2">
-                    <button onclick="resetYazbozScores()" class="px-2.5 py-1 rounded-lg bg-red-500/20 text-red-300 text-xs font-bold">Sıfırla</button>
-                    <button onclick="closeYazbozModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Kapat</button>
-                </div>
-            </div>
-            <div id="yazboz-players-grid" class="grid grid-cols-2 gap-2.5"></div>
-        </div>
+    <div class="bg-emerald-500/10 border border-emerald-400/30 rounded-2xl p-3 mb-3 text-xs text-emerald-200 leading-relaxed">
+      <b>100% Cihaz İçi Yerel Motor Aktif:</b> Fildişi taş ayrıştırma, piksel renk tespiti ve yerel rakam tanıma internet veya API anahtarı olmadan doğrudan telefonunuzda çalışır.
     </div>
+    <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
+      <div><div class="text-xs font-bold text-white">Otomatik Canlı Tarama</div><div class="text-[11px] text-slate-400">Kamerayı ıstakaya tutunca otomatik okur</div></div>
+      <button id="toggle-autoscan-btn" onclick="toggleAutoScanSetting()" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold">AÇIK</button>
+    </div>
+    <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
+      <div><div class="text-xs font-bold text-white">Oyun Türü</div><div class="text-[11px] text-slate-400">101 Okey (21 Taş) veya Klasik (14 Taş)</div></div>
+      <div class="flex gap-1">
+        <button id="set-mode-101" onclick="changeGameModeFromSettings('101')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">101</button>
+        <button id="set-mode-14" onclick="changeGameModeFromSettings('14')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">14 Taş</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-2 mt-3">
+      <label class="cursor-pointer py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-center text-xs font-bold text-white">
+        📷 Fotoğraftan Oku
+        <input type="file" accept="image/*" class="hidden" onchange="handleImageFileUpload(event)">
+      </label>
+      <button onclick="loadSample21Hand(); closeSettingsModal();" class="py-2.5 px-3 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-xs font-extrabold text-sky-300">🧪 Örnek 21 Taş Testi</button>
+    </div>
+  </div>
+</div>
 
-    <!-- Bildirim Toast -->
-    <div id="toast-message" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-200 bg-slate-950/95 border border-amber-400/50 text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-2xl text-center max-w-xs"></div>
+<div id="indicator-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='indicator-modal') closeIndicatorPickerModal()">
+  <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(20px,env(safe-area-inset-bottom))] shadow-2xl">
+    <div class="flex items-center justify-between mb-2">
+      <div><h3 class="text-sm font-extrabold text-white">Gösterge Taşını Seçin</h3><p class="text-[11px] text-amber-300" id="modal-okey-preview">Seçili Gösterge Yok</p></div>
+      <div class="flex items-center gap-2">
+        <button onclick="clearIndicatorTile()" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">Temizle</button>
+        <button onclick="closeIndicatorPickerModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Tamam</button>
+      </div>
+    </div>
+    <div id="indicator-palette-container" class="flex flex-col gap-2 mt-2"></div>
+  </div>
+</div>
 
-    <script>
-        // =========================================================================
-        // 1. SABİTLER VE UYGULAMA DURUMU (TAMAMEN YEREL / API'SİZ)
-        // =========================================================================
-        const COLORS = [
-            { id: 'kirmizi', short: 'K', name: 'Kırmızı', textClass: 'c-kirmizi', hex: '#dc2626' },
-            { id: 'mavi',    short: 'M', name: 'Mavi',    textClass: 'c-mavi',    hex: '#0284c7' },
-            { id: 'siyah',   short: 'S', name: 'Siyah',   textClass: 'c-siyah',   hex: '#0f172a' },
-            { id: 'sari',    short: 'Sr', name: 'Sarı',   textClass: 'c-sari',    hex: '#d97706' }
-        ];
+<div id="manual-tile-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='manual-tile-modal') closeManualTileModal()">
+  <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(20px,env(safe-area-inset-bottom))] shadow-2xl">
+    <div class="flex items-center justify-between mb-2">
+      <div><h3 class="text-sm font-extrabold text-white">Istakaya Taş Ekle</h3><p class="text-[11px] text-slate-400">Eksik taşı dokunarak anında ekleyin</p></div>
+      <button onclick="closeManualTileModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Kapat</button>
+    </div>
+    <div id="manual-tile-palette" class="flex flex-col gap-2 mt-2"></div>
+  </div>
+</div>
 
-        let gameMode = '101'; // '101' (21 taş) veya '14' (14 taş)
-        let arrangeTab = 'seri'; // 'seri' veya 'cift'
-        let indicatorTile = null;
-        let detectedTiles = [];
+<div id="yazboz-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='yazboz-modal') closeYazbozModal()">
+  <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(24px,env(safe-area-inset-bottom))] shadow-2xl">
+    <div class="flex items-center justify-between mb-3">
+      <h3 class="text-base font-extrabold text-white">✎ 101 / Okey Yazboz</h3>
+      <div class="flex items-center gap-2">
+        <button onclick="resetYazbozScores()" class="px-2.5 py-1 rounded-lg bg-red-500/20 text-red-300 text-xs font-bold">Sıfırla</button>
+        <button onclick="closeYazbozModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Kapat</button>
+      </div>
+    </div>
+    <div id="yazboz-players-grid" class="grid grid-cols-2 gap-2.5"></div>
+  </div>
+</div>
 
-        let videoStream = null;
-        let autoScanEnabled = true;
-        let autoScanInterval = null;
-        let isScanningNow = false;
-        let localOcrWorker = null;
-        let localOcrReady = false;
+<div id="toast-message" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] pointer-events-none opacity-0 transition-opacity duration-200 bg-slate-950/95 border border-amber-400/50 text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-2xl text-center max-w-xs"></div>
 
-        let yazbozPlayers = JSON.parse(localStorage.getItem('okey_yazboz_v1') || 'null') || [
-            { name: 'Ben', score: 0 },
-            { name: 'Sağ', score: 0 },
-            { name: 'Karşı', score: 0 },
-            { name: 'Sol', score: 0 }
-        ];
+<script>
+// =========================================================================
+// 1. SABİTLER & DURUM
+// =========================================================================
+const COLORS = [
+  { id: 'kirmizi', short: 'K', name: 'Kırmızı', textClass: 'c-kirmizi', hex: '#dc2626' },
+  { id: 'mavi',    short: 'M', name: 'Mavi',    textClass: 'c-mavi',    hex: '#0284c7' },
+  { id: 'siyah',   short: 'S', name: 'Siyah',   textClass: 'c-siyah',   hex: '#0f172a' },
+  { id: 'sari',    short: 'Sr', name: 'Sarı',   textClass: 'c-sari',    hex: '#d97706' }
+];
 
-        // =========================================================================
-        // 2. BAŞLANGIÇ KURULUMU & YEREL OCR WORKER HAZIRLIĞI
-        // =========================================================================
-        window.addEventListener('DOMContentLoaded', () => {
-            buildTilePickers();
-            renderEmptyWoodenRack();
-            recalculateAllMetrics();
-            initLocalTesseractWorker();
+let gameMode = '101';
+let arrangeTab = 'seri';
+let indicatorTile = null;
+let detectedTiles = [];
+
+let videoStream = null;
+let cameraLive = false;
+let autoScanEnabled = true;
+let autoScanInterval = null;
+let isScanningNow = false;
+let localOcrWorker = null;
+let localOcrReady = false;
+
+let scanVoteBucket = new Map();
+let digitTemplateCache = null;
+
+// Yeniden kullanılabilir canvas (bellek tasarrufu)
+const scratchCanvas = document.createElement('canvas');
+const scratchCtx = scratchCanvas.getContext('2d', { willReadFrequently: true });
+
+let yazbozPlayers = JSON.parse(localStorage.getItem('okey_yazboz_v1') || 'null') || [
+  { name: 'Ben', score: 0 }, { name: 'Sağ', score: 0 }, { name: 'Karşı', score: 0 }, { name: 'Sol', score: 0 }
+];
+
+// =========================================================================
+// 2. BAŞLANGIÇ
+// =========================================================================
+window.addEventListener('DOMContentLoaded', async () => {
+  buildTilePickers();
+  renderEmptyWoodenRack();
+  recalculateAllMetrics();
+  updateScanButtonsEnabled(false);
+
+  // Fontlar yüklenmeden şablon üretmeyi bekle
+  try {
+    if (document.fonts && document.fonts.ready) {
+      await document.fonts.ready;
+    }
+  } catch (_) {}
+  buildOkeyDigitTemplates();
+
+  initLocalTesseractWorker();
+});
+
+async function initLocalTesseractWorker() {
+  try {
+    if (typeof Tesseract === 'undefined') { setLocalBadge('Yerel Motor Hazır ✓', 'ok'); return; }
+    setLocalBadge('Yerel Motor Yükleniyor…', 'scanning');
+    localOcrWorker = await Tesseract.createWorker('eng', 1, { logger: () => {} });
+    await localOcrWorker.setParameters({
+      tessedit_char_whitelist: '0123456789',
+      tessedit_pageseg_mode: '7'
+    });
+    localOcrReady = true;
+    setLocalBadge('Yerel Vision Aktif ✓', 'ok');
+  } catch (err) {
+    localOcrReady = false;
+    setLocalBadge('Yerel Vision Hazır ✓', 'ok');
+  }
+}
+
+function setLocalBadge(text, state) {
+  const badge = document.getElementById('local-engine-badge');
+  if (!badge) return;
+  badge.textContent = text;
+  if (state === 'ok') badge.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40';
+  else if (state === 'scanning') badge.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40';
+  else badge.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600/60';
+}
+
+function updateScanButtonsEnabled(enabled) {
+  ['btn-scan-now', 'btn-scan-refresh'].forEach(id => {
+    const b = document.getElementById(id);
+    if (b) b.disabled = !enabled;
+  });
+}
+
+// =========================================================================
+// 3. MOD SEÇİMİ + KAMERA
+// =========================================================================
+function selectModeRadio(mode) {
+  gameMode = mode;
+  const c101 = document.getElementById('mode-card-101'), c14 = document.getElementById('mode-card-14');
+  const r101 = document.getElementById('mode-radio-101'), r14 = document.getElementById('mode-radio-14');
+  if (mode === '101') {
+    c101.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all';
+    r101.className = 'w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0';
+    r101.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-amber-400';
+    c14.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all';
+    r14.className = 'w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0';
+    r14.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-transparent';
+  } else {
+    c14.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all';
+    r14.className = 'w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0';
+    r14.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-amber-400';
+    c101.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all';
+    r101.className = 'w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0';
+    r101.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-transparent';
+  }
+}
+
+async function confirmModeAndBegin() {
+  document.getElementById('opening-mode-sheet').classList.add('hidden-sheet');
+  updateGameModeButtonsUI();
+  recalculateAllMetrics();
+  await startRearCamera();
+}
+
+async function startRearCamera() {
+  const video = document.getElementById('camera-video');
+  const fallback = document.getElementById('camera-fallback-screen');
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    fallback.classList.remove('hidden');
+    showToast('Bu cihaz/tarayıcı kamera desteklemiyor.');
+    return;
+  }
+
+  try {
+    if (videoStream) videoStream.getTracks().forEach(t => t.stop());
+    videoStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
+      audio: false
+    });
+    video.srcObject = videoStream;
+    video.setAttribute('playsinline', 'true');
+    video.setAttribute('webkit-playsinline', 'true');
+    try { await video.play(); } catch (_) { /* iOS ilk denemede reddedebilir; meta tag'ler + muted halleder */ }
+    fallback.classList.add('hidden');
+    cameraLive = true;
+    updateScanButtonsEnabled(true);
+    startAutoScanLoop();
+  } catch (err) {
+    cameraLive = false;
+    updateScanButtonsEnabled(false);
+    fallback.classList.remove('hidden');
+    showToast('Kamera başlatılamadı. İzin verin veya örnek test kullanın.');
+  }
+}
+
+// =========================================================================
+// 4A. TARAMA DÖNGÜSÜ
+// =========================================================================
+function startAutoScanLoop() {
+  if (autoScanInterval) clearInterval(autoScanInterval);
+  if (!autoScanEnabled) return;
+  autoScanInterval = setInterval(() => {
+    if (autoScanEnabled && !isScanningNow && cameraLive) scanFrameLocally(true);
+  }, 1300);
+}
+
+function triggerImmediateScan() {
+  if (!cameraLive) { showToast('Önce kamerayı başlatın.'); return; }
+  scanFrameLocally(false);
+}
+
+function toggleAutoScanSetting() {
+  autoScanEnabled = !autoScanEnabled;
+  const btn = document.getElementById('toggle-autoscan-btn');
+  const pill = document.getElementById('reticle-auto-pill');
+  const dot = document.getElementById('reticle-auto-dot');
+  const lbl = document.getElementById('reticle-auto-label');
+  if (btn) {
+    btn.textContent = autoScanEnabled ? 'AÇIK' : 'KAPALI';
+    btn.className = autoScanEnabled ? 'px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold' : 'px-3 py-1.5 rounded-lg bg-slate-700 text-slate-200 text-xs font-bold';
+  }
+  if (pill && dot && lbl) {
+    if (autoScanEnabled) {
+      pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all';
+      dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+      lbl.textContent = 'Oto: Açık';
+      startAutoScanLoop();
+    } else {
+      pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-600/70 text-[11px] font-bold text-slate-300 shadow-lg flex items-center gap-1.5 transition-all';
+      dot.className = 'w-2 h-2 rounded-full bg-slate-500';
+      lbl.textContent = 'Oto: Kapalı';
+      if (autoScanInterval) clearInterval(autoScanInterval);
+    }
+  }
+}
+
+function captureCroppedRackRoi(video) {
+  const vw = video.videoWidth || 1280;
+  const vh = video.videoHeight || 720;
+  const roiX = Math.round(vw * 0.04);
+  const roiY = Math.round(vh * 0.25);
+  const roiW = Math.round(vw * 0.92);
+  const roiH = Math.round(vh * 0.38);
+  const targetW = Math.min(820, roiW);
+  const targetH = Math.round((roiH / roiW) * targetW);
+
+  scratchCanvas.width = targetW;
+  scratchCanvas.height = targetH;
+  scratchCtx.drawImage(video, roiX, roiY, roiW, roiH, 0, 0, targetW, targetH);
+
+  return {
+    canvas: scratchCanvas,
+    roiNorm: { x: roiX / vw, y: roiY / vh, w: roiW / vw, h: roiH / vh },
+    fullSize: { vw, vh }
+  };
+}
+
+// =========================================================================
+// 4B. YEREL TARAMA
+// =========================================================================
+async function scanFrameLocally(silentMode = false) {
+  const video = document.getElementById('camera-video');
+  if (!video || video.readyState < 2 || !video.videoWidth) return;
+  if (isScanningNow) return;
+
+  isScanningNow = true;
+  document.getElementById('scan-laser').classList.remove('hidden');
+  setLocalBadge('Yerel Taranıyor…', 'scanning');
+
+  try {
+    const { canvas, roiNorm, fullSize } = captureCroppedRackRoi(video);
+    const foundTiles = await detectAndReadTilesFromCanvas(canvas);
+
+    if (foundTiles.length > 0) {
+      const mappedTiles = foundTiles.map(t => {
+        const [ymin, xmin, ymax, xmax] = t.box_2d;
+        return {
+          ...t,
+          box_2d: [
+            Math.round((roiNorm.y + (ymin / 1000) * roiNorm.h) * 1000),
+            Math.round((roiNorm.x + (xmin / 1000) * roiNorm.w) * 1000),
+            Math.round((roiNorm.y + (ymax / 1000) * roiNorm.h) * 1000),
+            Math.round((roiNorm.x + (xmax / 1000) * roiNorm.w) * 1000)
+          ]
+        };
+      });
+
+      drawYellowBoundingBoxes(mappedTiles.map((m, i) => ({ ...m, id: `live_${i}`, box: m.box_2d })), fullSize.vw, fullSize.vh);
+      document.getElementById('camera-reticle').classList.add('reticle-active');
+
+      accumulateScannedTiles(mappedTiles, !silentMode);
+
+      const targetCount = gameMode === '101' ? 21 : 14;
+      setLocalBadge(`Yerel Vision ✓ (${detectedTiles.length}/${targetCount})`, 'ok');
+      if (!silentMode) showToast(`${mappedTiles.length} taş karede okundu (Toplam: ${detectedTiles.length}/${targetCount})`);
+    } else {
+      setLocalBadge('Istaka Bekleniyor…', 'neutral');
+      if (!silentMode) showToast('Çerçevede net okey taşı bulunamadı. Taşları çerçeveye hizalayın.');
+    }
+  } catch (err) {
+    setLocalBadge('Yerel Vision Hazır ✓', 'ok');
+  } finally {
+    isScanningNow = false;
+    document.getElementById('scan-laser').classList.add('hidden');
+  }
+}
+
+function accumulateScannedTiles(frameTiles, forceImmediateAccept = false) {
+  const targetLimit = gameMode === '101' ? 21 : 14;
+  if (detectedTiles.length >= targetLimit) return;
+
+  // Karedeki her anahtarın kaç kez geçtiğini say
+  const frameCounts = new Map();
+  frameTiles.forEach(t => {
+    const key = t.isSahte ? 'sahte_0' : `${t.color}_${t.number}`;
+    frameCounts.set(key, (frameCounts.get(key) || 0) + 1);
+  });
+
+  let changed = false;
+  frameCounts.forEach((countInFrame, key) => {
+    if (detectedTiles.length >= targetLimit) return;
+    const [color, numStr] = key.split('_');
+    const number = parseInt(numStr, 10) || 0;
+    const isSahte = color === 'sahte';
+    if (isSahte || number === 0) return; // bilinmeyen/sahte → otomatik ekleme yapma, kullanıcı ekler
+
+    const entry = scanVoteBucket.get(key) || { hits: 0, color, number };
+    entry.hits += forceImmediateAccept ? 2 : 1;
+    scanVoteBucket.set(key, entry);
+
+    if (entry.hits >= 2) {
+      const alreadyHave = detectedTiles.filter(x => !x.isSahte && x.color === color && x.number === number).length;
+      const desired = Math.min(2, Math.max(1, countInFrame));
+      const need = desired - alreadyHave;
+      for (let k = 0; k < need && detectedTiles.length < targetLimit; k++) {
+        detectedTiles.push({
+          id: `acc_${Date.now()}_${Math.random()}`,
+          color, number, isSahte: false, box: null
         });
+        changed = true;
+      }
+    }
+  });
 
-        async function initLocalTesseractWorker() {
-            if (!window.Tesseract) {
-                setLocalBadge('Yerel Piksel Motoru ✓', 'ok');
-                return;
+  if (changed) recalculateAllMetrics();
+}
+
+function handleImageFileUpload(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  closeSettingsModal();
+  setLocalBadge('Fotoğraf Taranıyor…', 'scanning');
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = async () => {
+      const maxDim = 960;
+      const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+      const w = Math.round(img.width * scale);
+      const h = Math.round(img.height * scale);
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const ctx = c.getContext('2d', { willReadFrequently: true });
+      ctx.drawImage(img, 0, 0, w, h);
+
+      const found = await detectAndReadTilesFromCanvas(c);
+      const targetLimit = gameMode === '101' ? 21 : 14;
+      if (found.length > 0) {
+        scanVoteBucket.clear();
+        detectedTiles = found
+          .filter(t => !t.isSahte && t.number > 0)
+          .slice(0, targetLimit)
+          .map((t, idx) => ({ id: `photo_${Date.now()}_${idx}`, color: t.color, number: t.number, isSahte: false, box: null }));
+        recalculateAllMetrics();
+        setLocalBadge(`Fotoğraftan ${detectedTiles.length} Taş Okundu ✓`, 'ok');
+        showToast(`Fotoğraftan ${detectedTiles.length} taş okundu.`);
+      } else {
+        setLocalBadge('Yerel Vision Hazır ✓', 'ok');
+        showToast('Fotoğrafta tanınabilir taş bulunamadı.');
+      }
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+  event.target.value = '';
+}
+
+// =========================================================================
+// 4C. YEREL GÖRÜNTÜ İŞLEME
+// =========================================================================
+async function detectAndReadTilesFromCanvas(srcCanvas) {
+  const W = srcCanvas.width, H = srcCanvas.height;
+  const ctx = srcCanvas.getContext('2d', { willReadFrequently: true });
+  const data = ctx.getImageData(0, 0, W, H).data;
+
+  // 1. Fildişi taş maskesi
+  const mask = new Uint8Array(W * H);
+  for (let i = 0, p = 0; i < data.length; i += 4, p++) {
+    const r = data[i], g = data[i + 1], b = data[i + 2];
+    const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+    const maxC = Math.max(r, g, b), minC = Math.min(r, g, b);
+    const sat = maxC > 0 ? (maxC - minC) / maxC : 0;
+    if (lum > 142 && sat < 0.44 && r >= b - 18) mask[p] = 1;
+  }
+
+  // 2. Bağlı bileşenler — adım 1 (doğru bbox)
+  const visited = new Uint8Array(W * H);
+  const rawBoxes = [];
+  const stackX = new Int32Array(W * H);
+  const stackY = new Int32Array(W * H);
+
+  for (let y = 1; y < H - 1; y++) {
+    for (let x = 1; x < W - 1; x++) {
+      const idx = y * W + x;
+      if (mask[idx] === 1 && visited[idx] === 0) {
+        let sp = 0;
+        stackX[sp] = x; stackY[sp] = y; sp++;
+        visited[idx] = 1;
+        let minX = x, maxX = x, minY = y, maxY = y;
+
+        while (sp > 0) {
+          sp--;
+          const cx = stackX[sp], cy = stackY[sp];
+          if (cx < minX) minX = cx; if (cx > maxX) maxX = cx;
+          if (cy < minY) minY = cy; if (cy > maxY) maxY = cy;
+
+          // 4-komşu
+          const neighbors = [[cx + 1, cy], [cx - 1, cy], [cx, cy + 1], [cx, cy - 1]];
+          for (let n = 0; n < 4; n++) {
+            const nx = neighbors[n][0], ny = neighbors[n][1];
+            if (nx >= 0 && nx < W && ny >= 0 && ny < H) {
+              const nIdx = ny * W + nx;
+              if (mask[nIdx] === 1 && visited[nIdx] === 0) {
+                visited[nIdx] = 1;
+                stackX[sp] = nx; stackY[sp] = ny; sp++;
+              }
             }
-            try {
-                setLocalBadge('Yerel Motor Yükleniyor...', 'scanning');
-                const worker = await Tesseract.createWorker('eng', 1, {
-                    logger: () => {}
-                });
-                await worker.setParameters({
-                    tessedit_char_whitelist: '0123456789',
-                    tessedit_pageseg_mode: '7' // Tek satır rakam modu
-                });
-                localOcrWorker = worker;
-                localOcrReady = true;
-                setLocalBadge('Yerel Vision Hazır ✓', 'ok');
-            } catch (e) {
-                setLocalBadge('Yerel Piksel Motoru ✓', 'ok');
-            }
+          }
         }
 
-        function setLocalBadge(text, state = 'ok') {
-            const chip = document.getElementById('local-engine-badge');
-            if (!chip) return;
-            chip.textContent = text;
-            if (state === 'ok') {
-                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 max-w-[175px] truncate';
-            } else if (state === 'scanning') {
-                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/40 max-w-[175px] truncate';
-            } else {
-                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40 max-w-[175px] truncate';
-            }
+        const bw = maxX - minX + 1, bh = maxY - minY + 1;
+        const aspect = bh / Math.max(1, bw);
+        if (bw >= W * 0.025 && bw <= W * 0.14 && bh >= H * 0.14 && bh <= H * 0.56 && aspect >= 1.1 && aspect <= 2.4) {
+          rawBoxes.push({ x: minX, y: minY, w: bw, h: bh });
+        } else if (bw > W * 0.14 && bw <= W * 0.94 && bh >= H * 0.14 && bh <= H * 0.56) {
+          rawBoxes.push(...splitTouchingTilesByValley(data, W, minX, minY, bw, bh));
         }
+      }
+    }
+  }
 
-        function showToast(text) {
-            const el = document.getElementById('toast-message');
-            el.textContent = text;
-            el.classList.remove('opacity-0');
-            clearTimeout(window._toastTimeout);
-            window._toastTimeout = setTimeout(() => el.classList.add('opacity-0'), 2400);
+  if (rawBoxes.length === 0) return [];
+
+  rawBoxes.sort((a, b) => {
+    if (Math.abs(a.y - b.y) > H * 0.15) return a.y - b.y;
+    return a.x - b.x;
+  });
+
+  const targetLimit = gameMode === '101' ? 21 : 14;
+  const limitedBoxes = rawBoxes.slice(0, targetLimit + 2);
+
+  const results = [];
+  for (let i = 0; i < limitedBoxes.length; i++) {
+    const box = limitedBoxes[i];
+    const color = classifyTileColorFromPixels(data, W, H, box);
+    const number = await recognizeTileNumberLocally(srcCanvas, box);
+    results.push({
+      color: number === 0 ? 'sahte' : color,
+      number,
+      isSahte: number === 0,
+      box_2d: [
+        Math.round((box.y / H) * 1000),
+        Math.round((box.x / W) * 1000),
+        Math.round(((box.y + box.h) / H) * 1000),
+        Math.round(((box.x + box.w) / W) * 1000)
+      ]
+    });
+  }
+  return results;
+}
+
+function splitTouchingTilesByValley(data, W, bx, by, bw, bh) {
+  const expectedTileW = bh * 0.65;
+  const minGap = Math.max(10, Math.round(expectedTileW * 0.68));
+  const maxTileW = Math.round(expectedTileW * 1.32);
+  const yStart = Math.round(by + bh * 0.12);
+  const yEnd = Math.round(by + bh * 0.88);
+
+  const colLum = new Float32Array(bw);
+  for (let dx = 0; dx < bw; dx++) {
+    const px = bx + dx;
+    let sum = 0, cnt = 0;
+    for (let py = yStart; py < yEnd; py += 2) {
+      const idx = (py * W + px) * 4;
+      sum += (data[idx] * 0.299 + data[idx + 1] * 0.587 + data[idx + 2] * 0.114);
+      cnt++;
+    }
+    colLum[dx] = sum / Math.max(1, cnt);
+  }
+
+  const smooth = new Float32Array(bw);
+  for (let dx = 0; dx < bw; dx++) {
+    smooth[dx] = (colLum[Math.max(0, dx - 1)] + colLum[dx] + colLum[Math.min(bw - 1, dx + 1)]) / 3;
+  }
+
+  const cuts = [0];
+  let lastCut = 0;
+  while (lastCut + minGap < bw - minGap * 0.5) {
+    const from = lastCut + minGap;
+    const to = Math.min(bw - 4, lastCut + maxTileW);
+    let bestX = -1, lowest = 9999;
+    for (let x = from; x <= to; x++) if (smooth[x] < lowest) { lowest = smooth[x]; bestX = x; }
+    if (bestX > lastCut) { cuts.push(bestX); lastCut = bestX; } else break;
+  }
+  cuts.push(bw);
+
+  const out = [];
+  for (let i = 0; i < cuts.length - 1; i++) {
+    const segW = cuts[i + 1] - cuts[i];
+    if (segW >= bh * 0.38 && segW <= bh * 1.15) {
+      out.push({ x: bx + cuts[i] + 1, y: by, w: Math.max(8, segW - 2), h: bh });
+    }
+  }
+  return out;
+}
+
+function classifyTileColorFromPixels(data, W, H, box) {
+  let red = 0, blue = 0, yellow = 0, black = 0;
+  const sx = Math.max(0, Math.round(box.x + box.w * 0.14));
+  const ex = Math.min(W - 1, Math.round(box.x + box.w * 0.86));
+  const sy = Math.max(0, Math.round(box.y + box.h * 0.10));
+  const ey = Math.min(H - 1, Math.round(box.y + box.h * 0.85));
+
+  for (let y = sy; y <= ey; y++) {
+    for (let x = sx; x <= ex; x++) {
+      const idx = (y * W + x) * 4;
+      const r = data[idx], g = data[idx + 1], b = data[idx + 2];
+      const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+      if (lum < 155) {
+        if (r > g + 36 && r > b + 36) {
+          if (g > 110 && r - g < 75) yellow += 1.4; else red += 1.3;
+        } else if (b > r + 24 && b > g + 10) blue += 1.5;
+        else if (g > r + 18 && b >= r) blue += 1.3;
+        else if (r > 135 && g > 105 && b < 85) yellow += 1.4;
+        else if (lum < 92) black += 1.0;
+      }
+    }
+  }
+  const scores = [
+    { id: 'kirmizi', val: red }, { id: 'mavi', val: blue },
+    { id: 'sari', val: yellow }, { id: 'siyah', val: black * 0.85 }
+  ];
+  scores.sort((a, b) => b.val - a.val);
+  return scores[0].val > 3 ? scores[0].id : 'siyah';
+}
+
+function buildOkeyDigitTemplates() {
+  const templates = [];
+  const tw = 28, th = 32;
+  const c = document.createElement('canvas'); c.width = tw; c.height = th;
+  const ctx = c.getContext('2d', { willReadFrequently: true });
+
+  for (let num = 1; num <= 13; num++) {
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, tw, th);
+    ctx.fillStyle = '#000000';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = num >= 10 ? '900 20px "Oswald", Arial, sans-serif' : '900 24px "Oswald", Arial, sans-serif';
+    ctx.fillText(String(num), tw / 2, th / 2 + 1);
+    const d = ctx.getImageData(0, 0, tw, th).data;
+    const bin = new Uint8Array(tw * th);
+    for (let i = 0; i < bin.length; i++) bin[i] = d[i * 4] < 140 ? 1 : 0;
+    templates.push({ num, bin });
+  }
+  digitTemplateCache = { tw, th, templates };
+}
+
+function matchDigitByTemplate(cropCanvas) {
+  if (!digitTemplateCache) buildOkeyDigitTemplates();
+  const { tw, th, templates } = digitTemplateCache;
+  const sctx = cropCanvas.getContext('2d', { willReadFrequently: true });
+  const sw = cropCanvas.width, sh = cropCanvas.height;
+  const sdata = sctx.getImageData(0, 0, sw, sh).data;
+
+  let minX = sw, maxX = 0, minY = sh, maxY = 0, ink = 0;
+  for (let y = 2; y < sh - 2; y++) for (let x = 2; x < sw - 2; x++) {
+    if (sdata[(y * sw + x) * 4] === 0) {
+      ink++;
+      if (x < minX) minX = x; if (x > maxX) maxX = x;
+      if (y < minY) minY = y; if (y > maxY) maxY = y;
+    }
+  }
+  if (ink < 14 || maxX <= minX || maxY <= minY) return { num: 0, score: 0 };
+
+  const norm = document.createElement('canvas');
+  norm.width = tw; norm.height = th;
+  const nctx = norm.getContext('2d', { willReadFrequently: true });
+  nctx.fillStyle = '#ffffff'; nctx.fillRect(0, 0, tw, th);
+
+  const bw = maxX - minX + 1, bh = maxY - minY + 1;
+  const isDouble = (bw / Math.max(1, bh)) > 0.78;
+  const padX = isDouble ? 2 : 6;
+  nctx.drawImage(cropCanvas, minX, minY, bw, bh, padX, 3, tw - padX * 2, th - 6);
+
+  const nd = nctx.getImageData(0, 0, tw, th).data;
+  const obs = new Uint8Array(tw * th);
+  for (let i = 0; i < obs.length; i++) obs[i] = nd[i * 4] < 160 ? 1 : 0;
+
+  let bestNum = 0, bestIoU = -1;
+  for (const tpl of templates) {
+    if (isDouble && tpl.num < 10) continue;
+    if (!isDouble && tpl.num >= 10) continue;
+    let inter = 0, union = 0;
+    for (let i = 0; i < obs.length; i++) {
+      const a = obs[i], b = tpl.bin[i];
+      if (a || b) { union++; if (a && b) inter++; }
+    }
+    const iou = union > 0 ? inter / union : 0;
+    if (iou > bestIoU) { bestIoU = iou; bestNum = tpl.num; }
+  }
+  return { num: bestNum, score: bestIoU };
+}
+
+async function recognizeTileNumberLocally(srcCanvas, box) {
+  const crop = document.createElement('canvas');
+  const scale = 3;
+  const cw = Math.max(28, Math.round(box.w * 0.86 * scale));
+  const ch = Math.max(28, Math.round(box.h * 0.56 * scale));
+  crop.width = cw; crop.height = ch;
+  const cctx = crop.getContext('2d', { willReadFrequently: true });
+  cctx.fillStyle = '#ffffff'; cctx.fillRect(0, 0, cw, ch);
+
+  const sx = box.x + box.w * 0.07, sy = box.y + box.h * 0.06;
+  const sw = box.w * 0.86, sh = box.h * 0.56;
+  cctx.drawImage(srcCanvas, sx, sy, sw, sh, 4, 4, cw - 8, ch - 8);
+
+  const idata = cctx.getImageData(0, 0, cw, ch);
+  const p = idata.data;
+  let dark = 0;
+  for (let i = 0; i < p.length; i += 4) {
+    const lum = p[i] * 0.299 + p[i + 1] * 0.587 + p[i + 2] * 0.114;
+    const v = lum < 146 ? 0 : 255;
+    if (v === 0) dark++;
+    p[i] = p[i + 1] = p[i + 2] = v;
+  }
+  cctx.putImageData(idata, 0, 0);
+
+  const ratio = dark / (cw * ch);
+  if (ratio < 0.025) return 0; // boş → sahte/okunamadı
+
+  const tpl = matchDigitByTemplate(crop);
+  if (tpl.score >= 0.44 && tpl.num >= 1 && tpl.num <= 13) return tpl.num;
+
+  if (localOcrReady && localOcrWorker) {
+    try {
+      const { data: { text } } = await localOcrWorker.recognize(crop);
+      const digits = (text || '').replace(/\D/g, '');
+      const parsed = parseInt(digits, 10);
+      if (parsed >= 1 && parsed <= 13) return parsed;
+      if (digits.length >= 2) {
+        const two = parseInt(digits.slice(0, 2), 10);
+        if (two >= 10 && two <= 13) return two;
+        const one = parseInt(digits[0], 10);
+        if (one >= 1 && one <= 9) return one;
+      }
+    } catch (_) {}
+  }
+
+  // Belirsiz → 0 döndür, tahmin etme
+  return 0;
+}
+
+function drawYellowBoundingBoxes(tiles, vw, vh) {
+  const overlay = document.getElementById('ar-box-canvas');
+  const rect = overlay.getBoundingClientRect();
+  overlay.width = rect.width;
+  overlay.height = rect.height;
+  const ctx = overlay.getContext('2d');
+  ctx.clearRect(0, 0, overlay.width, overlay.height);
+
+  const scale = Math.max(overlay.width / vw, overlay.height / vh);
+  const drawW = vw * scale, drawH = vh * scale;
+  const ox = (overlay.width - drawW) / 2, oy = (overlay.height - drawH) / 2;
+
+  const rr = (ctx.roundRect ? 'roundRect' : 'rect');
+
+  tiles.forEach(t => {
+    if (!t.box || t.box.length !== 4) return;
+    const [ymin, xmin, ymax, xmax] = t.box;
+    const x = ox + (xmin / 1000) * drawW;
+    const y = oy + (ymin / 1000) * drawH;
+    const w = ((xmax - xmin) / 1000) * drawW;
+    const h = ((ymax - ymin) / 1000) * drawH;
+    ctx.strokeStyle = '#facc15';
+    ctx.lineWidth = 2.6;
+    ctx.beginPath();
+    if (rr === 'roundRect') ctx.roundRect(x, y, w, h, 6);
+    else ctx.rect(x, y, w, h);
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(250, 204, 21, 0.14)';
+    ctx.fill();
+  });
+}
+
+// =========================================================================
+// 5. ÇÖZÜCÜ
+// =========================================================================
+function getOkeyTileInfo() {
+  if (!indicatorTile) return null;
+  return { color: indicatorTile.color, number: indicatorTile.number === 13 ? 1 : indicatorTile.number + 1 };
+}
+function isActualOkey(tile, okeyInfo) {
+  if (!okeyInfo || tile.isSahte) return false;
+  return tile.color === okeyInfo.color && tile.number === okeyInfo.number;
+}
+
+function solveHandOptimal(rawTiles) {
+  const okeyInfo = getOkeyTileInfo();
+  const okeys = [], normals = [];
+  rawTiles.forEach(t => {
+    if (isActualOkey(t, okeyInfo)) okeys.push({ ...t, isOkeyJoker: true });
+    else if (t.isSahte && okeyInfo) normals.push({ ...t, effColor: okeyInfo.color, effNum: okeyInfo.number, isOkeyJoker: false });
+    else normals.push({ ...t, effColor: t.color, effNum: t.number, isOkeyJoker: false });
+  });
+
+  // ÇİFT
+  const pairGroups = [], pairUsed = new Set();
+  for (let i = 0; i < normals.length; i++) {
+    if (pairUsed.has(normals[i].id)) continue;
+    for (let j = i + 1; j < normals.length; j++) {
+      if (pairUsed.has(normals[j].id)) continue;
+      if (normals[i].effColor === normals[j].effColor && normals[i].effNum === normals[j].effNum) {
+        pairUsed.add(normals[i].id); pairUsed.add(normals[j].id);
+        pairGroups.push([
+          { ...normals[i], assignedNum: normals[i].effNum },
+          { ...normals[j], assignedNum: normals[j].effNum }
+        ]);
+        break;
+      }
+    }
+  }
+  const leftoverForPair = normals.filter(t => !pairUsed.has(t.id)).sort((a, b) => b.effNum - a.effNum);
+  const remOk = [...okeys];
+  while (remOk.length > 0 && leftoverForPair.length > 0) {
+    const ok = remOk.shift(), partner = leftoverForPair.shift();
+    pairUsed.add(partner.id);
+    pairGroups.push([
+      { ...partner, assignedNum: partner.effNum },
+      { ...ok, assignedNum: partner.effNum, effColor: partner.effColor }
+    ]);
+  }
+  while (remOk.length >= 2) {
+    pairGroups.push([{ ...remOk.shift(), assignedNum: 13 }, { ...remOk.shift(), assignedNum: 13 }]);
+  }
+  const pairLeftovers = [
+    ...normals.filter(t => !pairUsed.has(t.id)).map(t => ({ ...t, assignedNum: t.effNum })),
+    ...remOk.map(ok => ({ ...ok, assignedNum: okeyInfo ? okeyInfo.number : 13 }))
+  ];
+  const pairLeftoverSum = pairLeftovers.reduce((a, t) => a + t.assignedNum, 0);
+
+  // SERİ
+  function buildAllCandidates(pool) {
+    const list = [];
+    for (let num = 1; num <= 13; num++) {
+      const byColor = new Map();
+      pool.forEach(t => { if (t.effNum === num && !byColor.has(t.effColor)) byColor.set(t.effColor, t); });
+      const d = Array.from(byColor.values());
+      if (d.length >= 3) list.push({ tiles: d.slice(0, 3), score: num * 3, okeysUsed: 0, assignedNums: [num, num, num] });
+      if (d.length === 4) list.push({ tiles: d, score: num * 4, okeysUsed: 0, assignedNums: [num, num, num, num] });
+      if (d.length >= 2 && okeys.length >= 1) list.push({ tiles: d.slice(0, 2), score: num * 3, okeysUsed: 1, assignedNums: [num, num, num] });
+    }
+    COLORS.forEach(c => {
+      const byNum = new Map();
+      pool.forEach(t => { if (t.effColor === c.id && !byNum.has(t.effNum)) byNum.set(t.effNum, t); });
+      for (let start = 1; start <= 13; start++) {
+        for (let len = 3; len <= 13; len++) {
+          const seq = [];
+          let ok = true;
+          for (let k = 0; k < len; k++) {
+            const v = ((start - 1 + k) % 13) + 1;
+            if (k > 0 && v === 1 && k < len - 1) { ok = false; break; }
+            seq.push(v);
+          }
+          if (!ok) continue;
+          const matched = []; let missing = 0;
+          for (const n of seq) { if (byNum.has(n)) matched.push(byNum.get(n)); else missing++; }
+          if (missing <= okeys.length && matched.length >= 2) {
+            list.push({ tiles: matched, score: seq.reduce((s, n) => s + n, 0), okeysUsed: missing, seqNums: seq, seqColor: c.id });
+          }
         }
-
-        // =========================================================================
-        // 3. AÇILIŞ OYUN SEÇİM KARTI ("Hangi Okey?")
-        // =========================================================================
-        function selectModeRadio(mode) {
-            gameMode = mode;
-            const c101 = document.getElementById('mode-card-101');
-            const c14 = document.getElementById('mode-card-14');
-            const r101 = document.getElementById('mode-radio-101');
-            const r14 = document.getElementById('mode-radio-14');
-
-            if (mode === '101') {
-                c101.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all';
-                r101.className = 'w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0';
-                r101.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>';
-
-                c14.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all';
-                r14.className = 'w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0';
-                r14.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>';
-            } else {
-                c14.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all';
-                r14.className = 'w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0';
-                r14.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>';
-
-                c101.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all';
-                r101.className = 'w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0';
-                r101.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>';
-            }
-        }
-
-        function confirmModeAndBegin() {
-            document.getElementById('opening-mode-sheet').classList.add('hidden-sheet');
-            startRearCamera();
-            recalculateAllMetrics();
-        }
-
-        // =========================================================================
-        // 4. CANLI ARKA KAMERA VE YEREL BİLGİSAYARLI GÖRÜ (CV) MOTORU
-        // =========================================================================
-        async function startRearCamera() {
-            const video = document.getElementById('camera-video');
-            const fallback = document.getElementById('camera-fallback-screen');
-
-            try {
-                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    throw new Error('Kamera desteklenmiyor');
-                }
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    audio: false,
-                    video: {
-                        facingMode: { ideal: 'environment' },
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    }
-                });
-                videoStream = stream;
-                video.srcObject = stream;
-                video.setAttribute('playsinline', 'true');
-                video.setAttribute('webkit-playsinline', 'true');
-                await video.play();
-                fallback.classList.add('hidden');
-                startAutoScanLoop();
-            } catch (err) {
-                fallback.classList.remove('hidden');
-            }
-        }
-
-        function startAutoScanLoop() {
-            clearInterval(autoScanInterval);
-            if (!autoScanEnabled) return;
-
-            autoScanInterval = setInterval(() => {
-                if (isScanningNow || !videoStream) return;
-                scanFrameLocally(true);
-            }, 1400);
-        }
-
-        function triggerImmediateScan() {
-            if (!videoStream) {
-                startRearCamera();
-                return;
-            }
-            scanFrameLocally(false);
-        }
-
-        function captureCroppedRackRoi(video) {
-            const vw = video.videoWidth || 1280;
-            const vh = video.videoHeight || 720;
-            const videoRect = video.getBoundingClientRect();
-            const reticleEl = document.getElementById('camera-reticle');
-            const reticleRect = reticleEl ? reticleEl.getBoundingClientRect() : null;
-
-            let sx = 0, sy = 0, sw = vw, sh = vh;
-
-            if (reticleRect && videoRect.width > 0 && videoRect.height > 0) {
-                const videoAspect = vw / vh;
-                const elemAspect = videoRect.width / videoRect.height;
-                let renderW, renderH, offsetX, offsetY;
-
-                if (videoAspect > elemAspect) {
-                    renderH = videoRect.height;
-                    renderW = renderH * videoAspect;
-                    offsetX = (videoRect.width - renderW) / 2;
-                    offsetY = 0;
-                } else {
-                    renderW = videoRect.width;
-                    renderH = renderW / videoAspect;
-                    offsetX = 0;
-                    offsetY = (videoRect.height - renderH) / 2;
-                }
-
-                const padX = reticleRect.width * 0.05;
-                const padY = reticleRect.height * 0.12;
-                const relLeft = (reticleRect.left - padX) - (videoRect.left + offsetX);
-                const relTop = (reticleRect.top - padY) - (videoRect.top + offsetY);
-                const relW = reticleRect.width + padX * 2;
-                const relH = reticleRect.height + padY * 2;
-
-                sx = Math.max(0, Math.round((relLeft / renderW) * vw));
-                sy = Math.max(0, Math.round((relTop / renderH) * vh));
-                sw = Math.min(vw - sx, Math.round((relW / renderW) * vw));
-                sh = Math.min(vh - sy, Math.round((relH / renderH) * vh));
-            }
-
-            if (sw < 80 || sh < 50) {
-                sx = 0; sy = 0; sw = vw; sh = vh;
-            }
-
-            const canvas = document.createElement('canvas');
-            const targetW = Math.min(960, sw);
-            const scale = targetW / sw;
-            canvas.width = Math.max(1, Math.round(sw * scale));
-            canvas.height = Math.max(1, Math.round(sh * scale));
-
-            const ctx = canvas.getContext('2d', { willReadFrequently: true });
-            ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
-
-            return {
-                canvas,
-                roiNorm: { x: sx / vw, y: sy / vh, w: sw / vw, h: sh / vh },
-                fullSize: { vw, vh }
-            };
-        }
-
-        // =========================================================================
-        // 4B. TAMAMEN CİHAZ İÇİ FİLDİŞİ TAŞ BULMA + RENK SINIFLANDIRMA + RAKAM OKUMA
-        // =========================================================================
-        async function scanFrameLocally(silentMode = false) {
-            const video = document.getElementById('camera-video');
-            if (!video || video.readyState < 2 || isScanningNow) return;
-
-            isScanningNow = true;
-            document.getElementById('scan-laser').classList.remove('hidden');
-            setLocalBadge('Yerel Taranıyor...', 'scanning');
-
-            try {
-                const { canvas, roiNorm, fullSize } = captureCroppedRackRoi(video);
-                const foundTiles = await detectAndReadTilesFromCanvas(canvas);
-
-                if (foundTiles.length > 0) {
-                    const mappedTiles = foundTiles.map(t => {
-                        const [ymin, xmin, ymax, xmax] = t.box_2d;
-                        const fullYmin = Math.round((roiNorm.y + (ymin / 1000) * roiNorm.h) * 1000);
-                        const fullXmin = Math.round((roiNorm.x + (xmin / 1000) * roiNorm.w) * 1000);
-                        const fullYmax = Math.round((roiNorm.y + (ymax / 1000) * roiNorm.h) * 1000);
-                        const fullXmax = Math.round((roiNorm.x + (xmax / 1000) * roiNorm.w) * 1000);
-                        return { ...t, box_2d: [fullYmin, fullXmin, fullYmax, fullXmax] };
-                    });
-
-                    applyDetectedTiles(mappedTiles, fullSize.vw, fullSize.vh);
-                    setLocalBadge(`Yerel Vision ✓ (${mappedTiles.length} taş)`, 'ok');
-                    if (!silentMode) showToast(`${mappedTiles.length} taş yerel motorla okundu!`);
-                } else {
-                    setLocalBadge('Istaka Bekleniyor...', 'neutral');
-                    if (!silentMode) {
-                        showToast('Çerçevede net okey taşı bulunamadı. Taşları çerçeveye hizalayın.');
-                    }
-                }
-            } catch (err) {
-                setLocalBadge('Yerel Vision Hazır ✓', 'ok');
-            } finally {
-                isScanningNow = false;
-                document.getElementById('scan-laser').classList.add('hidden');
-            }
-        }
-
-        async function detectAndReadTilesFromCanvas(srcCanvas) {
-            const W = srcCanvas.width;
-            const H = srcCanvas.height;
-            const ctx = srcCanvas.getContext('2d', { willReadFrequently: true });
-            const imgData = ctx.getImageData(0, 0, W, H);
-            const data = imgData.data;
-
-            // 1. Adım: Adaptif Parlaklık Eşiği ile Fildişi / Beyaz Taş Yüzeylerini Maskele
-            let lumSum = 0;
-            let sampleCnt = 0;
-            for (let i = 0; i < data.length; i += 16) {
-                lumSum += (data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114);
-                sampleCnt++;
-            }
-            const avgLum = lumSum / Math.max(1, sampleCnt);
-            const brightThresh = Math.max(135, Math.min(205, avgLum + 26));
-
-            // 2x2 alt örnekleme ile hızlı bağlı bileşen (Connected Component) analizi
-            const step = 2;
-            const gw = Math.floor(W / step);
-            const gh = Math.floor(H / step);
-            const mask = new Uint8Array(gw * gh);
-
-            for (let gy = 0; gy < gh; gy++) {
-                const py = gy * step;
-                for (let gx = 0; gx < gw; gx++) {
-                    const px = gx * step;
-                    const idx = (py * W + px) * 4;
-                    const r = data[idx], g = data[idx + 1], b = data[idx + 2];
-                    const lum = r * 0.299 + g * 0.587 + b * 0.114;
-                    // Fildişi/beyaz taş yüzeyi parlaktır ve çok aşırı doygun değildir
-                    const maxC = Math.max(r, g, b);
-                    const minC = Math.min(r, g, b);
-                    const sat = maxC > 0 ? (maxC - minC) / maxC : 0;
-                    if (lum >= brightThresh && sat < 0.42) {
-                        mask[gy * gw + gx] = 1;
-                    }
-                }
-            }
-
-            // Bağlı bileşenleri (taş dikdörtgenlerini) çıkar
-            const visited = new Uint8Array(gw * gh);
-            const rawBoxes = [];
-            const stack = new Int32Array(gw * gh);
-
-            for (let y = 1; y < gh - 1; y++) {
-                for (let x = 1; x < gw - 1; x++) {
-                    const startPos = y * gw + x;
-                    if (mask[startPos] === 1 && visited[startPos] === 0) {
-                        let sp = 0;
-                        stack[sp++] = startPos;
-                        visited[startPos] = 1;
-
-                        let minX = x, maxX = x, minY = y, maxY = y, area = 0;
-                        while (sp > 0) {
-                            const cur = stack[--sp];
-                            const cx = cur % gw;
-                            const cy = (cur / gw) | 0;
-                            area++;
-                            if (cx < minX) minX = cx;
-                            if (cx > maxX) maxX = cx;
-                            if (cy < minY) minY = cy;
-                            if (cy > maxY) maxY = cy;
-
-                            const neighbors = [cur - 1, cur + 1, cur - gw, cur + gw];
-                            for (let k = 0; k < 4; k++) {
-                                const nb = neighbors[k];
-                                if (nb >= 0 && nb < mask.length && mask[nb] === 1 && visited[nb] === 0) {
-                                    visited[nb] = 1;
-                                    stack[sp++] = nb;
-                                }
-                            }
-                        }
-
-                        const bw = (maxX - minX + 1) * step;
-                        const bh = (maxY - minY + 1) * step;
-                        const bx = minX * step;
-                        const by = minY * step;
-                        const aspect = bh / Math.max(1, bw);
-
-                        // Okey taşı en/boy oranı filtresi (dikey dikdörtgen)
-                        if (bw >= W * 0.025 && bw <= W * 0.14 && bh >= H * 0.14 && bh <= H * 0.52 && aspect >= 1.1 && aspect <= 2.4) {
-                            rawBoxes.push({ x: bx, y: by, w: bw, h: bh });
-                        } else if (bw > W * 0.14 && bw <= W * 0.92 && bh >= H * 0.14 && bh <= H * 0.52) {
-                            // Yan yana bitişik duran taşları dikey parlaklık vadilerinden (projection profile) böl
-                            const splitList = splitTouchingTilesByValley(data, W, bx, by, bw, bh);
-                            rawBoxes.push(...splitList);
-                        }
-                    }
-                }
-            }
-
-            if (rawBoxes.length === 0) return [];
-
-            // Üst sıra ve alt sıraya göre soldan sağa sırala
-            rawBoxes.sort((a, b) => {
-                const rowDiff = Math.abs(a.y - b.y);
-                if (rowDiff > H * 0.15) return a.y - b.y;
-                return a.x - b.x;
-            });
-
-            const limitedBoxes = rawBoxes.slice(0, 22);
-            const results = [];
-
-            for (let i = 0; i < limitedBoxes.length; i++) {
-                const box = limitedBoxes[i];
-                const color = classifyTileColorFromPixels(data, W, H, box);
-                const number = await recognizeTileNumberLocally(srcCanvas, box);
-
-                results.push({
-                    color: number === 0 ? 'sahte' : color,
-                    number: number === 0 ? 0 : number,
-                    box_2d: [
-                        Math.round((box.y / H) * 1000),
-                        Math.round((box.x / W) * 1000),
-                        Math.round(((box.y + box.h) / H) * 1000),
-                        Math.round(((box.x + box.w) / W) * 1000)
-                    ]
-                });
-            }
-
-            return results;
-        }
-
-        // Yan yana yapışık algılanan taşları aralarındaki koyu çizgi vadilerinden böler
-        function splitTouchingTilesByValley(data, W, bx, by, bw, bh) {
-            const expectedTileW = bh * 0.66;
-            const estCount = Math.max(2, Math.min(13, Math.round(bw / expectedTileW)));
-            const subW = bw / estCount;
-            const out = [];
-            for (let k = 0; k < estCount; k++) {
-                out.push({
-                    x: Math.round(bx + k * subW + 1),
-                    y: by,
-                    w: Math.max(8, Math.round(subW - 2)),
-                    h: bh
-                });
-            }
-            return out;
-        }
-
-        // Taşın içindeki mürekkep piksellerinin HSV renk uzayına göre rengini belirler
-        function classifyTileColorFromPixels(data, W, H, box) {
-            const x0 = Math.max(0, Math.round(box.x + box.w * 0.15));
-            const x1 = Math.min(W - 1, Math.round(box.x + box.w * 0.85));
-            const y0 = Math.max(0, Math.round(box.y + box.h * 0.10));
-            const y1 = Math.min(H - 1, Math.round(box.y + box.h * 0.85));
-
-            let redScore = 0, blueScore = 0, yellowScore = 0, blackScore = 0;
-
-            for (let y = y0; y <= y1; y++) {
-                for (let x = x0; x <= x1; x++) {
-                    const idx = (y * W + x) * 4;
-                    const r = data[idx], g = data[idx + 1], b = data[idx + 2];
-                    const maxC = Math.max(r, g, b);
-                    const minC = Math.min(r, g, b);
-                    const delta = maxC - minC;
-                    const lum = r * 0.299 + g * 0.587 + b * 0.114;
-
-                    // Sadece fildişi zeminden koyu olan mürekkep piksellerini incele
-                    if (lum > 165 && delta < 38) continue;
-
-                    if (delta < 32 && lum < 120) {
-                        blackScore += (125 - lum);
-                    } else if (delta >= 32) {
-                        // Hue hesabı (0-360)
-                        let hue = 0;
-                        if (maxC === r) hue = ((g - b) / delta) % 6;
-                        else if (maxC === g) hue = (b - r) / delta + 2;
-                        else hue = (r - g) / delta + 4;
-                        hue = Math.round(hue * 60);
-                        if (hue < 0) hue += 360;
-
-                        if (hue <= 16 || hue >= 335) {
-                            redScore += delta * 1.3;
-                        } else if (hue > 16 && hue <= 58) {
-                            yellowScore += delta * 1.35;
-                        } else if (hue >= 145 && hue <= 255) {
-                            blueScore += delta * 1.3;
-                        }
-                    }
-                }
-            }
-
-            const scores = [
-                { id: 'kirmizi', val: redScore },
-                { id: 'mavi', val: blueScore },
-                { id: 'sari', val: yellowScore },
-                { id: 'siyah', val: blackScore * 0.85 }
-            ];
-            scores.sort((a, b) => b.val - a.val);
-            return scores[0].val > 0 ? scores[0].id : 'siyah';
-        }
-
-        // Taşın üst %62'lik rakam bölgesini yüksek kontrastlı siyah-beyaz yapıp yerel OCR ile okur
-        async function recognizeTileNumberLocally(srcCanvas, box) {
-            const cropCanvas = document.createElement('canvas');
-            const scale = 3;
-            const cw = Math.max(24, Math.round(box.w * 0.84 * scale));
-            const ch = Math.max(24, Math.round(box.h * 0.56 * scale));
-            cropCanvas.width = cw;
-            cropCanvas.height = ch;
-
-            const cctx = cropCanvas.getContext('2d');
-            cctx.fillStyle = '#ffffff';
-            cctx.fillRect(0, 0, cw, ch);
-
-            const sx = box.x + box.w * 0.08;
-            const sy = box.y + box.h * 0.06;
-            const sw = box.w * 0.84;
-            const sh = box.h * 0.56;
-            cctx.drawImage(srcCanvas, sx, sy, sw, sh, 4, 4, cw - 8, ch - 8);
-
-            // İkili eşikleme (Binarization: mürekkep siyah, zemin saf beyaz)
-            const idata = cctx.getImageData(0, 0, cw, ch);
-            const p = idata.data;
-            let darkPixels = 0;
-            for (let i = 0; i < p.length; i += 4) {
-                const lum = p[i] * 0.299 + p[i + 1] * 0.587 + p[i + 2] * 0.114;
-                const val = lum < 148 ? 0 : 255;
-                if (val === 0) darkPixels++;
-                p[i] = p[i + 1] = p[i + 2] = val;
-            }
-            cctx.putImageData(idata, 0, 0);
-
-            if (localOcrReady && localOcrWorker) {
-                try {
-                    const { data: { text } } = await localOcrWorker.recognize(cropCanvas);
-                    const digits = (text || '').replace(/\D/g, '');
-                    const parsed = parseInt(digits, 10);
-                    if (parsed >= 1 && parsed <= 13) return parsed;
-                    if (digits.length >= 2) {
-                        const firstTwo = parseInt(digits.slice(0, 2), 10);
-                        if (firstTwo >= 10 && firstTwo <= 13) return firstTwo;
-                        const firstOne = parseInt(digits[0], 10);
-                        if (firstOne >= 1 && firstOne <= 9) return firstOne;
-                    }
-                } catch (_) {}
-            }
-
-            // OCR henüz yüklenmediyse koyu piksel yoğunluğundan tahmini tek/çift hane
-            const ratio = darkPixels / (cw * ch);
-            if (ratio < 0.03) return 0; // Sahte okey / boş
-            return ratio > 0.22 ? 12 : 7;
-        }
-
-        async function handleImageFileUpload(event) {
-            const file = event.target.files?.[0];
-            if (!file) return;
-
-            closeSettingsModal();
-            document.getElementById('scan-laser').classList.remove('hidden');
-            setLocalBadge('Fotoğraf İşleniyor...', 'scanning');
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = new Image();
-                img.onload = async () => {
-                    try {
-                        const canvas = document.createElement('canvas');
-                        const scale = Math.min(1, 1024 / Math.max(img.width, img.height));
-                        canvas.width = Math.round(img.width * scale);
-                        canvas.height = Math.round(img.height * scale);
-                        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                        const foundTiles = await detectAndReadTilesFromCanvas(canvas);
-                        if (foundTiles.length > 0) {
-                            applyDetectedTiles(foundTiles, canvas.width, canvas.height);
-                            setLocalBadge(`Yerel Vision ✓ (${foundTiles.length} taş)`, 'ok');
-                            showToast(`${foundTiles.length} taş fotoğraftan yerel motorla okundu!`);
-                        } else {
-                            setLocalBadge('Yerel Vision Hazır ✓', 'ok');
-                            showToast('Fotoğrafta okey taşı ayrıştırılamadı.');
-                        }
-                    } finally {
-                        document.getElementById('scan-laser').classList.add('hidden');
-                        event.target.value = '';
-                    }
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function applyDetectedTiles(rawTiles, imgW, imgH) {
-            const maxAllowed = gameMode === '101' ? 22 : 15;
-            if (rawTiles.length > 15 && gameMode !== '101') {
-                gameMode = '101';
-            }
-
-            detectedTiles = rawTiles.slice(0, maxAllowed).map((t, idx) => ({
-                id: `tile_${Date.now()}_${idx}`,
-                color: t.color === 'sahte' ? 'sahte' : t.color,
-                number: t.color === 'sahte' ? 0 : Math.min(13, Math.max(1, Number(t.number) || 1)),
-                isSahte: t.color === 'sahte' || Number(t.number) === 0,
-                box: t.box_2d
-            }));
-
-            drawYellowBoundingBoxes(detectedTiles, imgW, imgH);
-            document.getElementById('camera-reticle').classList.add('reticle-active');
-            recalculateAllMetrics();
-        }
-
-        function drawYellowBoundingBoxes(tiles, imgW, imgH) {
-            const overlay = document.getElementById('ar-box-canvas');
-            overlay.width = imgW;
-            overlay.height = imgH;
-            const ctx = overlay.getContext('2d');
-            ctx.clearRect(0, 0, imgW, imgH);
-
-            tiles.forEach(t => {
-                if (!Array.isArray(t.box) || t.box.length !== 4) return;
-                const [ymin, xmin, ymax, xmax] = t.box;
-                const x = (xmin / 1000) * imgW;
-                const y = (ymin / 1000) * imgH;
-                const w = ((xmax - xmin) / 1000) * imgW;
-                const h = ((ymax - ymin) / 1000) * imgH;
-
-                const isOkey = isTileOkey(t);
-                ctx.strokeStyle = isOkey ? '#38bdf8' : '#facc15';
-                ctx.lineWidth = Math.max(2.5, imgW * 0.003);
-                ctx.beginPath();
-                ctx.roundRect(x, y, w, h, 6);
-                ctx.stroke();
-
-                ctx.fillStyle = isOkey ? 'rgba(56, 189, 248, 0.2)' : 'rgba(250, 204, 21, 0.14)';
-                ctx.fill();
-            });
-        }
-
-        // =========================================================================
-        // 5. GÖSTERGE & AKTİF OKEY HESABI
-        // =========================================================================
-        function getActiveOkeyTile() {
-            if (!indicatorTile) return null;
-            return {
-                color: indicatorTile.color,
-                number: indicatorTile.number === 13 ? 1 : indicatorTile.number + 1
-            };
-        }
-
-        function isTileOkey(tile) {
-            if (!tile || tile.isSahte || !indicatorTile) return false;
-            const ok = getActiveOkeyTile();
-            return tile.color === ok.color && tile.number === ok.number;
-        }
-
-        function getEffectiveValues(tile) {
-            if (tile.isSahte) {
-                const ok = getActiveOkeyTile();
-                return ok ? { color: ok.color, number: ok.number } : { color: 'sahte', number: 0 };
-            }
-            return { color: tile.color, number: tile.number };
-        }
-
-        function updateIndicatorCardUI() {
-            const numEl = document.getElementById('indicator-card-num');
-            const dotEl = document.getElementById('indicator-card-dot');
-            const previewEl = document.getElementById('modal-okey-preview');
-
-            if (!indicatorTile) {
-                numEl.textContent = '?';
-                numEl.className = 'text-base font-black text-slate-700 leading-none';
-                dotEl.style.background = '#94a3b8';
-                previewEl.textContent = 'Gösterge Seçilmedi (Okey Atanmadı)';
-                return;
-            }
-
-            const colMeta = COLORS.find(c => c.id === indicatorTile.color);
-            const ok = getActiveOkeyTile();
-            const okColMeta = COLORS.find(c => c.id === ok.color);
-
-            numEl.textContent = indicatorTile.number;
-            numEl.className = `text-base font-black leading-none ${colMeta.textClass}`;
-            dotEl.style.background = colMeta.hex;
-            previewEl.textContent = `Gösterge: ${colMeta.name} ${indicatorTile.number} → Aktif Okey: ${okColMeta.name} ${ok.number}`;
-        }
-
-        // =========================================================================
-        // 6. AKILLI OKEY & 101 OKEY ÇÖZÜCÜ MOTORU (SERİ / PER / ÇİFT)
-        // =========================================================================
-        function switchArrangeTab(tab) {
-            arrangeTab = tab;
-            const btnSeri = document.getElementById('btn-mode-seri');
-            const btnCift = document.getElementById('btn-mode-cift');
-
-            if (tab === 'seri') {
-                btnSeri.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow';
-                btnCift.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white';
-            } else {
-                btnCift.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow';
-                btnSeri.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white';
-            }
-            recalculateAllMetrics();
-        }
-
-        function evaluateMeldGroup(group) {
-            if (group.length < 3) return { valid: false, score: 0, ordered: group, okeyAssigned: [] };
-
-            const okeys = group.filter(t => isTileOkey(t));
-            const normals = group.filter(t => !isTileOkey(t)).map(t => ({
-                orig: t,
-                ...getEffectiveValues(t)
-            }));
-
-            if (normals.length === 0) {
-                const okVal = getActiveOkeyTile()?.number || 0;
-                return {
-                    valid: true,
-                    score: okVal * group.length,
-                    ordered: group,
-                    okeyAssigned: okeys.map(o => ({ id: o.id, val: okVal }))
-                };
-            }
-
-            // 1. Aynı Sayı Farklı Renk Per Kontrolü (3'lü veya 4'lü)
-            if (group.length <= 4) {
-                const targetNum = normals[0].number;
-                if (targetNum > 0 && normals.every(n => n.number === targetNum)) {
-                    const colors = normals.map(n => n.color);
-                    if (new Set(colors).size === colors.length) {
-                        return {
-                            valid: true,
-                            score: targetNum * group.length,
-                            ordered: group,
-                            okeyAssigned: okeys.map(o => ({ id: o.id, val: targetNum }))
-                        };
-                    }
-                }
-            }
-
-            // 2. Aynı Renk Ardışık Seri Kontrolü (12-13-1 döngüsü ve Okey dahil)
-            const targetColor = normals[0].color;
-            if (targetColor === 'sahte' || !normals.every(n => n.color === targetColor)) {
-                return { valid: false, score: 0, ordered: group, okeyAssigned: [] };
-            }
-
-            const nums = normals.map(n => n.number);
-            if (nums.includes(0) || new Set(nums).size !== nums.length) {
-                return { valid: false, score: 0, ordered: group, okeyAssigned: [] };
-            }
-
-            const len = group.length;
-            if (len > 13) return { valid: false, score: 0, ordered: group, okeyAssigned: [] };
-
-            let bestRun = null;
-            for (let start = 13; start >= 1; start--) {
-                if (start === 13 && len > 2) continue;
-                const seq = [];
-                let badOneWrap = false;
-                for (let k = 0; k < len; k++) {
-                    const val = ((start - 1 + k) % 13) + 1;
-                    if (val === 1 && k !== 0 && k !== len - 1) badOneWrap = true;
-                    seq.push(val);
-                }
-                if (badOneWrap) continue;
-
-                if (nums.every(n => seq.includes(n))) {
-                    const ordered = [];
-                    const okeyAssigned = [];
-                    let okIdx = 0;
-                    let sum = 0;
-                    for (const val of seq) {
-                        sum += val;
-                        const match = normals.find(n => n.number === val);
-                        if (match) {
-                            ordered.push(match.orig);
-                        } else if (okIdx < okeys.length) {
-                            const okTile = okeys[okIdx++];
-                            ordered.push(okTile);
-                            okeyAssigned.push({ id: okTile.id, val });
-                        }
-                    }
-                    if (!bestRun || sum > bestRun.score) {
-                        bestRun = { valid: true, score: sum, ordered, okeyAssigned };
-                    }
-                }
-            }
-
-            return bestRun || { valid: false, score: 0, ordered: group, okeyAssigned: [] };
-        }
-
-        function solveBestSeriesAndSets(tiles) {
-            const n = tiles.length;
-            if (n === 0) {
-                return { melds: [], leftovers: [], totalScore: 0, leftoverSum: 0, okeyMap: new Map() };
-            }
-
-            const candidates = [];
-            function generateSubsets(startIdx, chosenIdx) {
-                if (chosenIdx.length >= 3) {
-                    const subset = chosenIdx.map(i => tiles[i]);
-                    const res = evaluateMeldGroup(subset);
-                    if (res.valid) {
-                        let mask = 0;
-                        let okeyUsed = 0;
-                        chosenIdx.forEach(i => {
-                            mask |= (1 << i);
-                            if (isTileOkey(tiles[i])) okeyUsed++;
-                        });
-                        candidates.push({
-                            mask,
-                            score: res.score,
-                            size: chosenIdx.length,
-                            okeyUsed,
-                            ordered: res.ordered,
-                            okeyAssigned: res.okeyAssigned
-                        });
-                    }
-                }
-                if (chosenIdx.length === 5) return;
-                for (let i = startIdx; i < n; i++) {
-                    chosenIdx.push(i);
-                    generateSubsets(i + 1, chosenIdx);
-                    chosenIdx.pop();
-                }
-            }
-            generateSubsets(0, []);
-
-            candidates.sort((a, b) => (b.score * 15 + b.size * 6) - (a.score * 15 + a.size * 6));
-            const pruned = candidates.slice(0, 200);
-
-            let bestRank = -1;
-            let bestScore = 0;
-            let bestPicked = [];
-
-            function backtrack(idx, usedMask, curScore, curTilesUsed, curOkeysUsed, picked) {
-                const rank = gameMode === '101'
-                    ? (curScore * 1000 + curOkeysUsed * 300 + curTilesUsed * 25)
-                    : (curTilesUsed * 1000 + curOkeysUsed * 300 + curScore);
-
-                if (rank > bestRank) {
-                    bestRank = rank;
-                    bestScore = curScore;
-                    bestPicked = [...picked];
-                }
-
-                if (idx >= pruned.length || n - curTilesUsed < 3) return;
-
-                for (let i = idx; i < pruned.length; i++) {
-                    const c = pruned[i];
-                    if ((usedMask & c.mask) === 0) {
-                        picked.push(c);
-                        backtrack(
-                            i + 1,
-                            usedMask | c.mask,
-                            curScore + c.score,
-                            curTilesUsed + c.size,
-                            curOkeysUsed + c.okeyUsed,
-                            picked
-                        );
-                        picked.pop();
-                    }
-                }
-            }
-            backtrack(0, 0, 0, 0, 0, []);
-
-            let finalMask = 0;
-            const okeyMap = new Map();
-            bestPicked.forEach(m => {
-                finalMask |= m.mask;
-                m.okeyAssigned.forEach(oa => okeyMap.set(oa.id, oa.val));
-            });
-
-            const leftovers = [];
-            let leftoverSum = 0;
-            for (let i = 0; i < n; i++) {
-                if ((finalMask & (1 << i)) === 0) {
-                    const t = tiles[i];
-                    leftovers.push(t);
-                    leftoverSum += isTileOkey(t) ? (getActiveOkeyTile()?.number || 0) : getEffectiveValues(t).number;
-                }
-            }
-
-            leftovers.sort((a, b) => getEffectiveValues(a).number - getEffectiveValues(b).number);
-            bestPicked.sort((a, b) => b.score - a.score);
-
-            return {
-                melds: bestPicked.map(m => m.ordered),
-                leftovers,
-                totalScore: bestScore,
-                leftoverSum,
-                okeyMap
-            };
-        }
-
-        function solveBestPairs(tiles) {
-            const okeys = [];
-            const normals = [];
-            tiles.forEach(t => {
-                if (isTileOkey(t)) okeys.push(t);
-                else normals.push(t);
-            });
-
-            const buckets = new Map();
-            normals.forEach(t => {
-                const eff = getEffectiveValues(t);
-                const key = `${eff.color}_${eff.number}`;
-                if (!buckets.has(key)) buckets.set(key, []);
-                buckets.get(key).push(t);
-            });
-
-            const pairs = [];
-            const singles = [];
-
-            buckets.forEach(list => {
-                while (list.length >= 2) {
-                    pairs.push([list.pop(), list.pop()]);
-                }
-                if (list.length === 1) singles.push(list[0]);
-            });
-
-            singles.sort((a, b) => getEffectiveValues(b).number - getEffectiveValues(a).number);
-            while (okeys.length > 0 && singles.length > 0) {
-                pairs.push([singles.shift(), okeys.pop()]);
-            }
-            while (okeys.length >= 2) {
-                pairs.push([okeys.pop(), okeys.pop()]);
-            }
-            okeys.forEach(o => singles.unshift(o));
-
-            let singlesSum = 0;
-            singles.forEach(s => {
-                singlesSum += isTileOkey(s) ? (getActiveOkeyTile()?.number || 0) : getEffectiveValues(s).number;
-            });
-
-            return {
-                pairs,
-                singles,
-                pairCount: pairs.length,
-                pairLeftoverDoubled: singlesSum * 2
-            };
-        }
-
-        function recalculateAllMetrics() {
-            const targetCount = gameMode === '101' ? 21 : 14;
-            const statusTextEl = document.getElementById('top-rack-status');
-            const bestTotalEl = document.getElementById('stat-best-total');
-            const thresholdSuffixEl = document.getElementById('stat-threshold-suffix');
-            const openBadgeEl = document.getElementById('pill-open-badge');
-            const tileRatioEl = document.getElementById('stat-tile-ratio');
-            const pairCountEl = document.getElementById('stat-pair-count');
-            const pairStatusEl = document.getElementById('pill-pair-status');
-            const seriLeftEl = document.getElementById('stat-seri-leftover');
-            const allTilesSumEl = document.getElementById('stat-all-tiles-sum');
-            const pairLeftX2El = document.getElementById('stat-pair-leftover-x2');
-            const tipEl = document.getElementById('tip-banner-text');
-
-            thresholdSuffixEl.textContent = gameMode === '101' ? '/101' : ' Puan';
-
-            if (detectedTiles.length === 0) {
-                statusTextEl.textContent = `0/${targetCount} · ıstakayı yavaşça tarayın`;
-                bestTotalEl.textContent = '0';
-                tileRatioEl.textContent = `0/${targetCount}`;
-                pairCountEl.textContent = '0';
-                seriLeftEl.textContent = '0';
-                allTilesSumEl.textContent = '0';
-                pairLeftX2El.textContent = '0';
-                openBadgeEl.textContent = gameMode === '101' ? '101 Bekliyor' : '14 Taş Modu';
-                openBadgeEl.className = 'px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300';
-                pairStatusEl.textContent = '5 Çift Gerekir';
-                renderEmptyWoodenRack();
-                return;
-            }
-
-            const seriSol = solveBestSeriesAndSets(detectedTiles);
-            const pairSol = solveBestPairs(detectedTiles);
-
-            let allSum = 0;
-            detectedTiles.forEach(t => {
-                if (seriSol.okeyMap.has(t.id)) {
-                    allSum += seriSol.okeyMap.get(t.id);
-                } else if (isTileOkey(t)) {
-                    allSum += getActiveOkeyTile()?.number || 0;
-                } else {
-                    allSum += getEffectiveValues(t).number;
-                }
-            });
-
-            statusTextEl.textContent = `${detectedTiles.length}/${targetCount} · ${arrangeTab === 'seri' ? 'Seri Dizilimi' : 'Çift Dizilimi'}`;
-            bestTotalEl.textContent = seriSol.totalScore;
-            tileRatioEl.textContent = `${detectedTiles.length}/${targetCount}`;
-            pairCountEl.textContent = pairSol.pairCount;
-            seriLeftEl.textContent = seriSol.leftoverSum;
-            allTilesSumEl.textContent = allSum;
-            pairLeftX2El.textContent = pairSol.pairLeftoverDoubled;
-
-            if (gameMode === '101') {
-                if (seriSol.totalScore >= 101) {
-                    openBadgeEl.textContent = `101 AÇIYOR ✓`;
-                    openBadgeEl.className = 'px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-[10px] font-extrabold text-emerald-300';
-                } else {
-                    openBadgeEl.textContent = `${101 - seriSol.totalScore} Puan Kaldı`;
-                    openBadgeEl.className = 'px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/45 text-[10px] font-extrabold text-amber-300';
-                }
-            } else {
-                openBadgeEl.textContent = seriSol.leftovers.length <= 1 ? 'EL BİTER ✓' : `Kalan: ${seriSol.leftovers.length} Taş`;
-                openBadgeEl.className = 'px-2 py-0.5 rounded-full bg-sky-500/20 border border-sky-400/45 text-[10px] font-extrabold text-sky-300';
-            }
-
-            pairStatusEl.textContent = pairSol.pairCount >= 5 ? 'Çift Açar ✓' : `${5 - pairSol.pairCount} Çift Kaldı`;
-
-            if (pairSol.pairCount >= 5 && seriSol.totalScore < 101) {
-                tipEl.textContent = `Elinizde ${pairSol.pairCount} çift var! Çifte gitmek çok mantıklı.`;
-            } else if (seriSol.totalScore >= 101) {
-                tipEl.textContent = `Seri toplamınız ${seriSol.totalScore} puan — 101 barajını rahatça aşıyor.`;
-            } else {
-                tipEl.textContent = 'Taşa dokunarak çıkarabilir veya + Taş ile eksik taş ekleyebilirsiniz.';
-            }
-
-            if (arrangeTab === 'seri') {
-                renderGroupsOnBeechwoodRack(seriSol.melds, seriSol.leftovers);
-            } else {
-                renderGroupsOnBeechwoodRack(pairSol.pairs, pairSol.singles);
-            }
-        }
-
-        // =========================================================================
-        // 7. AÇIK KAYIN AHŞAP 2 KATLI ISTAKA ÇİZİMİ
-        // =========================================================================
-        function renderEmptyWoodenRack() {
-            const cols = gameMode === '101' ? 13 : 10;
-            drawRackGrid(new Array(cols).fill(null), new Array(cols).fill(null), cols);
-        }
-
-        function renderGroupsOnBeechwoodRack(groups, leftovers) {
-            const cols = gameMode === '101' ? 13 : 10;
-            const topRow = new Array(cols).fill(null);
-            const botRow = new Array(cols).fill(null);
-
-            let r = 0;
-            let c = 0;
-
-            groups.forEach(grp => {
-                if (c + grp.length > cols && r === 0) {
-                    r = 1;
-                    c = 0;
-                }
-                grp.forEach(tile => {
-                    if (r === 0 && c < cols) {
-                        topRow[c++] = { tile, valid: true };
-                    } else if (c < cols) {
-                        botRow[c++] = { tile, valid: true };
-                    }
-                });
-                c++;
-            });
-
-            if (leftovers.length > 0) {
-                if (r === 0) {
-                    if (c + leftovers.length <= cols) {
-                        const start = Math.max(c, cols - leftovers.length);
-                        leftovers.forEach((t, i) => { topRow[start + i] = { tile: t, valid: false }; });
-                    } else {
-                        r = 1;
-                        const start = Math.max(0, cols - leftovers.length);
-                        leftovers.forEach((t, i) => {
-                            if (start + i < cols) botRow[start + i] = { tile: t, valid: false };
-                        });
-                    }
-                } else {
-                    leftovers.forEach(t => {
-                        if (c < cols) {
-                            botRow[c++] = { tile: t, valid: false };
-                        } else {
-                            for (let k = cols - 1; k >= 0; k--) {
-                                if (!topRow[k]) {
-                                    topRow[k] = { tile: t, valid: false };
-                                    break;
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-
-            drawRackGrid(topRow, botRow, cols);
-        }
-
-        function drawRackGrid(topRow, botRow, cols) {
-            const topContainer = document.getElementById('wooden-top-row');
-            const botContainer = document.getElementById('wooden-bottom-row');
-            topContainer.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
-            botContainer.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
-
-            topContainer.innerHTML = '';
-            botContainer.innerHTML = '';
-
-            for (let i = 0; i < cols; i++) {
-                topContainer.appendChild(createRackTileNode(topRow[i]));
-                botContainer.appendChild(createRackTileNode(botRow[i]));
-            }
-        }
-
-        function createRackTileNode(cellData) {
-            const cell = document.createElement('div');
-            cell.className = 'rack-slot-cell h-9 sm:h-11 flex items-center justify-center';
-            if (!cellData || !cellData.tile) return cell;
-
-            const t = cellData.tile;
-            const okeyFlag = isTileOkey(t);
-            const colMeta = COLORS.find(c => c.id === t.color);
-
-            const tileBtn = document.createElement('div');
-            tileBtn.className = `okey-tile w-full h-full cursor-pointer ${cellData.valid ? 'tile-valid-group' : ''} ${okeyFlag ? 'tile-active-okey' : ''}`;
-            tileBtn.title = 'Çıkarmak için dokunun';
-
-            if (t.isSahte) {
-                tileBtn.innerHTML = `
-                    <span class="c-sahte text-[11px] font-extrabold leading-none">★</span>
-                    <span class="w-1 h-1 rounded-full bg-purple-600 mt-0.5"></span>
-                `;
-            } else {
-                tileBtn.innerHTML = `
-                    <span class="${colMeta.textClass} text-xs sm:text-sm font-bold leading-none">${t.number}</span>
-                    <span class="w-1 h-1 rounded-full mt-0.5" style="background:${okeyFlag ? '#f59e0b' : colMeta.hex}"></span>
-                `;
-            }
-
-            tileBtn.onclick = () => {
-                detectedTiles = detectedTiles.filter(item => item.id !== t.id);
-                recalculateAllMetrics();
-                showToast('Taş ıstakadan çıkarıldı');
-            };
-
-            cell.appendChild(tileBtn);
-            return cell;
-        }
-
-        // =========================================================================
-        // 8. AYARLAR, GÖSTERGE SEÇİCİ, YAZBOZ VE ÖRNEK 21 TAŞ
-        // =========================================================================
-        function openSettingsModal() {
-            document.getElementById('settings-modal').classList.remove('hidden');
-        }
-        function closeSettingsModal() {
-            document.getElementById('settings-modal').classList.add('hidden');
-        }
-
-        function toggleAutoScanSetting() {
-            autoScanEnabled = !autoScanEnabled;
-            const btn = document.getElementById('toggle-autoscan-btn');
-            const pill = document.getElementById('reticle-auto-pill');
-            const dot = document.getElementById('reticle-auto-dot');
-            const lbl = document.getElementById('reticle-auto-label');
-
-            if (autoScanEnabled) {
-                if (btn) {
-                    btn.textContent = 'AÇIK';
-                    btn.className = 'px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold';
-                }
-                if (pill) pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all';
-                if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
-                if (lbl) lbl.textContent = 'Oto: Açık';
-                startAutoScanLoop();
-            } else {
-                if (btn) {
-                    btn.textContent = 'KAPALI';
-                    btn.className = 'px-3 py-1.5 rounded-lg bg-slate-700 text-slate-200 text-xs font-extrabold';
-                }
-                if (pill) pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-600/70 text-[11px] font-extrabold text-slate-300 shadow-lg flex items-center gap-1.5 transition-all';
-                if (dot) dot.className = 'w-2 h-2 rounded-full bg-slate-500';
-                if (lbl) lbl.textContent = 'Oto: Kapalı';
-                clearInterval(autoScanInterval);
-            }
-        }
-
-        function changeGameModeFromSettings(mode) {
-            gameMode = mode;
-            const b101 = document.getElementById('set-mode-101');
-            const b14 = document.getElementById('set-mode-14');
-            if (mode === '101') {
-                b101.className = 'px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold';
-                b14.className = 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold';
-            } else {
-                b14.className = 'px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold';
-                b101.className = 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold';
-            }
-            recalculateAllMetrics();
-        }
-
-        function resetScannedHand() {
-            detectedTiles = [];
-            const overlay = document.getElementById('ar-box-canvas');
-            const ctx = overlay.getContext('2d');
-            ctx.clearRect(0, 0, overlay.width, overlay.height);
-            document.getElementById('camera-reticle').classList.remove('reticle-active');
-            recalculateAllMetrics();
-            showToast('Istaka sıfırlandı, yeni taramaya hazır');
-        }
-
-        function buildTilePickers() {
-            const indContainer = document.getElementById('indicator-palette-container');
-            const manContainer = document.getElementById('manual-tile-palette');
-            indContainer.innerHTML = '';
-            manContainer.innerHTML = '';
-
-            COLORS.forEach(col => {
-                const rowInd = document.createElement('div');
-                rowInd.className = 'grid grid-cols-13 gap-1';
-
-                const rowMan = document.createElement('div');
-                rowMan.className = 'grid grid-cols-13 gap-1';
-
-                for (let n = 1; n <= 13; n++) {
-                    const tInd = document.createElement('button');
-                    tInd.type = 'button';
-                    tInd.className = 'okey-tile h-8 text-[11px] font-bold';
-                    tInd.innerHTML = `<span class="${col.textClass}">${n}</span><span class="w-1 h-1 rounded-full mt-0.5" style="background:${col.hex}"></span>`;
-                    tInd.onclick = () => {
-                        indicatorTile = { color: col.id, number: n };
-                        updateIndicatorCardUI();
-                        recalculateAllMetrics();
-                        closeIndicatorPickerModal();
-                    };
-                    rowInd.appendChild(tInd);
-
-                    const tMan = document.createElement('button');
-                    tMan.type = 'button';
-                    tMan.className = 'okey-tile h-8 text-[11px] font-bold';
-                    tMan.innerHTML = `<span class="${col.textClass}">${n}</span><span class="w-1 h-1 rounded-full mt-0.5" style="background:${col.hex}"></span>`;
-                    tMan.onclick = () => addSingleManualTile(col.id, n, false);
-                    rowMan.appendChild(tMan);
-                }
-
-                indContainer.appendChild(rowInd);
-                manContainer.appendChild(rowMan);
-            });
-
-            const sahteBtn = document.createElement('button');
-            sahteBtn.type = 'button';
-            sahteBtn.className = 'w-full py-2 rounded-xl bg-purple-600/25 border border-purple-400/40 text-purple-200 text-xs font-extrabold mt-1';
-            sahteBtn.textContent = '+ Sahte Okey (★) Ekle';
-            sahteBtn.onclick = () => addSingleManualTile('sahte', 0, true);
-            manContainer.appendChild(sahteBtn);
-        }
-
-        function addSingleManualTile(color, number, isSahte) {
-            const limit = gameMode === '101' ? 22 : 15;
-            if (detectedTiles.length >= limit) {
-                showToast(`En fazla ${limit} taş ekleyebilirsiniz.`);
-                return;
-            }
-            const count = detectedTiles.filter(t => isSahte ? t.isSahte : (!t.isSahte && t.color === color && t.number === number)).length;
-            if (count >= 2) {
-                showToast('Bir taştan destede en fazla 2 adet bulunur.');
-                return;
-            }
-            detectedTiles.push({
-                id: `man_${Date.now()}_${Math.random()}`,
-                color,
-                number,
-                isSahte,
-                box: null
-            });
-            recalculateAllMetrics();
-        }
-
-        function openIndicatorPickerModal() {
-            document.getElementById('indicator-modal').classList.remove('hidden');
-        }
-        function closeIndicatorPickerModal() {
-            document.getElementById('indicator-modal').classList.add('hidden');
-        }
-        function clearIndicatorTile() {
-            indicatorTile = null;
-            updateIndicatorCardUI();
-            recalculateAllMetrics();
-            closeIndicatorPickerModal();
-        }
-
-        function openManualTileModal() {
-            document.getElementById('manual-tile-modal').classList.remove('hidden');
-        }
-        function closeManualTileModal() {
-            document.getElementById('manual-tile-modal').classList.add('hidden');
-        }
-
-        function openYazbozModal() {
-            renderYazbozGrid();
-            document.getElementById('yazboz-modal').classList.remove('hidden');
-        }
-        function closeYazbozModal() {
-            document.getElementById('yazboz-modal').classList.add('hidden');
-        }
-
-        function renderYazbozGrid() {
-            const grid = document.getElementById('yazboz-players-grid');
-            grid.innerHTML = '';
-
-            yazbozPlayers.forEach((p, idx) => {
-                const card = document.createElement('div');
-                card.className = 'bg-slate-900/90 border border-slate-700/80 rounded-2xl p-3 flex flex-col items-center';
-                card.innerHTML = `
-                    <input type="text" value="${p.name}" onchange="renameYazbozPlayer(${idx}, this.value)" class="w-full text-center bg-transparent text-xs font-extrabold text-amber-300 border-b border-slate-700 pb-1 mb-2 focus:outline-none">
-                    <div class="text-2xl font-black text-white mb-2">${p.score}</div>
-                    <div class="grid grid-cols-3 gap-1 w-full">
-                        <button onclick="addYazbozPoints(${idx}, -101)" class="py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[11px] font-extrabold">-101</button>
-                        <button onclick="addYazbozPoints(${idx}, 101)" class="py-1 rounded-lg bg-red-500/20 text-red-300 text-[11px] font-extrabold">+101</button>
-                        <button onclick="promptCustomYazboz(${idx})" class="py-1 rounded-lg bg-slate-800 text-slate-200 text-[11px] font-extrabold">+/-</button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function renameYazbozPlayer(idx, newName) {
-            yazbozPlayers[idx].name = newName.trim() || `Oyuncu ${idx + 1}`;
-            localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers));
-        }
-
-        function addYazbozPoints(idx, delta) {
-            yazbozPlayers[idx].score += delta;
-            localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers));
-            renderYazbozGrid();
-        }
-
-        function promptCustomYazboz(idx) {
-            const leftover = parseInt(document.getElementById('stat-seri-leftover').textContent, 10) || 20;
-            addYazbozPoints(idx, leftover);
-            showToast(`${yazbozPlayers[idx].name} hanesine +${leftover} ceza yazıldı`);
-        }
-
-        function resetYazbozScores() {
-            yazbozPlayers.forEach(p => p.score = 0);
-            localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers));
-            renderYazbozGrid();
-        }
-
-        function loadSample21Hand() {
-            indicatorTile = { color: 'mavi', number: 2 };
-            updateIndicatorCardUI();
-
-            const exact21 = [
-                { color: 'siyah', number: 7 }, { color: 'mavi', number: 6 }, { color: 'siyah', number: 7 }, { color: 'kirmizi', number: 8 },
-                { color: 'siyah', number: 5 }, { color: 'kirmizi', number: 4 }, { color: 'siyah', number: 6 }, { color: 'siyah', number: 3 },
-                { color: 'mavi', number: 3 }, { color: 'mavi', number: 10 }, { color: 'siyah', number: 13 }, { color: 'mavi', number: 12 },
-                { color: 'sari', number: 6 }, { color: 'kirmizi', number: 9 }, { color: 'siyah', number: 10 }, { color: 'siyah', number: 8 },
-                { color: 'sari', number: 8 }, { color: 'mavi', number: 13 }, { color: 'sari', number: 4 }, { color: 'sari', number: 7 },
-                { color: 'kirmizi', number: 13 }
-            ];
-
-            const sliceCount = gameMode === '101' ? 21 : 14;
-            detectedTiles = exact21.slice(0, sliceCount).map((t, idx) => ({
-                id: `sample_${idx}_${Date.now()}`,
-                color: t.color,
-                number: t.number,
-                isSahte: false,
-                box: null
-            }));
-
-            document.getElementById('camera-reticle').classList.add('reticle-active');
-            recalculateAllMetrics();
-            showToast(`${sliceCount} taşlık örnek el açık kayın ıstakaya dizildi!`);
-        }
-    </script>
+      }
+    });
+    list.sort((a, b) => (b.score - b.okeysUsed * 2) - (a.score - a.okeysUsed * 2));
+    return list.slice(0, 50);
+  }
+
+  const candidates = buildAllCandidates(normals);
+  let best = { score: 0, groups: [] };
+  const t0 = performance.now();
+
+  function search(idx, used, okeysLeft, score, groups) {
+    if (performance.now() - t0 > 250) return; // zaman limiti
+    if (score > best.score) best = { score, groups: [...groups] };
+    if (idx >= candidates.length || groups.length >= 7) return;
+    const cand = candidates[idx];
+    if (cand.okeysUsed <= okeysLeft && cand.tiles.every(t => !used.has(t.id))) {
+      const next = new Set(used);
+      cand.tiles.forEach(t => next.add(t.id));
+      groups.push(cand);
+      search(idx + 1, next, okeysLeft - cand.okeysUsed, score + cand.score, groups);
+      groups.pop();
+    }
+    search(idx + 1, used, okeysLeft, score, groups);
+  }
+  search(0, new Set(), okeys.length, 0, []);
+
+  const usedNormal = new Set();
+  let okIdx = 0;
+  const finalSeri = best.groups.map(grp => {
+    grp.tiles.forEach(t => usedNormal.add(t.id));
+    if (grp.seqNums) {
+      const byN = new Map(grp.tiles.map(t => [t.effNum, t]));
+      return grp.seqNums.map(n => {
+        if (byN.has(n)) return { ...byN.get(n), assignedNum: n };
+        const ok = okeys[okIdx++];
+        return { ...ok, assignedNum: n, effColor: grp.seqColor };
+      });
+    }
+    const num = grp.assignedNums[0];
+    const items = grp.tiles.map(t => ({ ...t, assignedNum: num }));
+    for (let k = 0; k < grp.okeysUsed; k++) items.push({ ...okeys[okIdx++], assignedNum: num });
+    return items;
+  });
+
+  while (okIdx < okeys.length) {
+    const extra = okeys[okIdx];
+    let attached = false;
+    for (const grp of finalSeri) {
+      const same = grp.every(x => x.assignedNum === grp[0].assignedNum);
+      if (same && grp.length === 3) {
+        grp.push({ ...extra, assignedNum: grp[0].assignedNum });
+        best.score += grp[0].assignedNum;
+        okIdx++; attached = true; break;
+      }
+    }
+    if (!attached) break;
+  }
+
+  const leftoverNormals = normals.filter(t => !usedNormal.has(t.id)).map(t => ({ ...t, assignedNum: t.effNum }));
+  const leftoverOkeys = okeys.slice(okIdx).map(ok => ({ ...ok, assignedNum: okeyInfo ? okeyInfo.number : 13 }));
+  const seriLeftovers = [...leftoverNormals, ...leftoverOkeys];
+  const seriLeftoverSum = seriLeftovers.reduce((a, t) => a + t.assignedNum, 0);
+
+  return {
+    seriGroups: finalSeri,
+    seriScore: best.score,
+    seriLeftovers, seriLeftoverSum,
+    pairGroups, pairCount: pairGroups.length,
+    pairLeftovers, pairLeftoverSum,
+    allTilesSum: best.score + seriLeftoverSum
+  };
+}
+
+// =========================================================================
+// 6. METRİK + ARAYÜZ
+// =========================================================================
+function switchArrangeTab(tab) {
+  arrangeTab = tab;
+  const bs = document.getElementById('btn-mode-seri'), bc = document.getElementById('btn-mode-cift');
+  if (tab === 'seri') {
+    bs.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow';
+    bc.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white';
+  } else {
+    bc.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow';
+    bs.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white';
+  }
+  recalculateAllMetrics();
+}
+
+function recalculateAllMetrics() {
+  const target = gameMode === '101' ? 21 : 14;
+  const total = detectedTiles.length;
+  const solved = solveHandOptimal(detectedTiles);
+
+  document.getElementById('top-rack-status').textContent = total === 0
+    ? `0/${target} · ıstakayı yavaşça tarayın`
+    : `${total}/${target} · ${arrangeTab === 'seri' ? 'Seri Dizilimi' : 'Çift Dizilimi'}`;
+
+  document.getElementById('stat-tile-ratio').textContent = `${total}/${target}`;
+  document.getElementById('stat-best-total').textContent = solved.seriScore;
+  document.getElementById('stat-threshold-suffix').textContent = gameMode === '101' ? '/101' : '/Okey';
+
+  const openBadge = document.getElementById('pill-open-badge');
+  if (gameMode === '101') {
+    if (solved.seriScore >= 101) {
+      openBadge.textContent = '101 Açıyor ✓';
+      openBadge.className = 'px-2 py-0.5 rounded-full bg-emerald-500/25 border border-emerald-400/50 text-[10px] font-extrabold text-emerald-300';
+    } else {
+      openBadge.textContent = `${101 - solved.seriScore} Puan Kaldı`;
+      openBadge.className = 'px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300';
+    }
+  } else {
+    if (total >= 14 && solved.seriLeftovers.length <= 1) {
+      openBadge.textContent = 'El Biter ✓';
+      openBadge.className = 'px-2 py-0.5 rounded-full bg-emerald-500/25 border border-emerald-400/50 text-[10px] font-extrabold text-emerald-300';
+    } else {
+      openBadge.textContent = `${solved.seriLeftovers.length} Taş Kaldı`;
+      openBadge.className = 'px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300';
+    }
+  }
+
+  document.getElementById('stat-pair-count').textContent = solved.pairCount;
+  const ps = document.getElementById('pill-pair-status');
+  if (solved.pairCount >= 5) { ps.textContent = '5 Çift Tamam ✓'; ps.className = 'mt-1.5 text-[10px] font-extrabold text-emerald-400'; }
+  else { ps.textContent = `${5 - solved.pairCount} Çift Kaldı`; ps.className = 'mt-1.5 text-[10px] font-bold text-amber-300/90'; }
+
+  document.getElementById('stat-seri-leftover').textContent = solved.seriLeftoverSum;
+  document.getElementById('stat-all-tiles-sum').textContent = solved.allTilesSum;
+  document.getElementById('stat-pair-leftover-x2').textContent = solved.pairLeftoverSum * 2;
+
+  const indNum = document.getElementById('indicator-card-num'), indDot = document.getElementById('indicator-card-dot');
+  if (indicatorTile) {
+    const c = COLORS.find(x => x.id === indicatorTile.color);
+    indNum.textContent = indicatorTile.number;
+    indNum.className = `text-base font-black leading-none ${c ? c.textClass : 'text-slate-800'}`;
+    indDot.style.backgroundColor = c ? c.hex : '#64748b';
+  } else {
+    indNum.textContent = '?';
+    indNum.className = 'text-base font-black text-slate-700 leading-none';
+    indDot.style.backgroundColor = '#94a3b8';
+  }
+
+  renderArrangedWoodenRack(solved);
+}
+
+function renderEmptyWoodenRack() {
+  const t = document.getElementById('wooden-top-row'), b = document.getElementById('wooden-bottom-row');
+  t.innerHTML = ''; b.innerHTML = '';
+  for (let i = 0; i < 13; i++) { t.appendChild(createEmptySlotDiv()); b.appendChild(createEmptySlotDiv()); }
+}
+function createEmptySlotDiv() {
+  const d = document.createElement('div');
+  d.className = 'rack-slot-cell aspect-[3/4.1] w-full';
+  return d;
+}
+
+function renderArrangedWoodenRack(solved) {
+  const t = document.getElementById('wooden-top-row'), b = document.getElementById('wooden-bottom-row');
+  t.innerHTML = ''; b.innerHTML = '';
+
+  const groups = arrangeTab === 'seri' ? solved.seriGroups : solved.pairGroups;
+  const leftovers = arrangeTab === 'seri' ? solved.seriLeftovers : solved.pairLeftovers;
+
+  const top = new Array(13).fill(null), bot = new Array(13).fill(null);
+  let row = 0, col = 0;
+  groups.forEach(grp => {
+    if (row === 0 && col + grp.length > 13) { row = 1; col = 0; }
+    grp.forEach(tile => {
+      if (row === 0 && col < 13) top[col++] = { tile, valid: true };
+      else if (row === 1 && col < 13) bot[col++] = { tile, valid: true };
+    });
+    if (col < 13) col++;
+  });
+
+  let rc = 12;
+  for (let i = leftovers.length - 1; i >= 0; i--) {
+    while (rc >= 0 && bot[rc] !== null) rc--;
+    if (rc >= 0) bot[rc--] = { tile: leftovers[i], valid: false };
+    else {
+      let tc = 12;
+      while (tc >= 0 && top[tc] !== null) tc--;
+      if (tc >= 0) top[tc] = { tile: leftovers[i], valid: false };
+    }
+  }
+
+  for (let i = 0; i < 13; i++) {
+    t.appendChild(top[i] ? createTileElement(top[i].tile, top[i].valid) : createEmptySlotDiv());
+    b.appendChild(bot[i] ? createTileElement(bot[i].tile, bot[i].valid) : createEmptySlotDiv());
+  }
+}
+
+function createTileElement(tile, valid) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.onclick = () => removeSingleTileById(tile.id);
+  btn.title = 'Çıkarmak için dokunun';
+  btn.setAttribute('aria-label', 'Taşı çıkar');
+
+  const isOkey = Boolean(tile.isOkeyJoker);
+  const isSahte = Boolean(tile.isSahte);
+  const cid = tile.effColor || tile.color;
+  const c = COLORS.find(x => x.id === cid);
+
+  let cls = 'okey-tile aspect-[3/4.1] w-full cursor-pointer ';
+  if (isOkey) cls += 'tile-active-okey ';
+  else if (valid) cls += 'tile-valid-group ';
+  btn.className = cls;
+
+  const num = document.createElement('span');
+  num.className = `text-[11px] sm:text-xs font-bold leading-none ${isSahte ? 'c-sahte' : (c ? c.textClass : 'c-siyah')}`;
+  num.textContent = isSahte ? '★' : (tile.assignedNum || tile.number);
+
+  const dot = document.createElement('span');
+  dot.className = 'w-1 h-1 rounded-full mt-0.5';
+  dot.style.backgroundColor = isSahte ? '#7c3aed' : (c ? c.hex : '#0f172a');
+
+  btn.appendChild(num); btn.appendChild(dot);
+
+  if (isOkey) {
+    const badge = document.createElement('span');
+    badge.className = 'absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-500 text-[7px] font-black text-slate-950 flex items-center justify-center';
+    badge.textContent = 'O';
+    btn.appendChild(badge);
+  }
+  return btn;
+}
+
+function removeSingleTileById(id) {
+  const i = detectedTiles.findIndex(t => t.id === id);
+  if (i !== -1) { detectedTiles.splice(i, 1); recalculateAllMetrics(); showToast('Taş çıkarıldı'); }
+}
+
+function resetScannedHand() {
+  detectedTiles = [];
+  scanVoteBucket.clear();
+  const overlay = document.getElementById('ar-box-canvas');
+  const ctx = overlay.getContext('2d');
+  ctx.clearRect(0, 0, overlay.width, overlay.height);
+  document.getElementById('camera-reticle').classList.remove('reticle-active');
+  recalculateAllMetrics();
+  showToast('Istaka sıfırlandı');
+}
+
+// =========================================================================
+// 7. PENCERELER
+// =========================================================================
+function buildTilePickers() {
+  const ind = document.getElementById('indicator-palette-container');
+  const man = document.getElementById('manual-tile-palette');
+  ind.innerHTML = ''; man.innerHTML = '';
+  COLORS.forEach(c => {
+    const ri = document.createElement('div'), rm = document.createElement('div');
+    ri.style.gridTemplateColumns = 'repeat(13, minmax(0, 1fr))';
+    rm.style.gridTemplateColumns = 'repeat(13, minmax(0, 1fr))';
+    ri.className = 'grid gap-1'; rm.className = 'grid gap-1';
+    for (let n = 1; n <= 13; n++) {
+      const b1 = document.createElement('button');
+      b1.type = 'button';
+      b1.className = `okey-tile py-1.5 text-xs font-extrabold ${c.textClass}`;
+      b1.textContent = n;
+      b1.onclick = () => selectIndicatorTile(c.id, n);
+      ri.appendChild(b1);
+
+      const b2 = document.createElement('button');
+      b2.type = 'button';
+      b2.className = `okey-tile py-1.5 text-xs font-extrabold ${c.textClass}`;
+      b2.textContent = n;
+      b2.onclick = () => addManualTile(c.id, n, false);
+      rm.appendChild(b2);
+    }
+    ind.appendChild(ri); man.appendChild(rm);
+  });
+  const sahte = document.createElement('button');
+  sahte.type = 'button';
+  sahte.className = 'w-full py-2 mt-1 rounded-xl bg-purple-500/20 border border-purple-400/40 text-xs font-extrabold text-purple-200';
+  sahte.textContent = '★ Sahte Okey Ekle';
+  sahte.onclick = () => addManualTile('sahte', 0, true);
+  man.appendChild(sahte);
+}
+
+function openIndicatorPickerModal() { updateIndicatorPreview(); document.getElementById('indicator-modal').classList.remove('hidden'); }
+function closeIndicatorPickerModal() { document.getElementById('indicator-modal').classList.add('hidden'); }
+function selectIndicatorTile(color, number) { indicatorTile = { color, number }; updateIndicatorPreview(); recalculateAllMetrics(); }
+function clearIndicatorTile() { indicatorTile = null; updateIndicatorPreview(); recalculateAllMetrics(); }
+function updateIndicatorPreview() {
+  const el = document.getElementById('modal-okey-preview');
+  if (!indicatorTile) { el.textContent = 'Seçili Gösterge Yok'; return; }
+  const c = COLORS.find(x => x.id === indicatorTile.color);
+  const on = indicatorTile.number === 13 ? 1 : indicatorTile.number + 1;
+  el.textContent = `Gösterge: ${c.name} ${indicatorTile.number} → Okey: ${c.name} ${on}`;
+}
+
+function openManualTileModal() { document.getElementById('manual-tile-modal').classList.remove('hidden'); }
+function closeManualTileModal() { document.getElementById('manual-tile-modal').classList.add('hidden'); }
+function addManualTile(color, number, isSahte) {
+  const limit = gameMode === '101' ? 21 : 14;
+  if (detectedTiles.length >= limit) { showToast(`Maksimum ${limit} taş eklenebilir`); return; }
+  detectedTiles.push({ id: `man_${Date.now()}_${Math.random()}`, color, number, isSahte, box: null });
+  recalculateAllMetrics();
+  showToast(isSahte ? 'Sahte Okey eklendi' : `${number} eklendi`);
+}
+
+function openSettingsModal() { updateGameModeButtonsUI(); document.getElementById('settings-modal').classList.remove('hidden'); }
+function closeSettingsModal() { document.getElementById('settings-modal').classList.add('hidden'); }
+function changeGameModeFromSettings(mode) { gameMode = mode; updateGameModeButtonsUI(); recalculateAllMetrics(); }
+function updateGameModeButtonsUI() {
+  const a = document.getElementById('set-mode-101'), b = document.getElementById('set-mode-14');
+  if (!a || !b) return;
+  if (gameMode === '101') {
+    a.className = 'px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold';
+    b.className = 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold';
+  } else {
+    b.className = 'px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold';
+    a.className = 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold';
+  }
+}
+
+function openYazbozModal() { renderYazboz(); document.getElementById('yazboz-modal').classList.remove('hidden'); }
+function closeYazbozModal() { document.getElementById('yazboz-modal').classList.add('hidden'); }
+function renderYazboz() {
+  const g = document.getElementById('yazboz-players-grid');
+  g.innerHTML = '';
+  yazbozPlayers.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'bg-slate-900/90 border border-slate-700/80 rounded-2xl p-3 flex flex-col gap-2';
+    card.innerHTML = `
+      <div class="flex items-center justify-between">
+        <input type="text" value="${p.name.replace(/"/g,'&quot;')}" onchange="renameYazboz(${i}, this.value)" class="bg-transparent text-xs font-extrabold text-amber-300 w-24 focus:outline-none border-b border-transparent focus:border-amber-400">
+        <span class="text-lg font-black text-white">${p.score}</span>
+      </div>
+      <div class="grid grid-cols-3 gap-1">
+        <button onclick="yazbozDelta(${i}, 101)" class="py-1 rounded-lg bg-red-500/20 text-red-300 text-[11px] font-extrabold">+101</button>
+        <button onclick="yazbozDelta(${i}, -101)" class="py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[11px] font-extrabold">-101</button>
+        <button onclick="yazbozCustom(${i})" class="py-1 rounded-lg bg-slate-800 text-slate-200 text-[11px] font-bold">±Sayı</button>
+      </div>`;
+    g.appendChild(card);
+  });
+}
+function renameYazboz(i, v) { yazbozPlayers[i].name = v.trim() || `Oyuncu ${i + 1}`; localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers)); }
+function yazbozDelta(i, d) { yazbozPlayers[i].score += d; localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers)); renderYazboz(); }
+function yazbozCustom(i) {
+  const v = window.prompt(`${yazbozPlayers[i].name} için puan (örn: 45 veya -202):`);
+  const n = parseInt(v, 10);
+  if (!isNaN(n)) yazbozDelta(i, n);
+}
+function resetYazbozScores() { yazbozPlayers.forEach(p => p.score = 0); localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers)); renderYazboz(); }
+
+function loadSample21Hand() {
+  indicatorTile = { color: 'mavi', number: 4 };
+  const sample = [
+    { color: 'kirmizi', number: 13 }, { color: 'mavi', number: 13 }, { color: 'siyah', number: 13 },
+    { color: 'siyah', number: 4 }, { color: 'mavi', number: 5 }, { color: 'siyah', number: 6 },
+    { color: 'siyah', number: 7 }, { color: 'siyah', number: 8 },
+    { color: 'kirmizi', number: 7 }, { color: 'kirmizi', number: 8 }, { color: 'kirmizi', number: 9 },
+    { color: 'sari', number: 4 }, { color: 'siyah', number: 12 }, { color: 'mavi', number: 6 },
+    { color: 'mavi', number: 10 }, { color: 'siyah', number: 10 }, { color: 'sari', number: 6 },
+    { color: 'sari', number: 8 }, { color: 'mavi', number: 3 }, { color: 'kirmizi', number: 3 },
+    { color: 'siyah', number: 9 }
+  ];
+  detectedTiles = sample.map((t, i) => ({ id: `sample_${i}`, color: t.color, number: t.number, isSahte: false, box: null }));
+  recalculateAllMetrics();
+  showToast('Örnek 21 taş yüklendi (Gösterge: Mavi 4 → Okey: Mavi 5)');
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const el = document.getElementById('toast-message');
+  el.textContent = msg;
+  el.style.opacity = '1';
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.style.opacity = '0'; }, 2400);
+}
+</script>
 </body>
 </html>
