@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Okey & 101 Okey Canlı Kamera Asistanı (Yerel Motor)</title>
+<title>Okey & 101 Okey Asistanı</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
 <style>
 * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
 html, body { width: 100%; height: 100dvh; margin: 0; padding: 0; overflow: hidden; background-color: #0c111d; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #f8fafc; user-select: none; }
-video::-webkit-media-controls, video::-webkit-media-controls-enclosure, video::-webkit-media-controls-panel, video::-webkit-media-controls-play-button, video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none !important; opacity: 0 !important; pointer-events: none !important; }
+video::-webkit-media-controls { display: none !important; }
 .slate-glass-panel { background: linear-gradient(180deg, rgba(19, 27, 46, 0.94) 0%, rgba(12, 17, 29, 0.97) 100%); border: 1px solid rgba(71, 95, 145, 0.42); box-shadow: 0 14px 36px rgba(0, 0, 0, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.08); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
 .beechwood-rack { background: linear-gradient(180deg, #ebd0a8 0%, #dfc091 20%, #cfa66f 58%, #dcba89 88%, #be9158 100%); border: 1.5px solid #f4e2c3; border-radius: 12px; box-shadow: inset 0 2px 3px rgba(255, 252, 245, 0.72), inset 0 -3px 5px rgba(120, 78, 34, 0.45), 0 8px 20px rgba(0, 0, 0, 0.48); }
 .rack-metal-cap { background: linear-gradient(180deg, #f1f5f9 0%, #cbd5e1 50%, #94a3b8 100%); border: 1px solid rgba(255, 255, 255, 0.7); box-shadow: 0 1px 3px rgba(51, 65, 85, 0.38); border-radius: 3px; }
@@ -22,7 +21,7 @@ video::-webkit-media-controls, video::-webkit-media-controls-enclosure, video::-
 .okey-tile:active { transform: scale(0.93); }
 .tile-valid-group { box-shadow: 0 0 0 1.6px #0ea5e9, 0 2px 5px rgba(14, 165, 233, 0.35), inset 0 -2px 0 #cbbba0; }
 .tile-active-okey { background: linear-gradient(160deg, #fffef7 0%, #fef3c7 100%); box-shadow: 0 0 0 2px #f59e0b, 0 0 10px rgba(245, 158, 11, 0.7), inset 0 -2px 0 #d97706 !important; }
-.c-kirmizi { color: #dc2626; } .c-mavi { color: #0284c7; } .c-siyah { color: #0f172a; } .c-sari { color: #d97706; } .c-sahte { color: #7c3aed; }
+.c-kirmizi { color: #dc2626; } .c-mavi { color: #0284c7; } .c-siyah { color: #0f172a; } .c-sari { color: #b45309; } .c-sahte { color: #7c3aed; }
 .reticle-bracket { position: absolute; width: 26px; height: 26px; border-color: rgba(248, 250, 252, 0.72); transition: border-color 0.25s ease; }
 .reticle-active .reticle-bracket { border-color: #f59e0b; }
 @keyframes scanLaser { 0% { top: 8%; opacity: 0; } 15% { opacity: 0.95; } 85% { opacity: 0.95; } 100% { top: 92%; opacity: 0; } }
@@ -37,19 +36,17 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 <div id="camera-stage" class="fixed inset-0 w-full h-full bg-[#0c111d] overflow-hidden">
   <video id="camera-video" autoplay muted playsinline webkit-playsinline class="w-full h-full object-cover"></video>
   <canvas id="ar-box-canvas" class="absolute inset-0 w-full h-full object-cover pointer-events-none"></canvas>
-
   <div id="camera-fallback-screen" class="absolute inset-0 flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_center,_#1a2642_0%,_#0c111d_100%)] text-center px-6">
     <div class="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-400/35 flex items-center justify-center mb-3 shadow-lg">
       <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3"/></svg>
     </div>
-    <p class="text-sm font-bold text-white">Yerel Canlı Kamera Hazır</p>
-    <p class="text-xs text-slate-300 mt-1 max-w-xs leading-relaxed">API anahtarı veya harici sunucu gerekmez. Tüm taş okuma ve dizilim işlemleri doğrudan cihazınızda gerçekleşir.</p>
+    <p class="text-sm font-bold text-white">Kamerayı Başlat</p>
+    <p class="text-xs text-slate-300 mt-1 max-w-xs">Tüm işlemler cihazınızda yapılır. Kamera veya örnek taşlarla başlayın.</p>
     <div class="flex items-center gap-2 mt-4">
       <button onclick="startRearCamera()" class="px-3.5 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold shadow">Kamerayı Başlat</button>
-      <button onclick="loadSample21Hand()" class="px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-600 text-slate-100 text-xs font-bold">Örnek 21 Taş Yükle</button>
+      <button onclick="loadSample21Hand()" class="px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-600 text-slate-100 text-xs font-bold">Örnek El Yükle</button>
     </div>
   </div>
-
   <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/45 via-transparent to-black/65"></div>
 </div>
 
@@ -57,18 +54,17 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   <div class="max-w-xl mx-auto slate-glass-panel rounded-2xl p-2.5 sm:p-3">
     <div class="flex items-center justify-between gap-1.5 mb-2">
       <div class="flex items-center gap-1.5">
-        <div id="top-scan-badge" class="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shrink-0">
+        <div class="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shrink-0">
           <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2"/></svg>
         </div>
         <div class="flex items-center bg-slate-950/75 p-0.5 rounded-full border border-slate-700/70">
-          <button id="btn-mode-seri" onclick="switchArrangeTab('seri')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow">SERİ</button>
-          <button id="btn-mode-cift" onclick="switchArrangeTab('cift')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white">ÇİFT</button>
+          <button id="btn-mode-seri" onclick="switchArrangeTab('seri')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white">SERİ</button>
+          <button id="btn-mode-cift" onclick="switchArrangeTab('cift')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow">ÇİFT</button>
         </div>
       </div>
-      <div id="top-rack-status" class="text-[11px] sm:text-xs font-semibold text-slate-200 truncate px-1">0/21 · ıstakayı yavaşça tarayın</div>
-      <button onclick="openManualTileModal()" class="px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-600/60 text-[11px] font-bold text-sky-300 shrink-0 transition-all" aria-label="Manuel taş ekle">+ Taş</button>
+      <div id="top-rack-status" class="text-[11px] sm:text-xs font-semibold text-slate-200 truncate px-1">0/21 · ıstaka taranıyor</div>
+      <button onclick="openManualTileModal()" class="px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-600/60 text-[11px] font-bold text-sky-300 shrink-0">+ Taş</button>
     </div>
-
     <div class="beechwood-rack p-1.5 sm:p-2 flex items-stretch gap-1">
       <div class="rack-metal-cap w-1.5 sm:w-2 shrink-0"></div>
       <div class="flex-1 flex flex-col gap-1.5">
@@ -87,15 +83,14 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
     <div class="reticle-bracket bottom-0 left-0 border-b-[3px] border-l-[3px] rounded-bl-xl"></div>
     <div class="reticle-bracket bottom-0 right-0 border-b-[3px] border-r-[3px] rounded-br-xl"></div>
     <div id="scan-laser" class="hidden scan-laser-line"></div>
-
     <div class="pointer-events-auto absolute -bottom-11 left-0 right-0 flex items-center justify-between gap-2">
-      <button id="reticle-auto-pill" onclick="toggleAutoScanSetting()" class="px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all" aria-label="Otomatik taramayı aç/kapat">
+      <button id="reticle-auto-pill" onclick="toggleAutoScan()" class="px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5">
         <span id="reticle-auto-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span id="reticle-auto-label">Oto: Açık</span>
       </button>
       <div class="flex items-center gap-1.5">
-        <button id="btn-scan-now" onclick="triggerImmediateScan()" class="px-3.5 py-2 rounded-full bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 text-[11px] font-extrabold shadow-lg transition-all disabled:opacity-40">Şimdi Tara</button>
-        <button id="btn-scan-refresh" onclick="triggerImmediateScan()" title="Yeniden Tara" aria-label="Yeniden Tara" class="w-9 h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 active:scale-95 border border-slate-600/70 flex items-center justify-center text-amber-400 shadow-xl transition-all disabled:opacity-40">
+        <button id="btn-scan-now" onclick="triggerScan()" class="px-3.5 py-2 rounded-full bg-amber-400 hover:bg-amber-300 text-slate-950 text-[11px] font-extrabold shadow-lg disabled:opacity-40">Şimdi Tara</button>
+        <button id="btn-scan-refresh" onclick="triggerScan()" class="w-9 h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-600/70 flex items-center justify-center text-amber-400 shadow-xl disabled:opacity-40" aria-label="Yeniden Tara">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
         </button>
       </div>
@@ -110,7 +105,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
         <div class="flex flex-col items-start">
           <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">EN İYİ TOPLAM</span>
           <div class="flex items-baseline gap-1 mt-0.5">
-            <span id="stat-best-total" class="text-3xl sm:text-4xl font-black text-white leading-none tracking-tight">0</span>
+            <span id="stat-best-total" class="text-3xl sm:text-4xl font-black text-white leading-none">0</span>
             <span id="stat-threshold-suffix" class="text-sm sm:text-base font-bold text-slate-400">/101</span>
           </div>
           <div class="flex items-center gap-1 mt-1.5">
@@ -119,7 +114,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
         </div>
         <div class="flex flex-col items-center justify-center">
           <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase mb-1">GÖSTERGE</span>
-          <button onclick="openIndicatorPickerModal()" id="indicator-tile-card" class="okey-tile w-10 h-13 py-1.5 px-2 cursor-pointer border border-amber-400/50 shadow-lg hover:scale-105 transition-transform" title="Gösterge Taşını Seç" aria-label="Gösterge taşını seç">
+          <button onclick="openIndicatorPickerModal()" id="indicator-tile-card" class="okey-tile w-10 h-13 py-1.5 px-2 cursor-pointer border border-amber-400/50 shadow-lg hover:scale-105" title="Gösterge Seç">
             <span id="indicator-card-num" class="text-base font-black text-slate-700 leading-none">?</span>
             <span id="indicator-card-dot" class="w-1.5 h-1.5 rounded-full bg-slate-400 mt-1"></span>
           </button>
@@ -138,39 +133,27 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
         </div>
       </div>
       <div class="grid grid-cols-3 gap-2 pt-2 text-center">
-        <div>
-          <div class="text-[10px] font-bold text-slate-400 uppercase">SERİ KALAN</div>
-          <div id="stat-seri-leftover" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div>
-        </div>
-        <div class="border-x border-slate-700/50">
-          <div class="text-[10px] font-bold text-slate-400 uppercase">TÜM TAŞLAR</div>
-          <div id="stat-all-tiles-sum" class="text-sm sm:text-base font-black text-white mt-0.5">0</div>
-        </div>
-        <div>
-          <div class="text-[10px] font-bold text-slate-400 uppercase">ÇİFT CEZA <span class="text-[9px] text-slate-500">×2</span></div>
-          <div id="stat-pair-leftover-x2" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div>
-        </div>
+        <div><div class="text-[10px] font-bold text-slate-400 uppercase">SERİ KALAN</div><div id="stat-seri-leftover" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div></div>
+        <div class="border-x border-slate-700/50"><div class="text-[10px] font-bold text-slate-400 uppercase">TÜM TAŞLAR</div><div id="stat-all-tiles-sum" class="text-sm sm:text-base font-black text-white mt-0.5">0</div></div>
+        <div><div class="text-[10px] font-bold text-slate-400 uppercase">ÇİFT CEZA <span class="text-[9px] text-slate-500">×2</span></div><div id="stat-pair-leftover-x2" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div></div>
       </div>
     </div>
-
     <div class="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/70 text-[11px] text-slate-300">
       <div class="flex items-center gap-1.5 truncate">
         <span class="text-amber-400 shrink-0">💡</span>
-        <span id="tip-banner-text" class="truncate">Taşları çerçeveye hizalayın; cihazda anında okunur.</span>
+        <span id="tip-banner-text" class="truncate">Gösterge taşını seçip taşları tarayın.</span>
       </div>
       <span id="local-engine-badge" class="shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600/60">Yükleniyor…</span>
     </div>
-
     <div class="flex items-center gap-2">
-      <button onclick="openYazbozModal()" class="flex items-center justify-center gap-1.5 px-3.5 py-3 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 text-xs font-extrabold text-white shadow-lg transition-all shrink-0" aria-label="Yazboz">
-        <span class="w-5 h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[11px]">✎</span>
-        <span>Yazboz</span>
+      <button onclick="openYazbozModal()" class="flex items-center justify-center gap-1.5 px-3.5 py-3 rounded-2xl bg-slate-900/95 hover:bg-slate-800 border border-slate-700/80 text-xs font-extrabold text-white shadow-lg shrink-0">
+        <span class="w-5 h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[11px]">✎</span><span>Yazboz</span>
       </button>
-      <button onclick="resetScannedHand()" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#f8f6f0] hover:bg-white active:scale-[0.98] text-slate-950 font-extrabold text-sm sm:text-base shadow-xl transition-all">
+      <button onclick="resetScannedHand()" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#f8f6f0] hover:bg-white text-slate-950 font-extrabold text-sm sm:text-base shadow-xl">
         <svg class="w-4 h-4 text-slate-900" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
         <span>Sıfırla</span>
       </button>
-      <button onclick="openSettingsModal()" class="w-12 h-12 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 flex items-center justify-center text-slate-200 shadow-lg transition-all shrink-0" title="Ayarlar" aria-label="Ayarlar">
+      <button onclick="openSettingsModal()" class="w-12 h-12 rounded-2xl bg-slate-900/95 hover:bg-slate-800 border border-slate-700/80 flex items-center justify-center text-slate-200 shadow-lg shrink-0" aria-label="Ayarlar">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
       </button>
     </div>
@@ -181,47 +164,47 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   <div class="max-w-lg mx-auto">
     <div class="w-10 h-1 rounded-full bg-slate-500/40 mx-auto mb-4"></div>
     <h2 class="text-xl font-extrabold text-white tracking-tight">Hangi Okey?</h2>
-    <p class="text-xs sm:text-sm text-slate-300 mt-1 mb-4">Oynadığın oyunu seç. API anahtarı gerekmeden doğrudan cihazda çalışır.</p>
+    <p class="text-xs sm:text-sm text-slate-300 mt-1 mb-4">Oynadığın oyunu seç.</p>
     <div class="flex flex-col gap-2.5 mb-5">
-      <button type="button" onclick="selectModeRadio('101')" id="mode-card-101" class="w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all">
-        <div id="mode-radio-101" class="w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0"><div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div></div>
-        <div><div class="text-sm sm:text-base font-bold text-white">101 Okey</div><div class="text-xs text-slate-300 mt-0.5">21 taş. Perlerin toplamı 101'i bulunca açarsın.</div></div>
+      <button type="button" onclick="selectModeRadio('101')" id="mode-card-101" class="w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 flex items-center gap-3.5">
+        <div id="mode-radio-101" class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0"><div class="w-2.5 h-2.5 rounded-full bg-transparent"></div></div>
+        <div><div class="text-sm sm:text-base font-bold text-white">101 Okey</div><div class="text-xs text-slate-300 mt-0.5">21 taş. 101'i bulunca açarsın.</div></div>
       </button>
-      <button type="button" onclick="selectModeRadio('14')" id="mode-card-14" class="w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all">
-        <div id="mode-radio-14" class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0"><div class="w-2.5 h-2.5 rounded-full bg-transparent"></div></div>
-        <div><div class="text-sm sm:text-base font-bold text-white">Okey</div><div class="text-xs text-slate-300 mt-0.5">14 taş. Açma eşiği yok: elin tamamı tutana kadar beklersin.</div></div>
+      <button type="button" onclick="selectModeRadio('14')" id="mode-card-14" class="w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5">
+        <div id="mode-radio-14" class="w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0"><div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div></div>
+        <div><div class="text-sm sm:text-base font-bold text-white">Okey</div><div class="text-xs text-slate-300 mt-0.5">14 taş. Elin tamamı tutana kadar beklersin.</div></div>
       </button>
     </div>
-    <button type="button" onclick="confirmModeAndBegin()" class="w-full py-3.5 rounded-2xl bg-[#f8f6f0] hover:bg-white active:scale-[0.99] text-slate-950 font-extrabold text-base shadow-xl transition-all">Devam</button>
+    <button type="button" onclick="confirmModeAndBegin()" class="w-full py-3.5 rounded-2xl bg-[#f8f6f0] hover:bg-white text-slate-950 font-extrabold text-base shadow-xl">Devam</button>
   </div>
 </div>
 
 <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='settings-modal') closeSettingsModal()">
   <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-5 pb-[max(24px,env(safe-area-inset-bottom))] shadow-2xl">
     <div class="flex items-center justify-between mb-3">
-      <h3 class="text-base font-extrabold text-white">Oyun & Yerel Tarayıcı Ayarları</h3>
-      <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold" aria-label="Kapat">✕</button>
+      <h3 class="text-base font-extrabold text-white">Ayarlar</h3>
+      <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center text-sm font-bold">✕</button>
     </div>
-    <div class="bg-emerald-500/10 border border-emerald-400/30 rounded-2xl p-3 mb-3 text-xs text-emerald-200 leading-relaxed">
-      <b>100% Cihaz İçi Yerel Motor Aktif:</b> Fildişi taş ayrıştırma, piksel renk tespiti ve yerel rakam tanıma internet veya API anahtarı olmadan doğrudan telefonunuzda çalışır.
-    </div>
-    <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
-      <div><div class="text-xs font-bold text-white">Otomatik Canlı Tarama</div><div class="text-[11px] text-slate-400">Kamerayı ıstakaya tutunca otomatik okur</div></div>
-      <button id="toggle-autoscan-btn" onclick="toggleAutoScanSetting()" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold">AÇIK</button>
+    <div class="bg-slate-800/50 border border-slate-700 rounded-2xl p-3 mb-3 text-xs text-slate-300 leading-relaxed">
+      <b class="text-emerald-300">%100 Cihaz İçi:</b> İnternet gerekmez. Taş okuma ve çözümleme cihazınızda yapılır.
     </div>
     <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
-      <div><div class="text-xs font-bold text-white">Oyun Türü</div><div class="text-[11px] text-slate-400">101 Okey (21 Taş) veya Klasik (14 Taş)</div></div>
+      <div><div class="text-xs font-bold text-white">Otomatik Tarama</div><div class="text-[11px] text-slate-400">Kamerayı tutunca otomatik okur</div></div>
+      <button id="toggle-autoscan-btn" onclick="toggleAutoScan()" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold">AÇIK</button>
+    </div>
+    <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
+      <div><div class="text-xs font-bold text-white">Oyun Türü</div><div class="text-[11px] text-slate-400">101 (21 taş) veya Klasik (14 taş)</div></div>
       <div class="flex gap-1">
-        <button id="set-mode-101" onclick="changeGameModeFromSettings('101')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">101</button>
-        <button id="set-mode-14" onclick="changeGameModeFromSettings('14')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">14 Taş</button>
+        <button id="set-mode-101" onclick="changeGameMode('101')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">101</button>
+        <button id="set-mode-14" onclick="changeGameMode('14')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">14</button>
       </div>
     </div>
     <div class="grid grid-cols-2 gap-2 mt-3">
       <label class="cursor-pointer py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-center text-xs font-bold text-white">
         📷 Fotoğraftan Oku
-        <input type="file" accept="image/*" class="hidden" onchange="handleImageFileUpload(event)">
+        <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
       </label>
-      <button onclick="loadSample21Hand(); closeSettingsModal();" class="py-2.5 px-3 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-xs font-extrabold text-sky-300">🧪 Örnek 21 Taş Testi</button>
+      <button onclick="loadSample21Hand(); closeSettingsModal();" class="py-2.5 px-3 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-xs font-extrabold text-sky-300">🧪 Örnek El</button>
     </div>
   </div>
 </div>
@@ -229,7 +212,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 <div id="indicator-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='indicator-modal') closeIndicatorPickerModal()">
   <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(20px,env(safe-area-inset-bottom))] shadow-2xl">
     <div class="flex items-center justify-between mb-2">
-      <div><h3 class="text-sm font-extrabold text-white">Gösterge Taşını Seçin</h3><p class="text-[11px] text-amber-300" id="modal-okey-preview">Seçili Gösterge Yok</p></div>
+      <div><h3 class="text-sm font-extrabold text-white">Gösterge Taşı</h3><p class="text-[11px] text-amber-300" id="modal-okey-preview">Seçili Gösterge Yok</p></div>
       <div class="flex items-center gap-2">
         <button onclick="clearIndicatorTile()" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">Temizle</button>
         <button onclick="closeIndicatorPickerModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Tamam</button>
@@ -242,7 +225,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 <div id="manual-tile-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='manual-tile-modal') closeManualTileModal()">
   <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(20px,env(safe-area-inset-bottom))] shadow-2xl">
     <div class="flex items-center justify-between mb-2">
-      <div><h3 class="text-sm font-extrabold text-white">Istakaya Taş Ekle</h3><p class="text-[11px] text-slate-400">Eksik taşı dokunarak anında ekleyin</p></div>
+      <div><h3 class="text-sm font-extrabold text-white">Taş Ekle</h3><p class="text-[11px] text-slate-400">Dokunarak ekle</p></div>
       <button onclick="closeManualTileModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Kapat</button>
     </div>
     <div id="manual-tile-palette" class="flex flex-col gap-2 mt-2"></div>
@@ -252,7 +235,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 <div id="yazboz-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='yazboz-modal') closeYazbozModal()">
   <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(24px,env(safe-area-inset-bottom))] shadow-2xl">
     <div class="flex items-center justify-between mb-3">
-      <h3 class="text-base font-extrabold text-white">✎ 101 / Okey Yazboz</h3>
+      <h3 class="text-base font-extrabold text-white">✎ Yazboz</h3>
       <div class="flex items-center gap-2">
         <button onclick="resetYazbozScores()" class="px-2.5 py-1 rounded-lg bg-red-500/20 text-red-300 text-xs font-bold">Sıfırla</button>
         <button onclick="closeYazbozModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Kapat</button>
@@ -266,17 +249,17 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
 
 <script>
 // =========================================================================
-// 1. SABİTLER & DURUM
+// SABİTLER & DURUM
 // =========================================================================
 const COLORS = [
   { id: 'kirmizi', short: 'K', name: 'Kırmızı', textClass: 'c-kirmizi', hex: '#dc2626' },
-  { id: 'mavi',    short: 'M', name: 'Mavi',    textClass: 'c-mavi',    hex: '#0284c7' },
-  { id: 'siyah',   short: 'S', name: 'Siyah',   textClass: 'c-siyah',   hex: '#0f172a' },
-  { id: 'sari',    short: 'Sr', name: 'Sarı',   textClass: 'c-sari',    hex: '#d97706' }
+  { id: 'mavi', short: 'M', name: 'Mavi', textClass: 'c-mavi', hex: '#0284c7' },
+  { id: 'siyah', short: 'S', name: 'Siyah', textClass: 'c-siyah', hex: '#0f172a' },
+  { id: 'sari', short: 'Sr', name: 'Sarı', textClass: 'c-sari', hex: '#b45309' }
 ];
 
-let gameMode = '101';
-let arrangeTab = 'seri';
+let gameMode = '14';
+let arrangeTab = 'cift';
 let indicatorTile = null;
 let detectedTiles = [];
 
@@ -285,13 +268,8 @@ let cameraLive = false;
 let autoScanEnabled = true;
 let autoScanInterval = null;
 let isScanningNow = false;
-let localOcrWorker = null;
-let localOcrReady = false;
 
-let scanVoteBucket = new Map();
-let digitTemplateCache = null;
-
-// Yeniden kullanılabilir canvas (bellek tasarrufu)
+// Yeniden kullanılabilir canvas
 const scratchCanvas = document.createElement('canvas');
 const scratchCtx = scratchCanvas.getContext('2d', { willReadFrequently: true });
 
@@ -300,49 +278,23 @@ let yazbozPlayers = JSON.parse(localStorage.getItem('okey_yazboz_v1') || 'null')
 ];
 
 // =========================================================================
-// 2. BAŞLANGIÇ
+// BAŞLANGIÇ
 // =========================================================================
-window.addEventListener('DOMContentLoaded', async () => {
+window.addEventListener('DOMContentLoaded', () => {
   buildTilePickers();
   renderEmptyWoodenRack();
   recalculateAllMetrics();
   updateScanButtonsEnabled(false);
-
-  // Fontlar yüklenmeden şablon üretmeyi bekle
-  try {
-    if (document.fonts && document.fonts.ready) {
-      await document.fonts.ready;
-    }
-  } catch (_) {}
-  buildOkeyDigitTemplates();
-
-  initLocalTesseractWorker();
+  buildDigitTemplates();
 });
 
-async function initLocalTesseractWorker() {
-  try {
-    if (typeof Tesseract === 'undefined') { setLocalBadge('Yerel Motor Hazır ✓', 'ok'); return; }
-    setLocalBadge('Yerel Motor Yükleniyor…', 'scanning');
-    localOcrWorker = await Tesseract.createWorker('eng', 1, { logger: () => {} });
-    await localOcrWorker.setParameters({
-      tessedit_char_whitelist: '0123456789',
-      tessedit_pageseg_mode: '7'
-    });
-    localOcrReady = true;
-    setLocalBadge('Yerel Vision Aktif ✓', 'ok');
-  } catch (err) {
-    localOcrReady = false;
-    setLocalBadge('Yerel Vision Hazır ✓', 'ok');
-  }
-}
-
 function setLocalBadge(text, state) {
-  const badge = document.getElementById('local-engine-badge');
-  if (!badge) return;
-  badge.textContent = text;
-  if (state === 'ok') badge.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40';
-  else if (state === 'scanning') badge.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40';
-  else badge.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600/60';
+  const b = document.getElementById('local-engine-badge');
+  if (!b) return;
+  b.textContent = text;
+  if (state === 'ok') b.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40';
+  else if (state === 'scanning') b.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40';
+  else b.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600/60';
 }
 
 function updateScanButtonsEnabled(enabled) {
@@ -353,24 +305,24 @@ function updateScanButtonsEnabled(enabled) {
 }
 
 // =========================================================================
-// 3. MOD SEÇİMİ + KAMERA
+// MOD SEÇİMİ
 // =========================================================================
 function selectModeRadio(mode) {
   gameMode = mode;
   const c101 = document.getElementById('mode-card-101'), c14 = document.getElementById('mode-card-14');
   const r101 = document.getElementById('mode-radio-101'), r14 = document.getElementById('mode-radio-14');
   if (mode === '101') {
-    c101.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all';
+    c101.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5';
     r101.className = 'w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0';
     r101.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-amber-400';
-    c14.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all';
+    c14.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 flex items-center gap-3.5';
     r14.className = 'w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0';
     r14.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-transparent';
   } else {
-    c14.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all';
+    c14.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5';
     r14.className = 'w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0';
     r14.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-amber-400';
-    c101.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all';
+    c101.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 flex items-center gap-3.5';
     r101.className = 'w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0';
     r101.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-transparent';
   }
@@ -383,13 +335,16 @@ async function confirmModeAndBegin() {
   await startRearCamera();
 }
 
+// =========================================================================
+// KAMERA
+// =========================================================================
 async function startRearCamera() {
   const video = document.getElementById('camera-video');
   const fallback = document.getElementById('camera-fallback-screen');
 
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     fallback.classList.remove('hidden');
-    showToast('Bu cihaz/tarayıcı kamera desteklemiyor.');
+    showToast('Kamera desteklenmiyor.');
     return;
   }
 
@@ -402,7 +357,7 @@ async function startRearCamera() {
     video.srcObject = videoStream;
     video.setAttribute('playsinline', 'true');
     video.setAttribute('webkit-playsinline', 'true');
-    try { await video.play(); } catch (_) { /* iOS ilk denemede reddedebilir; meta tag'ler + muted halleder */ }
+    try { await video.play(); } catch (_) {}
     fallback.classList.add('hidden');
     cameraLive = true;
     updateScanButtonsEnabled(true);
@@ -411,27 +366,24 @@ async function startRearCamera() {
     cameraLive = false;
     updateScanButtonsEnabled(false);
     fallback.classList.remove('hidden');
-    showToast('Kamera başlatılamadı. İzin verin veya örnek test kullanın.');
+    showToast('Kamera başlatılamadı.');
   }
 }
 
-// =========================================================================
-// 4A. TARAMA DÖNGÜSÜ
-// =========================================================================
 function startAutoScanLoop() {
   if (autoScanInterval) clearInterval(autoScanInterval);
   if (!autoScanEnabled) return;
   autoScanInterval = setInterval(() => {
-    if (autoScanEnabled && !isScanningNow && cameraLive) scanFrameLocally(true);
-  }, 1300);
+    if (autoScanEnabled && !isScanningNow && cameraLive) scanFrame(true);
+  }, 1400);
 }
 
-function triggerImmediateScan() {
+function triggerScan() {
   if (!cameraLive) { showToast('Önce kamerayı başlatın.'); return; }
-  scanFrameLocally(false);
+  scanFrame(false);
 }
 
-function toggleAutoScanSetting() {
+function toggleAutoScan() {
   autoScanEnabled = !autoScanEnabled;
   const btn = document.getElementById('toggle-autoscan-btn');
   const pill = document.getElementById('reticle-auto-pill');
@@ -443,12 +395,12 @@ function toggleAutoScanSetting() {
   }
   if (pill && dot && lbl) {
     if (autoScanEnabled) {
-      pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all';
+      pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5';
       dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
       lbl.textContent = 'Oto: Açık';
       startAutoScanLoop();
     } else {
-      pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-600/70 text-[11px] font-bold text-slate-300 shadow-lg flex items-center gap-1.5 transition-all';
+      pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 border border-slate-600/70 text-[11px] font-bold text-slate-300 shadow-lg flex items-center gap-1.5';
       dot.className = 'w-2 h-2 rounded-full bg-slate-500';
       lbl.textContent = 'Oto: Kapalı';
       if (autoScanInterval) clearInterval(autoScanInterval);
@@ -456,179 +408,72 @@ function toggleAutoScanSetting() {
   }
 }
 
-function captureCroppedRackRoi(video) {
-  const vw = video.videoWidth || 1280;
-  const vh = video.videoHeight || 720;
-  const roiX = Math.round(vw * 0.04);
-  const roiY = Math.round(vh * 0.25);
-  const roiW = Math.round(vw * 0.92);
-  const roiH = Math.round(vh * 0.38);
-  const targetW = Math.min(820, roiW);
-  const targetH = Math.round((roiH / roiW) * targetW);
-
-  scratchCanvas.width = targetW;
-  scratchCanvas.height = targetH;
-  scratchCtx.drawImage(video, roiX, roiY, roiW, roiH, 0, 0, targetW, targetH);
-
-  return {
-    canvas: scratchCanvas,
-    roiNorm: { x: roiX / vw, y: roiY / vh, w: roiW / vw, h: roiH / vh },
-    fullSize: { vw, vh }
-  };
-}
-
 // =========================================================================
-// 4B. YEREL TARAMA
+// TARAMA
 // =========================================================================
-async function scanFrameLocally(silentMode = false) {
+async function scanFrame(silent) {
   const video = document.getElementById('camera-video');
   if (!video || video.readyState < 2 || !video.videoWidth) return;
   if (isScanningNow) return;
 
   isScanningNow = true;
   document.getElementById('scan-laser').classList.remove('hidden');
-  setLocalBadge('Yerel Taranıyor…', 'scanning');
+  setLocalBadge('Taranıyor…', 'scanning');
 
   try {
-    const { canvas, roiNorm, fullSize } = captureCroppedRackRoi(video);
-    const foundTiles = await detectAndReadTilesFromCanvas(canvas);
+    const vw = video.videoWidth, vh = video.videoHeight;
+    const roiX = Math.round(vw * 0.05), roiY = Math.round(vh * 0.28);
+    const roiW = Math.round(vw * 0.90), roiH = Math.round(vh * 0.34);
+    const targetW = Math.min(720, roiW);
+    const targetH = Math.round((roiH / roiW) * targetW);
 
-    if (foundTiles.length > 0) {
-      const mappedTiles = foundTiles.map(t => {
-        const [ymin, xmin, ymax, xmax] = t.box_2d;
-        return {
-          ...t,
-          box_2d: [
-            Math.round((roiNorm.y + (ymin / 1000) * roiNorm.h) * 1000),
-            Math.round((roiNorm.x + (xmin / 1000) * roiNorm.w) * 1000),
-            Math.round((roiNorm.y + (ymax / 1000) * roiNorm.h) * 1000),
-            Math.round((roiNorm.x + (xmax / 1000) * roiNorm.w) * 1000)
-          ]
-        };
-      });
+    scratchCanvas.width = targetW;
+    scratchCanvas.height = targetH;
+    scratchCtx.drawImage(video, roiX, roiY, roiW, roiH, 0, 0, targetW, targetH);
 
-      drawYellowBoundingBoxes(mappedTiles.map((m, i) => ({ ...m, id: `live_${i}`, box: m.box_2d })), fullSize.vw, fullSize.vh);
+    const found = await detectTiles(scratchCanvas);
+
+    if (found.length > 0) {
       document.getElementById('camera-reticle').classList.add('reticle-active');
-
-      accumulateScannedTiles(mappedTiles, !silentMode);
-
-      const targetCount = gameMode === '101' ? 21 : 14;
-      setLocalBadge(`Yerel Vision ✓ (${detectedTiles.length}/${targetCount})`, 'ok');
-      if (!silentMode) showToast(`${mappedTiles.length} taş karede okundu (Toplam: ${detectedTiles.length}/${targetCount})`);
+      const target = gameMode === '101' ? 21 : 14;
+      setLocalBadge(`Yerel Vision ✓ (${found.length} karede, el: ${detectedTiles.length}/${target})`, 'ok');
+      if (!silent) showToast(`${found.length} taş okundu`);
     } else {
       setLocalBadge('Istaka Bekleniyor…', 'neutral');
-      if (!silentMode) showToast('Çerçevede net okey taşı bulunamadı. Taşları çerçeveye hizalayın.');
+      if (!silent) showToast('Taş bulunamadı, çerçeveye hizalayın');
     }
   } catch (err) {
-    setLocalBadge('Yerel Vision Hazır ✓', 'ok');
+    console.error(err);
+    setLocalBadge('Hata', 'neutral');
   } finally {
     isScanningNow = false;
     document.getElementById('scan-laser').classList.add('hidden');
   }
 }
 
-function accumulateScannedTiles(frameTiles, forceImmediateAccept = false) {
-  const targetLimit = gameMode === '101' ? 21 : 14;
-  if (detectedTiles.length >= targetLimit) return;
-
-  // Karedeki her anahtarın kaç kez geçtiğini say
-  const frameCounts = new Map();
-  frameTiles.forEach(t => {
-    const key = t.isSahte ? 'sahte_0' : `${t.color}_${t.number}`;
-    frameCounts.set(key, (frameCounts.get(key) || 0) + 1);
-  });
-
-  let changed = false;
-  frameCounts.forEach((countInFrame, key) => {
-    if (detectedTiles.length >= targetLimit) return;
-    const [color, numStr] = key.split('_');
-    const number = parseInt(numStr, 10) || 0;
-    const isSahte = color === 'sahte';
-    if (isSahte || number === 0) return; // bilinmeyen/sahte → otomatik ekleme yapma, kullanıcı ekler
-
-    const entry = scanVoteBucket.get(key) || { hits: 0, color, number };
-    entry.hits += forceImmediateAccept ? 2 : 1;
-    scanVoteBucket.set(key, entry);
-
-    if (entry.hits >= 2) {
-      const alreadyHave = detectedTiles.filter(x => !x.isSahte && x.color === color && x.number === number).length;
-      const desired = Math.min(2, Math.max(1, countInFrame));
-      const need = desired - alreadyHave;
-      for (let k = 0; k < need && detectedTiles.length < targetLimit; k++) {
-        detectedTiles.push({
-          id: `acc_${Date.now()}_${Math.random()}`,
-          color, number, isSahte: false, box: null
-        });
-        changed = true;
-      }
-    }
-  });
-
-  if (changed) recalculateAllMetrics();
-}
-
-function handleImageFileUpload(event) {
-  const file = event.target.files && event.target.files[0];
-  if (!file) return;
-  closeSettingsModal();
-  setLocalBadge('Fotoğraf Taranıyor…', 'scanning');
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    const img = new Image();
-    img.onload = async () => {
-      const maxDim = 960;
-      const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
-      const w = Math.round(img.width * scale);
-      const h = Math.round(img.height * scale);
-      const c = document.createElement('canvas');
-      c.width = w; c.height = h;
-      const ctx = c.getContext('2d', { willReadFrequently: true });
-      ctx.drawImage(img, 0, 0, w, h);
-
-      const found = await detectAndReadTilesFromCanvas(c);
-      const targetLimit = gameMode === '101' ? 21 : 14;
-      if (found.length > 0) {
-        scanVoteBucket.clear();
-        detectedTiles = found
-          .filter(t => !t.isSahte && t.number > 0)
-          .slice(0, targetLimit)
-          .map((t, idx) => ({ id: `photo_${Date.now()}_${idx}`, color: t.color, number: t.number, isSahte: false, box: null }));
-        recalculateAllMetrics();
-        setLocalBadge(`Fotoğraftan ${detectedTiles.length} Taş Okundu ✓`, 'ok');
-        showToast(`Fotoğraftan ${detectedTiles.length} taş okundu.`);
-      } else {
-        setLocalBadge('Yerel Vision Hazır ✓', 'ok');
-        showToast('Fotoğrafta tanınabilir taş bulunamadı.');
-      }
-    };
-    img.src = reader.result;
-  };
-  reader.readAsDataURL(file);
-  event.target.value = '';
-}
-
 // =========================================================================
-// 4C. YEREL GÖRÜNTÜ İŞLEME
+// TAŞ TESPİT
 // =========================================================================
-async function detectAndReadTilesFromCanvas(srcCanvas) {
+async function detectTiles(srcCanvas) {
   const W = srcCanvas.width, H = srcCanvas.height;
   const ctx = srcCanvas.getContext('2d', { willReadFrequently: true });
-  const data = ctx.getImageData(0, 0, W, H).data;
+  const imgData = ctx.getImageData(0, 0, W, H);
+  const data = imgData.data;
 
-  // 1. Fildişi taş maskesi
+  // 1. Taş zemin maskesi (fildişi/beyazımsı)
   const mask = new Uint8Array(W * H);
   for (let i = 0, p = 0; i < data.length; i += 4, p++) {
-    const r = data[i], g = data[i + 1], b = data[i + 2];
+    const r = data[i], g = data[i+1], b = data[i+2];
     const lum = 0.299 * r + 0.587 * g + 0.114 * b;
     const maxC = Math.max(r, g, b), minC = Math.min(r, g, b);
     const sat = maxC > 0 ? (maxC - minC) / maxC : 0;
-    if (lum > 142 && sat < 0.44 && r >= b - 18) mask[p] = 1;
+    // Fildişi: parlak, düşük doygunluk
+    if (lum > 150 && sat < 0.35) mask[p] = 1;
   }
 
-  // 2. Bağlı bileşenler — adım 1 (doğru bbox)
+  // 2. Bağlı bileşenler
   const visited = new Uint8Array(W * H);
-  const rawBoxes = [];
+  const boxes = [];
   const stackX = new Int32Array(W * H);
   const stackY = new Int32Array(W * H);
 
@@ -647,14 +492,13 @@ async function detectAndReadTilesFromCanvas(srcCanvas) {
           if (cx < minX) minX = cx; if (cx > maxX) maxX = cx;
           if (cy < minY) minY = cy; if (cy > maxY) maxY = cy;
 
-          // 4-komşu
-          const neighbors = [[cx + 1, cy], [cx - 1, cy], [cx, cy + 1], [cx, cy - 1]];
+          const nbs = [[cx+1,cy],[cx-1,cy],[cx,cy+1],[cx,cy-1]];
           for (let n = 0; n < 4; n++) {
-            const nx = neighbors[n][0], ny = neighbors[n][1];
+            const nx = nbs[n][0], ny = nbs[n][1];
             if (nx >= 0 && nx < W && ny >= 0 && ny < H) {
-              const nIdx = ny * W + nx;
-              if (mask[nIdx] === 1 && visited[nIdx] === 0) {
-                visited[nIdx] = 1;
+              const ni = ny * W + nx;
+              if (mask[ni] === 1 && visited[ni] === 0) {
+                visited[ni] = 1;
                 stackX[sp] = nx; stackY[sp] = ny; sp++;
               }
             }
@@ -663,30 +507,32 @@ async function detectAndReadTilesFromCanvas(srcCanvas) {
 
         const bw = maxX - minX + 1, bh = maxY - minY + 1;
         const aspect = bh / Math.max(1, bw);
-        if (bw >= W * 0.025 && bw <= W * 0.14 && bh >= H * 0.14 && bh <= H * 0.56 && aspect >= 1.1 && aspect <= 2.4) {
-          rawBoxes.push({ x: minX, y: minY, w: bw, h: bh });
-        } else if (bw > W * 0.14 && bw <= W * 0.94 && bh >= H * 0.14 && bh <= H * 0.56) {
-          rawBoxes.push(...splitTouchingTilesByValley(data, W, minX, minY, bw, bh));
+        // Taş boyutları: 25-100px genişlik, 1.1-2.4 aspect
+        if (bw >= W * 0.03 && bw <= W * 0.13 && bh >= H * 0.18 && bh <= H * 0.55 && aspect >= 1.0 && aspect <= 2.6) {
+          boxes.push({ x: minX, y: minY, w: bw, h: bh });
+        } else if (bw > W * 0.13 && bw <= W * 0.95 && bh >= H * 0.18 && bh <= H * 0.55) {
+          // Yan yana yapışık → böl
+          boxes.push(...splitTiles(data, W, minX, minY, bw, bh));
         }
       }
     }
   }
 
-  if (rawBoxes.length === 0) return [];
+  if (boxes.length === 0) return [];
 
-  rawBoxes.sort((a, b) => {
+  boxes.sort((a, b) => {
     if (Math.abs(a.y - b.y) > H * 0.15) return a.y - b.y;
     return a.x - b.x;
   });
 
-  const targetLimit = gameMode === '101' ? 21 : 14;
-  const limitedBoxes = rawBoxes.slice(0, targetLimit + 2);
+  const limit = gameMode === '101' ? 21 : 14;
+  const limited = boxes.slice(0, limit + 2);
 
   const results = [];
-  for (let i = 0; i < limitedBoxes.length; i++) {
-    const box = limitedBoxes[i];
-    const color = classifyTileColorFromPixels(data, W, H, box);
-    const number = await recognizeTileNumberLocally(srcCanvas, box);
+  for (const box of limited) {
+    const color = classifyColor(data, W, H, box);
+    const number = recognizeNumber(srcCanvas, box);
+    if (number === 0) continue; // okunamayan atla
     results.push({
       color: number === 0 ? 'sahte' : color,
       number,
@@ -702,393 +548,378 @@ async function detectAndReadTilesFromCanvas(srcCanvas) {
   return results;
 }
 
-function splitTouchingTilesByValley(data, W, bx, by, bw, bh) {
-  const expectedTileW = bh * 0.65;
-  const minGap = Math.max(10, Math.round(expectedTileW * 0.68));
-  const maxTileW = Math.round(expectedTileW * 1.32);
-  const yStart = Math.round(by + bh * 0.12);
-  const yEnd = Math.round(by + bh * 0.88);
-
+function splitTiles(data, W, bx, by, bw, bh) {
+  const expW = bh * 0.65;
+  const minGap = Math.max(8, Math.round(expW * 0.6));
+  const maxW = Math.round(expW * 1.4);
+  const yS = Math.round(by + bh * 0.1), yE = Math.round(by + bh * 0.9);
   const colLum = new Float32Array(bw);
   for (let dx = 0; dx < bw; dx++) {
-    const px = bx + dx;
     let sum = 0, cnt = 0;
-    for (let py = yStart; py < yEnd; py += 2) {
-      const idx = (py * W + px) * 4;
-      sum += (data[idx] * 0.299 + data[idx + 1] * 0.587 + data[idx + 2] * 0.114);
+    for (let py = yS; py < yE; py += 2) {
+      const i = (py * W + bx + dx) * 4;
+      sum += 0.299 * data[i] + 0.587 * data[i+1] + 0.114 * data[i+2];
       cnt++;
     }
     colLum[dx] = sum / Math.max(1, cnt);
   }
-
-  const smooth = new Float32Array(bw);
+  const sm = new Float32Array(bw);
   for (let dx = 0; dx < bw; dx++) {
-    smooth[dx] = (colLum[Math.max(0, dx - 1)] + colLum[dx] + colLum[Math.min(bw - 1, dx + 1)]) / 3;
+    sm[dx] = (colLum[Math.max(0, dx-1)] + colLum[dx] + colLum[Math.min(bw-1, dx+1)]) / 3;
   }
-
   const cuts = [0];
-  let lastCut = 0;
-  while (lastCut + minGap < bw - minGap * 0.5) {
-    const from = lastCut + minGap;
-    const to = Math.min(bw - 4, lastCut + maxTileW);
-    let bestX = -1, lowest = 9999;
-    for (let x = from; x <= to; x++) if (smooth[x] < lowest) { lowest = smooth[x]; bestX = x; }
-    if (bestX > lastCut) { cuts.push(bestX); lastCut = bestX; } else break;
+  let last = 0;
+  while (last + minGap < bw - minGap * 0.5) {
+    const from = last + minGap, to = Math.min(bw - 4, last + maxW);
+    let best = -1, low = 9999;
+    for (let x = from; x <= to; x++) if (sm[x] < low) { low = sm[x]; best = x; }
+    if (best > last) { cuts.push(best); last = best; } else break;
   }
   cuts.push(bw);
-
   const out = [];
   for (let i = 0; i < cuts.length - 1; i++) {
-    const segW = cuts[i + 1] - cuts[i];
-    if (segW >= bh * 0.38 && segW <= bh * 1.15) {
-      out.push({ x: bx + cuts[i] + 1, y: by, w: Math.max(8, segW - 2), h: bh });
+    const sw = cuts[i+1] - cuts[i];
+    if (sw >= bh * 0.4 && sw <= bh * 1.2) {
+      out.push({ x: bx + cuts[i] + 1, y: by, w: Math.max(6, sw - 2), h: bh });
     }
   }
   return out;
 }
 
-function classifyTileColorFromPixels(data, W, H, box) {
-  let red = 0, blue = 0, yellow = 0, black = 0;
-  const sx = Math.max(0, Math.round(box.x + box.w * 0.14));
-  const ex = Math.min(W - 1, Math.round(box.x + box.w * 0.86));
-  const sy = Math.max(0, Math.round(box.y + box.h * 0.10));
-  const ey = Math.min(H - 1, Math.round(box.y + box.h * 0.85));
+// =========================================================================
+// RENK SINIFLANDIRMA (geliştirilmiş)
+// =========================================================================
+function classifyColor(data, W, H, box) {
+  // Taşın iç bölgesinde mürekkep piksellerini analiz et
+  const x0 = Math.round(box.x + box.w * 0.15);
+  const x1 = Math.round(box.x + box.w * 0.85);
+  const y0 = Math.round(box.y + box.h * 0.08);
+  const y1 = Math.round(box.y + box.h * 0.88);
 
-  for (let y = sy; y <= ey; y++) {
-    for (let x = sx; x <= ex; x++) {
-      const idx = (y * W + x) * 4;
-      const r = data[idx], g = data[idx + 1], b = data[idx + 2];
+  // Renk sayacı: her renk için mürekkep piksel yoğunluğu
+  let redCount = 0, blueCount = 0, yellowCount = 0, blackCount = 0;
+  let totalInk = 0;
+
+  for (let y = y0; y <= y1; y++) {
+    for (let x = x0; x <= x1; x++) {
+      const i = (y * W + x) * 4;
+      const r = data[i], g = data[i+1], b = data[i+2];
       const lum = 0.299 * r + 0.587 * g + 0.114 * b;
-      if (lum < 155) {
-        if (r > g + 36 && r > b + 36) {
-          if (g > 110 && r - g < 75) yellow += 1.4; else red += 1.3;
-        } else if (b > r + 24 && b > g + 10) blue += 1.5;
-        else if (g > r + 18 && b >= r) blue += 1.3;
-        else if (r > 135 && g > 105 && b < 85) yellow += 1.4;
-        else if (lum < 92) black += 1.0;
+
+      // Sadece mürekkep (koyu) pikselleri
+      if (lum < 140) {
+        totalInk++;
+        const maxC = Math.max(r, g, b), minC = Math.min(r, g, b);
+        const sat = maxC > 0 ? (maxC - minC) / maxC : 0;
+
+        // Renk ayrımı (HSV benzeri)
+        if (sat < 0.25 && lum < 90) {
+          blackCount++;
+        } else if (r > g && r > b && r - g > 30) {
+          // Kırmızı veya sarı
+          if (g > 120 && b < 100) yellowCount++;
+          else redCount++;
+        } else if (b > r && b > g) {
+          blueCount++;
+        } else if (g > r && g > b && r > 100) {
+          // Sarı-yeşilimsi (sarı mürekkep)
+          yellowCount++;
+        }
       }
     }
   }
+
+  if (totalInk < 5) return 'siyah';
+
+  // Ağırlıklı karar
   const scores = [
-    { id: 'kirmizi', val: red }, { id: 'mavi', val: blue },
-    { id: 'sari', val: yellow }, { id: 'siyah', val: black * 0.85 }
+    { id: 'kirmizi', val: redCount },
+    { id: 'mavi', val: blueCount },
+    { id: 'siyah', val: blackCount * 1.2 },
+    { id: 'sari', val: yellowCount * 1.3 }
   ];
   scores.sort((a, b) => b.val - a.val);
-  return scores[0].val > 3 ? scores[0].id : 'siyah';
+  return scores[0].val >= 3 ? scores[0].id : 'siyah';
 }
 
-function buildOkeyDigitTemplates() {
-  const templates = [];
-  const tw = 28, th = 32;
-  const c = document.createElement('canvas'); c.width = tw; c.height = th;
+// =========================================================================
+// RAKAM TANIMA (yapısal + şablon)
+// =========================================================================
+let digitTemplates = null;
+
+function buildDigitTemplates() {
+  // Her rakam için 24x32 piksel siyah-beyaz şablon üret
+  const tw = 24, th = 32;
+  const tpl = [];
+  const c = document.createElement('canvas');
+  c.width = tw; c.height = th;
   const ctx = c.getContext('2d', { willReadFrequently: true });
 
-  for (let num = 1; num <= 13; num++) {
-    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, tw, th);
-    ctx.fillStyle = '#000000';
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.font = num >= 10 ? '900 20px "Oswald", Arial, sans-serif' : '900 24px "Oswald", Arial, sans-serif';
-    ctx.fillText(String(num), tw / 2, th / 2 + 1);
+  for (let n = 1; n <= 13; n++) {
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, tw, th);
+    ctx.fillStyle = '#000';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = n >= 10 ? '900 20px Arial' : '900 26px Arial';
+    ctx.fillText(String(n), tw/2, th/2 + 2);
     const d = ctx.getImageData(0, 0, tw, th).data;
     const bin = new Uint8Array(tw * th);
-    for (let i = 0; i < bin.length; i++) bin[i] = d[i * 4] < 140 ? 1 : 0;
-    templates.push({ num, bin });
+    for (let i = 0; i < bin.length; i++) bin[i] = d[i*4] < 128 ? 1 : 0;
+    tpl.push({ num: n, bin });
   }
-  digitTemplateCache = { tw, th, templates };
+  digitTemplates = { tw, th, tpl };
 }
 
-function matchDigitByTemplate(cropCanvas) {
-  if (!digitTemplateCache) buildOkeyDigitTemplates();
-  const { tw, th, templates } = digitTemplateCache;
-  const sctx = cropCanvas.getContext('2d', { willReadFrequently: true });
-  const sw = cropCanvas.width, sh = cropCanvas.height;
-  const sdata = sctx.getImageData(0, 0, sw, sh).data;
+function recognizeNumber(srcCanvas, box) {
+  const scale = 4;
+  const cw = Math.max(24, Math.round(box.w * 0.8 * scale));
+  const ch = Math.max(32, Math.round(box.h * 0.55 * scale));
 
-  let minX = sw, maxX = 0, minY = sh, maxY = 0, ink = 0;
-  for (let y = 2; y < sh - 2; y++) for (let x = 2; x < sw - 2; x++) {
-    if (sdata[(y * sw + x) * 4] === 0) {
-      ink++;
-      if (x < minX) minX = x; if (x > maxX) maxX = x;
-      if (y < minY) minY = y; if (y > maxY) maxY = y;
+  const crop = document.createElement('canvas');
+  crop.width = cw; crop.height = ch;
+  const cctx = crop.getContext('2d', { willReadFrequently: true });
+  cctx.fillStyle = '#fff'; cctx.fillRect(0, 0, cw, ch);
+  cctx.drawImage(
+    srcCanvas,
+    box.x + box.w * 0.08, box.y + box.h * 0.05,
+    box.w * 0.84, box.h * 0.58,
+    4, 4, cw - 8, ch - 8
+  );
+
+  // Siyah-beyaz'a çevir (mürekkep = siyah)
+  const id = cctx.getImageData(0, 0, cw, ch);
+  const p = id.data;
+  let ink = 0;
+  for (let i = 0; i < p.length; i += 4) {
+    const lum = 0.299 * p[i] + 0.587 * p[i+1] + 0.114 * p[i+2];
+    const v = lum < 150 ? 0 : 255;
+    if (v === 0) ink++;
+    p[i] = p[i+1] = p[i+2] = v;
+  }
+  cctx.putImageData(id, 0, 0);
+
+  const inkRatio = ink / (cw * ch);
+  if (inkRatio < 0.02 || inkRatio > 0.6) return 0;
+
+  // Mürekkep sınırlarını bul
+  let minX = cw, maxX = 0, minY = ch, maxY = 0;
+  for (let y = 2; y < ch - 2; y++) {
+    for (let x = 2; x < cw - 2; x++) {
+      if (p[(y*cw + x) * 4] === 0) {
+        if (x < minX) minX = x; if (x > maxX) maxX = x;
+        if (y < minY) minY = y; if (y > maxY) maxY = y;
+      }
     }
   }
-  if (ink < 14 || maxX <= minX || maxY <= minY) return { num: 0, score: 0 };
+  const bw = maxX - minX + 1, bh = maxY - minY + 1;
+  if (bw < 4 || bh < 8) return 0;
 
+  // Şablon karşılaştırması
+  if (!digitTemplates) buildDigitTemplates();
+  const { tw, th, tpl } = digitTemplates;
+
+  // Normalize et
   const norm = document.createElement('canvas');
   norm.width = tw; norm.height = th;
   const nctx = norm.getContext('2d', { willReadFrequently: true });
-  nctx.fillStyle = '#ffffff'; nctx.fillRect(0, 0, tw, th);
-
-  const bw = maxX - minX + 1, bh = maxY - minY + 1;
-  const isDouble = (bw / Math.max(1, bh)) > 0.78;
-  const padX = isDouble ? 2 : 6;
-  nctx.drawImage(cropCanvas, minX, minY, bw, bh, padX, 3, tw - padX * 2, th - 6);
+  nctx.fillStyle = '#fff'; nctx.fillRect(0, 0, tw, th);
+  nctx.drawImage(crop, minX, minY, bw, bh, 3, 2, tw - 6, th - 4);
 
   const nd = nctx.getImageData(0, 0, tw, th).data;
   const obs = new Uint8Array(tw * th);
-  for (let i = 0; i < obs.length; i++) obs[i] = nd[i * 4] < 160 ? 1 : 0;
+  for (let i = 0; i < obs.length; i++) obs[i] = nd[i*4] < 128 ? 1 : 0;
 
-  let bestNum = 0, bestIoU = -1;
-  for (const tpl of templates) {
-    if (isDouble && tpl.num < 10) continue;
-    if (!isDouble && tpl.num >= 10) continue;
+  // İki haneli mi?
+  const isDouble = (bw / bh) > 0.75;
+
+  let bestNum = 0, bestScore = 0;
+  for (const t of tpl) {
+    if (isDouble && t.num < 10) continue;
+    if (!isDouble && t.num >= 10) continue;
     let inter = 0, union = 0;
     for (let i = 0; i < obs.length; i++) {
-      const a = obs[i], b = tpl.bin[i];
+      const a = obs[i], b = t.bin[i];
       if (a || b) { union++; if (a && b) inter++; }
     }
     const iou = union > 0 ? inter / union : 0;
-    if (iou > bestIoU) { bestIoU = iou; bestNum = tpl.num; }
-  }
-  return { num: bestNum, score: bestIoU };
-}
-
-async function recognizeTileNumberLocally(srcCanvas, box) {
-  const crop = document.createElement('canvas');
-  const scale = 3;
-  const cw = Math.max(28, Math.round(box.w * 0.86 * scale));
-  const ch = Math.max(28, Math.round(box.h * 0.56 * scale));
-  crop.width = cw; crop.height = ch;
-  const cctx = crop.getContext('2d', { willReadFrequently: true });
-  cctx.fillStyle = '#ffffff'; cctx.fillRect(0, 0, cw, ch);
-
-  const sx = box.x + box.w * 0.07, sy = box.y + box.h * 0.06;
-  const sw = box.w * 0.86, sh = box.h * 0.56;
-  cctx.drawImage(srcCanvas, sx, sy, sw, sh, 4, 4, cw - 8, ch - 8);
-
-  const idata = cctx.getImageData(0, 0, cw, ch);
-  const p = idata.data;
-  let dark = 0;
-  for (let i = 0; i < p.length; i += 4) {
-    const lum = p[i] * 0.299 + p[i + 1] * 0.587 + p[i + 2] * 0.114;
-    const v = lum < 146 ? 0 : 255;
-    if (v === 0) dark++;
-    p[i] = p[i + 1] = p[i + 2] = v;
-  }
-  cctx.putImageData(idata, 0, 0);
-
-  const ratio = dark / (cw * ch);
-  if (ratio < 0.025) return 0; // boş → sahte/okunamadı
-
-  const tpl = matchDigitByTemplate(crop);
-  if (tpl.score >= 0.44 && tpl.num >= 1 && tpl.num <= 13) return tpl.num;
-
-  if (localOcrReady && localOcrWorker) {
-    try {
-      const { data: { text } } = await localOcrWorker.recognize(crop);
-      const digits = (text || '').replace(/\D/g, '');
-      const parsed = parseInt(digits, 10);
-      if (parsed >= 1 && parsed <= 13) return parsed;
-      if (digits.length >= 2) {
-        const two = parseInt(digits.slice(0, 2), 10);
-        if (two >= 10 && two <= 13) return two;
-        const one = parseInt(digits[0], 10);
-        if (one >= 1 && one <= 9) return one;
-      }
-    } catch (_) {}
+    if (iou > bestScore) { bestScore = iou; bestNum = t.num; }
   }
 
-  // Belirsiz → 0 döndür, tahmin etme
-  return 0;
-}
-
-function drawYellowBoundingBoxes(tiles, vw, vh) {
-  const overlay = document.getElementById('ar-box-canvas');
-  const rect = overlay.getBoundingClientRect();
-  overlay.width = rect.width;
-  overlay.height = rect.height;
-  const ctx = overlay.getContext('2d');
-  ctx.clearRect(0, 0, overlay.width, overlay.height);
-
-  const scale = Math.max(overlay.width / vw, overlay.height / vh);
-  const drawW = vw * scale, drawH = vh * scale;
-  const ox = (overlay.width - drawW) / 2, oy = (overlay.height - drawH) / 2;
-
-  const rr = (ctx.roundRect ? 'roundRect' : 'rect');
-
-  tiles.forEach(t => {
-    if (!t.box || t.box.length !== 4) return;
-    const [ymin, xmin, ymax, xmax] = t.box;
-    const x = ox + (xmin / 1000) * drawW;
-    const y = oy + (ymin / 1000) * drawH;
-    const w = ((xmax - xmin) / 1000) * drawW;
-    const h = ((ymax - ymin) / 1000) * drawH;
-    ctx.strokeStyle = '#facc15';
-    ctx.lineWidth = 2.6;
-    ctx.beginPath();
-    if (rr === 'roundRect') ctx.roundRect(x, y, w, h, 6);
-    else ctx.rect(x, y, w, h);
-    ctx.stroke();
-    ctx.fillStyle = 'rgba(250, 204, 21, 0.14)';
-    ctx.fill();
-  });
+  // Eşik: 0.35'in altındaysa okunamadı
+  if (bestScore < 0.35) return 0;
+  return bestNum;
 }
 
 // =========================================================================
-// 5. ÇÖZÜCÜ
+// ÇÖZÜCÜ
 // =========================================================================
-function getOkeyTileInfo() {
+function getOkey() {
   if (!indicatorTile) return null;
   return { color: indicatorTile.color, number: indicatorTile.number === 13 ? 1 : indicatorTile.number + 1 };
 }
-function isActualOkey(tile, okeyInfo) {
-  if (!okeyInfo || tile.isSahte) return false;
-  return tile.color === okeyInfo.color && tile.number === okeyInfo.number;
+
+function isOkey(t, ok) {
+  if (!ok || t.isSahte) return false;
+  return t.color === ok.color && t.number === ok.number;
 }
 
-function solveHandOptimal(rawTiles) {
-  const okeyInfo = getOkeyTileInfo();
+function solveHand(tiles) {
+  const ok = getOkey();
   const okeys = [], normals = [];
-  rawTiles.forEach(t => {
-    if (isActualOkey(t, okeyInfo)) okeys.push({ ...t, isOkeyJoker: true });
-    else if (t.isSahte && okeyInfo) normals.push({ ...t, effColor: okeyInfo.color, effNum: okeyInfo.number, isOkeyJoker: false });
-    else normals.push({ ...t, effColor: t.color, effNum: t.number, isOkeyJoker: false });
+  tiles.forEach(t => {
+    if (isOkey(t, ok)) okeys.push({ ...t, isJoker: true });
+    else if (t.isSahte && ok) normals.push({ ...t, effColor: ok.color, effNum: ok.number });
+    else normals.push({ ...t, effColor: t.color, effNum: t.number });
   });
 
-  // ÇİFT
-  const pairGroups = [], pairUsed = new Set();
+  // Çift
+  const pairs = [], used = new Set();
   for (let i = 0; i < normals.length; i++) {
-    if (pairUsed.has(normals[i].id)) continue;
+    if (used.has(normals[i].id)) continue;
     for (let j = i + 1; j < normals.length; j++) {
-      if (pairUsed.has(normals[j].id)) continue;
+      if (used.has(normals[j].id)) continue;
       if (normals[i].effColor === normals[j].effColor && normals[i].effNum === normals[j].effNum) {
-        pairUsed.add(normals[i].id); pairUsed.add(normals[j].id);
-        pairGroups.push([
-          { ...normals[i], assignedNum: normals[i].effNum },
-          { ...normals[j], assignedNum: normals[j].effNum }
-        ]);
+        used.add(normals[i].id); used.add(normals[j].id);
+        pairs.push([normals[i], normals[j]]);
         break;
       }
     }
   }
-  const leftoverForPair = normals.filter(t => !pairUsed.has(t.id)).sort((a, b) => b.effNum - a.effNum);
+  const pairLeft = normals.filter(t => !used.has(t.id)).sort((a, b) => b.effNum - a.effNum);
   const remOk = [...okeys];
-  while (remOk.length > 0 && leftoverForPair.length > 0) {
-    const ok = remOk.shift(), partner = leftoverForPair.shift();
-    pairUsed.add(partner.id);
-    pairGroups.push([
-      { ...partner, assignedNum: partner.effNum },
-      { ...ok, assignedNum: partner.effNum, effColor: partner.effColor }
-    ]);
+  while (remOk.length > 0 && pairLeft.length > 0) {
+    pairs.push([pairLeft.shift(), remOk.shift()]);
   }
   while (remOk.length >= 2) {
-    pairGroups.push([{ ...remOk.shift(), assignedNum: 13 }, { ...remOk.shift(), assignedNum: 13 }]);
+    pairs.push([remOk.shift(), remOk.shift()]);
   }
   const pairLeftovers = [
-    ...normals.filter(t => !pairUsed.has(t.id)).map(t => ({ ...t, assignedNum: t.effNum })),
-    ...remOk.map(ok => ({ ...ok, assignedNum: okeyInfo ? okeyInfo.number : 13 }))
+    ...normals.filter(t => !used.has(t.id)),
+    ...remOk
   ];
-  const pairLeftoverSum = pairLeftovers.reduce((a, t) => a + t.assignedNum, 0);
+  const pairPenalty = pairLeftovers.reduce((s, t) => s + (t.effNum || 0), 0) * 2;
 
-  // SERİ
-  function buildAllCandidates(pool) {
+  // Seri
+  function candidates(pool) {
     const list = [];
-    for (let num = 1; num <= 13; num++) {
+    // Aynı sayı farklı renk
+    for (let n = 1; n <= 13; n++) {
       const byColor = new Map();
-      pool.forEach(t => { if (t.effNum === num && !byColor.has(t.effColor)) byColor.set(t.effColor, t); });
+      pool.forEach(t => { if (t.effNum === n && !byColor.has(t.effColor)) byColor.set(t.effColor, t); });
       const d = Array.from(byColor.values());
-      if (d.length >= 3) list.push({ tiles: d.slice(0, 3), score: num * 3, okeysUsed: 0, assignedNums: [num, num, num] });
-      if (d.length === 4) list.push({ tiles: d, score: num * 4, okeysUsed: 0, assignedNums: [num, num, num, num] });
-      if (d.length >= 2 && okeys.length >= 1) list.push({ tiles: d.slice(0, 2), score: num * 3, okeysUsed: 1, assignedNums: [num, num, num] });
+      if (d.length >= 3) list.push({ tiles: d.slice(0, 3), score: n * 3, needOk: 0, assignNums: [n, n, n] });
+      if (d.length === 4) list.push({ tiles: d, score: n * 4, needOk: 0, assignNums: [n, n, n, n] });
+      if (d.length >= 2 && okeys.length >= 1) list.push({ tiles: d.slice(0, 2), score: n * 3, needOk: 1, assignNums: [n, n, n] });
     }
+    // Aynı renk ardışık
     COLORS.forEach(c => {
       const byNum = new Map();
       pool.forEach(t => { if (t.effColor === c.id && !byNum.has(t.effNum)) byNum.set(t.effNum, t); });
-      for (let start = 1; start <= 13; start++) {
+      for (let s = 1; s <= 13; s++) {
         for (let len = 3; len <= 13; len++) {
           const seq = [];
-          let ok = true;
+          let okSeq = true;
           for (let k = 0; k < len; k++) {
-            const v = ((start - 1 + k) % 13) + 1;
-            if (k > 0 && v === 1 && k < len - 1) { ok = false; break; }
+            const v = ((s - 1 + k) % 13) + 1;
+            if (k > 0 && v === 1 && k < len - 1) { okSeq = false; break; }
             seq.push(v);
           }
-          if (!ok) continue;
-          const matched = []; let missing = 0;
-          for (const n of seq) { if (byNum.has(n)) matched.push(byNum.get(n)); else missing++; }
-          if (missing <= okeys.length && matched.length >= 2) {
-            list.push({ tiles: matched, score: seq.reduce((s, n) => s + n, 0), okeysUsed: missing, seqNums: seq, seqColor: c.id });
+          if (!okSeq) continue;
+          const matched = []; let miss = 0;
+          for (const n of seq) {
+            if (byNum.has(n)) matched.push(byNum.get(n));
+            else miss++;
+          }
+          if (miss <= okeys.length && matched.length >= 2) {
+            list.push({ tiles: matched, score: seq.reduce((a,b)=>a+b,0), needOk: miss, seq, seqColor: c.id });
           }
         }
       }
     });
-    list.sort((a, b) => (b.score - b.okeysUsed * 2) - (a.score - a.okeysUsed * 2));
-    return list.slice(0, 50);
+    list.sort((a, b) => (b.score - b.needOk * 2) - (a.score - a.needOk * 2));
+    return list.slice(0, 40);
   }
 
-  const candidates = buildAllCandidates(normals);
+  const cands = candidates(normals);
   let best = { score: 0, groups: [] };
   const t0 = performance.now();
 
-  function search(idx, used, okeysLeft, score, groups) {
-    if (performance.now() - t0 > 250) return; // zaman limiti
+  function dfs(idx, used, okLeft, score, groups) {
+    if (performance.now() - t0 > 200) return;
     if (score > best.score) best = { score, groups: [...groups] };
-    if (idx >= candidates.length || groups.length >= 7) return;
-    const cand = candidates[idx];
-    if (cand.okeysUsed <= okeysLeft && cand.tiles.every(t => !used.has(t.id))) {
-      const next = new Set(used);
-      cand.tiles.forEach(t => next.add(t.id));
-      groups.push(cand);
-      search(idx + 1, next, okeysLeft - cand.okeysUsed, score + cand.score, groups);
+    if (idx >= cands.length || groups.length >= 7) return;
+    const c = cands[idx];
+    if (c.needOk <= okLeft && c.tiles.every(t => !used.has(t.id))) {
+      const nUsed = new Set(used);
+      c.tiles.forEach(t => nUsed.add(t.id));
+      groups.push(c);
+      dfs(idx + 1, nUsed, okLeft - c.needOk, score + c.score, groups);
       groups.pop();
     }
-    search(idx + 1, used, okeysLeft, score, groups);
+    dfs(idx + 1, used, okLeft, score, groups);
   }
-  search(0, new Set(), okeys.length, 0, []);
+  dfs(0, new Set(), okeys.length, 0, []);
 
-  const usedNormal = new Set();
+  // Grupları okey ile tamamla
+  const usedN = new Set();
   let okIdx = 0;
-  const finalSeri = best.groups.map(grp => {
-    grp.tiles.forEach(t => usedNormal.add(t.id));
-    if (grp.seqNums) {
-      const byN = new Map(grp.tiles.map(t => [t.effNum, t]));
-      return grp.seqNums.map(n => {
+  const finalGroups = best.groups.map(g => {
+    g.tiles.forEach(t => usedN.add(t.id));
+    if (g.seq) {
+      const byN = new Map(g.tiles.map(t => [t.effNum, t]));
+      return g.seq.map(n => {
         if (byN.has(n)) return { ...byN.get(n), assignedNum: n };
         const ok = okeys[okIdx++];
-        return { ...ok, assignedNum: n, effColor: grp.seqColor };
+        return { ...ok, assignedNum: n, effColor: g.seqColor };
       });
     }
-    const num = grp.assignedNums[0];
-    const items = grp.tiles.map(t => ({ ...t, assignedNum: num }));
-    for (let k = 0; k < grp.okeysUsed; k++) items.push({ ...okeys[okIdx++], assignedNum: num });
+    const num = g.assignNums[0];
+    const items = g.tiles.map(t => ({ ...t, assignedNum: num }));
+    for (let k = 0; k < g.needOk; k++) items.push({ ...okeys[okIdx++], assignedNum: num });
     return items;
   });
 
+  // Kalan okey'leri 3'lü setlere 4. olarak ekle
   while (okIdx < okeys.length) {
     const extra = okeys[okIdx];
-    let attached = false;
-    for (const grp of finalSeri) {
-      const same = grp.every(x => x.assignedNum === grp[0].assignedNum);
-      if (same && grp.length === 3) {
-        grp.push({ ...extra, assignedNum: grp[0].assignedNum });
-        best.score += grp[0].assignedNum;
-        okIdx++; attached = true; break;
+    let added = false;
+    for (const g of finalGroups) {
+      const same = g.every(x => x.assignedNum === g[0].assignedNum);
+      if (same && g.length === 3) {
+        g.push({ ...extra, assignedNum: g[0].assignedNum });
+        best.score += g[0].assignedNum;
+        okIdx++; added = true; break;
       }
     }
-    if (!attached) break;
+    if (!added) break;
   }
 
-  const leftoverNormals = normals.filter(t => !usedNormal.has(t.id)).map(t => ({ ...t, assignedNum: t.effNum }));
-  const leftoverOkeys = okeys.slice(okIdx).map(ok => ({ ...ok, assignedNum: okeyInfo ? okeyInfo.number : 13 }));
-  const seriLeftovers = [...leftoverNormals, ...leftoverOkeys];
-  const seriLeftoverSum = seriLeftovers.reduce((a, t) => a + t.assignedNum, 0);
+  const seriLeft = [
+    ...normals.filter(t => !usedN.has(t.id)).map(t => ({ ...t, assignedNum: t.effNum })),
+    ...okeys.slice(okIdx).map(t => ({ ...t, assignedNum: ok ? ok.number : 13 }))
+  ];
+  const seriLeftSum = seriLeft.reduce((a, t) => a + (t.assignedNum || 0), 0);
 
   return {
-    seriGroups: finalSeri,
+    seriGroups: finalGroups,
     seriScore: best.score,
-    seriLeftovers, seriLeftoverSum,
-    pairGroups, pairCount: pairGroups.length,
-    pairLeftovers, pairLeftoverSum,
-    allTilesSum: best.score + seriLeftoverSum
+    seriLeftovers: seriLeft,
+    seriLeftoverSum: seriLeftSum,
+    pairGroups: pairs,
+    pairCount: pairs.length,
+    pairLeftovers,
+    pairPenalty,
+    allTilesSum: best.score + seriLeftSum
   };
 }
 
 // =========================================================================
-// 6. METRİK + ARAYÜZ
+// ARAYÜZ GÜNCELLEME
 // =========================================================================
 function switchArrangeTab(tab) {
   arrangeTab = tab;
-  const bs = document.getElementById('btn-mode-seri'), bc = document.getElementById('btn-mode-cift');
+  const bs = document.getElementById('btn-mode-seri');
+  const bc = document.getElementById('btn-mode-cift');
   if (tab === 'seri') {
     bs.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow';
     bc.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white';
@@ -1102,45 +933,52 @@ function switchArrangeTab(tab) {
 function recalculateAllMetrics() {
   const target = gameMode === '101' ? 21 : 14;
   const total = detectedTiles.length;
-  const solved = solveHandOptimal(detectedTiles);
+  const solved = solveHand(detectedTiles);
 
   document.getElementById('top-rack-status').textContent = total === 0
-    ? `0/${target} · ıstakayı yavaşça tarayın`
-    : `${total}/${target} · ${arrangeTab === 'seri' ? 'Seri Dizilimi' : 'Çift Dizilimi'}`;
+    ? `0/${target} · ıstaka taranıyor`
+    : `${total}/${target} · ${arrangeTab === 'seri' ? 'Seri' : 'Çift'}`;
 
   document.getElementById('stat-tile-ratio').textContent = `${total}/${target}`;
   document.getElementById('stat-best-total').textContent = solved.seriScore;
-  document.getElementById('stat-threshold-suffix').textContent = gameMode === '101' ? '/101' : '/Okey';
+  document.getElementById('stat-threshold-suffix').textContent = gameMode === '101' ? '/101' : '';
 
-  const openBadge = document.getElementById('pill-open-badge');
+  const badge = document.getElementById('pill-open-badge');
   if (gameMode === '101') {
     if (solved.seriScore >= 101) {
-      openBadge.textContent = '101 Açıyor ✓';
-      openBadge.className = 'px-2 py-0.5 rounded-full bg-emerald-500/25 border border-emerald-400/50 text-[10px] font-extrabold text-emerald-300';
+      badge.textContent = '101 Açıyor ✓';
+      badge.className = 'px-2 py-0.5 rounded-full bg-emerald-500/25 border border-emerald-400/50 text-[10px] font-extrabold text-emerald-300';
     } else {
-      openBadge.textContent = `${101 - solved.seriScore} Puan Kaldı`;
-      openBadge.className = 'px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300';
+      badge.textContent = `${101 - solved.seriScore} Puan Kaldı`;
+      badge.className = 'px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300';
     }
   } else {
     if (total >= 14 && solved.seriLeftovers.length <= 1) {
-      openBadge.textContent = 'El Biter ✓';
-      openBadge.className = 'px-2 py-0.5 rounded-full bg-emerald-500/25 border border-emerald-400/50 text-[10px] font-extrabold text-emerald-300';
+      badge.textContent = 'El Biter ✓';
+      badge.className = 'px-2 py-0.5 rounded-full bg-emerald-500/25 border border-emerald-400/50 text-[10px] font-extrabold text-emerald-300';
     } else {
-      openBadge.textContent = `${solved.seriLeftovers.length} Taş Kaldı`;
-      openBadge.className = 'px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300';
+      badge.textContent = `${solved.seriLeftovers.length} Taş Kaldı`;
+      badge.className = 'px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300';
     }
   }
 
   document.getElementById('stat-pair-count').textContent = solved.pairCount;
   const ps = document.getElementById('pill-pair-status');
-  if (solved.pairCount >= 5) { ps.textContent = '5 Çift Tamam ✓'; ps.className = 'mt-1.5 text-[10px] font-extrabold text-emerald-400'; }
-  else { ps.textContent = `${5 - solved.pairCount} Çift Kaldı`; ps.className = 'mt-1.5 text-[10px] font-bold text-amber-300/90'; }
+  if (solved.pairCount >= 5) {
+    ps.textContent = '5 Çift Tamam ✓';
+    ps.className = 'mt-1.5 text-[10px] font-extrabold text-emerald-400';
+  } else {
+    ps.textContent = `${5 - solved.pairCount} Çift Kaldı`;
+    ps.className = 'mt-1.5 text-[10px] font-bold text-amber-300/90';
+  }
 
   document.getElementById('stat-seri-leftover').textContent = solved.seriLeftoverSum;
   document.getElementById('stat-all-tiles-sum').textContent = solved.allTilesSum;
-  document.getElementById('stat-pair-leftover-x2').textContent = solved.pairLeftoverSum * 2;
+  document.getElementById('stat-pair-leftover-x2').textContent = solved.pairPenalty;
 
-  const indNum = document.getElementById('indicator-card-num'), indDot = document.getElementById('indicator-card-dot');
+  // Gösterge güncelle
+  const indNum = document.getElementById('indicator-card-num');
+  const indDot = document.getElementById('indicator-card-dot');
   if (indicatorTile) {
     const c = COLORS.find(x => x.id === indicatorTile.color);
     indNum.textContent = indicatorTile.number;
@@ -1152,32 +990,36 @@ function recalculateAllMetrics() {
     indDot.style.backgroundColor = '#94a3b8';
   }
 
-  renderArrangedWoodenRack(solved);
+  renderRack(solved);
 }
 
 function renderEmptyWoodenRack() {
-  const t = document.getElementById('wooden-top-row'), b = document.getElementById('wooden-bottom-row');
+  const t = document.getElementById('wooden-top-row');
+  const b = document.getElementById('wooden-bottom-row');
   t.innerHTML = ''; b.innerHTML = '';
-  for (let i = 0; i < 13; i++) { t.appendChild(createEmptySlotDiv()); b.appendChild(createEmptySlotDiv()); }
+  for (let i = 0; i < 13; i++) { t.appendChild(emptySlot()); b.appendChild(emptySlot()); }
 }
-function createEmptySlotDiv() {
+
+function emptySlot() {
   const d = document.createElement('div');
   d.className = 'rack-slot-cell aspect-[3/4.1] w-full';
   return d;
 }
 
-function renderArrangedWoodenRack(solved) {
-  const t = document.getElementById('wooden-top-row'), b = document.getElementById('wooden-bottom-row');
+function renderRack(solved) {
+  const t = document.getElementById('wooden-top-row');
+  const b = document.getElementById('wooden-bottom-row');
   t.innerHTML = ''; b.innerHTML = '';
 
   const groups = arrangeTab === 'seri' ? solved.seriGroups : solved.pairGroups;
   const leftovers = arrangeTab === 'seri' ? solved.seriLeftovers : solved.pairLeftovers;
 
-  const top = new Array(13).fill(null), bot = new Array(13).fill(null);
+  const top = new Array(13).fill(null);
+  const bot = new Array(13).fill(null);
   let row = 0, col = 0;
-  groups.forEach(grp => {
-    if (row === 0 && col + grp.length > 13) { row = 1; col = 0; }
-    grp.forEach(tile => {
+  groups.forEach(g => {
+    if (row === 0 && col + g.length > 13) { row = 1; col = 0; }
+    g.forEach(tile => {
       if (row === 0 && col < 13) top[col++] = { tile, valid: true };
       else if (row === 1 && col < 13) bot[col++] = { tile, valid: true };
     });
@@ -1196,27 +1038,20 @@ function renderArrangedWoodenRack(solved) {
   }
 
   for (let i = 0; i < 13; i++) {
-    t.appendChild(top[i] ? createTileElement(top[i].tile, top[i].valid) : createEmptySlotDiv());
-    b.appendChild(bot[i] ? createTileElement(bot[i].tile, bot[i].valid) : createEmptySlotDiv());
+    t.appendChild(top[i] ? makeTile(top[i].tile, top[i].valid) : emptySlot());
+    b.appendChild(bot[i] ? makeTile(bot[i].tile, bot[i].valid) : emptySlot());
   }
 }
 
-function createTileElement(tile, valid) {
+function makeTile(tile, valid) {
   const btn = document.createElement('button');
   btn.type = 'button';
-  btn.onclick = () => removeSingleTileById(tile.id);
-  btn.title = 'Çıkarmak için dokunun';
-  btn.setAttribute('aria-label', 'Taşı çıkar');
+  btn.onclick = () => removeTile(tile.id);
+  btn.className = 'okey-tile aspect-[3/4.1] w-full cursor-pointer ' + (valid ? 'tile-valid-group' : '');
 
-  const isOkey = Boolean(tile.isOkeyJoker);
-  const isSahte = Boolean(tile.isSahte);
-  const cid = tile.effColor || tile.color;
-  const c = COLORS.find(x => x.id === cid);
-
-  let cls = 'okey-tile aspect-[3/4.1] w-full cursor-pointer ';
-  if (isOkey) cls += 'tile-active-okey ';
-  else if (valid) cls += 'tile-valid-group ';
-  btn.className = cls;
+  const colorId = tile.effColor || tile.color;
+  const c = COLORS.find(x => x.id === colorId);
+  const isSahte = tile.isSahte;
 
   const num = document.createElement('span');
   num.className = `text-[11px] sm:text-xs font-bold leading-none ${isSahte ? 'c-sahte' : (c ? c.textClass : 'c-siyah')}`;
@@ -1227,74 +1062,78 @@ function createTileElement(tile, valid) {
   dot.style.backgroundColor = isSahte ? '#7c3aed' : (c ? c.hex : '#0f172a');
 
   btn.appendChild(num); btn.appendChild(dot);
-
-  if (isOkey) {
-    const badge = document.createElement('span');
-    badge.className = 'absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-500 text-[7px] font-black text-slate-950 flex items-center justify-center';
-    badge.textContent = 'O';
-    btn.appendChild(badge);
-  }
   return btn;
 }
 
-function removeSingleTileById(id) {
+function removeTile(id) {
   const i = detectedTiles.findIndex(t => t.id === id);
-  if (i !== -1) { detectedTiles.splice(i, 1); recalculateAllMetrics(); showToast('Taş çıkarıldı'); }
+  if (i !== -1) {
+    detectedTiles.splice(i, 1);
+    recalculateAllMetrics();
+    showToast('Taş çıkarıldı');
+  }
 }
 
 function resetScannedHand() {
   detectedTiles = [];
-  scanVoteBucket.clear();
   const overlay = document.getElementById('ar-box-canvas');
-  const ctx = overlay.getContext('2d');
-  ctx.clearRect(0, 0, overlay.width, overlay.height);
+  overlay.getContext('2d').clearRect(0, 0, overlay.width, overlay.height);
   document.getElementById('camera-reticle').classList.remove('reticle-active');
   recalculateAllMetrics();
-  showToast('Istaka sıfırlandı');
+  showToast('Sıfırlandı');
 }
 
 // =========================================================================
-// 7. PENCERELER
+// PENCERELER
 // =========================================================================
 function buildTilePickers() {
   const ind = document.getElementById('indicator-palette-container');
   const man = document.getElementById('manual-tile-palette');
   ind.innerHTML = ''; man.innerHTML = '';
+
   COLORS.forEach(c => {
-    const ri = document.createElement('div'), rm = document.createElement('div');
+    const ri = document.createElement('div');
+    const rm = document.createElement('div');
     ri.style.gridTemplateColumns = 'repeat(13, minmax(0, 1fr))';
     rm.style.gridTemplateColumns = 'repeat(13, minmax(0, 1fr))';
     ri.className = 'grid gap-1'; rm.className = 'grid gap-1';
+
     for (let n = 1; n <= 13; n++) {
       const b1 = document.createElement('button');
       b1.type = 'button';
       b1.className = `okey-tile py-1.5 text-xs font-extrabold ${c.textClass}`;
       b1.textContent = n;
-      b1.onclick = () => selectIndicatorTile(c.id, n);
+      b1.onclick = () => { selectIndicator(c.id, n); closeIndicatorPickerModal(); };
       ri.appendChild(b1);
 
       const b2 = document.createElement('button');
       b2.type = 'button';
       b2.className = `okey-tile py-1.5 text-xs font-extrabold ${c.textClass}`;
       b2.textContent = n;
-      b2.onclick = () => addManualTile(c.id, n, false);
+      b2.onclick = () => addTile(c.id, n, false);
       rm.appendChild(b2);
     }
     ind.appendChild(ri); man.appendChild(rm);
   });
-  const sahte = document.createElement('button');
-  sahte.type = 'button';
-  sahte.className = 'w-full py-2 mt-1 rounded-xl bg-purple-500/20 border border-purple-400/40 text-xs font-extrabold text-purple-200';
-  sahte.textContent = '★ Sahte Okey Ekle';
-  sahte.onclick = () => addManualTile('sahte', 0, true);
-  man.appendChild(sahte);
+
+  const s = document.createElement('button');
+  s.type = 'button';
+  s.className = 'w-full py-2 mt-1 rounded-xl bg-purple-500/20 border border-purple-400/40 text-xs font-extrabold text-purple-200';
+  s.textContent = '★ Sahte Okey Ekle';
+  s.onclick = () => addTile('sahte', 0, true);
+  man.appendChild(s);
 }
 
-function openIndicatorPickerModal() { updateIndicatorPreview(); document.getElementById('indicator-modal').classList.remove('hidden'); }
+function openIndicatorPickerModal() { updateIndPreview(); document.getElementById('indicator-modal').classList.remove('hidden'); }
 function closeIndicatorPickerModal() { document.getElementById('indicator-modal').classList.add('hidden'); }
-function selectIndicatorTile(color, number) { indicatorTile = { color, number }; updateIndicatorPreview(); recalculateAllMetrics(); }
-function clearIndicatorTile() { indicatorTile = null; updateIndicatorPreview(); recalculateAllMetrics(); }
-function updateIndicatorPreview() {
+function selectIndicator(c, n) {
+  indicatorTile = { color: c, number: n };
+  updateIndPreview();
+  recalculateAllMetrics();
+  showToast('Gösterge: ' + COLORS.find(x => x.id === c).name + ' ' + n);
+}
+function clearIndicatorTile() { indicatorTile = null; updateIndPreview(); recalculateAllMetrics(); }
+function updateIndPreview() {
   const el = document.getElementById('modal-okey-preview');
   if (!indicatorTile) { el.textContent = 'Seçili Gösterge Yok'; return; }
   const c = COLORS.find(x => x.id === indicatorTile.color);
@@ -1304,19 +1143,20 @@ function updateIndicatorPreview() {
 
 function openManualTileModal() { document.getElementById('manual-tile-modal').classList.remove('hidden'); }
 function closeManualTileModal() { document.getElementById('manual-tile-modal').classList.add('hidden'); }
-function addManualTile(color, number, isSahte) {
+function addTile(color, number, isSahte) {
   const limit = gameMode === '101' ? 21 : 14;
-  if (detectedTiles.length >= limit) { showToast(`Maksimum ${limit} taş eklenebilir`); return; }
-  detectedTiles.push({ id: `man_${Date.now()}_${Math.random()}`, color, number, isSahte, box: null });
+  if (detectedTiles.length >= limit) { showToast(`Maksimum ${limit} taş`); return; }
+  detectedTiles.push({ id: 'man_' + Date.now() + '_' + Math.random(), color, number, isSahte });
   recalculateAllMetrics();
-  showToast(isSahte ? 'Sahte Okey eklendi' : `${number} eklendi`);
+  showToast(isSahte ? 'Sahte Okey eklendi' : number + ' eklendi');
 }
 
-function openSettingsModal() { updateGameModeButtonsUI(); document.getElementById('settings-modal').classList.remove('hidden'); }
+function openSettingsModal() { updateGameModeUI(); document.getElementById('settings-modal').classList.remove('hidden'); }
 function closeSettingsModal() { document.getElementById('settings-modal').classList.add('hidden'); }
-function changeGameModeFromSettings(mode) { gameMode = mode; updateGameModeButtonsUI(); recalculateAllMetrics(); }
-function updateGameModeButtonsUI() {
-  const a = document.getElementById('set-mode-101'), b = document.getElementById('set-mode-14');
+function changeGameMode(mode) { gameMode = mode; updateGameModeUI(); recalculateAllMetrics(); }
+function updateGameModeUI() {
+  const a = document.getElementById('set-mode-101');
+  const b = document.getElementById('set-mode-14');
   if (!a || !b) return;
   if (gameMode === '101') {
     a.className = 'px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold';
@@ -1337,23 +1177,23 @@ function renderYazboz() {
     card.className = 'bg-slate-900/90 border border-slate-700/80 rounded-2xl p-3 flex flex-col gap-2';
     card.innerHTML = `
       <div class="flex items-center justify-between">
-        <input type="text" value="${p.name.replace(/"/g,'&quot;')}" onchange="renameYazboz(${i}, this.value)" class="bg-transparent text-xs font-extrabold text-amber-300 w-24 focus:outline-none border-b border-transparent focus:border-amber-400">
+        <input type="text" value="${p.name.replace(/"/g,'&quot;')}" onchange="renamePlayer(${i}, this.value)" class="bg-transparent text-xs font-extrabold text-amber-300 w-24 focus:outline-none border-b border-transparent focus:border-amber-400">
         <span class="text-lg font-black text-white">${p.score}</span>
       </div>
       <div class="grid grid-cols-3 gap-1">
-        <button onclick="yazbozDelta(${i}, 101)" class="py-1 rounded-lg bg-red-500/20 text-red-300 text-[11px] font-extrabold">+101</button>
-        <button onclick="yazbozDelta(${i}, -101)" class="py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[11px] font-extrabold">-101</button>
-        <button onclick="yazbozCustom(${i})" class="py-1 rounded-lg bg-slate-800 text-slate-200 text-[11px] font-bold">±Sayı</button>
+        <button onclick="playerDelta(${i}, 101)" class="py-1 rounded-lg bg-red-500/20 text-red-300 text-[11px] font-extrabold">+101</button>
+        <button onclick="playerDelta(${i}, -101)" class="py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[11px] font-extrabold">-101</button>
+        <button onclick="playerCustom(${i})" class="py-1 rounded-lg bg-slate-800 text-slate-200 text-[11px] font-bold">±Sayı</button>
       </div>`;
     g.appendChild(card);
   });
 }
-function renameYazboz(i, v) { yazbozPlayers[i].name = v.trim() || `Oyuncu ${i + 1}`; localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers)); }
-function yazbozDelta(i, d) { yazbozPlayers[i].score += d; localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers)); renderYazboz(); }
-function yazbozCustom(i) {
-  const v = window.prompt(`${yazbozPlayers[i].name} için puan (örn: 45 veya -202):`);
+function renamePlayer(i, v) { yazbozPlayers[i].name = v.trim() || 'Oyuncu ' + (i+1); localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers)); }
+function playerDelta(i, d) { yazbozPlayers[i].score += d; localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers)); renderYazboz(); }
+function playerCustom(i) {
+  const v = window.prompt(yazbozPlayers[i].name + ' için puan:');
   const n = parseInt(v, 10);
-  if (!isNaN(n)) yazbozDelta(i, n);
+  if (!isNaN(n)) playerDelta(i, n);
 }
 function resetYazbozScores() { yazbozPlayers.forEach(p => p.score = 0); localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers)); renderYazboz(); }
 
@@ -1369,9 +1209,41 @@ function loadSample21Hand() {
     { color: 'sari', number: 8 }, { color: 'mavi', number: 3 }, { color: 'kirmizi', number: 3 },
     { color: 'siyah', number: 9 }
   ];
-  detectedTiles = sample.map((t, i) => ({ id: `sample_${i}`, color: t.color, number: t.number, isSahte: false, box: null }));
+  detectedTiles = sample.map((t, i) => ({ id: 'sample_' + i, color: t.color, number: t.number, isSahte: false }));
   recalculateAllMetrics();
-  showToast('Örnek 21 taş yüklendi (Gösterge: Mavi 4 → Okey: Mavi 5)');
+  showToast('Örnek el yüklendi');
+}
+
+async function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  closeSettingsModal();
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = async () => {
+      const maxDim = 900;
+      const sc = Math.min(1, maxDim / Math.max(img.width, img.height));
+      const w = Math.round(img.width * sc), h = Math.round(img.height * sc);
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      const found = await detectTiles(c);
+      if (found.length > 0) {
+        detectedTiles = found.slice(0, gameMode === '101' ? 21 : 14).map((t, i) => ({
+          id: 'photo_' + Date.now() + '_' + i,
+          color: t.color, number: t.number, isSahte: t.isSahte
+        }));
+        recalculateAllMetrics();
+        showToast(`${detectedTiles.length} taş okundu`);
+      } else {
+        showToast('Fotoğrafta taş bulunamadı');
+      }
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+  event.target.value = '';
 }
 
 let toastTimer = null;
