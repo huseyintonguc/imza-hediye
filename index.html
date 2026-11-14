@@ -298,14 +298,14 @@
                     </div>
                 </div>
 
-                <!-- Alt 3 Sütun: SERİ KALAN | TÜM TAŞLAR | ÇİFT KALAN ×2 -->
+                <!-- Alt 3 Sütun: ORTALAR TOPLAMI | EL TOPLAMI | ÇİFT KALAN ×2 -->
                 <div class="grid grid-cols-3 gap-2 pt-2 text-center">
                     <div>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">SERİ KALAN</div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">ORTALAR TOPLAMI</div>
                         <div id="stat-seri-leftover" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div>
                     </div>
                     <div class="border-x border-slate-700/50">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">TÜM TAŞLAR</div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase">EL TOPLAMI</div>
                         <div id="stat-all-tiles-sum" class="text-sm sm:text-base font-black text-white mt-0.5">0</div>
                     </div>
                     <div>
@@ -1291,17 +1291,18 @@
 
                     for (let start = 1; start <= 13; start++) {
                         for (let len = 3; len <= 13; len++) {
+                            // 101 Okey'de 12-13-1 yasaktır; sadece klasik modda (14 taş) 13'ten sonra 1 (14 puan) bağlanabilir
+                            if (gameMode === '101' && start + len - 1 > 13) continue;
+                            if (gameMode !== '101' && start + len - 1 > 14) continue;
+
                             const seqNums = [];
-                            let validCycle = true;
+                            const scoreNums = [];
                             for (let k = 0; k < len; k++) {
-                                const val = ((start - 1 + k) % 13) + 1;
-                                if (k > 0 && val === 1 && k < len - 1) {
-                                    validCycle = false;
-                                    break;
-                                }
-                                seqNums.push(val);
+                                const rawVal = start + k;
+                                const tileVal = rawVal === 14 ? 1 : rawVal;
+                                seqNums.push(tileVal);
+                                scoreNums.push(rawVal); // Klasik modda 12-13-1'deki 1, 14 puan sayılır
                             }
-                            if (!validCycle) continue;
 
                             const matched = [];
                             let missing = 0;
@@ -1311,7 +1312,7 @@
                             }
 
                             if (missing <= okeys.length && matched.length >= 2) {
-                                const score = seqNums.reduce((s, n) => s + n, 0);
+                                const score = scoreNums.reduce((s, n) => s + n, 0);
                                 list.push({
                                     tiles: matched,
                                     score,
@@ -1479,8 +1480,8 @@
                 pairStatus.className = 'mt-1.5 text-[10px] font-bold text-amber-300/90';
             }
 
-            document.getElementById('stat-seri-leftover').textContent = solved.seriLeftoverSum;
-            document.getElementById('stat-all-tiles-sum').textContent = solved.allTilesSum;
+            document.getElementById('stat-seri-leftover').textContent = `${solved.seriScore} Puan`;
+            document.getElementById('stat-all-tiles-sum').textContent = `${solved.allTilesSum} Puan`;
             document.getElementById('stat-pair-leftover-x2').textContent = solved.pairLeftoverSum * 2;
 
             const indNum = document.getElementById('indicator-card-num');
