@@ -1,1967 +1,750 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Okey & 101 Okey Canlı Kamera Asistanı (Yerel Motor)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            -webkit-tap-highlight-color: transparent;
-            box-sizing: border-box;
-        }
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Okey Hesabı</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Düzen: sol sütunda ıstaka ve taş seçici, sağda sonuç; telefonda tek sütun, üstte yapışkan toplam çubuğu. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --surface2: #e2e8ee;
+  --ink: #14202b;
+  --muted: #536371;
+  --line: #c9d2da;
+  --accent: #0e6b73;
+  --accent-ink: #ffffff;
+  --good: #1c7a3f;
+  --warn: #a15c00;
+  --tile: #fbf7ec;
+  --tile-edge: #d6cdb4;
+  --tile-shade: #b9ae92;
+  --c0: #c23a2e;
+  --c1: #1e5bb8;
+  --c2: #1b1f24;
+  --c3: #b87a00;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f161c; --surface: #17212a; --surface2: #202c37; --ink: #e8eef3; --muted: #93a3b1;
+    --line: #2d3b47; --accent: #4fc1c9; --accent-ink: #062428; --good: #5fd08a; --warn: #f0b04f;
+    --tile: #f1ebd8; --tile-edge: #b8ae93; --tile-shade: #8d846c;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f161c; --surface: #17212a; --surface2: #202c37; --ink: #e8eef3; --muted: #93a3b1;
+  --line: #2d3b47; --accent: #4fc1c9; --accent-ink: #062428; --good: #5fd08a; --warn: #f0b04f;
+  --tile: #f1ebd8; --tile-edge: #b8ae93; --tile-shade: #8d846c;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 40px;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.wrap { max-width: 1080px; margin: 0 auto; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-        html, body {
-            width: 100%;
-            height: 100dvh;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #0c111d;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: #f8fafc;
-            user-select: none;
-        }
+header.top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 18px 0 12px; }
+.brand { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+.mark { width: 30px; height: 38px; border-radius: 6px; background: var(--tile); border: 1px solid var(--tile-edge); box-shadow: 0 3px 0 var(--tile-shade); display: grid; place-items: center; font: 800 18px/1 var(--font-display); color: var(--c0); }
+h1 { font: 800 24px/1.1 var(--font-display); letter-spacing: -0.01em; margin: 0; }
+.seg { display: inline-flex; background: var(--surface2); border-radius: 10px; padding: 3px; gap: 2px; }
+.seg button { border: 0; background: transparent; padding: 7px 14px; border-radius: 8px; font-weight: 600; color: var(--muted); }
+.seg button[aria-pressed="true"], .seg button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.18); }
 
-        video::-webkit-media-controls,
-        video::-webkit-media-controls-enclosure,
-        video::-webkit-media-controls-panel,
-        video::-webkit-media-controls-play-button,
-        video::-webkit-media-controls-start-playback-button {
-            display: none !important;
-            -webkit-appearance: none !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
+.sumbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; margin-bottom: 16px; }
+.big { font: 800 44px/1 var(--font-display); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.big small { font: 600 13px var(--font-body); color: var(--muted); letter-spacing: 0; margin-left: 6px; }
+.stat { display: flex; flex-direction: column; min-width: 0; }
+.stat b { font: 700 18px/1.2 var(--font-display); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.pill { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 13px; font-weight: 600; background: var(--surface2); color: var(--muted); }
+.pill.ok { background: color-mix(in srgb, var(--good) 18%, transparent); color: var(--good); }
+.pill.no { background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn); }
 
-        .slate-glass-panel {
-            background: linear-gradient(180deg, rgba(19, 27, 46, 0.94) 0%, rgba(12, 17, 29, 0.97) 100%);
-            border: 1px solid rgba(71, 95, 145, 0.42);
-            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-        }
+.layout { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 820px) { .layout { grid-template-columns: minmax(0, 1fr); } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; min-width: 0; }
+.stack { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.card h2 { font: 700 16px/1.2 var(--font-display); margin: 0; }
+.cardhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.cardhead .acts { display: flex; gap: 6px; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 9px; padding: 6px 12px; font-size: 13px; font-weight: 600; }
+.btn:hover { background: var(--surface2); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.primary:hover { filter: brightness(1.08); }
 
-        .beechwood-rack {
-            background: linear-gradient(180deg, #ebd0a8 0%, #dfc091 20%, #cfa66f 58%, #dcba89 88%, #be9158 100%);
-            border: 1.5px solid #f4e2c3;
-            border-radius: 12px;
-            box-shadow: inset 0 2px 3px rgba(255, 252, 245, 0.72),
-                        inset 0 -3px 5px rgba(120, 78, 34, 0.45),
-                        0 8px 20px rgba(0, 0, 0, 0.48);
-        }
+/* taşlar */
+.tile { position: relative; width: 38px; height: 50px; border-radius: 6px; background: var(--tile); border: 1px solid var(--tile-edge); box-shadow: 0 3px 0 var(--tile-shade); display: inline-flex; align-items: center; justify-content: center; padding: 0; font: 800 21px/1 var(--font-display); font-variant-numeric: tabular-nums; }
+.tile .pip { position: absolute; bottom: 6px; left: 50%; width: 7px; height: 7px; margin-left: -3.5px; border-radius: 50%; background: currentColor; opacity: .85; }
+.tile.c0 { color: var(--c0); } .tile.c1 { color: var(--c1); } .tile.c2 { color: var(--c2); } .tile.c3 { color: var(--c3); }
+.tile.wild { color: var(--accent); background: var(--tile); }
+.tile.wild::after { content: "★"; font-size: 21px; }
+.tile.ghost { opacity: .45; box-shadow: none; }
+.tile.sm { width: 30px; height: 40px; font-size: 17px; box-shadow: 0 2px 0 var(--tile-shade); }
+.tile.sm .pip { width: 5px; height: 5px; bottom: 5px; margin-left: -2.5px; }
+.tile.sm.wild::after { font-size: 17px; }
+.tile.asw { box-shadow: 0 3px 0 var(--accent), 0 0 0 1px var(--accent); }
+.tile.sm.asw { box-shadow: 0 2px 0 var(--accent), 0 0 0 1px var(--accent); }
+button.tile:hover { transform: translateY(-2px); }
 
-        .rack-metal-cap {
-            background: linear-gradient(180deg, #f1f5f9 0%, #cbd5e1 50%, #94a3b8 100%);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 1px 3px rgba(51, 65, 85, 0.38);
-            border-radius: 3px;
-        }
+.rack { display: flex; flex-wrap: wrap; gap: 8px 6px; min-height: 62px; padding: 10px 10px 14px; border-radius: 10px; background: var(--surface2); }
+.rack .empty { color: var(--muted); font-size: 14px; align-self: center; }
+.hint { color: var(--muted); font-size: 13px; margin: 10px 0 0; }
 
-        .rack-shelf-groove {
-            background: linear-gradient(180deg, #b58752 0%, #c69963 72%, #d8b17e 100%);
-            box-shadow: inset 0 2px 4px rgba(92, 58, 22, 0.48), 0 1px 0 rgba(255, 248, 235, 0.6);
-            border-radius: 6px;
-        }
+.picker { display: flex; flex-direction: column; gap: 10px; }
+.prow { display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 8px; align-items: center; }
+.prow .cname { font: 700 13px var(--font-display); display: flex; align-items: center; gap: 6px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.nums { display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)); gap: 4px; }
+@media (max-width: 700px) { .nums { grid-template-columns: repeat(7, minmax(0, 1fr)); } .prow { grid-template-columns: minmax(0, 1fr); } }
+.pk { position: relative; height: 42px; border-radius: 7px; border: 1px solid var(--tile-edge); background: var(--tile); box-shadow: 0 2px 0 var(--tile-shade); font: 800 17px var(--font-display); font-variant-numeric: tabular-nums; padding: 0; }
+.pk.c0 { color: var(--c0); } .pk.c1 { color: var(--c1); } .pk.c2 { color: var(--c2); } .pk.c3 { color: var(--c3); }
+.pk:hover:not(:disabled) { transform: translateY(-1px); }
+.pk:disabled { opacity: .35; cursor: not-allowed; box-shadow: none; }
+.pk .n { position: absolute; top: 2px; right: 3px; font: 700 10px var(--font-body); color: var(--accent); background: transparent; }
+.pk.wildbtn { grid-column: span 3; color: var(--accent); font-size: 14px; }
+.wildrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.wildrow .btn { padding: 9px 14px; }
 
-        .rack-slot-cell {
-            background: rgba(120, 78, 34, 0.13);
-            border: 1px dashed rgba(110, 68, 26, 0.24);
-            border-radius: 4px;
-        }
+/* sonuç */
+.groups { display: flex; flex-direction: column; gap: 10px; }
+.group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px; border-radius: 10px; border: 1px solid var(--line); }
+.group .gtile { display: flex; gap: 5px; flex-wrap: wrap; min-width: 0; }
+.group .gmeta { margin-left: auto; text-align: right; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.group .gmeta b { display: block; font: 700 18px var(--font-display); color: var(--ink); letter-spacing: 0; text-transform: none; font-variant-numeric: tabular-nums; }
+.leftover { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.leftover .lab { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-right: 6px; }
+.rules { font-size: 13px; color: var(--muted); }
+.rules table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+.rules th, .rules td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.rules th { color: var(--ink); font-weight: 600; }
+.tablewrap { overflow-x: auto; }
 
-        .okey-tile {
-            font-family: 'Oswald', sans-serif;
-            background: linear-gradient(160deg, #ffffff 0%, #faf6ed 78%, #eee6d5 100%);
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(68, 42, 14, 0.42),
-                        inset 0 1px 0.5px rgba(255, 255, 255, 1),
-                        inset 0 -2px 0 #cbbba0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            transition: transform 0.12s ease;
-        }
+/* yazboz */
+.sheet { width: 100%; border-collapse: collapse; min-width: 440px; }
+.sheet th, .sheet td { padding: 6px; border-bottom: 1px solid var(--line); text-align: center; }
+.sheet th input { width: 100%; min-width: 80px; text-align: center; font: 700 14px var(--font-display); }
+.sheet td input { width: 100%; min-width: 64px; text-align: center; font-variant-numeric: tabular-nums; }
+.sheet .rn { color: var(--muted); font-size: 12px; width: 36px; }
+.sheet tfoot td { font: 800 22px var(--font-display); border-bottom: 0; font-variant-numeric: tabular-nums; padding-top: 12px; }
+.sheet tfoot .rn { font-size: 12px; font-family: var(--font-body); font-weight: 600; }
+input[type="text"], input[type="number"] { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 7px 8px; font-family: inherit; font-size: 15px; }
+.lead { color: var(--good); }
 
-        .okey-tile:active {
-            transform: scale(0.93);
-        }
+.scan { display: flex; flex-direction: column; gap: 10px; }
+.scan .row { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
+.scan select { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 7px 8px; font: inherit; font-size: 14px; }
+.scan .status { font-size: 14px; min-height: 20px; }
+.scan .status.err { color: var(--warn); }
+.scan .thumb { max-width: 140px; max-height: 100px; border-radius: 8px; border: 1px solid var(--line); object-fit: cover; }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } button.tile:hover, .pk:hover { transform: none !important; } }
+</style>
 
-        .tile-valid-group {
-            box-shadow: 0 0 0 1.6px #0ea5e9,
-                        0 2px 5px rgba(14, 165, 233, 0.35),
-                        inset 0 -2px 0 #cbbba0;
-        }
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="mark" aria-hidden="true">★</div><h1>Okey Hesabı</h1></div>
+    <div class="seg" role="group" aria-label="Oyun türü">
+      <button id="mode101" type="button" aria-pressed="true">101 Okey</button>
+      <button id="modeCl" type="button" aria-pressed="false">Klasik Okey</button>
+    </div>
+    <div class="seg" role="tablist" aria-label="Bölüm">
+      <button id="tabCalc" type="button" role="tab" aria-selected="true">Hesapla</button>
+      <button id="tabSheet" type="button" role="tab" aria-selected="false">Yazboz</button>
+    </div>
+  </header>
 
-        .tile-active-okey {
-            background: linear-gradient(160deg, #fffef7 0%, #fef3c7 100%);
-            box-shadow: 0 0 0 2px #f59e0b,
-                        0 0 10px rgba(245, 158, 11, 0.7),
-                        inset 0 -2px 0 #d97706 !important;
-        }
-
-        .c-kirmizi { color: #dc2626; }
-        .c-mavi    { color: #0284c7; }
-        .c-siyah   { color: #0f172a; }
-        .c-sari    { color: #d97706; }
-        .c-sahte   { color: #7c3aed; }
-
-        .reticle-bracket {
-            position: absolute;
-            width: 26px;
-            height: 26px;
-            border-color: rgba(248, 250, 252, 0.78);
-            transition: border-color 0.25s ease;
-        }
-        .reticle-active .reticle-bracket {
-            border-color: #f59e0b;
-        }
-
-        @keyframes scanLaser {
-            0% { top: 8%; opacity: 0; }
-            15% { opacity: 0.95; }
-            85% { opacity: 0.95; }
-            100% { top: 92%; opacity: 0; }
-        }
-        .scan-laser-line {
-            position: absolute;
-            left: 3%;
-            right: 3%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #38bdf8, #fbbf24, #38bdf8, transparent);
-            box-shadow: 0 0 12px #38bdf8;
-            animation: scanLaser 1.4s ease-in-out infinite;
-        }
-
-        .bottom-sheet-modal {
-            background: linear-gradient(180deg, #162038 0%, #0c111d 100%);
-            border-top: 1px solid rgba(245, 158, 11, 0.35);
-            border-top-left-radius: 26px;
-            border-top-right-radius: 26px;
-            box-shadow: 0 -18px 46px rgba(0, 0, 0, 0.85);
-            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
-        }
-        .bottom-sheet-modal.hidden-sheet {
-            transform: translateY(105%);
-            opacity: 0;
-            pointer-events: none;
-        }
-    </style>
-</head>
-<body class="relative w-full h-full">
-
-    <!-- 1. TAM EKRAN CANLI KAMERA & AR KUTU KATMANI -->
-    <div id="camera-stage" class="fixed inset-0 w-full h-full bg-[#0c111d] overflow-hidden">
-        <video id="camera-video" autoplay muted playsinline webkit-playsinline class="w-full h-full object-cover"></video>
-        <canvas id="ar-box-canvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
-
-        <div id="camera-fallback-screen" class="absolute inset-0 flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_center,_#1a2642_0%,_#0c111d_100%)] text-center px-6">
-            <div class="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-400/35 flex items-center justify-center mb-3 shadow-lg">
-                <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                    <circle cx="12" cy="13" r="3"/>
-                </svg>
-            </div>
-            <p class="text-sm font-bold text-white">Yerel Canlı Kamera Hazır</p>
-            <p class="text-xs text-slate-300 mt-1 max-w-xs leading-relaxed">
-                API anahtarı gerekmeden tüm taş okuma ve dizilim işlemleri doğrudan cihazınızda gerçekleşir.
-            </p>
-            <div class="flex items-center gap-2 mt-4">
-                <button onclick="startRearCamera()" class="px-3.5 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold shadow">Kamerayı Başlat</button>
-                <button onclick="loadSample21Hand()" class="px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-600 text-slate-100 text-xs font-bold">Örnek 21 Taş Yükle</button>
-            </div>
-        </div>
-
-        <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/45 via-transparent to-black/65"></div>
+  <section id="viewCalc">
+    <div class="sumbar" aria-live="polite">
+      <div class="big"><span id="total">0</span><small>puan</small></div>
+      <div id="sumStats" style="display:contents"></div>
     </div>
 
-    <!-- 2. ÜST HUD PANELİ: SERİ/ÇİFT + CANLI DURUM + AÇIK KAYIN AHŞAP 2 KATLI ISTAKA -->
-    <header class="fixed top-0 left-0 right-0 z-30 pt-[max(10px,env(safe-area-inset-top))] px-2.5 sm:px-4">
-        <div class="max-w-xl mx-auto slate-glass-panel rounded-2xl p-2.5 sm:p-3">
-            <div class="flex items-center justify-between gap-1.5 mb-2">
-                <div class="flex items-center gap-1.5">
-                    <div id="top-scan-badge" class="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shrink-0">
-                        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2"/>
-                        </svg>
-                    </div>
-
-                    <div class="flex items-center bg-slate-950/75 p-0.5 rounded-full border border-slate-700/70">
-                        <button id="btn-mode-seri" onclick="switchArrangeTab('seri')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow">
-                            SERİ
-                        </button>
-                        <button id="btn-mode-cift" onclick="switchArrangeTab('cift')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white">
-                            ÇİFT
-                        </button>
-                    </div>
-                </div>
-
-                <div id="top-rack-status" class="text-[11px] sm:text-xs font-semibold text-slate-200 truncate px-1">
-                    0/21 · ıstakayı yavaşça tarayın
-                </div>
-
-                <button onclick="openManualTileModal()" class="px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-600/60 text-[11px] font-bold text-sky-300 shrink-0 transition-all">
-                    + Taş
-                </button>
+    <div class="layout">
+      <div class="stack">
+        <div class="card" id="scanCard" hidden>
+          <div class="cardhead"><h2>Fotoğrafla tara</h2></div>
+          <div class="scan">
+            <div class="row">
+              <button id="btnScan" class="btn primary" type="button">Istakanın fotoğrafını çek</button>
+              <button id="btnStop" class="btn" type="button" hidden>Durdur</button>
+              <input id="scanFile" type="file" accept="image/*" capture="environment" hidden>
+              <img id="scanThumb" class="thumb" alt="Taranan ıstaka" hidden>
             </div>
-
-            <div class="beechwood-rack p-1.5 sm:p-2 flex items-stretch gap-1">
-                <div class="rack-metal-cap w-1.5 sm:w-2 shrink-0"></div>
-                <div class="flex-1 flex flex-col gap-1.5">
-                    <div id="wooden-top-row" class="rack-shelf-groove p-1 grid gap-[3px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));"></div>
-                    <div id="wooden-bottom-row" class="rack-shelf-groove p-1 grid gap-[3px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));"></div>
-                </div>
-                <div class="rack-metal-cap w-1.5 sm:w-2 shrink-0"></div>
+            <div class="row">
+              <label for="okeyColor" style="font-size:13px;color:var(--muted)">Okey taşı</label>
+              <select id="okeyColor" aria-label="Okey taşının rengi">
+                <option value="">Seçme</option>
+                <option value="0">Kırmızı</option><option value="1">Mavi</option><option value="2">Siyah</option><option value="3">Sarı</option>
+              </select>
+              <select id="okeyNum" aria-label="Okey taşının sayısı"></select>
             </div>
+            <div id="scanStatus" class="status" role="status"></div>
+            <p class="hint" style="margin:0">Fotoğraf, Claude hesabın üzerinden okunur ve cihazının dışına gönderilir. Telefonda düğme kamerayı açar. Taşlar ıstakada tek sıra ya da iki sıra, düz ve net görünsün. Okunan eli aşağıdaki ıstakadan düzeltebilirsin. Okey taşını seçersen o yüzdeki taşlar okey (joker) olur, sahte okey de o taşın yüzü olarak eklenir.</p>
+          </div>
         </div>
-    </header>
 
-    <!-- 3. ORTA VİZÖR ÇERÇEVESİ & YEREL CANLI TARAMA KONTROLLERİ -->
-    <div class="fixed inset-0 z-20 pointer-events-none flex items-center justify-center px-5 pb-32">
-        <div id="camera-reticle" class="relative w-full max-w-lg h-36 sm:h-44 rounded-2xl">
-            <div class="reticle-bracket top-0 left-0 border-t-[3px] border-l-[3px] rounded-tl-xl"></div>
-            <div class="reticle-bracket top-0 right-0 border-t-[3px] border-r-[3px] rounded-tr-xl"></div>
-            <div class="reticle-bracket bottom-0 left-0 border-b-[3px] border-l-[3px] rounded-bl-xl"></div>
-            <div class="reticle-bracket bottom-0 right-0 border-b-[3px] border-r-[3px] rounded-br-xl"></div>
-
-            <div id="scan-laser" class="hidden scan-laser-line"></div>
-
-            <div class="pointer-events-auto absolute -bottom-11 left-0 right-0 flex items-center justify-between gap-2">
-                <button id="reticle-auto-pill" onclick="toggleAutoScanSetting()" class="px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all">
-                    <span id="reticle-auto-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="reticle-auto-label">Oto: Açık</span>
-                </button>
-
-                <div class="flex items-center gap-1.5">
-                    <button onclick="triggerImmediateScan()" class="px-3.5 py-2 rounded-full bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 text-[11px] font-extrabold shadow-lg transition-all">
-                        Şimdi Tara
-                    </button>
-                    <button onclick="triggerImmediateScan()" title="Yeniden Tara" class="w-9 h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 active:scale-95 border border-slate-600/70 flex items-center justify-center text-amber-400 shadow-xl transition-all">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                    </button>
-                </div>
+        <div class="card">
+          <div class="cardhead">
+            <h2>Istaka <span id="rackCount" style="color:var(--muted);font-weight:600"></span></h2>
+            <div class="acts">
+              <button id="btnSample" class="btn" type="button">Örnek el</button>
+              <button id="btnClear" class="btn" type="button">Temizle</button>
             </div>
+          </div>
+          <div id="rack" class="rack"></div>
+          <p class="hint">Istakadaki bir taşı çıkarmak için üstüne dokun. Sahte okeyi, okey taşının kendi yüzü olarak ekle.</p>
         </div>
+
+        <div class="card">
+          <div class="cardhead"><h2>Taş ekle</h2></div>
+          <div id="picker" class="picker"></div>
+          <div class="wildrow" style="margin-top:12px">
+            <button id="btnWild" class="btn primary" type="button">★ Okey (joker) ekle</button>
+            <span id="wildInfo" class="hint" style="margin:0"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stack">
+        <div class="card">
+          <div class="cardhead"><h2>En iyi diziliş</h2></div>
+          <div id="groups" class="groups"></div>
+          <div id="leftover" class="leftover"></div>
+        </div>
+        <div class="card rules">
+          <div class="cardhead"><h2>Hesabın kuralları</h2></div>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th></th><th>101 Okey</th><th>Klasik Okey</th></tr></thead>
+              <tbody>
+                <tr><th>Açma</th><td>101 puan (üçlü sayımla 34) ya da 5 çift</td><td>Yok, el bitirilir</td></tr>
+                <tr><th>12-13-1</th><td>Geçersiz</td><td>Geçerli, 1 = 14 puan</td></tr>
+                <tr><th>Per'de okey</th><td>En fazla bir</td><td>İki okey + bir taş olabilir</td></tr>
+                <tr><th>Okeyin puanı</th><td colspan="2">Yerine geçtiği taşın değeri</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin:10px 0 0">Per: aynı sayının farklı renkleri, en fazla dört taş. Seri: aynı rengin ardışık sayıları, en az üç taş. Masanın ev kuralı farklıysa sonuç birkaç puan değişebilir. Hesap bu sayfada, tarayıcında yapılır.</p>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- 4. ALT KAPSAMLI ÖZET PANELİ & KONTROL ÇUBUĞU -->
-    <footer class="fixed bottom-0 left-0 right-0 z-30 pb-[max(12px,env(safe-area-inset-bottom))] px-2.5 sm:px-4">
-        <div class="max-w-xl mx-auto flex flex-col gap-2">
-            <div class="slate-glass-panel rounded-2xl p-3">
-                <div class="grid grid-cols-3 items-center gap-2 pb-2.5 border-b border-slate-700/60">
-                    <!-- Sol: EN İYİ TOPLAM (/101) -->
-                    <div class="flex flex-col items-start">
-                        <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">EN İYİ TOPLAM</span>
-                        <div class="flex items-baseline gap-1 mt-0.5">
-                            <span id="stat-best-total" class="text-3xl sm:text-4xl font-black text-white leading-none tracking-tight">0</span>
-                            <span id="stat-threshold-suffix" class="text-sm sm:text-base font-bold text-slate-400">/101</span>
-                        </div>
-                        <div class="flex items-center gap-1 mt-1.5">
-                            <span id="pill-open-badge" class="px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300">
-                                101 Bekliyor
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Orta: İnteraktif GÖSTERGE Kartı + Taş Sayacı -->
-                    <div class="flex flex-col items-center justify-center">
-                        <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase mb-1">GÖSTERGE</span>
-                        <button onclick="openIndicatorPickerModal()" id="indicator-tile-card" class="okey-tile w-10 h-13 py-1.5 px-2 cursor-pointer border border-amber-400/50 shadow-lg hover:scale-105 transition-transform" title="Gösterge Taşını Seç">
-                            <span id="indicator-card-num" class="text-base font-black text-slate-700 leading-none">?</span>
-                            <span id="indicator-card-dot" class="w-1.5 h-1.5 rounded-full bg-slate-400 mt-1"></span>
-                        </button>
-                        <div class="mt-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-400/40 flex items-center gap-1 text-[11px] font-extrabold text-amber-300">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2"/>
-                            </svg>
-                            <span id="stat-tile-ratio">0/21</span>
-                        </div>
-                    </div>
-
-                    <!-- Sağ: ÇİFT (X / 5) -->
-                    <div class="flex flex-col items-end">
-                        <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">ÇİFT</span>
-                        <div class="flex items-baseline gap-0.5 mt-0.5">
-                            <span id="stat-pair-count" class="text-3xl sm:text-4xl font-black text-white leading-none">0</span>
-                            <span class="text-sm sm:text-base font-bold text-slate-400">/5</span>
-                        </div>
-                        <span id="pill-pair-status" class="mt-1.5 text-[10px] font-bold text-amber-300/90">
-                            5 Çift Gerekir
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Alt 3 Sütun: SERİ KALAN | TÜM TAŞLAR | ÇİFT KALAN ×2 -->
-                <div class="grid grid-cols-3 gap-2 pt-2 text-center">
-                    <div>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">SERİ KALAN</div>
-                        <div id="stat-seri-leftover" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div>
-                    </div>
-                    <div class="border-x border-slate-700/50">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">TÜM TAŞLAR</div>
-                        <div id="stat-all-tiles-sum" class="text-sm sm:text-base font-black text-white mt-0.5">0</div>
-                    </div>
-                    <div>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">ÇİFT KALAN <span class="text-[9px] text-slate-500">×2</span></div>
-                        <div id="stat-pair-leftover-x2" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Durum Şeridi -->
-            <div class="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/70 text-[11px] text-slate-300">
-                <div class="flex items-center gap-1.5 truncate">
-                    <span class="text-amber-400 shrink-0">💡</span>
-                    <span id="tip-banner-text" class="truncate">Istakayı köşe çizgilerinin içine ortalayın.</span>
-                </div>
-                <span id="local-engine-badge" class="shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40">
-                    Yerel Vision Hazır ✓
-                </span>
-            </div>
-
-            <!-- En Alt Kontrol Çubuğu -->
-            <div class="flex items-center gap-2">
-                <button onclick="openYazbozModal()" class="flex items-center justify-center gap-1.5 px-3.5 py-3 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 text-xs font-extrabold text-white shadow-lg transition-all shrink-0">
-                    <span class="w-5 h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[11px]">✎</span>
-                    <span>Yazboz</span>
-                </button>
-
-                <button onclick="resetScannedHand()" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#f8f6f0] hover:bg-white active:scale-[0.98] text-slate-950 font-extrabold text-sm sm:text-base shadow-xl transition-all">
-                    <svg class="w-4 h-4 text-slate-900" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    <span>Sıfırla</span>
-                </button>
-
-                <button onclick="openSettingsModal()" class="w-12 h-12 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 flex items-center justify-center text-slate-200 shadow-lg transition-all shrink-0" title="Ayarlar">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                        <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                </button>
-            </div>
+  <section id="viewSheet" hidden>
+    <div class="card">
+      <div class="cardhead">
+        <h2>Yazboz</h2>
+        <div class="acts">
+          <button id="btnRound" class="btn primary" type="button">Yeni el ekle</button>
+          <button id="btnResetSheet" class="btn" type="button">Sıfırla</button>
         </div>
-    </footer>
-
-    <!-- 5. AÇILIŞ OYUN SEÇİM KARTI -->
-    <div id="opening-mode-sheet" class="fixed inset-x-0 bottom-0 z-40 bottom-sheet-modal px-5 pt-3 pb-[max(24px,env(safe-area-inset-bottom))]">
-        <div class="max-w-lg mx-auto">
-            <div class="w-10 h-1 rounded-full bg-slate-500/40 mx-auto mb-4"></div>
-
-            <h2 class="text-xl font-extrabold text-white tracking-tight">Hangi Okey?</h2>
-            <p class="text-xs sm:text-sm text-slate-300 mt-1 mb-4">
-                Oynadığın oyunu seç. Doğrudan cihazda yerel görüntü işleme ile çalışır.
-            </p>
-
-            <div class="flex flex-col gap-2.5 mb-5">
-                <button type="button" onclick="selectModeRadio('101')" id="mode-card-101" class="w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all">
-                    <div id="mode-radio-101" class="w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0">
-                        <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
-                    </div>
-                    <div>
-                        <div class="text-sm sm:text-base font-bold text-white">101 Okey</div>
-                        <div class="text-xs text-slate-300 mt-0.5">21 taş. Perlerin toplamı 101'i bulunca açarsın.</div>
-                    </div>
-                </button>
-
-                <button type="button" onclick="selectModeRadio('14')" id="mode-card-14" class="w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all">
-                    <div id="mode-radio-14" class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0">
-                        <div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>
-                    </div>
-                    <div>
-                        <div class="text-sm sm:text-base font-bold text-white">Okey</div>
-                        <div class="text-xs text-slate-300 mt-0.5">14 taş. Açma eşiği yok: elin tamamı tutana kadar beklersin.</div>
-                    </div>
-                </button>
-            </div>
-
-            <button type="button" onclick="confirmModeAndBegin()" class="w-full py-3.5 rounded-2xl bg-[#f8f6f0] hover:bg-white active:scale-[0.99] text-slate-950 font-extrabold text-base shadow-xl transition-all">
-                Devam
-            </button>
-        </div>
+      </div>
+      <div class="tablewrap"><table class="sheet" id="sheet"></table></div>
+      <p class="hint">Puanlar bu tarayıcıda saklanır. 101 Okey'de genelde en düşük toplam kazanır, bu yüzden en düşük toplam işaretlenir.</p>
     </div>
+  </section>
+</div>
 
-    <!-- 6. AYARLAR PENCERESİ -->
-    <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='settings-modal') closeSettingsModal()">
-        <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-5 pb-[max(24px,env(safe-area-inset-bottom))] shadow-2xl">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-base font-extrabold text-white">Oyun & Yerel Tarayıcı Ayarları</h3>
-                <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold">✕</button>
-            </div>
+<script>
+// Okey çözücü: en yüksek per + seri toplamını bulur.
+// counts: 52 uzunluklu dizi, indeks = renk*13 + (sayı-1), değer 0..2
+// wilds: okey (joker) sayısı; rules: { classic: bool }
+function solveHand(counts, wilds, rules) {
+  var classic = !!(rules && rules.classic);
+  var maxPos = classic ? 14 : 13;
+  var wildSetMax = classic ? 2 : 1;
+  var c = counts.slice();
+  var memo = new Map();
+  var END = { s: 0, grp: null, next: null };
 
-            <div class="bg-emerald-500/10 border border-emerald-400/30 rounded-2xl p-3 mb-3 text-xs text-emerald-200 leading-relaxed">
-                <b>100% Cihaz İçi Yerel Motor Aktif:</b> Vizör çerçevesi hizalı fildişi taş ayrıştırma, mürekkep yoğunluk filtresi, renk tespiti ve hibrit rakam tanıma doğrudan telefonunuzda çalışır.
-            </div>
+  function candidates(i, w) {
+    var out = [];
+    var col = Math.floor(i / 13);
+    var num = (i % 13) + 1;
 
-            <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
-                <div>
-                    <div class="text-xs font-bold text-white">Otomatik Canlı Tarama</div>
-                    <div class="text-[11px] text-slate-400">Kamerayı ıstakaya tutunca otomatik okur</div>
-                </div>
-                <button id="toggle-autoscan-btn" onclick="toggleAutoScanSetting()" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold">
-                    AÇIK
-                </button>
-            </div>
+    // seriler
+    var plist = [num];
+    if (classic && num === 1) plist.push(14);
+    function walk(q, e, p, cells, used, wu) {
+      if (q > e) {
+        var pts = 0;
+        for (var k = 0; k < cells.length; k++) pts += cells[k].val;
+        out.push({ type: 'run', cells: cells.slice(), used: used.slice(), wilds: wu, pts: pts, size: cells.length });
+        return;
+      }
+      var idx = col * 13 + ((q - 1) % 13);
+      if (q === p) {
+        cells.push({ col: col, num: q, wild: false, val: q });
+        used.push(i);
+        walk(q + 1, e, p, cells, used, wu);
+        used.pop(); cells.pop();
+        return;
+      }
+      if (idx !== i && c[idx] > 0) {
+        cells.push({ col: col, num: q, wild: false, val: q });
+        used.push(idx);
+        walk(q + 1, e, p, cells, used, wu);
+        used.pop(); cells.pop();
+      }
+      if (wu < w) {
+        cells.push({ col: col, num: q, wild: true, val: q });
+        walk(q + 1, e, p, cells, used, wu + 1);
+        cells.pop();
+      }
+    }
+    plist.forEach(function (p) {
+      for (var s = 1; s <= p; s++) {
+        for (var e = Math.max(p, s + 2); e <= maxPos; e++) {
+          if (s === 1 && e === 14) continue;
+          if (p === 14 && s < 2) continue;
+          walk(s, e, p, [], [], 0);
+        }
+      }
+    });
 
-            <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
-                <div>
-                    <div class="text-xs font-bold text-white">Oyun Türü</div>
-                    <div class="text-[11px] text-slate-400">101 Okey (21 Taş) veya Klasik (14 Taş)</div>
-                </div>
-                <div class="flex gap-1">
-                    <button id="set-mode-101" onclick="changeGameModeFromSettings('101')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">101</button>
-                    <button id="set-mode-14" onclick="changeGameModeFromSettings('14')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">14 Taş</button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2 mt-3">
-                <label class="cursor-pointer py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-center text-xs font-bold text-white">
-                    📷 Fotoğraftan Oku
-                    <input type="file" accept="image/*" class="hidden" onchange="handleImageFileUpload(event)">
-                </label>
-                <button onclick="loadSample21Hand(); closeSettingsModal();" class="py-2.5 px-3 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-xs font-extrabold text-sky-300">
-                    🧪 Örnek 21 Taş Testi
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 7. GÖSTERGE TAŞI SEÇİCİ PENCERESİ -->
-    <div id="indicator-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='indicator-modal') closeIndicatorPickerModal()">
-        <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(20px,env(safe-area-inset-bottom))] shadow-2xl">
-            <div class="flex items-center justify-between mb-2">
-                <div>
-                    <h3 class="text-sm font-extrabold text-white">Gösterge Taşını Seçin</h3>
-                    <p class="text-[11px] text-amber-300" id="modal-okey-preview">Seçili Gösterge Yok</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="clearIndicatorTile()" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">Temizle</button>
-                    <button onclick="closeIndicatorPickerModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Tamam</button>
-                </div>
-            </div>
-            <div id="indicator-palette-container" class="flex flex-col gap-2 mt-2"></div>
-        </div>
-    </div>
-
-    <!-- 8. MANUEL TAŞ EKLEME PENCERESİ -->
-    <div id="manual-tile-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='manual-tile-modal') closeManualTileModal()">
-        <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(20px,env(safe-area-inset-bottom))] shadow-2xl">
-            <div class="flex items-center justify-between mb-2">
-                <div>
-                    <h3 class="text-sm font-extrabold text-white">Istakaya Taş Ekle</h3>
-                    <p class="text-[11px] text-slate-400">Eksik taşı dokunarak anında ekleyin</p>
-                </div>
-                <button onclick="closeManualTileModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Kapat</button>
-            </div>
-            <div id="manual-tile-palette" class="flex flex-col gap-2 mt-2"></div>
-        </div>
-    </div>
-
-    <!-- 9. YAZBOZ PENCERESİ -->
-    <div id="yazboz-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='yazboz-modal') closeYazbozModal()">
-        <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(24px,env(safe-area-inset-bottom))] shadow-2xl">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-base font-extrabold text-white">✎ 101 / Okey Yazboz</h3>
-                <div class="flex items-center gap-2">
-                    <button onclick="resetYazbozScores()" class="px-2.5 py-1 rounded-lg bg-red-500/20 text-red-300 text-xs font-bold">Sıfırla</button>
-                    <button onclick="closeYazbozModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Kapat</button>
-                </div>
-            </div>
-            <div id="yazboz-players-grid" class="grid grid-cols-2 gap-2.5"></div>
-        </div>
-    </div>
-
-    <!-- Bildirim Toast -->
-    <div id="toast-message" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-200 bg-slate-950/95 border border-amber-400/50 text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-2xl text-center max-w-xs"></div>
-
-    <script>
-        // =========================================================================
-        // 1. SABİTLER VE UYGULAMA DURUMU (TAMAMEN YEREL / API'SİZ)
-        // =========================================================================
-        const COLORS = [
-            { id: 'kirmizi', short: 'K', name: 'Kırmızı', textClass: 'c-kirmizi', hex: '#dc2626' },
-            { id: 'mavi',    short: 'M', name: 'Mavi',    textClass: 'c-mavi',    hex: '#0284c7' },
-            { id: 'siyah',   short: 'S', name: 'Siyah',   textClass: 'c-siyah',   hex: '#0f172a' },
-            { id: 'sari',    short: 'Sr', name: 'Sarı',   textClass: 'c-sari',    hex: '#d97706' }
-        ];
-
-        let gameMode = '101';
-        let arrangeTab = 'seri';
-        let indicatorTile = null;
-        let detectedTiles = [];
-
-        let videoStream = null;
-        let autoScanEnabled = true;
-        let autoScanInterval = null;
-        let isScanningNow = false;
-        let localOcrWorker = null;
-        let localOcrReady = false;
-
-        let scanVoteBucket = new Map();
-        let digitTemplateCache = null;
-
-        let yazbozPlayers = JSON.parse(localStorage.getItem('okey_yazboz_v1') || 'null') || [
-            { name: 'Ben', score: 0 },
-            { name: 'Sağ', score: 0 },
-            { name: 'Karşı', score: 0 },
-            { name: 'Sol', score: 0 }
-        ];
-
-        // =========================================================================
-        // 2. BAŞLANGIÇ & YEREL OCR + ŞABLON HAZIRLIĞI
-        // =========================================================================
-        window.addEventListener('DOMContentLoaded', () => {
-            buildTilePickers();
-            buildOkeyDigitTemplates();
-            renderEmptyWoodenRack();
-            recalculateAllMetrics();
-            initLocalTesseractWorker();
+    // periler (aynı sayı, farklı renk)
+    var others = [];
+    for (var k = col + 1; k < 4; k++) if (c[k * 13 + num - 1] > 0) others.push(k);
+    var nOth = others.length;
+    for (var mask = 0; mask < (1 << nOth); mask++) {
+      var chosen = [];
+      for (var b = 0; b < nOth; b++) if (mask & (1 << b)) chosen.push(others[b]);
+      var real = 1 + chosen.length;
+      for (var wc = 0; wc <= Math.min(w, wildSetMax); wc++) {
+        var size = real + wc;
+        if (size < 3 || size > 4) continue;
+        var cells = [{ col: col, num: num, wild: false, val: num }];
+        var used = [i];
+        chosen.forEach(function (cc) {
+          cells.push({ col: cc, num: num, wild: false, val: num });
+          used.push(cc * 13 + num - 1);
         });
-
-        async function initLocalTesseractWorker() {
-            try {
-                if (typeof Tesseract === 'undefined') return;
-                setLocalBadge('Yerel Motor Yükleniyor...', 'scanning');
-                localOcrWorker = await Tesseract.createWorker('eng', 1, { logger: () => {} });
-                await localOcrWorker.setParameters({
-                    tessedit_char_whitelist: '0123456789',
-                    tessedit_pageseg_mode: '7'
-                });
-                localOcrReady = true;
-                setLocalBadge('Yerel Vision Aktif ✓', 'ok');
-            } catch (err) {
-                localOcrReady = false;
-                setLocalBadge('Yerel Vision Hazır ✓', 'ok');
-            }
-        }
-
-        function setLocalBadge(text, state) {
-            const badge = document.getElementById('local-engine-badge');
-            if (!badge) return;
-            badge.textContent = text;
-            if (state === 'ok') {
-                badge.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40';
-            } else if (state === 'scanning') {
-                badge.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40';
-            } else {
-                badge.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600/60';
-            }
-        }
-
-        // =========================================================================
-        // 3. AÇILIŞ MOD SEÇİMİ VE CANLI KAMERA
-        // =========================================================================
-        function selectModeRadio(mode) {
-            gameMode = mode;
-            const c101 = document.getElementById('mode-card-101');
-            const c14 = document.getElementById('mode-card-14');
-            const r101 = document.getElementById('mode-radio-101');
-            const r14 = document.getElementById('mode-radio-14');
-
-            if (mode === '101') {
-                c101.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all';
-                r101.className = 'w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0';
-                r101.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-amber-400';
-
-                c14.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all';
-                r14.className = 'w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0';
-                r14.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-transparent';
-            } else {
-                c14.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all';
-                r14.className = 'w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0';
-                r14.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-amber-400';
-
-                c101.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all';
-                r101.className = 'w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0';
-                r101.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-transparent';
-            }
-        }
-
-        async function confirmModeAndBegin() {
-            document.getElementById('opening-mode-sheet').classList.add('hidden-sheet');
-            updateGameModeButtonsUI();
-            recalculateAllMetrics();
-            await startRearCamera();
-        }
-
-        async function startRearCamera() {
-            const video = document.getElementById('camera-video');
-            const fallback = document.getElementById('camera-fallback-screen');
-
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                fallback.classList.remove('hidden');
-                return;
-            }
-
-            try {
-                if (videoStream) {
-                    videoStream.getTracks().forEach(t => t.stop());
-                }
-                videoStream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        facingMode: { ideal: 'environment' },
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    },
-                    audio: false
-                });
-                video.srcObject = videoStream;
-                video.setAttribute('playsinline', 'true');
-                video.setAttribute('webkit-playsinline', 'true');
-                await video.play();
-                fallback.classList.add('hidden');
-                startAutoScanLoop();
-            } catch (err) {
-                fallback.classList.remove('hidden');
-            }
-        }
-
-        // =========================================================================
-        // 4A. VİZÖR ÇERÇEVESİ İLE BİREBİR HİZALI KIRPMA (KOORDİNAT KAYMASI SIFIR)
-        // =========================================================================
-        function startAutoScanLoop() {
-            if (autoScanInterval) clearInterval(autoScanInterval);
-            if (!autoScanEnabled) return;
-            autoScanInterval = setInterval(() => {
-                if (autoScanEnabled && !isScanningNow) {
-                    scanFrameLocally(true);
-                }
-            }, 1250);
-        }
-
-        function triggerImmediateScan() {
-            scanFrameLocally(false);
-        }
-
-        function toggleAutoScanSetting() {
-            autoScanEnabled = !autoScanEnabled;
-            const btn = document.getElementById('toggle-autoscan-btn');
-            const pill = document.getElementById('reticle-auto-pill');
-            const dot = document.getElementById('reticle-auto-dot');
-            const lbl = document.getElementById('reticle-auto-label');
-
-            if (btn) {
-                btn.textContent = autoScanEnabled ? 'AÇIK' : 'KAPALI';
-                btn.className = autoScanEnabled
-                    ? 'px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold'
-                    : 'px-3 py-1.5 rounded-lg bg-slate-700 text-slate-200 text-xs font-bold';
-            }
-            if (pill && dot && lbl) {
-                if (autoScanEnabled) {
-                    pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all';
-                    dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
-                    lbl.textContent = 'Oto: Açık';
-                    startAutoScanLoop();
-                } else {
-                    pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-600/70 text-[11px] font-bold text-slate-300 shadow-lg flex items-center gap-1.5 transition-all';
-                    dot.className = 'w-2 h-2 rounded-full bg-slate-500';
-                    lbl.textContent = 'Oto: Kapalı';
-                    if (autoScanInterval) clearInterval(autoScanInterval);
-                }
-            }
-        }
-
-        // Ekrandaki vizör çerçevesinin (#camera-reticle) gerçek piksel sınırlarını videoya eşler
-        function captureAlignedReticleRoi(video) {
-            const vw = video.videoWidth || 1280;
-            const vh = video.videoHeight || 720;
-
-            const vRect = video.getBoundingClientRect();
-            const rRect = document.getElementById('camera-reticle').getBoundingClientRect();
-
-            const scale = Math.max(vRect.width / vw, vRect.height / vh);
-            const renderedW = vw * scale;
-            const renderedH = vh * scale;
-            const offsetX = (vRect.width - renderedW) / 2;
-            const offsetY = (vRect.height - renderedH) / 2;
-
-            // Vizör çerçevesine hafif %4 dikey tolerans ekleyerek video koordinatlarına dönüştür
-            const padY = rRect.height * 0.04;
-            const screenX1 = Math.max(vRect.left, rRect.left);
-            const screenY1 = Math.max(vRect.top, rRect.top - padY);
-            const screenX2 = Math.min(vRect.right, rRect.right);
-            const screenY2 = Math.min(vRect.bottom, rRect.bottom + padY);
-
-            const roiX = Math.max(0, Math.round((screenX1 - vRect.left - offsetX) / scale));
-            const roiY = Math.max(0, Math.round((screenY1 - vRect.top - offsetY) / scale));
-            const roiW = Math.min(vw - roiX, Math.max(40, Math.round((screenX2 - screenX1) / scale)));
-            const roiH = Math.min(vh - roiY, Math.max(40, Math.round((screenY2 - screenY1) / scale)));
-
-            const targetW = Math.min(840, roiW);
-            const targetH = Math.round((roiH / roiW) * targetW);
-
-            const canvas = document.createElement('canvas');
-            canvas.width = targetW;
-            canvas.height = targetH;
-            const ctx = canvas.getContext('2d', { willReadFrequently: true });
-            ctx.drawImage(video, roiX, roiY, roiW, roiH, 0, 0, targetW, targetH);
-
-            return {
-                canvas,
-                screenBox: {
-                    x: screenX1 - vRect.left,
-                    y: screenY1 - vRect.top,
-                    w: screenX2 - screenX1,
-                    h: screenY2 - screenY1
-                }
-            };
-        }
-
-        // =========================================================================
-        // 4B. CANLI TARAMA VE SARIKUTU ÇİZİMİ (MASAYI VE BOŞLUKLARI ELER)
-        // =========================================================================
-        async function scanFrameLocally(silentMode = false) {
-            const video = document.getElementById('camera-video');
-            if (!video || video.readyState < 2 || isScanningNow) return;
-
-            isScanningNow = true;
-            document.getElementById('scan-laser').classList.remove('hidden');
-            setLocalBadge('Yerel Taranıyor...', 'scanning');
-
-            try {
-                const { canvas, screenBox } = captureAlignedReticleRoi(video);
-                const foundTiles = await detectAndReadTilesFromCanvas(canvas);
-
-                drawScreenAlignedBoxes(foundTiles, screenBox);
-
-                if (foundTiles.length > 0) {
-                    document.getElementById('camera-reticle').classList.add('reticle-active');
-                    accumulateScannedTiles(foundTiles, !silentMode);
-
-                    const targetCount = gameMode === '101' ? 21 : 14;
-                    setLocalBadge(`Yerel Vision ✓ (${detectedTiles.length}/${targetCount})`, 'ok');
-                    if (!silentMode) {
-                        showToast(`${foundTiles.length} taş karede okundu (Toplam: ${detectedTiles.length}/${targetCount})`);
-                    }
-                } else {
-                    document.getElementById('camera-reticle').classList.remove('reticle-active');
-                    setLocalBadge('Istaka Bekleniyor...', 'neutral');
-                    if (!silentMode) {
-                        showToast('Çerçevede net okey taşı bulunamadı. Taşları köşelere ortalayın.');
-                    }
-                }
-            } catch (err) {
-                setLocalBadge('Yerel Vision Hazır ✓', 'ok');
-            } finally {
-                isScanningNow = false;
-                document.getElementById('scan-laser').classList.add('hidden');
-            }
-        }
-
-        function drawScreenAlignedBoxes(tiles, screenBox) {
-            const overlay = document.getElementById('ar-box-canvas');
-            const rect = overlay.getBoundingClientRect();
-            overlay.width = rect.width;
-            overlay.height = rect.height;
-            const ctx = overlay.getContext('2d');
-            ctx.clearRect(0, 0, overlay.width, overlay.height);
-
-            tiles.forEach(t => {
-                if (!t.box_2d || t.box_2d.length !== 4) return;
-                const [ymin, xmin, ymax, xmax] = t.box_2d;
-                const x = screenBox.x + (xmin / 1000) * screenBox.w;
-                const y = screenBox.y + (ymin / 1000) * screenBox.h;
-                const w = ((xmax - xmin) / 1000) * screenBox.w;
-                const h = ((ymax - ymin) / 1000) * screenBox.h;
-
-                ctx.strokeStyle = '#facc15';
-                ctx.lineWidth = 2.4;
-                ctx.beginPath();
-                ctx.roundRect(x, y, w, h, 5);
-                ctx.stroke();
-
-                ctx.fillStyle = 'rgba(250, 204, 21, 0.14)';
-                ctx.fill();
-
-                // Tespit edilen taş etiketini kutu üst köşesine küçük rozet olarak çiz
-                const cObj = COLORS.find(c => c.id === t.color);
-                const label = `${cObj ? cObj.short : ''}${t.number}`;
-                ctx.fillStyle = 'rgba(12, 17, 29, 0.86)';
-                ctx.beginPath();
-                ctx.roundRect(x + 2, y + 2, Math.max(20, label.length * 7 + 6), 14, 3);
-                ctx.fill();
-
-                ctx.fillStyle = '#facc15';
-                ctx.font = 'bold 10px Inter, sans-serif';
-                ctx.fillText(label, x + 5, y + 12);
-            });
-        }
-
-        function accumulateScannedTiles(frameTiles, forceImmediateAccept = false) {
-            const targetLimit = gameMode === '101' ? 21 : 14;
-            if (detectedTiles.length >= targetLimit) return;
-
-            const frameCounts = new Map();
-            frameTiles.forEach(t => {
-                if (!t.number || t.number < 1 || t.number > 13) return;
-                const key = `${t.color}_${t.number}`;
-                frameCounts.set(key, (frameCounts.get(key) || 0) + 1);
-            });
-
-            let changed = false;
-            frameCounts.forEach((countInFrame, key) => {
-                if (detectedTiles.length >= targetLimit) return;
-                const [color, numStr] = key.split('_');
-                const number = parseInt(numStr, 10);
-
-                const entry = scanVoteBucket.get(key) || { hits: 0, color, number };
-                entry.hits += forceImmediateAccept ? 2 : 1;
-                scanVoteBucket.set(key, entry);
-
-                if (entry.hits >= 2) {
-                    const alreadyHave = detectedTiles.filter(x =>
-                        !x.isSahte && x.color === color && x.number === number
-                    ).length;
-
-                    const desiredCount = Math.min(2, Math.max(1, countInFrame));
-                    if (alreadyHave < desiredCount && detectedTiles.length < targetLimit) {
-                        detectedTiles.push({
-                            id: `acc_${Date.now()}_${Math.random()}`,
-                            color,
-                            number,
-                            isSahte: false,
-                            box: null
-                        });
-                        changed = true;
-                    }
-                }
-            });
-
-            if (changed) {
-                recalculateAllMetrics();
-            }
-        }
-
-        function handleImageFileUpload(event) {
-            const file = event.target.files && event.target.files[0];
-            if (!file) return;
-            closeSettingsModal();
-            setLocalBadge('Fotoğraf Taranıyor...', 'scanning');
-
-            const reader = new FileReader();
-            reader.onload = () => {
-                const img = new Image();
-                img.onload = async () => {
-                    const maxDim = 960;
-                    const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
-                    const w = Math.round(img.width * scale);
-                    const h = Math.round(img.height * scale);
-                    const canvas = document.createElement('canvas');
-                    canvas.width = w;
-                    canvas.height = h;
-                    const ctx = canvas.getContext('2d', { willReadFrequently: true });
-                    ctx.drawImage(img, 0, 0, w, h);
-
-                    const found = await detectAndReadTilesFromCanvas(canvas);
-                    if (found.length > 0) {
-                        scanVoteBucket.clear();
-                        detectedTiles = found.slice(0, gameMode === '101' ? 21 : 14).map((t, idx) => ({
-                            id: `photo_${Date.now()}_${idx}`,
-                            color: t.color,
-                            number: t.number,
-                            isSahte: false,
-                            box: null
-                        }));
-                        recalculateAllMetrics();
-                        setLocalBadge(`Fotoğraftan ${detectedTiles.length} Taş Okundu ✓`, 'ok');
-                        showToast(`Fotoğraftan ${detectedTiles.length} taş yerel motorla okundu!`);
-                    } else {
-                        setLocalBadge('Yerel Vision Hazır ✓', 'ok');
-                        showToast('Fotoğrafta okey taşı dikdörtgenleri bulunamadı.');
-                    }
-                };
-                img.src = reader.result;
-            };
-            reader.readAsDataURL(file);
-            event.target.value = '';
-        }
-
-        // =========================================================================
-        // 4C. FİLDİŞİ TAŞ + MASA ELEME (ÜST RAKAM + ALT SİMGE DOĞRULAMASI)
-        // =========================================================================
-        async function detectAndReadTilesFromCanvas(srcCanvas) {
-            const W = srcCanvas.width;
-            const H = srcCanvas.height;
-            const ctx = srcCanvas.getContext('2d', { willReadFrequently: true });
-            const imgData = ctx.getImageData(0, 0, W, H);
-            const data = imgData.data;
-
-            // 1. Parlak Fildişi / Beyaz Okey Taşı Zemin Maskesi (Masayı dışlamak için daha sıkı parlaklık)
-            const mask = new Uint8Array(W * H);
-            for (let i = 0, p = 0; i < data.length; i += 4, p++) {
-                const r = data[i];
-                const g = data[i + 1];
-                const b = data[i + 2];
-                const lum = 0.299 * r + 0.587 * g + 0.114 * b;
-                const maxC = Math.max(r, g, b);
-                const minC = Math.min(r, g, b);
-                const sat = maxC > 0 ? (maxC - minC) / maxC : 0;
-
-                if (lum > 158 && sat < 0.42 && r >= b - 12) {
-                    mask[p] = 1;
-                }
-            }
-
-            // 2. Bağlı Bileşen ile Dikdörtgen Adayları
-            const visited = new Uint8Array(W * H);
-            const candidateBoxes = [];
-            const stackX = new Int32Array(W * H);
-            const stackY = new Int32Array(W * H);
-
-            for (let y = 2; y < H - 2; y += 2) {
-                for (let x = 2; x < W - 2; x += 2) {
-                    const idx = y * W + x;
-                    if (mask[idx] === 1 && visited[idx] === 0) {
-                        let sp = 0;
-                        stackX[sp] = x;
-                        stackY[sp] = y;
-                        sp++;
-                        visited[idx] = 1;
-
-                        let minX = x, maxX = x, minY = y, maxY = y;
-
-                        while (sp > 0) {
-                            sp--;
-                            const cx = stackX[sp];
-                            const cy = stackY[sp];
-
-                            if (cx < minX) minX = cx;
-                            if (cx > maxX) maxX = cx;
-                            if (cy < minY) minY = cy;
-                            if (cy > maxY) maxY = cy;
-
-                            const neighbors = [
-                                [cx + 2, cy], [cx - 2, cy],
-                                [cx, cy + 2], [cx, cy - 2]
-                            ];
-                            for (let n = 0; n < 4; n++) {
-                                const nx = neighbors[n][0];
-                                const ny = neighbors[n][1];
-                                if (nx >= 0 && nx < W && ny >= 0 && ny < H) {
-                                    const nIdx = ny * W + nx;
-                                    if (mask[nIdx] === 1 && visited[nIdx] === 0) {
-                                        visited[nIdx] = 1;
-                                        stackX[sp] = nx;
-                                        stackY[sp] = ny;
-                                        sp++;
-                                    }
-                                }
-                            }
-                        }
-
-                        const bw = maxX - minX + 1;
-                        const bh = maxY - minY + 1;
-                        const aspect = bh / Math.max(1, bw);
-
-                        if (bw >= W * 0.032 && bw <= W * 0.13 && bh >= H * 0.24 && bh <= H * 0.62 && aspect >= 1.15 && aspect <= 2.25) {
-                            candidateBoxes.push({ x: minX, y: minY, w: bw, h: bh });
-                        } else if (bw > W * 0.13 && bw <= W * 0.94 && bh >= H * 0.24 && bh <= H * 0.62) {
-                            const splitList = splitTouchingTilesByValley(data, W, minX, minY, bw, bh);
-                            candidateBoxes.push(...splitList);
-                        }
-                    }
-                }
-            }
-
-            // 3. KRİTİK MASA / GÖLGE ELEME FİLTRESİ:
-            // Gerçek Okey taşının üst yarısında rakam mürekkebi (%6..%38) ve alt yarısında kalp/maça simgesi (%3..%28) olmalıdır!
-            const verifiedBoxes = candidateBoxes.filter(box => hasRealOkeyTileInkSignature(data, W, H, box));
-            if (verifiedBoxes.length === 0) return [];
-
-            verifiedBoxes.sort((a, b) => {
-                const rowDiff = Math.abs(a.y - b.y);
-                if (rowDiff > H * 0.18) return a.y - b.y;
-                return a.x - b.x;
-            });
-
-            const limitedBoxes = verifiedBoxes.slice(0, 22);
-            const results = [];
-
-            for (let i = 0; i < limitedBoxes.length; i++) {
-                const box = limitedBoxes[i];
-                const color = classifyTileColorFromPixels(data, W, H, box);
-                const number = await recognizeTileNumberLocally(srcCanvas, box);
-
-                if (number >= 1 && number <= 13) {
-                    results.push({
-                        color,
-                        number,
-                        isSahte: false,
-                        box_2d: [
-                            Math.round((box.y / H) * 1000),
-                            Math.round((box.x / W) * 1000),
-                            Math.round(((box.y + box.h) / H) * 1000),
-                            Math.round(((box.x + box.w) / W) * 1000)
-                        ]
-                    });
-                }
-            }
-
-            return results;
-        }
-
-        // Boş masayı, duvarı veya gölgeyi taş sanmamak için iç mürekkep dağılımını kontrol eder
-        function hasRealOkeyTileInkSignature(data, W, H, box) {
-            const x1 = Math.max(0, Math.round(box.x + box.w * 0.15));
-            const x2 = Math.min(W - 1, Math.round(box.x + box.w * 0.85));
-            const yTop1 = Math.max(0, Math.round(box.y + box.h * 0.08));
-            const yTop2 = Math.min(H - 1, Math.round(box.y + box.h * 0.56));
-            const yBot1 = Math.max(0, Math.round(box.y + box.h * 0.58));
-            const yBot2 = Math.min(H - 1, Math.round(box.y + box.h * 0.88));
-
-            let topInk = 0, topTotal = 0, topLumSum = 0;
-            for (let y = yTop1; y <= yTop2; y++) {
-                for (let x = x1; x <= x2; x++) {
-                    const idx = (y * W + x) * 4;
-                    const lum = data[idx] * 0.299 + data[idx + 1] * 0.587 + data[idx + 2] * 0.114;
-                    topLumSum += lum;
-                    if (lum < 142) topInk++;
-                    topTotal++;
-                }
-            }
-
-            let botInk = 0, botTotal = 0;
-            for (let y = yBot1; y <= yBot2; y++) {
-                for (let x = x1; x <= x2; x++) {
-                    const idx = (y * W + x) * 4;
-                    const lum = data[idx] * 0.299 + data[idx + 1] * 0.587 + data[idx + 2] * 0.114;
-                    if (lum < 145) botInk++;
-                    botTotal++;
-                }
-            }
-
-            if (topTotal === 0 || botTotal === 0) return false;
-            const topRatio = topInk / topTotal;
-            const botRatio = botInk / botTotal;
-            const avgLum = topLumSum / topTotal;
-
-            // Hem fildişi zemin parlak olmalı hem de üstte rakam + altta simge mürekkebi bulunmalı
-            return avgLum > 148 && topRatio >= 0.055 && topRatio <= 0.42 && botRatio >= 0.025 && botRatio <= 0.34;
-        }
-
-        function splitTouchingTilesByValley(data, W, bx, by, bw, bh) {
-            const expectedTileW = bh * 0.65;
-            const minGap = Math.max(10, Math.round(expectedTileW * 0.68));
-            const maxTileW = Math.round(expectedTileW * 1.32);
-
-            const yStart = Math.round(by + bh * 0.12);
-            const yEnd = Math.round(by + bh * 0.88);
-            const colLum = new Float32Array(bw);
-
-            for (let dx = 0; dx < bw; dx++) {
-                const px = bx + dx;
-                let sum = 0;
-                let cnt = 0;
-                for (let py = yStart; py < yEnd; py += 2) {
-                    const idx = (py * W + px) * 4;
-                    sum += (data[idx] * 0.299 + data[idx + 1] * 0.587 + data[idx + 2] * 0.114);
-                    cnt++;
-                }
-                colLum[dx] = sum / Math.max(1, cnt);
-            }
-
-            const smooth = new Float32Array(bw);
-            for (let dx = 0; dx < bw; dx++) {
-                const a = colLum[Math.max(0, dx - 1)];
-                const b = colLum[dx];
-                const c = colLum[Math.min(bw - 1, dx + 1)];
-                smooth[dx] = (a + b + c) / 3;
-            }
-
-            const cuts = [0];
-            let lastCut = 0;
-
-            while (lastCut + minGap < bw - minGap * 0.5) {
-                const searchFrom = lastCut + minGap;
-                const searchTo = Math.min(bw - 4, lastCut + maxTileW);
-                let bestX = -1;
-                let lowestLum = 9999;
-
-                for (let x = searchFrom; x <= searchTo; x++) {
-                    if (smooth[x] < lowestLum) {
-                        lowestLum = smooth[x];
-                        bestX = x;
-                    }
-                }
-
-                if (bestX > lastCut) {
-                    cuts.push(bestX);
-                    lastCut = bestX;
-                } else {
-                    break;
-                }
-            }
-            cuts.push(bw);
-
-            const out = [];
-            for (let i = 0; i < cuts.length - 1; i++) {
-                const segW = cuts[i + 1] - cuts[i];
-                if (segW >= bh * 0.38 && segW <= bh * 1.15) {
-                    out.push({
-                        x: bx + cuts[i] + 1,
-                        y: by,
-                        w: Math.max(8, segW - 2),
-                        h: bh
-                    });
-                }
-            }
-            return out;
-        }
-
-        function classifyTileColorFromPixels(data, W, H, box) {
-            let redScore = 0, blueScore = 0, yellowScore = 0, blackScore = 0;
-
-            const startX = Math.max(0, Math.round(box.x + box.w * 0.14));
-            const endX   = Math.min(W - 1, Math.round(box.x + box.w * 0.86));
-            const startY = Math.max(0, Math.round(box.y + box.h * 0.10));
-            const endY   = Math.min(H - 1, Math.round(box.y + box.h * 0.85));
-
-            for (let y = startY; y <= endY; y++) {
-                for (let x = startX; x <= endX; x++) {
-                    const idx = (y * W + x) * 4;
-                    const r = data[idx];
-                    const g = data[idx + 1];
-                    const b = data[idx + 2];
-                    const lum = 0.299 * r + 0.587 * g + 0.114 * b;
-
-                    if (lum < 155) {
-                        if (r > g + 36 && r > b + 36) {
-                            if (g > 110 && r - g < 75) {
-                                yellowScore += 1.4;
-                            } else {
-                                redScore += 1.3;
-                            }
-                        } else if (b > r + 24 && b > g + 10) {
-                            blueScore += 1.5;
-                        } else if (g > r + 18 && b >= r) {
-                            blueScore += 1.3;
-                        } else if (r > 135 && g > 105 && b < 85) {
-                            yellowScore += 1.4;
-                        } else if (lum < 92) {
-                            blackScore += 1.0;
-                        }
-                    }
-                }
-            }
-
-            const scores = [
-                { id: 'kirmizi', val: redScore },
-                { id: 'mavi',    val: blueScore },
-                { id: 'sari',    val: yellowScore },
-                { id: 'siyah',   val: blackScore * 0.85 }
-            ];
-            scores.sort((a, b) => b.val - a.val);
-            return scores[0].val > 3 ? scores[0].id : 'siyah';
-        }
-
-        function buildOkeyDigitTemplates() {
-            const templates = [];
-            const tw = 28;
-            const th = 32;
-            const c = document.createElement('canvas');
-            c.width = tw;
-            c.height = th;
-            const ctx = c.getContext('2d', { willReadFrequently: true });
-
-            for (let num = 1; num <= 13; num++) {
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0, 0, tw, th);
-                ctx.fillStyle = '#000000';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.font = num >= 10 ? '900 20px "Oswald", Arial, sans-serif' : '900 24px "Oswald", Arial, sans-serif';
-                ctx.fillText(String(num), tw / 2, th / 2 + 1);
-
-                const d = ctx.getImageData(0, 0, tw, th).data;
-                const bin = new Uint8Array(tw * th);
-                for (let i = 0; i < bin.length; i++) {
-                    bin[i] = d[i * 4] < 140 ? 1 : 0;
-                }
-                templates.push({ num, bin });
-            }
-            digitTemplateCache = { tw, th, templates };
-        }
-
-        function matchDigitByTemplate(cropCanvas) {
-            if (!digitTemplateCache) buildOkeyDigitTemplates();
-            const { tw, th, templates } = digitTemplateCache;
-
-            const sctx = cropCanvas.getContext('2d', { willReadFrequently: true });
-            const sw = cropCanvas.width;
-            const sh = cropCanvas.height;
-            const sdata = sctx.getImageData(0, 0, sw, sh).data;
-
-            let minX = sw, maxX = 0, minY = sh, maxY = 0, inkCount = 0;
-            for (let y = 2; y < sh - 2; y++) {
-                for (let x = 2; x < sw - 2; x++) {
-                    if (sdata[(y * sw + x) * 4] === 0) {
-                        inkCount++;
-                        if (x < minX) minX = x;
-                        if (x > maxX) maxX = x;
-                        if (y < minY) minY = y;
-                        if (y > maxY) maxY = y;
-                    }
-                }
-            }
-
-            if (inkCount < 14 || maxX <= minX || maxY <= minY) return { num: 0, score: 0 };
-
-            const normCanvas = document.createElement('canvas');
-            normCanvas.width = tw;
-            normCanvas.height = th;
-            const nctx = normCanvas.getContext('2d', { willReadFrequently: true });
-            nctx.fillStyle = '#ffffff';
-            nctx.fillRect(0, 0, tw, th);
-
-            const bw = maxX - minX + 1;
-            const bh = maxY - minY + 1;
-            const isDoubleDigit = (bw / Math.max(1, bh)) > 0.78;
-            const padX = isDoubleDigit ? 2 : 6;
-            nctx.drawImage(cropCanvas, minX, minY, bw, bh, padX, 3, tw - padX * 2, th - 6);
-
-            const ndata = nctx.getImageData(0, 0, tw, th).data;
-            const obs = new Uint8Array(tw * th);
-            for (let i = 0; i < obs.length; i++) {
-                obs[i] = ndata[i * 4] < 160 ? 1 : 0;
-            }
-
-            let bestNum = 1;
-            let bestIoU = -1;
-
-            for (const tpl of templates) {
-                if (isDoubleDigit && tpl.num < 10) continue;
-                if (!isDoubleDigit && tpl.num >= 10) continue;
-
-                let inter = 0;
-                let union = 0;
-                for (let i = 0; i < obs.length; i++) {
-                    const a = obs[i];
-                    const b = tpl.bin[i];
-                    if (a || b) {
-                        union++;
-                        if (a && b) inter++;
-                    }
-                }
-                const iou = union > 0 ? inter / union : 0;
-                if (iou > bestIoU) {
-                    bestIoU = iou;
-                    bestNum = tpl.num;
-                }
-            }
-
-            return { num: bestNum, score: bestIoU };
-        }
-
-        async function recognizeTileNumberLocally(srcCanvas, box) {
-            const cropCanvas = document.createElement('canvas');
-            const scale = 3;
-            const cw = Math.max(28, Math.round(box.w * 0.86 * scale));
-            const ch = Math.max(28, Math.round(box.h * 0.56 * scale));
-            cropCanvas.width = cw;
-            cropCanvas.height = ch;
-
-            const cctx = cropCanvas.getContext('2d');
-            cctx.fillStyle = '#ffffff';
-            cctx.fillRect(0, 0, cw, ch);
-
-            const sx = box.x + box.w * 0.07;
-            const sy = box.y + box.h * 0.06;
-            const sw = box.w * 0.86;
-            const sh = box.h * 0.56;
-            cctx.drawImage(srcCanvas, sx, sy, sw, sh, 4, 4, cw - 8, ch - 8);
-
-            const idata = cctx.getImageData(0, 0, cw, ch);
-            const p = idata.data;
-            let darkPixels = 0;
-            for (let i = 0; i < p.length; i += 4) {
-                const lum = p[i] * 0.299 + p[i + 1] * 0.587 + p[i + 2] * 0.114;
-                const val = lum < 146 ? 0 : 255;
-                if (val === 0) darkPixels++;
-                p[i] = p[i + 1] = p[i + 2] = val;
-            }
-            cctx.putImageData(idata, 0, 0);
-
-            const ratio = darkPixels / (cw * ch);
-            if (ratio < 0.04) return 0;
-
-            const tplMatch = matchDigitByTemplate(cropCanvas);
-            if (tplMatch.score >= 0.44 && tplMatch.num >= 1 && tplMatch.num <= 13) {
-                return tplMatch.num;
-            }
-
-            if (localOcrReady && localOcrWorker) {
-                try {
-                    const { data: { text } } = await localOcrWorker.recognize(cropCanvas);
-                    const digits = (text || '').replace(/\D/g, '');
-                    const parsed = parseInt(digits, 10);
-                    if (parsed >= 1 && parsed <= 13) return parsed;
-                    if (digits.length >= 2) {
-                        const firstTwo = parseInt(digits.slice(0, 2), 10);
-                        if (firstTwo >= 10 && firstTwo <= 13) return firstTwo;
-                        const firstOne = parseInt(digits[0], 10);
-                        if (firstOne >= 1 && firstOne <= 9) return firstOne;
-                    }
-                } catch (_) {}
-            }
-
-            return tplMatch.score >= 0.34 ? tplMatch.num : 0;
-        }
-
-        // =========================================================================
-        // 5. OKEY / 101 OKEY ÇÖZÜCÜ MOTORU
-        // =========================================================================
-        function getOkeyTileInfo() {
-            if (!indicatorTile) return null;
-            return {
-                color: indicatorTile.color,
-                number: indicatorTile.number === 13 ? 1 : indicatorTile.number + 1
-            };
-        }
-
-        function isActualOkey(tile, okeyInfo) {
-            if (!okeyInfo || tile.isSahte) return false;
-            return tile.color === okeyInfo.color && tile.number === okeyInfo.number;
-        }
-
-        function solveHandOptimal(rawTiles) {
-            const okeyInfo = getOkeyTileInfo();
-            const okeys = [];
-            const normals = [];
-
-            rawTiles.forEach(t => {
-                if (isActualOkey(t, okeyInfo)) {
-                    okeys.push({ ...t, isOkeyJoker: true });
-                } else if (t.isSahte && okeyInfo) {
-                    normals.push({ ...t, effColor: okeyInfo.color, effNum: okeyInfo.number, isOkeyJoker: false });
-                } else {
-                    normals.push({ ...t, effColor: t.color, effNum: t.number, isOkeyJoker: false });
-                }
-            });
-
-            // A) ÇİFT HESABI
-            const pairGroups = [];
-            const pairUsed = new Set();
-            for (let i = 0; i < normals.length; i++) {
-                if (pairUsed.has(normals[i].id)) continue;
-                for (let j = i + 1; j < normals.length; j++) {
-                    if (pairUsed.has(normals[j].id)) continue;
-                    if (normals[i].effColor === normals[j].effColor && normals[i].effNum === normals[j].effNum) {
-                        pairUsed.add(normals[i].id);
-                        pairUsed.add(normals[j].id);
-                        pairGroups.push([
-                            { ...normals[i], assignedNum: normals[i].effNum },
-                            { ...normals[j], assignedNum: normals[j].effNum }
-                        ]);
-                        break;
-                    }
-                }
-            }
-            const leftoverForOkeyPair = normals
-                .filter(t => !pairUsed.has(t.id))
-                .sort((a, b) => b.effNum - a.effNum);
-
-            const remOkeysForPairs = [...okeys];
-            while (remOkeysForPairs.length > 0 && leftoverForOkeyPair.length > 0) {
-                const ok = remOkeysForPairs.shift();
-                const partner = leftoverForOkeyPair.shift();
-                pairUsed.add(partner.id);
-                pairGroups.push([
-                    { ...partner, assignedNum: partner.effNum },
-                    { ...ok, assignedNum: partner.effNum, effColor: partner.effColor }
-                ]);
-            }
-            while (remOkeysForPairs.length >= 2) {
-                const ok1 = remOkeysForPairs.shift();
-                const ok2 = remOkeysForPairs.shift();
-                pairGroups.push([
-                    { ...ok1, assignedNum: 13 },
-                    { ...ok2, assignedNum: 13 }
-                ]);
-            }
-
-            const pairLeftovers = [
-                ...normals.filter(t => !pairUsed.has(t.id)).map(t => ({ ...t, assignedNum: t.effNum })),
-                ...remOkeysForPairs.map(ok => ({ ...ok, assignedNum: okeyInfo ? okeyInfo.number : 13 }))
-            ];
-            const pairLeftoverSum = pairLeftovers.reduce((acc, t) => acc + t.assignedNum, 0);
-
-            // B) SERİ VE PER HESABI
-            function buildAllCandidates(pool) {
-                const list = [];
-
-                for (let num = 1; num <= 13; num++) {
-                    const byColor = new Map();
-                    pool.forEach(t => {
-                        if (t.effNum === num && !byColor.has(t.effColor)) {
-                            byColor.set(t.effColor, t);
-                        }
-                    });
-                    const distinct = Array.from(byColor.values());
-                    if (distinct.length >= 3) {
-                        const three = distinct.slice(0, 3);
-                        list.push({ tiles: three, score: num * 3, okeysUsed: 0, assignedNums: [num, num, num] });
-                    }
-                    if (distinct.length === 4) {
-                        list.push({ tiles: distinct, score: num * 4, okeysUsed: 0, assignedNums: [num, num, num, num] });
-                    }
-                    if (distinct.length >= 2 && okeys.length >= 1) {
-                        const two = distinct.slice(0, 2);
-                        list.push({ tiles: two, score: num * 3, okeysUsed: 1, assignedNums: [num, num, num] });
-                    }
-                }
-
-                COLORS.forEach(c => {
-                    const byNum = new Map();
-                    pool.forEach(t => {
-                        if (t.effColor === c.id && !byNum.has(t.effNum)) {
-                            byNum.set(t.effNum, t);
-                        }
-                    });
-
-                    for (let start = 1; start <= 13; start++) {
-                        for (let len = 3; len <= 13; len++) {
-                            const seqNums = [];
-                            let validCycle = true;
-                            for (let k = 0; k < len; k++) {
-                                const val = ((start - 1 + k) % 13) + 1;
-                                if (k > 0 && val === 1 && k < len - 1) {
-                                    validCycle = false;
-                                    break;
-                                }
-                                seqNums.push(val);
-                            }
-                            if (!validCycle) continue;
-
-                            const matched = [];
-                            let missing = 0;
-                            for (const n of seqNums) {
-                                if (byNum.has(n)) matched.push(byNum.get(n));
-                                else missing++;
-                            }
-
-                            if (missing <= okeys.length && matched.length >= 2) {
-                                const score = seqNums.reduce((s, n) => s + n, 0);
-                                list.push({
-                                    tiles: matched,
-                                    score,
-                                    okeysUsed: missing,
-                                    seqNums,
-                                    seqColor: c.id
-                                });
-                            }
-                        }
-                    }
-                });
-
-                list.sort((a, b) => (b.score - b.okeysUsed * 2) - (a.score - a.okeysUsed * 2));
-                return list.slice(0, 50);
-            }
-
-            const candidates = buildAllCandidates(normals);
-            let bestState = { score: 0, groups: [] };
-
-            function searchBestCombo(idx, usedIds, okeysLeft, currentScore, currentGroups) {
-                if (currentScore > bestState.score) {
-                    bestState = { score: currentScore, groups: [...currentGroups] };
-                }
-                if (idx >= candidates.length || currentGroups.length >= 7) return;
-
-                const cand = candidates[idx];
-                if (cand.okeysUsed <= okeysLeft && cand.tiles.every(t => !usedIds.has(t.id))) {
-                    const nextUsed = new Set(usedIds);
-                    cand.tiles.forEach(t => nextUsed.add(t.id));
-                    currentGroups.push(cand);
-                    searchBestCombo(idx + 1, nextUsed, okeysLeft - cand.okeysUsed, currentScore + cand.score, currentGroups);
-                    currentGroups.pop();
-                }
-
-                searchBestCombo(idx + 1, usedIds, okeysLeft, currentScore, currentGroups);
-            }
-
-            searchBestCombo(0, new Set(), okeys.length, 0, []);
-
-            const usedNormalIds = new Set();
-            let okeyPoolIdx = 0;
-            const finalSeriGroups = bestState.groups.map(grp => {
-                grp.tiles.forEach(t => usedNormalIds.add(t.id));
-                if (grp.seqNums) {
-                    const byN = new Map(grp.tiles.map(t => [t.effNum, t]));
-                    return grp.seqNums.map(n => {
-                        if (byN.has(n)) {
-                            const t = byN.get(n);
-                            return { ...t, assignedNum: n };
-                        }
-                        const ok = okeys[okeyPoolIdx++];
-                        return { ...ok, assignedNum: n, effColor: grp.seqColor };
-                    });
-                } else {
-                    const num = grp.assignedNums[0];
-                    const items = grp.tiles.map(t => ({ ...t, assignedNum: num }));
-                    for (let k = 0; k < grp.okeysUsed; k++) {
-                        const ok = okeys[okeyPoolIdx++];
-                        items.push({ ...ok, assignedNum: num });
-                    }
-                    return items;
-                }
-            });
-
-            while (okeyPoolIdx < okeys.length) {
-                const extraOk = okeys[okeyPoolIdx];
-                let attached = false;
-                for (let g = 0; g < finalSeriGroups.length; g++) {
-                    const grp = finalSeriGroups[g];
-                    const allSameNum = grp.every(x => x.assignedNum === grp[0].assignedNum);
-                    if (allSameNum && grp.length === 3) {
-                        grp.push({ ...extraOk, assignedNum: grp[0].assignedNum });
-                        bestState.score += grp[0].assignedNum;
-                        okeyPoolIdx++;
-                        attached = true;
-                        break;
-                    }
-                }
-                if (!attached) break;
-            }
-
-            const leftoverNormals = normals
-                .filter(t => !usedNormalIds.has(t.id))
-                .map(t => ({ ...t, assignedNum: t.effNum }));
-
-            const leftoverOkeys = okeys
-                .slice(okeyPoolIdx)
-                .map(ok => ({ ...ok, assignedNum: okeyInfo ? okeyInfo.number : 13 }));
-
-            const seriLeftovers = [...leftoverNormals, ...leftoverOkeys];
-            const seriLeftoverSum = seriLeftovers.reduce((acc, t) => acc + t.assignedNum, 0);
-            const allTilesSum = bestState.score + seriLeftoverSum;
-
-            return {
-                seriGroups: finalSeriGroups,
-                seriScore: bestState.score,
-                seriLeftovers,
-                seriLeftoverSum,
-                pairGroups,
-                pairCount: pairGroups.length,
-                pairLeftovers,
-                pairLeftoverSum,
-                allTilesSum
-            };
-        }
-
-        // =========================================================================
-        // 6. EKRAN METRİKLERİ VE AÇIK KAYIN AHŞAP ISTAKA ÇİZİMİ
-        // =========================================================================
-        function switchArrangeTab(tab) {
-            arrangeTab = tab;
-            const bSeri = document.getElementById('btn-mode-seri');
-            const bCift = document.getElementById('btn-mode-cift');
-            if (tab === 'seri') {
-                bSeri.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow';
-                bCift.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white';
-            } else {
-                bCift.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow';
-                bSeri.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white';
-            }
-            recalculateAllMetrics();
-        }
-
-        function recalculateAllMetrics() {
-            const targetCount = gameMode === '101' ? 21 : 14;
-            const totalCount = detectedTiles.length;
-            const solved = solveHandOptimal(detectedTiles);
-
-            document.getElementById('top-rack-status').textContent = totalCount === 0
-                ? `0/${targetCount} · ıstakayı yavaşça tarayın`
-                : `${totalCount}/${targetCount} · ${arrangeTab === 'seri' ? 'Seri Dizilimi' : 'Çift Dizilimi'}`;
-
-            document.getElementById('stat-tile-ratio').textContent = `${totalCount}/${targetCount}`;
-
-            document.getElementById('stat-best-total').textContent = solved.seriScore;
-            document.getElementById('stat-threshold-suffix').textContent = gameMode === '101' ? '/101' : '/Okey';
-
-            const openBadge = document.getElementById('pill-open-badge');
-            if (gameMode === '101') {
-                if (solved.seriScore >= 101) {
-                    openBadge.textContent = '101 Açıyor ✓';
-                    openBadge.className = 'px-2 py-0.5 rounded-full bg-emerald-500/25 border border-emerald-400/50 text-[10px] font-extrabold text-emerald-300';
-                } else {
-                    const rem = 101 - solved.seriScore;
-                    openBadge.textContent = `${rem} Puan Kaldı`;
-                    openBadge.className = 'px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300';
-                }
-            } else {
-                if (totalCount >= 14 && solved.seriLeftovers.length <= 1) {
-                    openBadge.textContent = 'El Biter ✓';
-                    openBadge.className = 'px-2 py-0.5 rounded-full bg-emerald-500/25 border border-emerald-400/50 text-[10px] font-extrabold text-emerald-300';
-                } else {
-                    openBadge.textContent = `${solved.seriLeftovers.length} Taş Kaldı`;
-                    openBadge.className = 'px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300';
-                }
-            }
-
-            document.getElementById('stat-pair-count').textContent = solved.pairCount;
-            const pairStatus = document.getElementById('pill-pair-status');
-            if (solved.pairCount >= 5) {
-                pairStatus.textContent = '5 Çift Tamam ✓';
-                pairStatus.className = 'mt-1.5 text-[10px] font-extrabold text-emerald-400';
-            } else {
-                pairStatus.textContent = `${5 - solved.pairCount} Çift Kaldı`;
-                pairStatus.className = 'mt-1.5 text-[10px] font-bold text-amber-300/90';
-            }
-
-            document.getElementById('stat-seri-leftover').textContent = solved.seriLeftoverSum;
-            document.getElementById('stat-all-tiles-sum').textContent = solved.allTilesSum;
-            document.getElementById('stat-pair-leftover-x2').textContent = solved.pairLeftoverSum * 2;
-
-            const indNum = document.getElementById('indicator-card-num');
-            const indDot = document.getElementById('indicator-card-dot');
-            if (indicatorTile) {
-                const cObj = COLORS.find(c => c.id === indicatorTile.color);
-                indNum.textContent = indicatorTile.number;
-                indNum.className = `text-base font-black leading-none ${cObj ? cObj.textClass : 'text-slate-800'}`;
-                indDot.style.backgroundColor = cObj ? cObj.hex : '#64748b';
-            } else {
-                indNum.textContent = '?';
-                indNum.className = 'text-base font-black text-slate-700 leading-none';
-                indDot.style.backgroundColor = '#94a3b8';
-            }
-
-            renderArrangedWoodenRack(solved);
-        }
-
-        function renderEmptyWoodenRack() {
-            const topRow = document.getElementById('wooden-top-row');
-            const botRow = document.getElementById('wooden-bottom-row');
-            topRow.innerHTML = '';
-            botRow.innerHTML = '';
-            for (let i = 0; i < 13; i++) {
-                topRow.appendChild(createEmptySlotDiv());
-                botRow.appendChild(createEmptySlotDiv());
-            }
-        }
-
-        function createEmptySlotDiv() {
-            const div = document.createElement('div');
-            div.className = 'rack-slot-cell aspect-[3/4.1] w-full';
-            return div;
-        }
-
-        function renderArrangedWoodenRack(solved) {
-            const topRow = document.getElementById('wooden-top-row');
-            const botRow = document.getElementById('wooden-bottom-row');
-            topRow.innerHTML = '';
-            botRow.innerHTML = '';
-
-            const groups = arrangeTab === 'seri' ? solved.seriGroups : solved.pairGroups;
-            const leftovers = arrangeTab === 'seri' ? solved.seriLeftovers : solved.pairLeftovers;
-
-            const topSlots = new Array(13).fill(null);
-            const botSlots = new Array(13).fill(null);
-
-            let row = 0;
-            let col = 0;
-
-            groups.forEach(grp => {
-                if (row === 0 && col + grp.length > 13) {
-                    row = 1;
-                    col = 0;
-                }
-                grp.forEach(t => {
-                    if (row === 0 && col < 13) {
-                        topSlots[col++] = { tile: t, isValid: true };
-                    } else if (row === 1 && col < 13) {
-                        botSlots[col++] = { tile: t, isValid: true };
-                    }
-                });
-                if (col < 13) col++;
-            });
-
-            let remCol = 12;
-            for (let i = leftovers.length - 1; i >= 0; i--) {
-                while (remCol >= 0 && botSlots[remCol] !== null) remCol--;
-                if (remCol >= 0) {
-                    botSlots[remCol--] = { tile: leftovers[i], isValid: false };
-                } else {
-                    let topFree = 12;
-                    while (topFree >= 0 && topSlots[topFree] !== null) topFree--;
-                    if (topFree >= 0) topSlots[topFree] = { tile: leftovers[i], isValid: false };
-                }
-            }
-
-            for (let i = 0; i < 13; i++) {
-                topRow.appendChild(topSlots[i] ? createTileElement(topSlots[i].tile, topSlots[i].isValid) : createEmptySlotDiv());
-                botRow.appendChild(botSlots[i] ? createTileElement(botSlots[i].tile, botSlots[i].isValid) : createEmptySlotDiv());
-            }
-        }
-
-        function createTileElement(tile, isValidGroup) {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.onclick = () => removeSingleTileById(tile.id);
-            btn.title = 'Çıkarmak için dokunun';
-
-            const isOkey = Boolean(tile.isOkeyJoker);
-            const isSahte = Boolean(tile.isSahte);
-            const colorId = tile.effColor || tile.color;
-            const cObj = COLORS.find(c => c.id === colorId);
-
-            let classes = 'okey-tile aspect-[3/4.1] w-full cursor-pointer ';
-            if (isOkey) classes += 'tile-active-okey ';
-            else if (isValidGroup) classes += 'tile-valid-group ';
-            btn.className = classes;
-
-            const numSpan = document.createElement('span');
-            numSpan.className = `text-[11px] sm:text-xs font-bold leading-none ${isSahte ? 'c-sahte' : (cObj ? cObj.textClass : 'c-siyah')}`;
-            numSpan.textContent = isSahte ? '★' : (tile.assignedNum || tile.number);
-
-            const dotSpan = document.createElement('span');
-            dotSpan.className = 'w-1 h-1 rounded-full mt-0.5';
-            dotSpan.style.backgroundColor = isSahte ? '#7c3aed' : (cObj ? cObj.hex : '#0f172a');
-
-            btn.appendChild(numSpan);
-            btn.appendChild(dotSpan);
-
-            if (isOkey) {
-                const badge = document.createElement('span');
-                badge.className = 'absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-500 text-[7px] font-black text-slate-950 flex items-center justify-center';
-                badge.textContent = 'O';
-                btn.appendChild(badge);
-            }
-
-            return btn;
-        }
-
-        function removeSingleTileById(tileId) {
-            const idx = detectedTiles.findIndex(t => t.id === tileId);
-            if (idx !== -1) {
-                detectedTiles.splice(idx, 1);
-                recalculateAllMetrics();
-                showToast('Taş ıstakadan çıkarıldı');
-            }
-        }
-
-        function resetScannedHand() {
-            detectedTiles = [];
-            scanVoteBucket.clear();
-            const overlay = document.getElementById('ar-box-canvas');
-            const ctx = overlay.getContext('2d');
-            ctx.clearRect(0, 0, overlay.width, overlay.height);
-            document.getElementById('camera-reticle').classList.remove('reticle-active');
-            recalculateAllMetrics();
-            showToast('Istaka sıfırlandı, yeni taramaya hazır');
-        }
-
-        // =========================================================================
-        // 7. GÖSTERGE, MANUEL TAŞ, AYARLAR VE YAZBOZ PENCERELERİ
-        // =========================================================================
-        function buildTilePickers() {
-            const indCont = document.getElementById('indicator-palette-container');
-            const manCont = document.getElementById('manual-tile-palette');
-            indCont.innerHTML = '';
-            manCont.innerHTML = '';
-
-            COLORS.forEach(c => {
-                const rowInd = document.createElement('div');
-                rowInd.className = 'grid grid-cols-13 gap-1';
-                rowInd.style.gridTemplateColumns = 'repeat(13, minmax(0, 1fr))';
-
-                const rowMan = document.createElement('div');
-                rowMan.className = 'grid grid-cols-13 gap-1';
-                rowMan.style.gridTemplateColumns = 'repeat(13, minmax(0, 1fr))';
-
-                for (let n = 1; n <= 13; n++) {
-                    const b1 = document.createElement('button');
-                    b1.type = 'button';
-                    b1.className = `okey-tile py-1.5 text-xs font-extrabold ${c.textClass}`;
-                    b1.textContent = n;
-                    b1.onclick = () => selectIndicatorTile(c.id, n);
-                    rowInd.appendChild(b1);
-
-                    const b2 = document.createElement('button');
-                    b2.type = 'button';
-                    b2.className = `okey-tile py-1.5 text-xs font-extrabold ${c.textClass}`;
-                    b2.textContent = n;
-                    b2.onclick = () => addManualTile(c.id, n, false);
-                    rowMan.appendChild(b2);
-                }
-
-                indCont.appendChild(rowInd);
-                manCont.appendChild(rowMan);
-            });
-
-            const sahteBtn = document.createElement('button');
-            sahteBtn.type = 'button';
-            sahteBtn.className = 'w-full py-2 mt-1 rounded-xl bg-purple-500/20 border border-purple-400/40 text-xs font-extrabold text-purple-200';
-            sahteBtn.textContent = '★ Sahte Okey Ekle';
-            sahteBtn.onclick = () => addManualTile('sahte', 0, true);
-            manCont.appendChild(sahteBtn);
-        }
-
-        function openIndicatorPickerModal() {
-            updateIndicatorPreviewText();
-            document.getElementById('indicator-modal').classList.remove('hidden');
-        }
-        function closeIndicatorPickerModal() {
-            document.getElementById('indicator-modal').classList.add('hidden');
-        }
-        function selectIndicatorTile(color, number) {
-            indicatorTile = { color, number };
-            updateIndicatorPreviewText();
-            recalculateAllMetrics();
-        }
-        function clearIndicatorTile() {
-            indicatorTile = null;
-            updateIndicatorPreviewText();
-            recalculateAllMetrics();
-        }
-        function updateIndicatorPreviewText() {
-            const el = document.getElementById('modal-okey-preview');
-            if (!indicatorTile) {
-                el.textContent = 'Seçili Gösterge Yok';
-                return;
-            }
-            const cObj = COLORS.find(c => c.id === indicatorTile.color);
-            const okeyNum = indicatorTile.number === 13 ? 1 : indicatorTile.number + 1;
-            el.textContent = `Gösterge: ${cObj.name} ${indicatorTile.number} → Okey: ${cObj.name} ${okeyNum}`;
-        }
-
-        function openManualTileModal() {
-            document.getElementById('manual-tile-modal').classList.remove('hidden');
-        }
-        function closeManualTileModal() {
-            document.getElementById('manual-tile-modal').classList.add('hidden');
-        }
-        function addManualTile(color, number, isSahte) {
-            const limit = gameMode === '101' ? 22 : 15;
-            if (detectedTiles.length >= limit) {
-                showToast(`Maksimum ${limit} taş eklenebilir`);
-                return;
-            }
-            detectedTiles.push({
-                id: `man_${Date.now()}_${Math.random()}`,
-                color,
-                number,
-                isSahte,
-                box: null
-            });
-            recalculateAllMetrics();
-            showToast(isSahte ? 'Sahte Okey eklendi' : `${number} eklendi`);
-        }
-
-        function openSettingsModal() {
-            updateGameModeButtonsUI();
-            document.getElementById('settings-modal').classList.remove('hidden');
-        }
-        function closeSettingsModal() {
-            document.getElementById('settings-modal').classList.add('hidden');
-        }
-        function changeGameModeFromSettings(mode) {
-            gameMode = mode;
-            updateGameModeButtonsUI();
-            recalculateAllMetrics();
-        }
-        function updateGameModeButtonsUI() {
-            const b101 = document.getElementById('set-mode-101');
-            const b14 = document.getElementById('set-mode-14');
-            if (!b101 || !b14) return;
-            if (gameMode === '101') {
-                b101.className = 'px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold';
-                b14.className = 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold';
-            } else {
-                b14.className = 'px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold';
-                b101.className = 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold';
-            }
-        }
-
-        function openYazbozModal() {
-            renderYazbozGrid();
-            document.getElementById('yazboz-modal').classList.remove('hidden');
-        }
-        function closeYazbozModal() {
-            document.getElementById('yazboz-modal').classList.add('hidden');
-        }
-        function renderYazbozGrid() {
-            const grid = document.getElementById('yazboz-players-grid');
-            grid.innerHTML = '';
-            yazbozPlayers.forEach((p, idx) => {
-                const card = document.createElement('div');
-                card.className = 'bg-slate-900/90 border border-slate-700/80 rounded-2xl p-3 flex flex-col gap-2';
-                card.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <input type="text" value="${p.name}" onchange="renameYazbozPlayer(${idx}, this.value)" class="bg-transparent text-xs font-extrabold text-amber-300 w-24 focus:outline-none border-b border-transparent focus:border-amber-400">
-                        <span class="text-lg font-black text-white">${p.score}</span>
-                    </div>
-                    <div class="grid grid-cols-3 gap-1">
-                        <button onclick="addYazbozDelta(${idx}, 101)" class="py-1 rounded-lg bg-red-500/20 text-red-300 text-[11px] font-extrabold">+101</button>
-                        <button onclick="addYazbozDelta(${idx}, -101)" class="py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[11px] font-extrabold">-101</button>
-                        <button onclick="promptCustomYazboz(${idx})" class="py-1 rounded-lg bg-slate-800 text-slate-200 text-[11px] font-bold">±Sayı</button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-        function renameYazbozPlayer(idx, val) {
-            yazbozPlayers[idx].name = val.trim() || `Oyuncu ${idx + 1}`;
-            localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers));
-        }
-        function addYazbozDelta(idx, delta) {
-            yazbozPlayers[idx].score += delta;
-            localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers));
-            renderYazbozGrid();
-        }
-        function promptCustomYazboz(idx) {
-            const val = window.prompt(`${yazbozPlayers[idx].name} için eklenecek/çıkarılacak puan (örn: 45 veya -202):`);
-            const num = parseInt(val, 10);
-            if (!isNaN(num)) {
-                addYazbozDelta(idx, num);
-            }
-        }
-        function resetYazbozScores() {
-            yazbozPlayers.forEach(p => { p.score = 0; });
-            localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers));
-            renderYazbozGrid();
-        }
-
-        function loadSample21Hand() {
-            indicatorTile = { color: 'mavi', number: 4 };
-            const sample = [
-                { color: 'kirmizi', number: 13 }, { color: 'mavi', number: 13 }, { color: 'siyah', number: 13 },
-                { color: 'siyah', number: 4 }, { color: 'mavi', number: 5 }, { color: 'siyah', number: 6 },
-                { color: 'siyah', number: 7 }, { color: 'siyah', number: 8 },
-                { color: 'kirmizi', number: 7 }, { color: 'kirmizi', number: 8 }, { color: 'kirmizi', number: 9 },
-                { color: 'sari', number: 4 }, { color: 'siyah', number: 12 }, { color: 'mavi', number: 6 },
-                { color: 'mavi', number: 10 }, { color: 'siyah', number: 10 }, { color: 'sari', number: 6 },
-                { color: 'sari', number: 8 }, { color: 'mavi', number: 3 }, { color: 'kirmizi', number: 3 },
-                { color: 'siyah', number: 9 }
-            ];
-            detectedTiles = sample.map((t, idx) => ({
-                id: `sample_${idx}`,
-                color: t.color,
-                number: t.number,
-                isSahte: false,
-                box: null
-            }));
-            recalculateAllMetrics();
-            showToast('Örnek 21 taş eli yüklendi (Gösterge: Mavi 4 → Okey: Mavi 5)');
-        }
-
-        let toastTimer = null;
-        function showToast(msg) {
-            const el = document.getElementById('toast-message');
-            el.textContent = msg;
-            el.style.opacity = '1';
-            if (toastTimer) clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => {
-                el.style.opacity = '0';
-            }, 2400);
-        }
-    </script>
-</body>
-</html>
+        for (var x = 0; x < wc; x++) cells.push({ col: null, num: num, wild: true, val: num });
+        out.push({ type: 'set', cells: cells, used: used, wilds: wc, pts: num * size, size: size });
+      }
+    }
+    return out;
+  }
+
+  function rec(w) {
+    var i = 0;
+    while (i < 52 && c[i] === 0) i++;
+    if (i >= 52) return END;
+    var key = c.join('') + '|' + w;
+    var hit = memo.get(key);
+    if (hit) return hit;
+
+    c[i]--;
+    var r0 = rec(w);
+    c[i]++;
+    var best = { s: r0.s, grp: null, next: r0 };
+
+    var cand = candidates(i, w);
+    for (var g = 0; g < cand.length; g++) {
+      var grp = cand[g];
+      for (var u = 0; u < grp.used.length; u++) c[grp.used[u]]--;
+      var r = rec(w - grp.wilds);
+      for (var u2 = 0; u2 < grp.used.length; u2++) c[grp.used[u2]]++;
+      var s = grp.pts * 100 + grp.size + r.s;
+      if (s > best.s) best = { s: s, grp: grp, next: r };
+    }
+    memo.set(key, best);
+    return best;
+  }
+
+  var node = rec(wilds);
+  var groups = [];
+  var left = counts.slice();
+  var wLeft = wilds;
+  var total = 0;
+  while (node) {
+    if (node.grp) {
+      groups.push(node.grp);
+      total += node.grp.pts;
+      node.grp.used.forEach(function (u) { left[u]--; });
+      wLeft -= node.grp.wilds;
+    }
+    node = node.next;
+  }
+  var leftover = [];
+  for (var t = 0; t < 52; t++) for (var n = 0; n < left[t]; n++) leftover.push({ col: Math.floor(t / 13), num: (t % 13) + 1 });
+  return { total: total, groups: groups, leftover: leftover, wildsLeft: wLeft };
+}
+
+function countPairs(counts, wilds) {
+  var pairs = 0, singles = 0;
+  for (var i = 0; i < 52; i++) {
+    pairs += Math.floor(counts[i] / 2);
+    if (counts[i] % 2 === 1) singles++;
+  }
+  var w = wilds;
+  var use = Math.min(w, singles);
+  pairs += use; w -= use;
+  pairs += Math.floor(w / 2);
+  return pairs;
+}
+
+
+</script>
+<script>
+(function () {
+  var COLORS = ['Kırmızı', 'Mavi', 'Siyah', 'Sarı'];
+  var state = { classic: false, counts: new Array(52).fill(0), wilds: 0 };
+
+  function $(id) { return document.getElementById(id); }
+  function cap() { return state.classic ? 15 : 22; }
+  function handSize() { var n = state.wilds; for (var i = 0; i < 52; i++) n += state.counts[i]; return n; }
+
+  function tileEl(col, num, opts) {
+    opts = opts || {};
+    var t = document.createElement(opts.button ? 'button' : 'span');
+    t.className = 'tile' + (opts.sm ? ' sm' : '') + (col === null || col === undefined ? ' wild' : ' c' + col) + (opts.asWild ? ' asw' : '');
+    if (opts.button) t.type = 'button';
+    if (col !== null && col !== undefined) {
+      t.textContent = String(num === 14 ? 1 : num);
+      var pip = document.createElement('i'); pip.className = 'pip'; t.appendChild(pip);
+    }
+    if (opts.asWild && col !== null && col !== undefined) t.title = 'Okey, ' + num + ' yerine';
+    if (opts.label) t.setAttribute('aria-label', opts.label);
+    return t;
+  }
+
+  function buildPicker() {
+    var p = $('picker'); p.innerHTML = '';
+    for (var c = 0; c < 4; c++) {
+      var row = document.createElement('div'); row.className = 'prow';
+      var nm = document.createElement('div'); nm.className = 'cname';
+      nm.innerHTML = '<span class="dot" style="background:var(--c' + c + ')"></span>' + COLORS[c];
+      row.appendChild(nm);
+      var nums = document.createElement('div'); nums.className = 'nums';
+      for (var n = 1; n <= 13; n++) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'pk c' + c;
+        b.id = 'pk-' + c + '-' + n;
+        b.textContent = String(n);
+        b.setAttribute('aria-label', COLORS[c] + ' ' + n + ' ekle');
+        b.dataset.col = c; b.dataset.num = n;
+        b.addEventListener('click', onPick);
+        nums.appendChild(b);
+      }
+      row.appendChild(nums);
+      p.appendChild(row);
+    }
+  }
+  function onPick(e) {
+    var b = e.currentTarget, i = +b.dataset.col * 13 + (+b.dataset.num - 1);
+    if (state.counts[i] >= 2 || handSize() >= cap()) return;
+    state.counts[i]++; render();
+  }
+
+  function renderRack() {
+    var rack = $('rack'); rack.innerHTML = '';
+    var any = false;
+    for (var i = 0; i < 52; i++) {
+      for (var k = 0; k < state.counts[i]; k++) {
+        any = true;
+        (function (idx) {
+          var col = Math.floor(idx / 13), num = idx % 13 + 1;
+          var t = tileEl(col, num, { button: true, label: COLORS[col] + ' ' + num + ' çıkar' });
+          t.addEventListener('click', function () { state.counts[idx]--; render(); });
+          rack.appendChild(t);
+        })(i);
+      }
+    }
+    for (var w = 0; w < state.wilds; w++) {
+      any = true;
+      var t = tileEl(null, 0, { button: true, label: 'Okey çıkar' });
+      t.addEventListener('click', function () { state.wilds--; render(); });
+      rack.appendChild(t);
+    }
+    if (!any) { var e = document.createElement('span'); e.className = 'empty'; e.textContent = 'Henüz taş yok. Aşağıdan renk ve sayı seç ya da örnek eli dene.'; rack.appendChild(e); }
+    $('rackCount').textContent = handSize() + '/' + cap();
+  }
+
+  function renderPicker() {
+    var full = handSize() >= cap();
+    for (var c = 0; c < 4; c++) for (var n = 1; n <= 13; n++) {
+      var b = $('pk-' + c + '-' + n), cnt = state.counts[c * 13 + n - 1];
+      b.disabled = cnt >= 2 || full;
+      var badge = b.querySelector('.n');
+      if (cnt > 0) {
+        if (!badge) { badge = document.createElement('span'); badge.className = 'n'; b.appendChild(badge); }
+        badge.textContent = '×' + cnt;
+      } else if (badge) badge.remove();
+    }
+    $('btnWild').disabled = state.wilds >= 2 || full;
+    $('wildInfo').textContent = state.wilds + '/2 okey eklendi';
+  }
+
+  function stat(label, value) {
+    var d = document.createElement('div'); d.className = 'stat';
+    d.innerHTML = '<b>' + value + '</b><span>' + label + '</span>';
+    return d;
+  }
+
+  function renderResult() {
+    var res = solveHand(state.counts, state.wilds, { classic: state.classic });
+    $('total').textContent = res.total;
+    var s = $('sumStats'); s.innerHTML = '';
+    var n = handSize();
+    if (!state.classic) {
+      var pairs = countPairs(state.counts, state.wilds);
+      var openByPoints = res.total >= 101, openByPairs = pairs >= 5;
+      var left = Math.max(0, 101 - res.total);
+      s.appendChild(stat('101\'e kalan', left));
+      s.appendChild(stat('Üçlü sayımı', Math.round(res.total / 3)));
+      s.appendChild(stat('Çift', pairs));
+      var st = document.createElement('div');
+      st.innerHTML = openByPoints || openByPairs
+        ? '<span class="pill ok">' + (openByPoints && openByPairs ? 'Puanla ya da çiftle açar' : openByPoints ? 'Puanla açar' : '5 çiftle açar') + '</span>'
+        : '<span class="pill no">Henüz açamaz</span>';
+      s.appendChild(st);
+    } else {
+      s.appendChild(stat('Dizilen taş', n - res.leftover.length - res.wildsLeft + '/' + n));
+      s.appendChild(stat('Artan taş', res.leftover.length + res.wildsLeft));
+      var rest = res.leftover.length + res.wildsLeft;
+      var st2 = document.createElement('div');
+      if (n >= 14 && rest <= (n === 15 ? 1 : 0)) st2.innerHTML = '<span class="pill ok">' + (n === 15 ? 'Atacağın taş dışında el biter' : 'El biter') + '</span>';
+      else st2.innerHTML = '<span class="pill">El henüz bitmiyor</span>';
+      s.appendChild(st2);
+    }
+
+    var g = $('groups'); g.innerHTML = '';
+    if (!res.groups.length) {
+      var p = document.createElement('p'); p.className = 'hint'; p.style.margin = '0';
+      p.textContent = n === 0 ? 'Taş ekleyince geçerli per ve seriler burada görünür.' : 'Bu elde geçerli per ya da seri yok.';
+      g.appendChild(p);
+    }
+    res.groups.slice().sort(function (a, b) { return b.pts - a.pts; }).forEach(function (grp) {
+      var d = document.createElement('div'); d.className = 'group';
+      var tiles = document.createElement('div'); tiles.className = 'gtile';
+      grp.cells.forEach(function (cell) {
+        if (cell.wild) {
+          var w = tileEl(null, 0, { sm: true }); w.title = 'Okey, ' + (cell.num === 14 ? 1 : cell.num) + ' yerine';
+          var lab = document.createElement('span');
+          tiles.appendChild(w);
+        } else tiles.appendChild(tileEl(cell.col, cell.num, { sm: true }));
+      });
+      var meta = document.createElement('div'); meta.className = 'gmeta';
+      meta.innerHTML = '<b>' + grp.pts + '</b>' + (grp.type === 'run' ? 'Seri' : 'Per');
+      d.appendChild(tiles); d.appendChild(meta);
+      g.appendChild(d);
+      if (grp.wilds) {
+        var subs = grp.cells.filter(function (x) { return x.wild; }).map(function (x) {
+          return (grp.type === 'run' ? COLORS[x.col] + ' ' : '') + (x.num === 14 ? 1 : x.num);
+        });
+        var note = document.createElement('div'); note.className = 'hint'; note.style.cssText = 'margin:-4px 0 0 4px;width:100%';
+        note.textContent = '★ yerine geçtiği taş: ' + subs.join(', ');
+        g.appendChild(note);
+      }
+    });
+
+    var lo = $('leftover'); lo.innerHTML = '';
+    if (res.leftover.length || res.wildsLeft) {
+      var l = document.createElement('span'); l.className = 'lab'; l.textContent = 'Dışarıda kalan'; lo.appendChild(l);
+      res.leftover.forEach(function (x) { lo.appendChild(tileEl(x.col, x.num, { sm: true })); });
+      for (var k = 0; k < res.wildsLeft; k++) lo.appendChild(tileEl(null, 0, { sm: true }));
+    }
+  }
+
+  function render() { renderRack(); renderPicker(); renderResult(); }
+
+  function setMode(classic) {
+    state.classic = classic;
+    $('mode101').setAttribute('aria-pressed', String(!classic));
+    $('modeCl').setAttribute('aria-pressed', String(classic));
+    render();
+  }
+
+  var SAMPLE = [[0,4],[0,5],[0,6],[0,7],[0,9],[0,12],[0,13],[1,9],[1,10],[1,11],[1,2],[1,13],[2,9],[2,3],[2,3],[2,13],[3,9],[3,5],[3,8],[3,13]];
+  $('btnSample').addEventListener('click', function () {
+    state.counts = new Array(52).fill(0); state.wilds = 1;
+    SAMPLE.forEach(function (t) { state.counts[t[0] * 13 + t[1] - 1]++; });
+    render();
+  });
+  $('btnClear').addEventListener('click', function () { state.counts = new Array(52).fill(0); state.wilds = 0; render(); });
+  $('btnWild').addEventListener('click', function () { if (state.wilds < 2 && handSize() < cap()) { state.wilds++; render(); } });
+  $('mode101').addEventListener('click', function () { setMode(false); });
+  $('modeCl').addEventListener('click', function () { setMode(true); });
+
+  /* sekmeler */
+  function setTab(sheet) {
+    $('viewCalc').hidden = sheet; $('viewSheet').hidden = !sheet;
+    $('tabCalc').setAttribute('aria-selected', String(!sheet));
+    $('tabSheet').setAttribute('aria-selected', String(sheet));
+    try { history.replaceState(null, '', sheet ? '#yazboz' : '#hesapla'); } catch (e) {}
+  }
+  $('tabCalc').addEventListener('click', function () { setTab(false); });
+  $('tabSheet').addEventListener('click', function () { setTab(true); });
+
+  /* yazboz */
+  var KEY = 'okey-hesabi-yazboz-v1';
+  var sheet = { names: ['Oyuncu 1', 'Oyuncu 2', 'Oyuncu 3', 'Oyuncu 4'], rounds: [['', '', '', '']] };
+  try { var raw = localStorage.getItem(KEY); if (raw) { var o = JSON.parse(raw); if (o && o.names && o.rounds) sheet = o; } } catch (e) {}
+  function saveSheet() { try { localStorage.setItem(KEY, JSON.stringify(sheet)); } catch (e) {} }
+  function totals() {
+    return sheet.names.map(function (_, c) {
+      return sheet.rounds.reduce(function (a, r) { var v = parseFloat(r[c]); return a + (isNaN(v) ? 0 : v); }, 0);
+    });
+  }
+  function renderSheet() {
+    var t = $('sheet'); t.innerHTML = '';
+    var thead = document.createElement('thead'), hr = document.createElement('tr');
+    hr.appendChild(document.createElement('th'));
+    sheet.names.forEach(function (nm, c) {
+      var th = document.createElement('th'), inp = document.createElement('input');
+      inp.type = 'text'; inp.id = 'name-' + c; inp.value = nm; inp.setAttribute('aria-label', (c + 1) + '. oyuncunun adı');
+      inp.addEventListener('input', function () { sheet.names[c] = inp.value; saveSheet(); });
+      th.appendChild(inp); hr.appendChild(th);
+    });
+    thead.appendChild(hr); t.appendChild(thead);
+    var tb = document.createElement('tbody');
+    sheet.rounds.forEach(function (r, ri) {
+      var tr = document.createElement('tr');
+      var th = document.createElement('td'); th.className = 'rn'; th.textContent = ri + 1; tr.appendChild(th);
+      r.forEach(function (v, c) {
+        var td = document.createElement('td'), inp = document.createElement('input');
+        inp.type = 'number'; inp.inputMode = 'numeric'; inp.id = 'sc-' + ri + '-' + c; inp.value = v;
+        inp.setAttribute('aria-label', (ri + 1) + '. el, ' + sheet.names[c]);
+        inp.addEventListener('input', function () { sheet.rounds[ri][c] = inp.value; saveSheet(); updateTotals(); });
+        td.appendChild(inp); tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+    var tf = document.createElement('tfoot'), fr = document.createElement('tr');
+    var lab = document.createElement('td'); lab.className = 'rn'; lab.textContent = 'Toplam'; fr.appendChild(lab);
+    sheet.names.forEach(function (_, c) { var td = document.createElement('td'); td.id = 'tot-' + c; fr.appendChild(td); });
+    tf.appendChild(fr); t.appendChild(tf);
+    updateTotals();
+  }
+  function updateTotals() {
+    var tot = totals(), played = sheet.rounds.some(function (r) { return r.some(function (v) { return v !== ''; }); });
+    var min = Math.min.apply(null, tot);
+    tot.forEach(function (v, c) {
+      var td = $('tot-' + c); td.textContent = v;
+      td.className = played && v === min ? 'lead' : '';
+    });
+  }
+  $('btnRound').addEventListener('click', function () { sheet.rounds.push(['', '', '', '']); saveSheet(); renderSheet(); var last = $('sc-' + (sheet.rounds.length - 1) + '-0'); if (last) last.focus(); });
+  var resetArmed = false;
+  $('btnResetSheet').addEventListener('click', function () {
+    var b = $('btnResetSheet');
+    if (!resetArmed) { resetArmed = true; b.textContent = 'Emin misin? Tekrar dokun'; setTimeout(function () { resetArmed = false; b.textContent = 'Sıfırla'; }, 3000); return; }
+    resetArmed = false; b.textContent = 'Sıfırla';
+    sheet = { names: sheet.names, rounds: [['', '', '', '']] }; saveSheet(); renderSheet();
+  });
+
+  /* fotoğrafla tarama (sample + images) */
+  var COLOR_KEYS = { red: 0, blue: 1, black: 2, yellow: 3 };
+  var scanCtl = null;
+  function setScanStatus(msg, err) { var s = $('scanStatus'); s.textContent = msg; s.className = 'status' + (err ? ' err' : ''); }
+  var ERR_COPY = {
+    not_granted: 'Fotoğraf okuma izni verilmedi. Taşları elle ekleyebilirsin.',
+    rate_limited: 'Çok sık denendi ya da kullanım sınırına ulaşıldı. Biraz sonra tekrar dene.',
+    session_expired: 'Oturum süresi doldu. Yeniden giriş yapıp tekrar dene.',
+    image_rejected: 'Bu fotoğraf kabul edilmedi. Başka bir fotoğraf dene.',
+    invalid_json: 'Taşlar okunamadı. Daha net ve yakından bir fotoğraf dene.',
+    refused: 'Bu fotoğraf okunamadı. Başka bir fotoğraf dene.',
+    empty_completion: 'Taşlar okunamadı. Daha net bir fotoğraf dene.'
+  };
+  function buildOkeySelect() {
+    var s = $('okeyNum');
+    s.innerHTML = '<option value="">Sayı</option>';
+    for (var n = 1; n <= 13; n++) s.innerHTML += '<option value="' + n + '">' + n + '</option>';
+  }
+  function scanPrompt() {
+    return 'Bu fotoğrafta bir okey ıstakası var: ıstakada okey taşları sıralı duruyor. ' +
+      'Her taş krem renkli bir dikdörtgen; üstünde renkli bir sayı (1 ile 13 arası) var. Renkler: kırmızı, mavi (açık mavi ya da turkuaz da olabilir), siyah ve sarı (turuncu da olabilir; turuncuyu yellow say). ' +
+      'Sayının altındaki küçük kalp, maça gibi sembol her taşta bulunan bir süstür, joker işareti değildir; onu yok say. ' +
+      'Sahte okey taşı, sayı yerine bir yıldız ya da özel bir figür taşıyan taştır; fotoğrafta böyle bir taş yoksa fake_jokers 0 olsun. ' +
+      'Istakadaki bütün taşları soldan sağa, üst sıradan alt sıraya doğru oku. Aynı taşı iki kez sayma. ' +
+      'Bir taşı güvenle okuyamıyorsan tahmin etme, "unreadable" sayısına ekle. ' +
+      'Yalnızca şu biçimde tek bir JSON nesnesi döndür: ' +
+      '{"tiles":[{"color":"red|blue|black|yellow","number":1-13}], "fake_jokers": sahte okey sayısı, "unreadable": okunamayan taş sayısı}. ' +
+      'Örnek: {"tiles":[{"color":"red","number":5},{"color":"blue","number":12}],"fake_jokers":0,"unreadable":0}';
+  }
+  async function runScan(file) {
+    var sample = window.__sample;
+    scanCtl = new AbortController();
+    $('btnScan').disabled = true; $('btnStop').hidden = false;
+    var th = $('scanThumb'); try { th.src = URL.createObjectURL(file); th.hidden = false; } catch (e) {}
+    setScanStatus('Taşlar okunuyor, birkaç saniye sürebilir...');
+    try {
+      var out = await sample.json(scanPrompt(), { images: file, signal: scanCtl.signal, cache: false });
+      applyScan(out);
+    } catch (e) {
+      if (e && e.code === 'cancelled') setScanStatus('Tarama durduruldu.');
+      else setScanStatus(ERR_COPY[e && e.code] || 'Tarama şu an çalışmadı. Taşları elle ekleyebilirsin.', true);
+    } finally {
+      $('btnScan').disabled = false; $('btnStop').hidden = true; scanCtl = null; $('scanFile').value = '';
+    }
+  }
+  function applyScan(out) {
+    var tiles = out && Array.isArray(out.tiles) ? out.tiles : null;
+    if (!tiles) { setScanStatus('Taşlar okunamadı. Daha net bir fotoğraf dene.', true); return; }
+    var okeyCol = $('okeyColor').value, okeyNum = $('okeyNum').value;
+    var okeyIdx = (okeyCol !== '' && okeyNum !== '') ? (+okeyCol) * 13 + (+okeyNum) - 1 : -1;
+    var counts = new Array(52).fill(0), wilds = 0, bad = 0, dup = 0, over = 0;
+    var limit = cap();
+    function addTile(idx) {
+      if (counts.reduce(function (a, b) { return a + b; }, 0) + wilds >= limit) { over++; return; }
+      if (idx === okeyIdx) { if (wilds < 2) wilds++; else dup++; return; }
+      if (counts[idx] >= 2) { dup++; return; }
+      counts[idx]++;
+    }
+    tiles.forEach(function (t) {
+      var c = COLOR_KEYS[String(t && t.color).toLowerCase()], n = Math.round(Number(t && t.number));
+      if (c === undefined || !(n >= 1 && n <= 13)) { bad++; return; }
+      addTile(c * 13 + n - 1);
+    });
+    var fake = Math.max(0, Math.round(Number(out.fake_jokers) || 0)), fakeNote = '';
+    if (fake) {
+      if (okeyIdx >= 0) for (var f = 0; f < fake; f++) addTile(okeyIdx);
+      else fakeNote = ' ' + fake + ' sahte okey var; okey taşını seçip yeniden tara ya da yüzünü elle ekle.';
+    }
+    state.counts = counts; state.wilds = wilds; render();
+    var read = handSize(), unread = bad + Math.max(0, Math.round(Number(out.unreadable) || 0));
+    var msg = read + ' taş okundu.';
+    if (unread) msg += ' ' + unread + ' taş okunamadı, elle ekle.';
+    if (dup) msg += ' ' + dup + ' taş aynı taştan ikiden fazla çıktığı için atlandı.';
+    if (over) msg += ' ' + over + ' taş ıstaka sınırını aştığı için eklenmedi.';
+    msg += fakeNote + ' Okumayı kontrol et: yanlış taşa dokunup çıkar, doğrusunu ekle.';
+    setScanStatus(msg, !!(unread || dup || over || fakeNote));
+  }
+  async function initScan() {
+    try {
+      if (!window.claude || !window.claude.use) return;
+      var sample = await window.claude.use('sample');
+      if (!sample) return;
+      var lim = await sample.limits().catch(function () { return null; });
+      if (!lim || !lim.images) return;
+      window.__sample = sample;
+      if (lim.images.mediaTypes && lim.images.mediaTypes.length) $('scanFile').accept = lim.images.mediaTypes.join(',');
+      buildOkeySelect();
+      $('scanCard').hidden = false;
+      $('btnScan').addEventListener('click', function () { $('scanFile').click(); });
+      $('btnStop').addEventListener('click', function () { if (scanCtl) scanCtl.abort(); });
+      $('scanFile').addEventListener('change', function (e) { var f = e.target.files && e.target.files[0]; if (f) runScan(f); });
+    } catch (e) {}
+  }
+
+  buildPicker();
+  $('btnSample').click();
+  renderSheet();
+  initScan();
+  if (location.hash === '#yazboz') setTab(true);
+})();
+</script>
+
+</body></html>
