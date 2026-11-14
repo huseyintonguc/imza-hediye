@@ -1,879 +1,1563 @@
 <!DOCTYPE html>
-<html lang="tr" class="scroll-smooth">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doğal Ahşap Nargile Sunum Sehpası | İmza Hediye</title>
-    <!-- Tailwind CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Okey & 101 Okey Canlı Kamera Asistanı</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        gold: {
-                            400: '#e5c05b',
-                            500: '#c59b27',
-                            600: '#a37e1c',
-                            700: '#7e6012'
-                        },
-                        amberWood: '#d97706',
-                        darkCharcoal: '#0b0c10',
-                        surface: '#15171e',
-                        surfaceBorder: '#272a38'
-                    },
-                    fontFamily: {
-                        serif: ['Cinzel', 'serif'],
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #0b0c10;
-            color: #f1f5f9;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
+        * {
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
         }
 
-        .gold-gradient-text {
-            background: linear-gradient(135deg, #fff3c4 0%, #e5c05b 50%, #9e7811 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .gold-glow {
-            box-shadow: 0 0 35px -5px rgba(229, 192, 91, 0.25);
-        }
-
-        .gold-border-glow {
-            border: 1px solid rgba(229, 192, 91, 0.35);
-        }
-
-        .smoke-overlay {
-            background: radial-gradient(circle at 50% 20%, rgba(217, 119, 6, 0.08), transparent 70%);
-        }
-
-        /* Akordeon yumuşak geçiş */
-        .faq-content {
-            max-height: 0;
+        html, body {
+            width: 100%;
+            height: 100dvh;
+            margin: 0;
+            padding: 0;
             overflow: hidden;
-            transition: max-height 0.35s cubic-bezier(0, 1, 0, 1);
-        }
-        .faq-content.open {
-            max-height: 500px;
-            transition: max-height 0.4s ease-in-out;
+            background-color: #0c111d;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #f8fafc;
+            user-select: none;
         }
 
-        /* Resim Zoom Preview */
-        .zoom-img-container {
-            overflow: hidden;
+        /* iOS Safari Tam Ekran Video Oynatıcı & Kontrol Gizleme */
+        video::-webkit-media-controls,
+        video::-webkit-media-controls-enclosure,
+        video::-webkit-media-controls-panel,
+        video::-webkit-media-controls-play-button,
+        video::-webkit-media-controls-start-playback-button {
+            display: none !important;
+            -webkit-appearance: none !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
-        .zoom-img-container img {
-            transition: transform 0.4s ease;
+
+        /* Üst Gece Laciverti (Midnight Slate) Cam HUD Paneli */
+        .hud-emerald-card {
+            background: linear-gradient(180deg, rgba(19, 27, 46, 0.95) 0%, rgba(13, 19, 34, 0.96) 100%);
+            border: 1px solid rgba(56, 78, 122, 0.42);
+            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
         }
-        .zoom-img-container:hover img {
-            transform: scale(1.05);
+
+        /* Açık Doğal Kayın / Meşe 2 Katlı Ahşap Istaka (Light Beechwood) */
+        .wooden-rack-frame {
+            background: linear-gradient(180deg, #ebd0a8 0%, #dfc091 18%, #cfa66f 55%, #dcba89 88%, #be9158 100%);
+            border: 1.5px solid #f2dcb9;
+            border-radius: 11px;
+            box-shadow: inset 0 2px 3px rgba(255, 252, 245, 0.65),
+                        inset 0 -3px 5px rgba(120, 78, 34, 0.45),
+                        0 8px 18px rgba(0, 0, 0, 0.48);
+            position: relative;
+        }
+
+        /* Fırçalanmış Alüminyum Istaka Yan Kapakları */
+        .rack-endcap {
+            background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 50%, #94a3b8 100%);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 1px 3px rgba(71, 85, 105, 0.4);
+            border-radius: 3px;
+        }
+
+        /* Açık Ahşap Raf Kanalları */
+        .rack-channel {
+            background: linear-gradient(180deg, #b58752 0%, #c69963 72%, #d8b17e 100%);
+            box-shadow: inset 0 2.5px 5px rgba(92, 58, 22, 0.48), 0 1px 0 rgba(255, 248, 235, 0.55);
+            border-radius: 6px;
+        }
+
+        /* Açık Ahşap Üzerinde Net Boş Slot Izgara Dokusu */
+        .rack-empty-slot {
+            background: rgba(120, 78, 34, 0.14);
+            border: 1px dashed rgba(110, 68, 26, 0.24);
+            border-radius: 4px;
+        }
+
+        /* Fildişi Beyazı Okey Taşı (Açık Ahşap Üzerinde Yüksek Kontrast) */
+        .okey-tile {
+            font-family: 'Oswald', sans-serif;
+            background: linear-gradient(160deg, #ffffff 0%, #faf6ed 78%, #eee6d5 100%);
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(68, 42, 14, 0.42),
+                        inset 0 1px 0.5px rgba(255, 255, 255, 1),
+                        inset 0 -2px 0 #cbbba0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: transform 0.12s ease;
+        }
+
+        .okey-tile:active {
+            transform: scale(0.94);
+        }
+
+        /* Geçerli Per Vurgusu (Parlak Turkuaz / Zümrüt Çerçeve) */
+        .tile-in-meld {
+            box-shadow: 0 0 0 1.6px #0ea5e9,
+                        0 2px 5px rgba(14, 165, 233, 0.35),
+                        inset 0 -2px 0 #cbbba0;
+        }
+
+        /* Aktif Okey Taşı Altın Parıltısı */
+        .tile-is-okey {
+            background: linear-gradient(160deg, #fffef7 0%, #fef3c7 100%);
+            box-shadow: 0 0 0 2px #f59e0b,
+                        0 0 10px rgba(245, 158, 11, 0.65),
+                        inset 0 -2px 0 #d97706 !important;
+        }
+
+        /* Taş Sayı Renkleri */
+        .c-kirmizi { color: #dc2626; }
+        .c-mavi    { color: #0284c7; }
+        .c-siyah   { color: #0f172a; }
+        .c-sari    { color: #d97706; }
+        .c-sahte   { color: #7c3aed; }
+
+        /* Vizör Köşe Çizgileri */
+        .reticle-corner {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border-color: rgba(226, 232, 240, 0.65);
+            transition: border-color 0.25s ease, transform 0.25s ease;
+        }
+        .reticle-detected .reticle-corner {
+            border-color: #f59e0b;
+        }
+
+        /* Tarama Işık Çizgisi */
+        @keyframes scanSweep {
+            0% { top: 8%; opacity: 0; }
+            15% { opacity: 0.9; }
+            85% { opacity: 0.9; }
+            100% { top: 92%; opacity: 0; }
+        }
+        .scan-beam {
+            position: absolute;
+            left: 4%;
+            right: 4%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #38bdf8, #fde68a, #38bdf8, transparent);
+            box-shadow: 0 0 12px #38bdf8;
+            animation: scanSweep 1.6s ease-in-out infinite;
+        }
+
+        /* Alttan Açılan Oyun Seçim Kartı (Midnight Slate) */
+        .bottom-sheet {
+            background: linear-gradient(180deg, #162038 0%, #0d1424 100%);
+            border-top: 1px solid rgba(245, 158, 11, 0.3);
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            box-shadow: 0 -16px 42px rgba(0, 0, 0, 0.78);
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+        }
+        .bottom-sheet.sheet-hidden {
+            transform: translateY(105%);
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
 </head>
-<body class="smoke-overlay antialiased selection:bg-gold-500 selection:text-black">
+<body class="relative w-full h-full select-none">
 
-    <!-- ÜST BİLGİ BANT (TOP BANNER) -->
-    <aside aria-label="Kampanya Duyurusu" class="bg-gradient-to-r from-amber-950 via-zinc-900 to-amber-950 text-gold-400 text-xs sm:text-sm py-2 px-4 border-b border-gold-500/30 text-center font-medium tracking-wide flex items-center justify-center gap-3">
-        <span class="inline-flex items-center gap-1.5"><i class="fa-solid fa-truck-fast"></i> Bugün Verilen Siparişlerde <strong>ÜCRETSİZ AYNI GÜN KARGO</strong></span>
-        <span class="hidden md:inline text-white/30">•</span>
-        <span class="hidden md:inline-flex items-center gap-1.5"><i class="fa-solid fa-shield-halved"></i> Kapıda Nakit & Kartla Güvenli Ödeme İmkânı</span>
-    </aside>
+    <!-- 1. TAM EKRAN CANLI KAMERA & AR BOUNDING BOX KATMANI -->
+    <div id="camera-viewport" class="fixed inset-0 w-full h-full bg-[#0c111d] overflow-hidden">
+        <!-- Canlı Video Akışı -->
+        <video id="camera-video" autoplay muted playsinline webkit-playsinline class="w-full h-full object-cover"></video>
 
-    <!-- HEADER / NAVBAR -->
-    <header class="sticky top-0 z-40 backdrop-blur-md bg-darkCharcoal/90 border-b border-white/10 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Marka Logo -->
-            <a href="#" class="flex flex-col">
-                <span class="font-serif text-2xl sm:text-3xl font-extrabold tracking-widest gold-gradient-text uppercase">İMZAHEDİYE</span>
-                <span class="text-[9px] tracking-[0.28em] text-gray-400 font-semibold uppercase -mt-1">Atölye Tasarımı • Özel İşçilik</span>
-            </a>
+        <!-- Dondurulmuş Kare & Taş Tespit Kutuları (Bounding Box) Katmanı -->
+        <canvas id="ar-overlay-canvas" class="absolute inset-0 w-full h-full object-cover pointer-events-none"></canvas>
 
-            <!-- Orta Menü / Vurgular -->
-            <div class="hidden lg:flex items-center space-x-8 text-sm font-medium text-gray-300">
-                <a href="#ozellikler" class="hover:text-gold-400 transition-colors">Özellikler</a>
-                <a href="#detaylar" class="hover:text-gold-400 transition-colors">Teknik Detaylar</a>
-                <a href="#yorumlar" class="hover:text-gold-400 transition-colors">Müşteri Deneyimleri</a>
-                <a href="#sss" class="hover:text-gold-400 transition-colors">Sıkça Sorulanlar</a>
+        <!-- Kamera Kapalıysa / İzin Bekleniyorsa Arka Plan Dokusu -->
+        <div id="camera-placeholder" class="absolute inset-0 flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_center,_#1a2642_0%,_#0c111d_100%)] text-center px-6 pointer-events-none">
+            <div class="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-400/30 flex items-center justify-center mb-3 shadow-lg">
+                <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                    <circle cx="12" cy="13" r="3"/>
+                </svg>
+            </div>
+            <p class="text-sm font-semibold text-slate-100">Kamera Hazırlanıyor veya Önizleme Modundasınız</p>
+            <p class="text-xs text-slate-400 mt-1 max-w-xs">
+                Alttan <b>Fotoğraf Çek / Seç</b> ile ıstakanızı yükleyebilir veya <b>Örnek El Test Et</b> ile açık ahşap ıstakayı anında deneyebilirsiniz.
+            </p>
+        </div>
+
+        <!-- Hafif Karartma Vinyeti (Üst ve Alt Okunabilirlik İçin) -->
+        <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/45 via-transparent to-black/60"></div>
+    </div>
+
+    <!-- 2. ÜST HUD PANELİ: SERİ/ÇİFT + GÖSTERGE + 4'LÜ METRİK + AÇIK AHŞAP ISTAKA -->
+    <header class="fixed top-0 left-0 right-0 z-30 pt-[max(10px,env(safe-area-inset-top))] px-2.5 sm:px-4">
+        <div class="max-w-xl mx-auto hud-emerald-card rounded-2xl p-2.5 sm:p-3">
+            
+            <!-- Üst Kontrol Satırı: Tarama Durumu + SERİ/ÇİFT Hapı + Gösterge & Ayar -->
+            <div class="flex items-center justify-between gap-1.5 mb-2">
+                
+                <!-- Sol: Tarama İkonu & SERİ / ÇİFT Geçişi -->
+                <div class="flex items-center gap-1.5">
+                    <!-- Durum İkonu -->
+                    <div id="scan-status-icon" class="w-6 h-6 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center shrink-0">
+                        <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2"/>
+                        </svg>
+                    </div>
+
+                    <!-- SERİ / ÇİFT Segment Kontrolü -->
+                    <div class="flex items-center bg-slate-950/65 p-0.5 rounded-full border border-slate-700/70">
+                        <button id="tab-seri" onclick="setSortTab('seri')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-500 text-slate-950 shadow">
+                            SERİ
+                        </button>
+                        <button id="tab-cift" onclick="setSortTab('cift')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white">
+                            ÇİFT
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Orta: 101 Açma Durum Rozeti -->
+                <div id="open-status-badge" class="px-2 py-0.5 rounded-full bg-slate-800/90 border border-slate-600/60 text-[10px] sm:text-[11px] font-extrabold text-slate-200 whitespace-nowrap">
+                    Istakayı Tarayın
+                </div>
+
+                <!-- Sağ: Gösterge Seçici Hapı & Mod Ayarı -->
+                <div class="flex items-center gap-1 shrink-0">
+                    <button onclick="toggleIndicatorPopover()" id="indicator-pill-btn" class="flex items-center gap-1 bg-slate-950/75 hover:bg-slate-900 border border-amber-400/45 px-2 py-1 rounded-lg text-[10px] sm:text-[11px] font-bold text-amber-200 transition-all" title="Gösterge Taşını Seç">
+                        <span class="text-amber-400">Göst:</span>
+                        <span id="hud-indicator-label" class="font-extrabold text-white">M4</span>
+                        <span class="text-sky-300 text-[9px]">→Okey:<b id="hud-okey-label" class="text-amber-300">M5</b></span>
+                    </button>
+
+                    <button onclick="openModeSheet()" class="w-7 h-7 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-600/50 flex items-center justify-center text-slate-200 transition-all" title="Oyun Modu (101 / 14)">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
-            <!-- Hızlı İletişim / Sipariş Butonu -->
-            <div class="flex items-center gap-3">
-                <a href="https://wa.me/905000000000?text=Merhaba,%20Ahşap%20Nargile%20Sunum%20Sehpası%20(3.990%20TL)%20siparişi%20vermek%20istiyorum." target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 bg-[#25D366]/20 hover:bg-[#25D366]/30 text-[#25D366] border border-[#25D366]/40 text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full transition">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>WhatsApp Sipariş</span>
-                </a>
-                <a href="#siparis" class="inline-flex items-center gap-2 bg-gradient-to-r from-gold-500 to-amberWood hover:from-gold-400 hover:to-amber-500 text-black font-bold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-lg shadow-gold-500/20 transform hover:-translate-y-0.5 transition-all">
-                    <span>Sipariş Ver</span>
-                    <i class="fa-solid fa-arrow-right text-xs"></i>
-                </a>
+            <!-- 4'LÜ KESİLMEYEN NET METRİK ŞERİDİ (Taş Sayısı | Ortalar Toplamı | Çift | Tüm El Toplamı) -->
+            <div class="grid grid-cols-4 gap-1.5 mb-2">
+                <!-- 1. Taş Sayısı -->
+                <div class="bg-slate-900/75 border border-slate-700/60 rounded-xl px-1.5 py-1.5 text-center">
+                    <div class="text-[9px] sm:text-[10px] font-semibold text-slate-400 leading-tight">Taş Sayısı</div>
+                    <div id="metric-tile-count" class="text-xs sm:text-sm font-black text-white mt-0.5">0 / 21</div>
+                </div>
+
+                <!-- 2. Ortalar (Perler) Toplamı -->
+                <div class="bg-sky-500/15 border border-sky-400/35 rounded-xl px-1.5 py-1.5 text-center">
+                    <div class="text-[9px] sm:text-[10px] font-semibold text-sky-200 leading-tight">Ortalar Toplamı</div>
+                    <div id="metric-melds-sum" class="text-xs sm:text-sm font-black text-sky-300 mt-0.5">0 Puan</div>
+                </div>
+
+                <!-- 3. Çift Sayısı -->
+                <div class="bg-amber-500/15 border border-amber-400/35 rounded-xl px-1.5 py-1.5 text-center">
+                    <div class="text-[9px] sm:text-[10px] font-semibold text-amber-200/90 leading-tight">Çift Sayısı</div>
+                    <div id="metric-pair-count" class="text-xs sm:text-sm font-black text-amber-300 mt-0.5">0 Çift</div>
+                </div>
+
+                <!-- 4. Tüm El Toplamı (Istakadaki Bütün Taşlar) -->
+                <div class="bg-slate-900/75 border border-slate-700/60 rounded-xl px-1.5 py-1.5 text-center">
+                    <div class="text-[9px] sm:text-[10px] font-semibold text-indigo-200/80 leading-tight">Tüm El Toplamı</div>
+                    <div id="metric-all-sum" class="text-xs sm:text-sm font-black text-indigo-300 mt-0.5">0 Puan</div>
+                </div>
             </div>
+
+            <!-- Mevcut Fiziksel Dizili El Bandı -->
+            <div id="hud-sub-banner" class="hidden mb-2 px-2.5 py-1 rounded-lg bg-slate-900/95 border border-sky-400/35 flex items-center justify-between text-[11px]">
+                <span id="hud-sub-left" class="font-semibold text-sky-200">Dizili Ortalar Toplamı: 0 Puan</span>
+                <span id="hud-sub-right" class="font-extrabold text-amber-300">101 Açar ✓</span>
+            </div>
+
+            <!-- 2 KATLI AÇIK DOĞAL KAYIN AHŞAP ISTAKA -->
+            <div class="wooden-rack-frame p-1.5 sm:p-2 flex items-stretch gap-1">
+                <!-- Sol Fırçalanmış Metal Kenarlık -->
+                <div class="rack-endcap w-1.5 sm:w-2 shrink-0"></div>
+
+                <!-- 2 Katlı Taş Rafları -->
+                <div class="flex-1 flex flex-col gap-1.5">
+                    <!-- Üst Sıra -->
+                    <div id="rack-top-row" class="rack-channel p-1 grid gap-[3px]" style="grid-template-columns: repeat(12, minmax(0, 1fr));">
+                        <!-- JS ile dinamik slotlar üretilir -->
+                    </div>
+                    <!-- Alt Sıra -->
+                    <div id="rack-bottom-row" class="rack-channel p-1 grid gap-[3px]" style="grid-template-columns: repeat(12, minmax(0, 1fr));">
+                        <!-- JS ile dinamik slotlar üretilir -->
+                    </div>
+                </div>
+
+                <!-- Sağ Fırçalanmış Metal Kenarlık -->
+                <div class="rack-endcap w-1.5 sm:w-2 shrink-0"></div>
+            </div>
+
+            <!-- Hızlı Gösterge Seçici Açılır Paneli (Popover) -->
+            <div id="indicator-popover" class="hidden mt-2 p-2.5 rounded-xl bg-[#0f172a] border border-amber-400/40 shadow-2xl">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold text-amber-300">Gösterge Taşını Seçin (Okey Otomatik Hesaplanır)</span>
+                    <button onclick="toggleIndicatorPopover(false)" class="text-xs text-slate-300 hover:text-white px-2 py-0.5 rounded bg-slate-800 border border-slate-600/50">Kapat</button>
+                </div>
+                <div class="flex flex-wrap items-center gap-1.5 mb-2">
+                    <button onclick="setIndicatorColor('kirmizi')" data-ind-col="kirmizi" class="ind-col-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-red-600/25 text-red-300 border border-red-500/40">Kırmızı</button>
+                    <button onclick="setIndicatorColor('mavi')" data-ind-col="mavi" class="ind-col-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-sky-600 text-white border border-sky-400">Mavi</button>
+                    <button onclick="setIndicatorColor('siyah')" data-ind-col="siyah" class="ind-col-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-800 text-slate-200 border border-slate-500/40">Siyah</button>
+                    <button onclick="setIndicatorColor('sari')" data-ind-col="sari" class="ind-col-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-600/25 text-amber-300 border border-amber-500/40">Sarı</button>
+                </div>
+                <div id="indicator-num-grid" class="grid grid-cols-7 sm:grid-cols-13 gap-1">
+                    <!-- 1-13 butonları JS ile dolacak -->
+                </div>
+            </div>
+
         </div>
     </header>
 
-    <!-- HERO SECTION -->
-    <main>
-    <section class="relative pt-8 pb-16 lg:pt-14 lg:pb-24 overflow-hidden">
-        <!-- Arka Plan Efektleri -->
-        <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-gold-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- 3. ORTA VİZÖR ÇERÇEVESİ (Istaka Hizalama Alanı) -->
+    <div id="viewfinder-wrapper" class="fixed inset-0 z-20 pointer-events-none flex items-center justify-center px-5 pt-24 pb-28">
+        <div id="viewfinder-box" class="relative w-full max-w-lg h-40 sm:h-48 rounded-2xl transition-all duration-300">
+            <!-- 4 Köşe Çizgisi -->
+            <div class="reticle-corner top-0 left-0 border-t-[3px] border-l-[3px] rounded-tl-xl"></div>
+            <div class="reticle-corner top-0 right-0 border-t-[3px] border-r-[3px] rounded-tr-xl"></div>
+            <div class="reticle-corner bottom-0 left-0 border-b-[3px] border-l-[3px] rounded-bl-xl"></div>
+            <div class="reticle-corner bottom-0 right-0 border-b-[3px] border-r-[3px] rounded-br-xl"></div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+            <!-- Tarama Sırasında Akan Işık Çizgisi -->
+            <div id="scan-beam-line" class="hidden scan-beam"></div>
+
+            <!-- Merkez Durum Rozeti -->
+            <div id="viewfinder-hint" class="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-950/80 backdrop-blur-md text-slate-100 text-[11px] font-medium px-3 py-1 rounded-full border border-slate-700/70">
+                Istakayı çerçeveye ortalayıp <b>Çek ve Diz</b>'e basın
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. ALT KONTROL ÇUBUĞU (Kamerayı Çek, Oto-Tara, Örnek El, Sıfırla) -->
+    <footer id="bottom-controls" class="fixed bottom-0 left-0 right-0 z-30 pb-[max(14px,env(safe-area-inset-bottom))] px-3 sm:px-6 transition-opacity duration-300">
+        <div class="max-w-xl mx-auto flex flex-col gap-2">
+
+            <!-- Hızlı Yardımcı Haplar (Örnek El / Fotoğraf Yükle / Taş Ekle) -->
+            <div class="flex items-center justify-center gap-1.5 flex-wrap">
+                <label class="cursor-pointer flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-slate-900/85 hover:bg-slate-800 text-sky-200 border border-slate-700/80 text-[11px] font-semibold backdrop-blur-md">
+                    <svg class="w-3.5 h-3.5 text-sky-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                    <span>Fotoğraf Çek / Seç</span>
+                    <input type="file" accept="image/*" capture="environment" onchange="handlePhotoUpload(event)" class="hidden">
+                </label>
+
+                <button onclick="loadDemoHand()" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-slate-900/85 hover:bg-slate-800 text-amber-200 border border-amber-400/35 text-[11px] font-semibold backdrop-blur-md">
+                    <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                    </svg>
+                    <span>Örnek El Test Et</span>
+                </button>
+
+                <button onclick="toggleManualDrawer(true)" class="flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-slate-900/85 hover:bg-slate-800 text-indigo-200 border border-indigo-400/35 text-[11px] font-semibold backdrop-blur-md">
+                    <span>+ Taş Ekle</span>
+                </button>
+            </div>
+
+            <!-- Ana Kamera Kontrol Barı (Gece Laciverti & Altın Vurgu) -->
+            <div class="flex items-center justify-between gap-3 bg-[#131b2e]/95 border border-slate-700/80 backdrop-blur-xl px-3 py-2 rounded-2xl shadow-2xl">
                 
-                <!-- SOL KOLON: Ürün Görsel Galerisi -->
-                <div class="lg:col-span-6 flex flex-col gap-4">
-                    <!-- Rozet / Etiketler -->
-                    <div class="flex items-center gap-2 z-10">
-                        <span class="bg-red-950/80 text-red-300 text-xs font-semibold px-3 py-1 rounded-full border border-red-500/30 flex items-center gap-1.5">
-                            <i class="fa-solid fa-fire text-amber-500"></i> Yakma Teknikli El İşçiliği
-                        </span>
-                        <span class="bg-zinc-800/80 text-gold-400 text-xs font-medium px-3 py-1 rounded-full border border-gold-500/20">
-                            %100 Doğal Çam
-                        </span>
-                    </div>
-
-                    <!-- Ana Görsel Çerçevesi -->
-                    <div class="relative bg-gradient-to-b from-surface to-[#0e1017] rounded-3xl p-3 sm:p-5 border border-white/10 gold-glow zoom-img-container group">
-                        <div class="w-full h-[420px] sm:h-[530px] flex items-center justify-center relative overflow-hidden rounded-2xl bg-black/40">
-                            <!-- Gerçek Ürün Ana Görseli (Tam Duruş) -->
-                            <img id="mainProductImage" 
-                                 src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_2.jpg" 
-                                 alt="Doğal Ahşap Nargile Sunum Sehpası Tam Duruş" 
-                                 class="max-h-full max-w-full object-contain rounded-xl drop-shadow-2xl mx-auto transition-all duration-500">
-                            
-                            <!-- Büyüteç Rozeti -->
-                            <div class="absolute bottom-4 right-4 bg-black/80 backdrop-blur-md text-white/90 text-xs px-3.5 py-1.5 rounded-full border border-gold-500/30 pointer-events-none flex items-center gap-1.5 shadow-lg">
-                                <i class="fa-solid fa-magnifying-glass-plus text-gold-400"></i> Yakınlaştır & İncele
-                            </div>
-
-                            <!-- Canlı Detay Etiketi -->
-                            <div class="absolute top-4 left-4 bg-black/75 backdrop-blur-md text-gold-300 text-[11px] font-semibold px-3 py-1 rounded-full border border-white/10 flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                                Atölyeden Orijinal Çekim
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Küçük Önizleme Butonları (1: Tam Duruş, 2: Şömine, 3: Çerezlik) -->
-                    <div class="grid grid-cols-3 gap-3">
-                        <button onclick="changeGalleryImage('https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_2.jpg', this)" 
-                                class="thumb-btn active ring-2 ring-gold-500 bg-surface rounded-xl p-1.5 border border-white/10 hover:border-gold-500 transition duration-200">
-                            <img src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_2.jpg" class="w-full h-20 object-cover rounded-lg" alt="Tam Duruş Sehpa">
-                            <span class="block text-[11px] text-center mt-1 text-gold-300 font-medium">Tam Duruş</span>
-                        </button>
-
-                        <button onclick="changeGalleryImage('https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_3-600x900.jpg', this)" 
-                                class="thumb-btn bg-surface rounded-xl p-1.5 border border-white/10 hover:border-gold-500 transition duration-200">
-                            <img src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_3-600x900.jpg" class="w-full h-20 object-cover rounded-lg" alt="Şömine Başı Atmosfer Görünümü">
-                            <span class="block text-[11px] text-center mt-1 text-gray-300 font-medium">Şömine Keyfi</span>
-                        </button>
-
-                        <button onclick="changeGalleryImage('https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_4-600x900.jpg', this)" 
-                                class="thumb-btn bg-surface rounded-xl p-1.5 border border-white/10 hover:border-gold-500 transition duration-200">
-                            <img src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_4-600x900.jpg" class="w-full h-20 object-cover rounded-lg" alt="3 Bölmeli Oyma Çerezlik Üst Açı">
-                            <span class="block text-[11px] text-center mt-1 text-gray-300 font-medium">3'lü Çerezlik</span>
-                        </button>
-                    </div>
-
-                    <!-- Güvenilirlik Rozetleri -->
-                    <div class="grid grid-cols-3 gap-3 pt-2 text-center text-xs text-gray-400">
-                        <div class="bg-surface/60 border border-white/5 p-2.5 rounded-xl">
-                            <i class="fa-solid fa-tree text-gold-400 block text-base mb-1"></i>
-                            %100 Masif Çam
-                        </div>
-                        <div class="bg-surface/60 border border-white/5 p-2.5 rounded-xl">
-                            <i class="fa-solid fa-hand-holding-heart text-gold-400 block text-base mb-1"></i>
-                            Özel El İşçiliği
-                        </div>
-                        <div class="bg-surface/60 border border-white/5 p-2.5 rounded-xl">
-                            <i class="fa-solid fa-box-open text-gold-400 block text-base mb-1"></i>
-                            Korumalı Ambalaj
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SAĞ KOLON: Satış Başlığı, Fiyat, Aciliyet ve Sipariş Çağrısı -->
-                <div class="lg:col-span-6 flex flex-col justify-center">
-                    
-                    <!-- Değerlendirme & Puan -->
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="flex text-amber-400 text-sm">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                        </div>
-                        <span class="text-white font-bold text-sm">4.9</span>
-                        <span class="text-gray-400 text-xs">(148+ Gerçek Müşteri Yorumu)</span>
-                        <span class="ml-auto bg-green-500/20 text-green-400 text-[11px] font-bold px-2 py-0.5 rounded border border-green-500/30">
-                            Stokta Var
-                        </span>
-                    </div>
-
-                    <!-- Ana Başlık -->
-                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight font-serif mb-4">
-                        Nargile Keyfinizi Bir <br>
-                        <span class="gold-gradient-text">Ritüele Dönüştürün.</span>
-                    </h1>
-
-                    <!-- Açıklama Paragrafı -->
-                    <p class="text-gray-300 text-base sm:text-lg leading-relaxed mb-6 font-light">
-                        Standart sehpalarda yaşanan yer darlığına ve kaza/devrilme korkusuna son verin. 
-                        <strong>El işçiliği yakma desenli doğal çam stand</strong> ile köz, tütün, içecekleriniz ve çerezleriniz artık tek bir şık merkezde bir arada.
-                    </p>
-
-                    <!-- FİYAT KUTUSU & İNDİRİM -->
-                    <div class="bg-surface border border-gold-500/30 rounded-2xl p-5 mb-6 relative overflow-hidden">
-                        <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-gold-500/10 rounded-full blur-2xl pointer-events-none"></div>
-
-                        <div class="flex flex-wrap items-baseline justify-between gap-2">
-                            <div>
-                                <span class="text-xs uppercase tracking-wider text-gray-400 block font-semibold">Özel Atölye Satış Fiyatı</span>
-                                <div class="flex items-center gap-2 mt-1">
-                                    <span class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">3.990 <span class="text-gold-400 text-2xl font-serif">TL</span></span>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <span class="bg-gold-500/10 text-gold-400 border border-gold-500/30 text-xs font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
-                                    <i class="fa-solid fa-truck"></i> Ücretsiz Kargo
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Stok Uyarısı ve İlerleme Çubuğu -->
-                        <div class="mt-4 pt-4 border-t border-white/10">
-                            <div class="flex items-center justify-between text-xs mb-1.5 font-medium">
-                                <span class="text-amber-400 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-hourglass-half animate-pulse"></i> <strong>Sınırlı Sayıda Üretim</strong>
-                                </span>
-                                <span class="text-gray-400">Atölye El İşçiliği</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ÖNE ÇIKAN KISA MADDELER (BULLET POINTS) -->
-                    <ul class="space-y-3 mb-8 text-sm text-gray-200">
-                        <li class="flex items-center gap-3">
-                            <span class="w-6 h-6 rounded-full bg-gold-500/20 border border-gold-500/40 text-gold-400 flex items-center justify-center text-xs shrink-0">
-                                <i class="fa-solid fa-check"></i>
-                            </span>
-                            <span><strong>Devrilmeyi Önleyen Tasarım:</strong> Nargile şişenizi kilitleyen özel alt-üst merkezleme.</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <span class="w-6 h-6 rounded-full bg-gold-500/20 border border-gold-500/40 text-gold-400 flex items-center justify-center text-xs shrink-0">
-                                <i class="fa-solid fa-check"></i>
-                            </span>
-                            <span><strong>Entegre 3 Bölmeli Oyma Çerezlik:</strong> Tabak aramadan fındık, fıstık ve kuru meyve keyfi.</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <span class="w-6 h-6 rounded-full bg-gold-500/20 border border-gold-500/40 text-gold-400 flex items-center justify-center text-xs shrink-0">
-                                <i class="fa-solid fa-check"></i>
-                            </span>
-                            <span><strong>2 Adet Korunaklı Kadeh/Bardak Yuvası:</strong> Hortum çarpmalarına karşı güvenli alan.</span>
-                        </li>
-                    </ul>
-
-                    <!-- CTA BUTONLARI -->
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <a href="#siparis" class="flex-1 bg-gradient-to-r from-gold-500 via-amberWood to-gold-600 hover:brightness-110 text-black font-extrabold text-base py-4 px-6 rounded-xl text-center shadow-xl shadow-gold-500/25 transform hover:-translate-y-0.5 active:translate-y-0 transition duration-200 flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-bolt-lightning text-lg"></i>
-                            <span>HEMEN SİPARİŞ VER (3.990 TL)</span>
-                        </a>
-
-                        <a href="https://wa.me/905000000000?text=Merhaba,%20Ahşap%20Nargile%20Sunum%20Sehpası%20(3.990%20TL)%20hakkında%20bilgi%20ve%20sipariş%20almak%20istiyorum." target="_blank" rel="noopener noreferrer" class="bg-[#25D366] hover:bg-[#20ba5a] text-black font-bold text-base py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition duration-200">
-                            <i class="fa-brands fa-whatsapp text-2xl"></i>
-                            <span class="hidden sm:inline">WhatsApp</span>
-                        </a>
-                    </div>
-
-                    <!-- Güvenlik Bilgilendirmesi -->
-                    <p class="text-center sm:text-left text-xs text-gray-400 mt-4 flex items-center justify-center sm:justify-start gap-4">
-                        <span><i class="fa-solid fa-lock text-gold-400 mr-1"></i> 256-Bit SSL Güvenlik</span>
-                        <span>•</span>
-                        <span><i class="fa-solid fa-arrow-rotate-left text-gold-400 mr-1"></i> Koşulsuz Kolay Değişim</span>
-                    </p>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- NEDEN BU ÜRÜNÜ SEÇMELİSİNİZ? (ÖNE ÇIKAN FAYDALAR) -->
-    <section id="ozellikler" class="py-16 bg-gradient-to-b from-darkCharcoal via-[#0f1118] to-darkCharcoal border-y border-white/5 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-14">
-                <span class="text-gold-400 font-semibold tracking-widest text-xs uppercase">Ayrıcalıklı Mühendislik & Zanaat</span>
-                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mt-2">Neden Bu Özel Sehpayı Seçmelisiniz?</h2>
-                <p class="text-gray-400 text-sm sm:text-base mt-3">
-                    Geleneksel mobilyalar nargile seansları için tasarlanmamıştır. İmza Hediye atölyesinde, bir nargileseverin ihtiyaç duyduğu her detay milimetrik olarak düşünüldü.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                
-                <!-- Kart 1: Tam Koruma & Denge -->
-                <div class="bg-surface/80 rounded-2xl p-6 border border-white/5 hover:border-gold-500/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-gold-400 flex items-center justify-center text-2xl mb-5">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">Tam Koruma & Denge</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            Nargilenizi standın orta merkezine güvenle yerleştirirsiniz. Alt taban ve üst çember desteği sayesinde devrilme ve köz düşme riskini minimize eder.
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-white/5 text-xs text-gold-400 font-semibold flex items-center gap-1.5">
-                        <i class="fa-solid fa-circle-check"></i> Sarsıntıya Karşı Mukavim
-                    </div>
-                </div>
-
-                <!-- Kart 2: Entegre Sunum Alanı -->
-                <div class="bg-surface/80 rounded-2xl p-6 border border-white/5 hover:border-gold-500/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-gold-400 flex items-center justify-center text-2xl mb-5">
-                            <i class="fa-solid fa-bowl-food"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">Entegre 3 Bölmeli Çerezlik</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            Üst tablada yer alan 3 bölmeli el oyması çerezlik; fındık, fıstık, meyve ve lokumlarınız için ekstra tabak arama derdine kalıcı son verir.
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-white/5 text-xs text-gold-400 font-semibold flex items-center gap-1.5">
-                        <i class="fa-solid fa-circle-check"></i> Pratik & Hijyenik Temizleme
-                    </div>
-                </div>
-
-                <!-- Kart 3: İçecekleriniz Güvende -->
-                <div class="bg-surface/80 rounded-2xl p-6 border border-white/5 hover:border-gold-500/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-gold-400 flex items-center justify-center text-2xl mb-5">
-                            <i class="fa-solid fa-wine-glass"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">2 Adet Güvenli Yuva</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            Arka kısımda bulunan 2 adet özel kadeh/bardak yuvası; içeceklerinizi marpuç hortumundan ve istemsiz hareketlerden uzak, güvenli bir mesafede tutar.
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-white/5 text-xs text-gold-400 font-semibold flex items-center gap-1.5">
-                        <i class="fa-solid fa-circle-check"></i> Kadeh ve Meşrubat Uyumlu
-                    </div>
-                </div>
-
-                <!-- Kart 4: Ergonomik Yükseklik -->
-                <div class="bg-surface/80 rounded-2xl p-6 border border-white/5 hover:border-gold-500/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
-                    <div>
-                        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-gold-400 flex items-center justify-center text-2xl mb-5">
-                            <i class="fa-solid fa-ruler-vertical"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">56 cm İdeal Ergonomi</h3>
-                        <p class="text-gray-400 text-sm leading-relaxed">
-                            Koltuk kenarında veya yerde minder üzerinde otururken nargile lülesine, folyoya ve közlere eğilip bükülmeden zahmetsizce müdahale etmenizi sağlar.
-                        </p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-white/5 text-xs text-gold-400 font-semibold flex items-center gap-1.5">
-                        <i class="fa-solid fa-circle-check"></i> Bel ve Sırt Rahatlığı
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- DETAYLI GÖRSEL ANLATIM & ATMOSFER BÖLÜMÜ -->
-    <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gradient-to-r from-surface via-[#1a1c24] to-surface rounded-3xl p-8 sm:p-12 border border-gold-500/20 relative overflow-hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-                <div>
-                    <span class="text-gold-400 font-semibold tracking-widest text-xs uppercase">Usta Ellerin Dokunuşu</span>
-                    <h3 class="text-2xl sm:text-3xl font-serif font-bold text-white mt-2 mb-4">
-                        Ateşle Şekillenen Doğal Çam Dokusu
-                    </h3>
-                    <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-6 font-light">
-                        Her ürün tek tek atölyemizde özenle seçilen dayanıklı çam ağaçlarından kesilir. Ağacın damarlarını belirginleştiren kadim <strong>"Alev Yakma"</strong> tekniği uygulanır. 
-                        Ardından uygulanan çift kat ipeksi mat vernik sayesinde hem ısıya ve neme dayanıklılık kazanır hem de yaşam alanınıza sıcak bir şömine havası katar.
-                    </p>
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-dot text-gold-400 mt-1"></i>
-                            <div>
-                                <h4 class="text-white font-bold text-sm">Her Ürün Benzersizdir</h4>
-                                <p class="text-gray-400 text-xs">Doğal ahşabın organik hareleri sayesinde sipariş ettiğiniz sehpa yalnızca size özel bir desen haritasına sahiptir.</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <i class="fa-solid fa-circle-dot text-gold-400 mt-1"></i>
-                            <div>
-                                <h4 class="text-white font-bold text-sm">Kavisli (Lükens) Sağlam Ayaklar</h4>
-                                <p class="text-gray-400 text-xs">Zarif kavisli ayaklar ağırlık merkezini tabana yayarak halı, parke veya bahçe zemininde kusursuz stabilite sağlar.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sağ Taraf Örnek Ortam Görseli (Gerçek Şömine ve Çerezlik Detay Görselleri) -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative group bg-black">
-                        <img src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_3-600x900.jpg" 
-                             alt="Şömine Başında Nargile Keyfi" 
-                             class="w-full h-64 sm:h-80 object-cover group-hover:scale-105 transition duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-4">
-                            <span class="text-xs text-gold-300 font-semibold flex items-center gap-1.5">
-                                <i class="fa-solid fa-fire text-amber-500"></i> Şömine Başı Konsepti
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative group bg-black">
-                        <img src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_4-600x900.jpg" 
-                             alt="3 Bölmeli Oyma Çerezlik Detay" 
-                             class="w-full h-64 sm:h-80 object-cover group-hover:scale-105 transition duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-4">
-                            <span class="text-xs text-gold-300 font-semibold flex items-center gap-1.5">
-                                <i class="fa-solid fa-bowl-food text-amber-500"></i> 3 Bölmeli El Oyması Hazne
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- TEKNİK ÖZELLİKLER VE EBATLAR -->
-    <section id="detaylar" class="py-16 bg-surface/50 border-t border-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <span class="text-gold-400 font-semibold tracking-widest text-xs uppercase">Milimetrik Tasarım</span>
-                <h2 class="text-3xl font-serif font-bold text-white mt-1">Teknik Özellikler & Ölçüler</h2>
-            </div>
-
-            <div class="max-w-4xl mx-auto bg-surface border border-white/10 rounded-2xl p-6 sm:p-8 shadow-xl">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    
-                    <div class="flex items-center gap-4 p-4 rounded-xl bg-darkCharcoal/60 border border-white/5">
-                        <div class="w-12 h-12 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl shrink-0">
-                            <i class="fa-solid fa-tree"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs text-gray-400 block">Kullanılan Malzeme</span>
-                            <span class="text-white font-bold text-sm sm:text-base">%100 Doğal Çam Ağacı (Yakma Desenli)</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-4 p-4 rounded-xl bg-darkCharcoal/60 border border-white/5">
-                        <div class="w-12 h-12 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl shrink-0">
-                            <i class="fa-solid fa-arrows-up-down"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs text-gray-400 block">Kullanım Yüksekliği</span>
-                            <span class="text-white font-bold text-sm sm:text-base">56 cm (Ergonomik Oturma Seviyesi)</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-4 p-4 rounded-xl bg-darkCharcoal/60 border border-white/5">
-                        <div class="w-12 h-12 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl shrink-0">
-                            <i class="fa-solid fa-circle-notch"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs text-gray-400 block">Tabla Genişliği</span>
-                            <span class="text-white font-bold text-sm sm:text-base">40 cm Çap</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-4 p-4 rounded-xl bg-darkCharcoal/60 border border-white/5">
-                        <div class="w-12 h-12 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl shrink-0">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs text-gray-400 block">Depolama & Servis Kapasitesi</span>
-                            <span class="text-white font-bold text-sm sm:text-base">1 Nargile + 2 Kadeh + 3 Çerez Haznesi</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-4 p-4 rounded-xl bg-darkCharcoal/60 border border-white/5">
-                        <div class="w-12 h-12 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl shrink-0">
-                            <i class="fa-solid fa-chair"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs text-gray-400 block">Ayak Tasarımı</span>
-                            <span class="text-white font-bold text-sm sm:text-base">Kavisli (Lükens) Sağlam Ahşap Form</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-4 p-4 rounded-xl bg-darkCharcoal/60 border border-white/5">
-                        <div class="w-12 h-12 rounded-lg bg-gold-500/10 text-gold-400 flex items-center justify-center text-xl shrink-0">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs text-gray-400 block">Yüzey Koruması</span>
-                            <span class="text-white font-bold text-sm sm:text-base">Çift Kat Su & Isı Dayanımlı Vernik</span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="mt-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200/90 flex items-start gap-3">
-                    <i class="fa-solid fa-circle-info text-gold-400 text-base mt-0.5 shrink-0"></i>
-                    <span><strong>Paket İçeriği:</strong> 1 Adet Özel Ahşap Nargile Sunum Sehpası. (Fotoğraflarda görünen nargile takımı, bardaklar ve kuruyemişler konsept sunum amaçlıdır, pakete dahil değildir.)</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- MÜŞTERİ YORUMLARI & KANITLAR -->
-    <section id="yorumlar" class="py-16 bg-darkCharcoal">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <span class="text-gold-400 font-semibold tracking-widest text-xs uppercase">Gerçek Kullanıcı Yorumları</span>
-                <h2 class="text-3xl font-serif font-bold text-white mt-1">Nargile Severler Ne Diyor?</h2>
-                <div class="flex items-center justify-center gap-2 mt-3">
-                    <div class="flex text-amber-400 text-sm">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                    <span class="text-white font-semibold text-sm">4.9 / 5.0 Memnuniyet</span>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                <!-- Yorum 1 -->
-                <div class="bg-surface rounded-2xl p-6 border border-white/5 relative">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center font-bold">
-                                BÖ
-                            </div>
-                            <div>
-                                <h4 class="text-white text-sm font-bold">Burak Öztürk</h4>
-                                <span class="text-gray-400 text-[11px]"><i class="fa-solid fa-circle-check text-green-400"></i> Onaylı Sipariş</span>
-                            </div>
-                        </div>
-                        <span class="text-gray-400 text-xs">2 gün önce</span>
-                    </div>
-                    <div class="flex text-amber-400 text-xs mb-3">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-gray-300 text-sm leading-relaxed">
-                        "Koltukta otururken nargile koyacak yer bulamıyorduk, sehpa hep köz tehdidi altındaydı. Bu ürün tam bir kurtarıcı oldu. Yakma dokusu ve verniğin kalitesi fotoğraftakinden bile daha canlı. Teşekkürler İmza Hediye!"
-                    </p>
-                </div>
-
-                <!-- Yorum 2 -->
-                <div class="bg-surface rounded-2xl p-6 border border-white/5 relative">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center font-bold">
-                                EK
-                            </div>
-                            <div>
-                                <h4 class="text-white text-sm font-bold">Emre Kaya</h4>
-                                <span class="text-gray-400 text-[11px]"><i class="fa-solid fa-circle-check text-green-400"></i> Onaylı Sipariş</span>
-                            </div>
-                        </div>
-                        <span class="text-gray-400 text-xs">Geçen hafta</span>
-                    </div>
-                    <div class="flex text-amber-400 text-xs mb-3">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-gray-300 text-sm leading-relaxed">
-                        "3 bölmeli çerez oyuntusu fikri dâhice. İçecek koyma delikleri de marpucun takılmasını önlüyor. Şişe merkeze tam kilitleniyor, devrilme ihtimali sıfır. Paketleme aşırı sağlamdı, 24 saatte elime ulaştı."
-                    </p>
-                </div>
-
-                <!-- Yorum 3 -->
-                <div class="bg-surface rounded-2xl p-6 border border-white/5 relative">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center font-bold">
-                                ST
-                            </div>
-                            <div>
-                                <h4 class="text-white text-sm font-bold">Serkan Tekin</h4>
-                                <span class="text-gray-400 text-[11px]"><i class="fa-solid fa-circle-check text-green-400"></i> Onaylı Sipariş</span>
-                            </div>
-                        </div>
-                        <span class="text-gray-400 text-xs">2 hafta önce</span>
-                    </div>
-                    <div class="flex text-amber-400 text-xs mb-3">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-gray-300 text-sm leading-relaxed">
-                        "Arkadaşıma ev hediyesi olarak aldım, hayran kaldı. Masif çam kokusu bile harika. Lükens ayaklar çok kaliteli duruyor, salonda lüks bir hava estirdi. Gönül rahatlığıyla tavsiye ederim."
-                    </p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- SİPARİŞ FORMU SECTION (YÜKSEK DÖNÜŞÜMLÜ HIZLI SİPARİŞ) -->
-    <section id="siparis" class="py-16 bg-gradient-to-b from-[#0f1118] to-darkCharcoal relative">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6">
-            
-            <div class="bg-surface border-2 border-gold-500/40 rounded-3xl p-6 sm:p-10 shadow-2xl relative">
-                <div class="text-center mb-8">
-                    <span class="bg-gold-500/10 text-gold-400 border border-gold-500/30 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider inline-block mb-3">
-                        Hızlı & Güvenli Alışveriş
-                    </span>
-                    <h2 class="text-2xl sm:text-4xl font-serif font-bold text-white">Doğrudan Sipariş Formu</h2>
-                    <p class="text-gray-400 text-sm mt-2">
-                        Bilgilerinizi doldurun, atölyemiz siparişinizi hemen onaylayıp aynı gün kargoya hazırlasın.
-                    </p>
-                </div>
-
-                <!-- Sipariş Özeti Kutusu -->
-                <div class="bg-darkCharcoal rounded-2xl p-4 mb-6 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-16 h-16 rounded-xl bg-surface border border-gold-500/20 overflow-hidden shrink-0">
-                            <img src="https://ahsaphobidunyasi.com/wp-content/uploads/2025/11/MV-AHS-NRG-01_2.jpg" alt="Ahşap Stand" class="w-full h-full object-cover">
-                        </div>
-                        <div>
-                            <h4 class="text-white font-bold text-sm">Doğal Ahşap Nargile Sunum Sehpası</h4>
-                            <span class="text-xs text-gray-400">Özel Yakma Teknikli & Çift Vernikli Masif Çam</span>
-                        </div>
-                    </div>
-                    <div class="text-right w-full sm:w-auto flex sm:flex-col justify-between items-center sm:items-end border-t sm:border-t-0 pt-2 sm:pt-0 border-white/5">
-                        <span class="text-xl font-extrabold text-gold-400">3.990 TL</span>
-                        <span class="text-[11px] text-green-400 font-semibold flex items-center gap-1">
-                            <i class="fa-solid fa-truck"></i> Ücretsiz Kargo
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Form -->
-                <form id="orderForm" onsubmit="handleOrderSubmit(event)" class="space-y-4">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-300 mb-1.5">Adınız ve Soyadınız *</label>
-                            <input type="text" required placeholder="Örn: Ahmet Yılmaz" 
-                                   class="w-full bg-darkCharcoal border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-300 mb-1.5">Telefon Numaranız *</label>
-                            <input type="tel" required placeholder="05XX XXX XX XX" 
-                                   class="w-full bg-darkCharcoal border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-300 mb-1.5">İl *</label>
-                            <input type="text" required placeholder="İstanbul" 
-                                   class="w-full bg-darkCharcoal border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-300 mb-1.5">İlçe *</label>
-                            <input type="text" required placeholder="Kadıköy" 
-                                   class="w-full bg-darkCharcoal border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-300 mb-1.5">Açık Teslimat Adresi *</label>
-                        <textarea rows="3" required placeholder="Mahalle, Cadde, Sokak, Bina No, Daire..." 
-                                  class="w-full bg-darkCharcoal border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-gold-500 transition"></textarea>
-                    </div>
-
-                    <!-- Ödeme Yöntemi Seçimi -->
-                    <div class="pt-2">
-                        <label class="block text-xs font-semibold text-gray-300 mb-2">Ödeme Tercihiniz</label>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <label class="flex items-center gap-3 p-3.5 rounded-xl bg-darkCharcoal border border-gold-500/40 cursor-pointer hover:border-gold-500 transition">
-                                <input type="radio" name="paymentMethod" value="kapida" checked class="text-gold-500 focus:ring-gold-500">
-                                <div>
-                                    <span class="text-sm font-bold text-white block">Kapıda Ödeme (Nakit / Kart)</span>
-                                    <span class="text-[11px] text-gray-400">Kargoyu teslim alırken güvenle ödeyin.</span>
-                                </div>
-                            </label>
-
-                            <label class="flex items-center gap-3 p-3.5 rounded-xl bg-darkCharcoal border border-white/10 cursor-pointer hover:border-gold-500 transition">
-                                <input type="radio" name="paymentMethod" value="havale" class="text-gold-500 focus:ring-gold-500">
-                                <div>
-                                    <span class="text-sm font-bold text-white block">Havale / EFT ile Ödeme</span>
-                                    <span class="text-[11px] text-gray-400">Sipariş sonrasında IBAN bilgisi iletilir.</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <button type="submit" 
-                            class="w-full mt-4 bg-gradient-to-r from-gold-500 via-amberWood to-gold-600 hover:brightness-110 text-black font-extrabold text-lg py-4 px-6 rounded-xl text-center shadow-2xl shadow-gold-500/30 transform hover:-translate-y-0.5 transition duration-200 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-lock text-sm"></i>
-                        <span>SİPARİŞİ TAMAMLA (3.990 TL)</span>
-                    </button>
-                </form>
-
-                <!-- Başarı Mesajı Kutusu (Hidden by default) -->
-                <div id="orderSuccessMessage" class="hidden mt-6 p-6 rounded-2xl bg-green-950/80 border border-green-500/50 text-center animate-fade-in">
-                    <div class="w-12 h-12 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">
-                        <i class="fa-solid fa-circle-check"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-1">Siparişiniz Başarıyla Alındı!</h3>
-                    <p class="text-gray-300 text-sm">Müşteri temsilcimiz onay ve kargo takip bilgilendirmesi için en kısa sürede telefonla sizinle iletişime geçecektir.</p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- SIKÇA SORULAN SORULAR (SSS - ACCORDION) -->
-    <section id="sss" class="py-16 max-w-4xl mx-auto px-4 sm:px-6">
-        <div class="text-center mb-10">
-            <span class="text-gold-400 font-semibold tracking-widest text-xs uppercase">Merak Edilenler</span>
-            <h2 class="text-3xl font-serif font-bold text-white mt-1">Sıkça Sorulan Sorular</h2>
-        </div>
-
-        <div class="space-y-3">
-            
-            <!-- Soru 1 -->
-            <div class="bg-surface rounded-xl border border-white/5 overflow-hidden">
-                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-semibold text-white flex items-center justify-between gap-4 hover:text-gold-400 transition">
-                    <span>Nargile takımı ve aksesuarlar fiyata dahil mi?</span>
-                    <i class="fa-solid fa-chevron-down text-gold-400 text-sm transition-transform duration-300"></i>
+                <!-- Sol: Canlı Oto-Tarama Anahtarı -->
+                <button id="btn-auto-scan" onclick="toggleAutoScan()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-600/50 text-xs font-bold text-slate-200 transition-all shrink-0">
+                    <span id="auto-scan-dot" class="w-2 h-2 rounded-full bg-slate-400"></span>
+                    <span id="auto-scan-label">Oto: Kapalı</span>
                 </button>
-                <div class="faq-content px-5 pb-5 text-gray-400 text-sm">
-                    Görsellerde yer alan nargile takımı, bardaklar ve kuruyemişler ürünün kullanım konseptini ve boyutlarını göstermek amacıyla dekore edilmiştir. Paket içeriği 1 adet el yapımı doğal ahşap nargile standından oluşmaktadır.
-                </div>
-            </div>
 
-            <!-- Soru 2 -->
-            <div class="bg-surface rounded-xl border border-white/5 overflow-hidden">
-                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-semibold text-white flex items-center justify-between gap-4 hover:text-gold-400 transition">
-                    <span>Ahşap yüzey köz ısısına veya su damlamalarına dayanıklı mı?</span>
-                    <i class="fa-solid fa-chevron-down text-gold-400 text-sm transition-transform duration-300"></i>
+                <!-- Orta: Büyük Sıcak Kehribar/Altın "Çek ve Diz" Butonu -->
+                <button id="btn-shutter" onclick="captureAndSolveNow()" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 active:scale-[0.98] text-slate-950 font-extrabold text-sm sm:text-base shadow-lg shadow-amber-500/20 transition-all">
+                    <svg class="w-5 h-5 text-slate-950" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="9"/>
+                        <circle cx="12" cy="12" r="4" fill="currentColor"/>
+                    </svg>
+                    <span id="btn-shutter-text">Çek ve Diz</span>
                 </button>
-                <div class="faq-content px-5 pb-5 text-gray-400 text-sm">
-                    Evet. Ürünlerimiz önce alevle yakılarak dayanıklılığı artırılır, ardından çift kat özel koruyucu mat vernikle kaplanır. Su lekelerine ve neme karşı dirençlidir; nemli bezle kolayca temizlenir. Közün doğrudan ahşap üzerine düşürülmemesi standart olarak önerilir.
-                </div>
-            </div>
 
-            <!-- Soru 3 -->
-            <div class="bg-surface rounded-xl border border-white/5 overflow-hidden">
-                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-semibold text-white flex items-center justify-between gap-4 hover:text-gold-400 transition">
-                    <span>Her boy nargile takımı bu sehpaya uyum sağlar mı?</span>
-                    <i class="fa-solid fa-chevron-down text-gold-400 text-sm transition-transform duration-300"></i>
+                <!-- Sağ: Yuvarlak Sıfırlama / Canlıya Dön Butonu -->
+                <button onclick="resetScanner()" class="w-11 h-11 rounded-full bg-slate-800/90 hover:bg-slate-700 active:scale-95 border border-slate-600/60 flex items-center justify-center text-slate-100 shadow-lg transition-all shrink-0" title="Sıfırla ve Canlı Kameraya Dön">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
                 </button>
-                <div class="faq-content px-5 pb-5 text-gray-400 text-sm">
-                    40 cm geniş tablası ve standart Rus/Türk tipi geçmeli şişe gövdelerine uygun optimize edilen merkezi boşluğu sayesinde piyasada en çok kullanılan küçük, orta ve büyük boy nargile takımlarının %95'i ile kusursuz uyum sağlar.
-                </div>
             </div>
-
-            <!-- Soru 4 -->
-            <div class="bg-surface rounded-xl border border-white/5 overflow-hidden">
-                <button onclick="toggleFaq(this)" class="w-full p-5 text-left font-semibold text-white flex items-center justify-between gap-4 hover:text-gold-400 transition">
-                    <span>Kargo süresi nedir ve nasıl paketleniyor?</span>
-                    <i class="fa-solid fa-chevron-down text-gold-400 text-sm transition-transform duration-300"></i>
-                </button>
-                <div class="faq-content px-5 pb-5 text-gray-400 text-sm">
-                    Saat 15:00'e kadar verilen siparişler aynı iş günü özenle balonlu ambalaj ve koruyucu mukavva kutularla sarılarak kargoya verilir. Teslimat süresi bulunduğunuz ile bağlı olarak genellikle 1-3 iş günüdür.
-                </div>
-            </div>
-
-        </div>
-    </section>
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-darkCharcoal border-t border-white/10 pt-12 pb-24 lg:pb-12 text-center text-xs text-gray-400">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col items-center">
-            <span class="font-serif text-xl font-bold gold-gradient-text tracking-widest uppercase mb-2">İMZAHEDİYE.COM</span>
-            <p class="max-w-md mx-auto mb-6 text-gray-400">
-                Özel anlara değer katan, el yapımı masif ahşap ve kişiselleştirilmiş hediyelik ürünler atölyesi.
-            </p>
-            <div class="flex items-center gap-6 mb-6 text-sm text-gray-300">
-                <a href="#ozellikler" class="hover:text-gold-400 transition">Özellikler</a>
-                <a href="#detaylar" class="hover:text-gold-400 transition">Teknik Boyutlar</a>
-                <a href="#siparis" class="hover:text-gold-400 transition">Sipariş Ver</a>
-                <a href="https://wa.me/905000000000" target="_blank" rel="noopener noreferrer" class="hover:text-gold-400 transition">İletişim</a>
-            </div>
-            <p class="text-gray-400">&copy; 2026 imzahediye.com - Tüm Hakları Saklıdır.</p>
         </div>
     </footer>
 
-    <!-- MOBİL STICKY BOTTOM BAR (SATIŞ ARTIRICI SABİT ALT ÇUBUK) -->
-    <div class="fixed bottom-0 left-0 right-0 z-50 bg-[#0e1017]/95 backdrop-blur-md border-t border-gold-500/30 p-3 sm:hidden flex items-center justify-between gap-3 shadow-2xl">
-        <div class="flex flex-col pl-2">
-            <span class="text-[10px] text-gray-400 uppercase font-semibold">Net Fiyat</span>
-            <div class="flex items-baseline gap-1.5">
-                <span class="text-xl font-extrabold text-white">3.990 TL</span>
+    <!-- 5. AÇILIŞ OYUN SEÇİM KARTI ("Hangi Okey?" - Gece Laciverti & Altın Tema) -->
+    <div id="mode-bottom-sheet" class="fixed inset-x-0 bottom-0 z-40 bottom-sheet px-5 pt-3 pb-[max(24px,env(safe-area-inset-bottom))]">
+        <div class="max-w-lg mx-auto">
+            <!-- Sürükleme Çubuğu -->
+            <div class="w-10 h-1 rounded-full bg-slate-500/40 mx-auto mb-4"></div>
+
+            <h2 class="text-xl font-extrabold text-white tracking-tight">Hangi Okey?</h2>
+            <p class="text-xs sm:text-sm text-slate-300 mt-1 mb-4">
+                Oynadığın oyunu seç. Sonradan ayarlardan değiştirebilirsin.
+            </p>
+
+            <div class="flex flex-col gap-2.5 mb-5">
+                <!-- Seçenek 1: 101 Okey (21 Taş) -->
+                <button type="button" onclick="selectGameModeOption('101')" id="opt-card-101" class="w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all">
+                    <div id="radio-101" class="w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0">
+                        <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
+                    </div>
+                    <div>
+                        <div class="text-sm sm:text-base font-bold text-white">101 Okey</div>
+                        <div class="text-xs text-slate-300 mt-0.5">21 taş. Perlerin toplamı 101'i bulunca açarsın.</div>
+                    </div>
+                </button>
+
+                <!-- Seçenek 2: Okey (14 Taş) -->
+                <button type="button" onclick="selectGameModeOption('14')" id="opt-card-14" class="w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all">
+                    <div id="radio-14" class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0">
+                        <div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>
+                    </div>
+                    <div>
+                        <div class="text-sm sm:text-base font-bold text-white">Okey</div>
+                        <div class="text-xs text-slate-300 mt-0.5">14 taş. Açma eşiği yok: elin tamamı tutana kadar beklersin.</div>
+                    </div>
+                </button>
             </div>
+
+            <!-- Tam Genişlik Altın/Kehribar "Devam" Butonu -->
+            <button type="button" onclick="confirmGameModeAndStart()" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 active:scale-[0.99] text-slate-950 font-extrabold text-base shadow-xl shadow-amber-500/20 transition-all">
+                Devam
+            </button>
         </div>
-        <a href="#siparis" class="bg-gradient-to-r from-gold-500 to-amberWood text-black font-extrabold text-sm py-3 px-6 rounded-xl shadow-lg flex items-center gap-2">
-            <span>HEMEN AL</span>
-            <i class="fa-solid fa-arrow-right text-xs"></i>
-        </a>
     </div>
 
-    <!-- JAVASCRIPT ETKİLEŞİM KODLARI -->
+    <!-- 6. MANUEL TAŞ EKLEME ÇEKMECESİ -->
+    <div id="manual-drawer" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-end justify-center" onclick="if(event.target.id==='manual-drawer') toggleManualDrawer(false)">
+        <div class="w-full max-w-xl bg-[#131b2e] border-t border-slate-700 rounded-t-3xl p-4 pb-[max(20px,env(safe-area-inset-bottom))] shadow-2xl">
+            <div class="flex items-center justify-between mb-3">
+                <div>
+                    <h3 class="text-sm font-extrabold text-white">Istakaya Manuel Taş Ekle</h3>
+                    <p class="text-[11px] text-slate-400">Dokunduğunuz taş anında açık ahşap ıstakaya eklenir ve dizilir</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="clearAllTiles()" class="px-2.5 py-1 rounded-lg bg-red-500/20 text-red-300 text-xs font-bold border border-red-500/30">Temizle</button>
+                    <button onclick="toggleManualDrawer(false)" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Tamam</button>
+                </div>
+            </div>
+            <div id="manual-palette-grid" class="flex flex-col gap-2 max-h-60 overflow-y-auto pr-1">
+                <!-- 4 Renk x 13 Taş + Sahte Okey -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bildirim Toast -->
+    <div id="toast-box" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-200 bg-slate-950/90 border border-amber-400/45 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-2xl shadow-2xl text-center max-w-xs">
+        Bilgi
+    </div>
+
     <script>
-        // Galeri Görsel Değiştirme
-        function changeGalleryImage(imgSrc, btnElement) {
-            const mainImg = document.getElementById('mainProductImage');
-            mainImg.style.opacity = '0.3';
-            setTimeout(() => {
-                mainImg.src = imgSrc;
-                mainImg.style.opacity = '1';
-            }, 150);
+        // =========================================================================
+        // 1. UYGULAMA DURUMU (STATE) & SABİTLER
+        // =========================================================================
+        const TILE_COLORS = [
+            { id: 'kirmizi', short: 'K', name: 'Kırmızı', textClass: 'c-kirmizi', dotBg: '#dc2626' },
+            { id: 'mavi',    short: 'M', name: 'Mavi',    textClass: 'c-mavi',    dotBg: '#0284c7' },
+            { id: 'siyah',   short: 'S', name: 'Siyah',   textClass: 'c-siyah',   dotBg: '#0f172a' },
+            { id: 'sari',    short: 'Sr', name: 'Sarı',   textClass: 'c-sari',    dotBg: '#d97706' }
+        ];
 
-            // Thumbnail aktiflik durumu
-            document.querySelectorAll('.thumb-btn').forEach(btn => {
-                btn.classList.remove('ring-2', 'ring-gold-500');
-            });
-            btnElement.classList.add('ring-2', 'ring-gold-500');
-        }
+        let gameMode = '101'; // '101' (21 taş) veya '14' (14 taş)
+        let activeTab = 'seri'; // 'seri' veya 'cift'
+        let indicator = { color: 'mavi', number: 4 }; // Gösterge: Mavi 4 -> Okey: Mavi 5
 
-        // SSS Akordeon Kontrolü
-        function toggleFaq(btn) {
-            const content = btn.nextElementSibling;
-            const icon = btn.querySelector('.fa-chevron-down');
-            const isOpen = content.classList.contains('open');
+        let currentTiles = [];
+        let arrangedTopRow = [];
+        let arrangedBottomRow = [];
 
-            // Diğer açık olanları kapat
-            document.querySelectorAll('.faq-content').forEach(el => el.classList.remove('open'));
-            document.querySelectorAll('.fa-chevron-down').forEach(el => el.style.transform = 'rotate(0deg)');
+        let videoStream = null;
+        let isScanning = false;
+        let autoScanTimer = null;
+        let isFrozenFrame = false;
 
-            if (!isOpen) {
-                content.classList.add('open');
-                icon.style.transform = 'rotate(180deg)';
+        // =========================================================================
+        // 2. BAŞLANGIÇ & AÇILIŞ KARTI ("Hangi Okey?")
+        // =========================================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            buildIndicatorNumberGrid();
+            buildManualPalette();
+            updateIndicatorUI();
+            renderEmptyRack();
+        });
+
+        function selectGameModeOption(mode) {
+            gameMode = mode;
+            const card101 = document.getElementById('opt-card-101');
+            const card14 = document.getElementById('opt-card-14');
+            const radio101 = document.getElementById('radio-101');
+            const radio14 = document.getElementById('radio-14');
+
+            if (mode === '101') {
+                card101.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all';
+                radio101.className = 'w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0';
+                radio101.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>';
+
+                card14.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all';
+                radio14.className = 'w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0';
+                radio14.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>';
+            } else {
+                card14.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all';
+                radio14.className = 'w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0';
+                radio14.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>';
+
+                card101.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all';
+                radio101.className = 'w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0';
+                radio101.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>';
             }
         }
 
-        // Sipariş Form Gönderimi (Mock Handler)
-        function handleOrderSubmit(e) {
-            e.preventDefault();
-            const submitBtn = e.target.querySelector('button[type="submit"]');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Siparişiniz İşleniyor...';
+        function confirmGameModeAndStart() {
+            const sheet = document.getElementById('mode-bottom-sheet');
+            sheet.classList.add('sheet-hidden');
+            startLiveCamera();
+            recalculateAndRender();
+        }
 
-            setTimeout(() => {
-                document.getElementById('orderSuccessMessage').classList.remove('hidden');
-                e.target.reset();
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fa-solid fa-check"></i> Sipariş Alındı!';
-                
-                // Başarı kutusuna yumuşak kaydır
-                document.getElementById('orderSuccessMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 1000);
+        function openModeSheet() {
+            selectGameModeOption(gameMode);
+            document.getElementById('mode-bottom-sheet').classList.remove('sheet-hidden');
+        }
+
+        function showToast(msg) {
+            const box = document.getElementById('toast-box');
+            box.textContent = msg;
+            box.classList.remove('opacity-0');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => {
+                box.classList.add('opacity-0');
+            }, 2400);
+        }
+
+        // =========================================================================
+        // 3. CANLI KAMERA YÖNETİMİ (iOS Safari Uyumlu)
+        // =========================================================================
+        async function startLiveCamera() {
+            const video = document.getElementById('camera-video');
+            const placeholder = document.getElementById('camera-placeholder');
+
+            if (videoStream) {
+                placeholder.classList.add('hidden');
+                return;
+            }
+
+            try {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('Kamera API desteklenmiyor');
+                }
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    audio: false,
+                    video: {
+                        facingMode: { ideal: 'environment' },
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }
+                });
+                videoStream = stream;
+                video.srcObject = stream;
+                video.setAttribute('playsinline', 'true');
+                video.setAttribute('webkit-playsinline', 'true');
+                await video.play();
+                placeholder.classList.add('hidden');
+            } catch (err) {
+                placeholder.classList.remove('hidden');
+            }
+        }
+
+        function resetScanner() {
+            isFrozenFrame = false;
+            currentTiles = [];
+            const canvas = document.getElementById('ar-overlay-canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            document.getElementById('viewfinder-box').classList.remove('reticle-detected');
+            document.getElementById('viewfinder-hint').innerHTML = "Istakayı çerçeveye ortalayıp <b>Çek</b>'e basın";
+            document.getElementById('hud-sub-banner').classList.add('hidden');
+
+            const video = document.getElementById('camera-video');
+            if (video && video.srcObject) {
+                video.play().catch(() => {});
+            } else {
+                startLiveCamera();
+            }
+            renderEmptyRack();
+            showToast('Sıfırlandı, yeni çekime hazır');
+        }
+
+        function toggleAutoScan() {
+            const dot = document.getElementById('auto-scan-dot');
+            const label = document.getElementById('auto-scan-label');
+
+            if (autoScanTimer) {
+                clearInterval(autoScanTimer);
+                autoScanTimer = null;
+                dot.className = 'w-2 h-2 rounded-full bg-slate-400';
+                label.textContent = 'Oto: Kapalı';
+                showToast('Otomatik tarama kapatıldı');
+            } else {
+                dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-ping';
+                label.textContent = 'Oto: Açık';
+                showToast('Canlı otomatik tarama aktif (2.5 sn)');
+                captureAndSolveNow(true);
+                autoScanTimer = setInterval(() => {
+                    if (!isScanning) captureAndSolveNow(true);
+                }, 2600);
+            }
+        }
+
+        // =========================================================================
+        // 4. GÖSTERGE & AKTİF OKEY HESABI
+        // =========================================================================
+        function getActiveOkey() {
+            return {
+                color: indicator.color,
+                number: indicator.number === 13 ? 1 : indicator.number + 1
+            };
+        }
+
+        function isTileRealOkey(tile) {
+            if (!tile || tile.isSahte) return false;
+            const okey = getActiveOkey();
+            return tile.color === okey.color && tile.number === okey.number;
+        }
+
+        function getEffectiveTile(tile) {
+            // Sahte okey, aktif okey taşının gerçek değerini ve rengini alır
+            if (tile.isSahte) {
+                const okey = getActiveOkey();
+                return { color: okey.color, number: okey.number };
+            }
+            return { color: tile.color, number: tile.number };
+        }
+
+        function buildIndicatorNumberGrid() {
+            const grid = document.getElementById('indicator-num-grid');
+            grid.innerHTML = '';
+            for (let n = 1; n <= 13; n++) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = n;
+                btn.dataset.indNum = n;
+                btn.className = 'ind-num-btn py-1.5 rounded-lg text-xs font-extrabold bg-white/10 hover:bg-white/20 text-white transition-all';
+                btn.onclick = () => {
+                    indicator.number = n;
+                    updateIndicatorUI();
+                    recalculateAndRender();
+                };
+                grid.appendChild(btn);
+            }
+        }
+
+        function setIndicatorColor(col) {
+            indicator.color = col;
+            updateIndicatorUI();
+            recalculateAndRender();
+        }
+
+        function updateIndicatorUI() {
+            const indCol = TILE_COLORS.find(c => c.id === indicator.color);
+            const okey = getActiveOkey();
+            const okeyCol = TILE_COLORS.find(c => c.id === okey.color);
+
+            document.getElementById('hud-indicator-label').textContent = `${indCol.short}${indicator.number}`;
+            document.getElementById('hud-okey-label').textContent = `${okeyCol.short}${okey.number}`;
+
+            document.querySelectorAll('.ind-num-btn').forEach(b => {
+                const val = parseInt(b.dataset.indNum, 10);
+                b.className = val === indicator.number
+                    ? 'ind-num-btn py-1.5 rounded-lg text-xs font-extrabold bg-amber-400 text-gray-950 shadow'
+                    : 'ind-num-btn py-1.5 rounded-lg text-xs font-extrabold bg-white/10 hover:bg-white/20 text-white';
+            });
+        }
+
+        function toggleIndicatorPopover(forceState) {
+            const pop = document.getElementById('indicator-popover');
+            if (typeof forceState === 'boolean') {
+                pop.classList.toggle('hidden', !forceState);
+            } else {
+                pop.classList.toggle('hidden');
+            }
+        }
+
+        // =========================================================================
+        // 5. ANINDA GÖRÜNTÜ YAKALAMA & GEMINI VISION TAŞ OKUMA
+        // =========================================================================
+        async function captureAndSolveNow(silentAuto = false) {
+            if (isScanning) return;
+            const video = document.getElementById('camera-video');
+
+            if (!videoStream || video.readyState < 2) {
+                if (!silentAuto) {
+                    showToast('Kamera kapalı — Örnek El yükleniyor veya Fotoğraf Seçin');
+                    loadDemoHand();
+                }
+                return;
+            }
+
+            isScanning = true;
+            setScanningVisuals(true);
+
+            try {
+                // Videodan yüksek netlikte kare yakala
+                const offCanvas = document.createElement('canvas');
+                const vw = video.videoWidth || 1280;
+                const vh = video.videoHeight || 720;
+                const scale = Math.min(1, 1024 / Math.max(vw, vh));
+                offCanvas.width = Math.round(vw * scale);
+                offCanvas.height = Math.round(vh * scale);
+
+                const ctx = offCanvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, offCanvas.width, offCanvas.height);
+
+                // Manuel çekimde kareyi overlay canvas'ta dondur ki kutular tam taşın üstünde dursun
+                if (!silentAuto) {
+                    drawFrozenFrameOnOverlay(offCanvas);
+                    isFrozenFrame = true;
+                }
+
+                const base64Data = offCanvas.toDataURL('image/jpeg', 0.82).split(',')[1];
+                const visionResult = await recognizeTilesWithGemini(base64Data);
+
+                if (visionResult && visionResult.tiles && visionResult.tiles.length > 0) {
+                    applyVisionDetections(visionResult, offCanvas.width, offCanvas.height, silentAuto);
+                } else if (!silentAuto) {
+                    showToast('Istakada taş algılanamadı. Işığı kontrol edip tekrar deneyin.');
+                }
+            } catch (err) {
+                if (!silentAuto) {
+                    showToast('Bağlantı gecikmesi — Örnek el ile devam edebilirsiniz.');
+                }
+            } finally {
+                isScanning = false;
+                setScanningVisuals(false);
+            }
+        }
+
+        function handlePhotoUpload(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                const img = new Image();
+                img.onload = async () => {
+                    isScanning = true;
+                    setScanningVisuals(true);
+                    try {
+                        const offCanvas = document.createElement('canvas');
+                        const scale = Math.min(1, 1024 / Math.max(img.width, img.height));
+                        offCanvas.width = Math.round(img.width * scale);
+                        offCanvas.height = Math.round(img.height * scale);
+                        const ctx = offCanvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, offCanvas.width, offCanvas.height);
+
+                        drawFrozenFrameOnOverlay(offCanvas);
+                        isFrozenFrame = true;
+
+                        const base64Data = offCanvas.toDataURL('image/jpeg', 0.84).split(',')[1];
+                        const visionResult = await recognizeTilesWithGemini(base64Data);
+                        if (visionResult && visionResult.tiles && visionResult.tiles.length > 0) {
+                            applyVisionDetections(visionResult, offCanvas.width, offCanvas.height, false);
+                        } else {
+                            showToast('Fotoğrafta okey taşı bulunamadı.');
+                        }
+                    } finally {
+                        isScanning = false;
+                        setScanningVisuals(false);
+                        event.target.value = '';
+                    }
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function setScanningVisuals(active) {
+            const beam = document.getElementById('scan-beam-line');
+            const btnText = document.getElementById('btn-shutter-text');
+            if (active) {
+                beam.classList.remove('hidden');
+                btnText.textContent = 'Okunuyor...';
+            } else {
+                beam.classList.add('hidden');
+                btnText.textContent = 'Çek ve Diz';
+            }
+        }
+
+        function drawFrozenFrameOnOverlay(sourceCanvas) {
+            const overlay = document.getElementById('ar-overlay-canvas');
+            overlay.width = sourceCanvas.width;
+            overlay.height = sourceCanvas.height;
+            const ctx = overlay.getContext('2d');
+            ctx.clearRect(0, 0, overlay.width, overlay.height);
+            ctx.drawImage(sourceCanvas, 0, 0);
+        }
+
+        function drawTileBoundingBoxes(tiles, imgW, imgH) {
+            const overlay = document.getElementById('ar-overlay-canvas');
+            if (!isFrozenFrame) {
+                overlay.width = imgW;
+                overlay.height = imgH;
+            }
+            const ctx = overlay.getContext('2d');
+            if (!isFrozenFrame) {
+                ctx.clearRect(0, 0, overlay.width, overlay.height);
+            }
+
+            tiles.forEach(t => {
+                if (!Array.isArray(t.box) || t.box.length !== 4) return;
+                const [ymin, xmin, ymax, xmax] = t.box;
+                const x = (xmin / 1000) * overlay.width;
+                const y = (ymin / 1000) * overlay.height;
+                const w = ((xmax - xmin) / 1000) * overlay.width;
+                const h = ((ymax - ymin) / 1000) * overlay.height;
+
+                const isOkey = isTileRealOkey(t);
+                ctx.strokeStyle = isOkey ? '#34d399' : '#facc15';
+                ctx.lineWidth = Math.max(2.5, overlay.width * 0.003);
+                ctx.beginPath();
+                ctx.roundRect(x, y, w, h, 6);
+                ctx.stroke();
+
+                ctx.fillStyle = isOkey ? 'rgba(52, 211, 153, 0.18)' : 'rgba(250, 204, 21, 0.14)';
+                ctx.fill();
+            });
+        }
+
+        // Exponential Backoff ile Gemini 2.5 Flash Vision Çağrısı (thinkingBudget: 0)
+        async function recognizeTilesWithGemini(base64Image) {
+            const apiKey = "";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+            const systemPrompt = `You are an ultra-fast Turkish Okey & 101 Okey computer vision detector.
+Detect EVERY Okey tile on the wooden rack in the image (up to 22 tiles across top and bottom shelves).
+For each tile return:
+- color: "kirmizi" (red), "mavi" (blue/teal), "siyah" (black), "sari" (yellow/orange), or "sahte" (clover/star/crescent symbol without number)
+- number: integer 1 to 13 (0 if "sahte")
+- row: "top" or "bottom"
+- col: integer 0-12 left-to-right position (leave a gap in col index if tiles are physically separated into groups!)
+- box: [ymin, xmin, ymax, xmax] normalized 0-1000 bounding box around the tile.
+Return strictly valid JSON.`;
+
+            const payload = {
+                contents: [{
+                    role: "user",
+                    parts: [
+                        { text: "Detect all Turkish Okey tiles on the rack with exact color, number, row, column spacing, and bounding boxes." },
+                        { inlineData: { mimeType: "image/jpeg", data: base64Image } }
+                    ]
+                }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: {
+                    thinkingConfig: { thinkingBudget: 0 },
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            tiles: {
+                                type: "ARRAY",
+                                items: {
+                                    type: "OBJECT",
+                                    properties: {
+                                        color: { type: "STRING", enum: ["kirmizi", "mavi", "siyah", "sari", "sahte"] },
+                                        number: { type: "INTEGER" },
+                                        row: { type: "STRING", enum: ["top", "bottom"] },
+                                        col: { type: "INTEGER" },
+                                        box: { type: "ARRAY", items: { type: "INTEGER" } }
+                                    },
+                                    required: ["color", "number", "row", "col", "box"]
+                                }
+                            }
+                        },
+                        required: ["tiles"]
+                    }
+                }
+            };
+
+            const delays = [600, 1200, 2400];
+            for (let attempt = 0; attempt <= delays.length; attempt++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (!rawText) throw new Error('Boş yanıt');
+                    return JSON.parse(rawText);
+                } catch (e) {
+                    if (attempt === delays.length) throw e;
+                    await new Promise(r => setTimeout(r, delays[attempt]));
+                }
+            }
+        }
+
+        function applyVisionDetections(visionResult, imgW, imgH, silentAuto) {
+            const maxTiles = gameMode === '101' ? 22 : 15;
+            const parsed = visionResult.tiles.slice(0, maxTiles).map((t, idx) => ({
+                id: `t_${Date.now()}_${idx}`,
+                color: t.color === 'sahte' ? 'sahte' : t.color,
+                number: t.color === 'sahte' ? 0 : Math.min(13, Math.max(1, Number(t.number) || 1)),
+                isSahte: t.color === 'sahte' || Number(t.number) === 0,
+                row: t.row === 'bottom' ? 'bottom' : 'top',
+                col: Number(t.col) || idx,
+                box: t.box
+            }));
+
+            // 15'ten fazla taş algılandıysa otomatik 101 Okey moduna geç
+            if (parsed.length > 15 && gameMode !== '101') {
+                gameMode = '101';
+            }
+
+            currentTiles = parsed;
+            drawTileBoundingBoxes(parsed, imgW, imgH);
+            document.getElementById('viewfinder-box').classList.add('reticle-detected');
+            document.getElementById('viewfinder-hint').textContent = `${parsed.length} taş algılandı ve en mantıklı şekilde dizildi`;
+
+            // Mevcut fiziksel dizilimin (eğer kullanıcı zaten dizmişse) puanını hesapla
+            evaluateExistingPhysicalArrangement(parsed);
+
+            // En mantıklı seri / çift dizilimini üstteki ahşap ıstakaya yerleştir
+            recalculateAndRender();
+
+            if (!silentAuto) {
+                showToast(`${parsed.length} taş okundu ve otomatik dizildi!`);
+            }
+        }
+
+        // =========================================================================
+        // 6. MEVCUT DİZİLİ EL KONTROLÜ ("Eğer el diziliyse toplamın kaç olduğunu söylesin")
+        // =========================================================================
+        function evaluateExistingPhysicalArrangement(tiles) {
+            const banner = document.getElementById('hud-sub-banner');
+            const leftEl = document.getElementById('hud-sub-left');
+            const rightEl = document.getElementById('hud-sub-right');
+
+            if (!tiles || tiles.length < 3) {
+                banner.classList.add('hidden');
+                return;
+            }
+
+            // Satır ve sütun boşluklarına göre fiziksel grupları çıkar
+            const groups = [];
+            ['top', 'bottom'].forEach(r => {
+                const rowTiles = tiles.filter(t => t.row === r).sort((a, b) => a.col - b.col);
+                let cur = [];
+                for (let i = 0; i < rowTiles.length; i++) {
+                    if (cur.length === 0) {
+                        cur.push(rowTiles[i]);
+                    } else {
+                        const gap = rowTiles[i].col - rowTiles[i - 1].col;
+                        if (gap <= 1) {
+                            cur.push(rowTiles[i]);
+                        } else {
+                            if (cur.length >= 3) groups.push(cur);
+                            cur = [rowTiles[i]];
+                        }
+                    }
+                }
+                if (cur.length >= 3) groups.push(cur);
+            });
+
+            let validScore = 0;
+            let validCount = 0;
+            groups.forEach(g => {
+                const res = validateAndScoreMeld(g);
+                if (res.valid) {
+                    validScore += res.score;
+                    validCount++;
+                }
+            });
+
+            if (validCount >= 2 && validScore > 0) {
+                banner.classList.remove('hidden');
+                leftEl.textContent = `Dizili Ortalar Toplamı: ${validScore} Puan`;
+                if (gameMode === '101') {
+                    rightEl.textContent = validScore >= 101 ? '101 AÇIYOR ✓' : `${101 - validScore} Puan Eksik`;
+                    rightEl.className = validScore >= 101 ? 'font-extrabold text-emerald-300' : 'font-extrabold text-amber-300';
+                } else {
+                    rightEl.textContent = `${validCount} Geçerli Per`;
+                    rightEl.className = 'font-extrabold text-emerald-300';
+                }
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+
+        // =========================================================================
+        // 7. OKEY & 101 OKEY AKILLI ÇÖZÜCÜ MOTORU (SERİ & ÇİFT)
+        // =========================================================================
+        function setSortTab(tab) {
+            activeTab = tab;
+            const btnSeri = document.getElementById('tab-seri');
+            const btnCift = document.getElementById('tab-cift');
+
+            if (tab === 'seri') {
+                btnSeri.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-500 text-slate-950 shadow';
+                btnCift.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white';
+            } else {
+                btnCift.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-500 text-slate-950 shadow';
+                btnSeri.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white';
+            }
+            recalculateAndRender();
+        }
+
+        function calculateAllTilesNumericSum(tiles, okeyOverrideMap) {
+            let total = 0;
+            tiles.forEach(t => {
+                if (okeyOverrideMap && okeyOverrideMap.has(t.id)) {
+                    total += okeyOverrideMap.get(t.id);
+                } else if (isTileRealOkey(t)) {
+                    total += getActiveOkey().number;
+                } else {
+                    total += getEffectiveTile(t).number;
+                }
+            });
+            return total;
+        }
+
+        function recalculateAndRender() {
+            const targetCount = gameMode === '101' ? 21 : 14;
+            const statusIcon = document.getElementById('scan-status-icon');
+            const badgeEl = document.getElementById('open-status-badge');
+
+            const countEl = document.getElementById('metric-tile-count');
+            const meldsSumEl = document.getElementById('metric-melds-sum');
+            const pairCountEl = document.getElementById('metric-pair-count');
+            const allSumEl = document.getElementById('metric-all-sum');
+
+            if (currentTiles.length === 0) {
+                countEl.textContent = `0 / ${targetCount}`;
+                meldsSumEl.textContent = '0 Puan';
+                pairCountEl.textContent = '0 Çift';
+                allSumEl.textContent = '0 Puan';
+                badgeEl.textContent = 'Istakayı Tarayın';
+                badgeEl.className = 'px-2 py-0.5 rounded-full bg-slate-800/90 border border-slate-600/60 text-[10px] sm:text-[11px] font-extrabold text-slate-200 whitespace-nowrap';
+                statusIcon.innerHTML = `<svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2"/></svg>`;
+                renderEmptyRack();
+                return;
+            }
+
+            // Kehribar Tik İkonu
+            statusIcon.innerHTML = `<svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>`;
+
+            // Hem SERİ/PER hem ÇİFT çözümlerini anlık hesapla
+            const pairSolution = solveOptimalPairs(currentTiles);
+            const seriSolution = solveOptimalMelds(currentTiles);
+            const allTilesTotal = calculateAllTilesNumericSum(currentTiles, seriSolution.okeyAssignedValues);
+
+            // 4 Metrik Kartını Kesintisiz Güncelle
+            countEl.textContent = `${currentTiles.length} / ${targetCount}`;
+            meldsSumEl.textContent = `${seriSolution.totalScore} Puan`;
+            pairCountEl.textContent = `${pairSolution.pairCount} Çift`;
+            allSumEl.textContent = `${allTilesTotal} Puan`;
+
+            if (activeTab === 'seri') {
+                if (gameMode === '101') {
+                    if (seriSolution.totalScore >= 101) {
+                        badgeEl.textContent = `101 Açıyor ✓ (${seriSolution.totalScore})`;
+                        badgeEl.className = 'px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-[10px] sm:text-[11px] font-extrabold text-emerald-300 whitespace-nowrap';
+                    } else {
+                        badgeEl.textContent = `101 İçin ${101 - seriSolution.totalScore} Kaldı`;
+                        badgeEl.className = 'px-2 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/45 text-[10px] sm:text-[11px] font-extrabold text-amber-200 whitespace-nowrap';
+                    }
+                } else {
+                    if (seriSolution.leftovers.length <= 1 && currentTiles.length >= 14) {
+                        badgeEl.textContent = 'EL BİTER ✓';
+                        badgeEl.className = 'px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/50 text-[10px] sm:text-[11px] font-extrabold text-emerald-300 whitespace-nowrap';
+                    } else {
+                        badgeEl.textContent = `Artık: ${seriSolution.leftovers.length} Taş`;
+                        badgeEl.className = 'px-2 py-0.5 rounded-full bg-slate-800/90 border border-slate-600/60 text-[10px] sm:text-[11px] font-extrabold text-slate-200 whitespace-nowrap';
+                    }
+                }
+                placeGroupsOntoWoodenRack(seriSolution.melds, seriSolution.leftovers);
+            } else {
+                if (gameMode === '101' && pairSolution.pairCount >= 5) {
+                    badgeEl.textContent = `Çift Açar ✓ (${pairSolution.pairCount})`;
+                    badgeEl.className = 'px-2 py-0.5 rounded-full bg-amber-500/25 border border-amber-400/50 text-[10px] sm:text-[11px] font-extrabold text-amber-300 whitespace-nowrap';
+                } else {
+                    badgeEl.textContent = `${pairSolution.pairCount} Çift Bulundu`;
+                    badgeEl.className = 'px-2 py-0.5 rounded-full bg-slate-800/90 border border-slate-600/60 text-[10px] sm:text-[11px] font-extrabold text-amber-200 whitespace-nowrap';
+                }
+                placeGroupsOntoWoodenRack(pairSolution.pairs, pairSolution.singles);
+            }
+        }
+
+        // Geçerli Per / Seri Doğrulayıcı ve Puanlayıcı (12-13-1 döngüsü ve Okey jokeri dahil)
+        function validateAndScoreMeld(group) {
+            if (group.length < 3) return { valid: false, score: 0, ordered: group, okeyValues: [] };
+
+            const okeys = group.filter(t => isTileRealOkey(t));
+            const normals = group.filter(t => !isTileRealOkey(t)).map(t => ({
+                orig: t,
+                ...getEffectiveTile(t)
+            }));
+
+            if (normals.length === 0) {
+                const okeyVal = getActiveOkey().number;
+                return {
+                    valid: true,
+                    score: okeyVal * group.length,
+                    ordered: group,
+                    okeyValues: okeys.map(o => ({ id: o.id, val: okeyVal }))
+                };
+            }
+
+            // 1. AYNI SAYI FARKLI RENK PER KONTROLÜ (3'lü veya 4'lü)
+            if (group.length <= 4) {
+                const targetNum = normals[0].number;
+                const allSameNum = normals.every(n => n.number === targetNum);
+                const colors = normals.map(n => n.color);
+                const distinctColors = new Set(colors).size === colors.length;
+
+                if (allSameNum && distinctColors) {
+                    return {
+                        valid: true,
+                        score: targetNum * group.length,
+                        ordered: group,
+                        okeyValues: okeys.map(o => ({ id: o.id, val: targetNum }))
+                    };
+                }
+            }
+
+            // 2. AYNI RENK ARDIŞIK SERİ KONTROLÜ (12-13-1 dahil)
+            const targetColor = normals[0].color;
+            if (!normals.every(n => n.color === targetColor)) {
+                return { valid: false, score: 0, ordered: group, okeyValues: [] };
+            }
+
+            const nums = normals.map(n => n.number);
+            if (new Set(nums).size !== nums.length) {
+                return { valid: false, score: 0, ordered: group, okeyValues: [] };
+            }
+
+            const len = group.length;
+            if (len > 13) return { valid: false, score: 0, ordered: group, okeyValues: [] };
+
+            // En yüksek puanlı dizilimi bulmak için tersten (13'ten 1'e) tara (örn. 11-12-Okey(13) = 36 puan, Okey(10)-11-12 = 33 puandan büyüktür)
+            let bestSeqResult = null;
+
+            for (let start = 13; start >= 1; start--) {
+                if (start === 13 && len > 2) continue;
+                const seq = [];
+                let crossesOneBadly = false;
+                for (let k = 0; k < len; k++) {
+                    const val = ((start - 1 + k) % 13) + 1;
+                    if (val === 1 && k !== 0 && k !== len - 1) crossesOneBadly = true;
+                    seq.push(val);
+                }
+                if (crossesOneBadly) continue;
+
+                if (nums.every(n => seq.includes(n))) {
+                    const ordered = [];
+                    const okeyValues = [];
+                    let okeyIdx = 0;
+                    let sum = 0;
+                    for (const val of seq) {
+                        sum += val;
+                        const found = normals.find(n => n.number === val);
+                        if (found) {
+                            ordered.push(found.orig);
+                        } else if (okeyIdx < okeys.length) {
+                            const okTile = okeys[okeyIdx++];
+                            ordered.push(okTile);
+                            okeyValues.push({ id: okTile.id, val });
+                        }
+                    }
+                    if (!bestSeqResult || sum > bestSeqResult.score) {
+                        bestSeqResult = { valid: true, score: sum, ordered, okeyValues };
+                    }
+                }
+            }
+
+            return bestSeqResult || { valid: false, score: 0, ordered: group, okeyValues: [] };
+        }
+
+        // En Yüksek Puanlı ve Okey Taşını En Değerli Pere Bağlayan Seri / Per Çözücü
+        function solveOptimalMelds(tiles) {
+            const n = tiles.length;
+            if (n === 0) return { melds: [], leftovers: [], totalScore: 0, okeyAssignedValues: new Map() };
+
+            const candidateMelds = [];
+
+            // 3'lü, 4'lü ve 5'li kombinasyonları üret
+            function buildCombos(startIdx, currentIndices) {
+                if (currentIndices.length >= 3) {
+                    const subset = currentIndices.map(i => tiles[i]);
+                    const check = validateAndScoreMeld(subset);
+                    if (check.valid) {
+                        let mask = 0;
+                        let okeyCount = 0;
+                        currentIndices.forEach(i => {
+                            mask |= (1 << i);
+                            if (isTileRealOkey(tiles[i])) okeyCount++;
+                        });
+                        candidateMelds.push({
+                            mask,
+                            score: check.score,
+                            size: currentIndices.length,
+                            okeyCount,
+                            ordered: check.ordered,
+                            okeyValues: check.okeyValues
+                        });
+                    }
+                }
+                if (currentIndices.length === 5) return;
+                for (let i = startIdx; i < n; i++) {
+                    currentIndices.push(i);
+                    buildCombos(i + 1, currentIndices);
+                    currentIndices.pop();
+                }
+            }
+
+            buildCombos(0, []);
+
+            // Puan, okey kullanımı ve kaplanan taş sayısına göre sırala
+            candidateMelds.sort((a, b) => (b.score * 12 + b.size * 5) - (a.score * 12 + a.size * 5));
+            const topCandidates = candidateMelds.slice(0, 180);
+
+            let bestMetric = -1;
+            let bestScore = 0;
+            let bestSelection = [];
+
+            function search(idx, usedMask, curScore, curUsedCount, curOkeysUsed, chosen) {
+                // Okey taşının per içinde değerlendirilmesine ekstra öncelik ver ki boşta kalmasın
+                const metric = gameMode === '101'
+                    ? (curScore * 1000 + curOkeysUsed * 250 + curUsedCount * 20)
+                    : (curUsedCount * 1000 + curOkeysUsed * 250 + curScore);
+
+                if (metric > bestMetric) {
+                    bestMetric = metric;
+                    bestScore = curScore;
+                    bestSelection = [...chosen];
+                }
+
+                if (idx >= topCandidates.length) return;
+                if (n - curUsedCount < 3) return;
+
+                for (let i = idx; i < topCandidates.length; i++) {
+                    const cand = topCandidates[i];
+                    if ((usedMask & cand.mask) === 0) {
+                        chosen.push(cand);
+                        search(
+                            i + 1,
+                            usedMask | cand.mask,
+                            curScore + cand.score,
+                            curUsedCount + cand.size,
+                            curOkeysUsed + cand.okeyCount,
+                            chosen
+                        );
+                        chosen.pop();
+                    }
+                }
+            }
+
+            search(0, 0, 0, 0, 0, []);
+
+            let finalUsedMask = 0;
+            const okeyAssignedValues = new Map();
+            bestSelection.forEach(m => {
+                finalUsedMask |= m.mask;
+                if (m.okeyValues) {
+                    m.okeyValues.forEach(ov => okeyAssignedValues.set(ov.id, ov.val));
+                }
+            });
+
+            const leftovers = [];
+            for (let i = 0; i < n; i++) {
+                if ((finalUsedMask & (1 << i)) === 0) {
+                    leftovers.push(tiles[i]);
+                }
+            }
+
+            // Artıkları kendi içinde küçükten büyüğe sırala
+            leftovers.sort((a, b) => getEffectiveTile(a).number - getEffectiveTile(b).number);
+
+            // Perleri büyük puandan küçüğe sırala
+            bestSelection.sort((a, b) => b.score - a.score);
+
+            return {
+                melds: bestSelection.map(m => m.ordered),
+                leftovers,
+                totalScore: Math.max(0, bestScore),
+                okeyAssignedValues
+            };
+        }
+
+        // En Mantıklı Çift Çözücü
+        function solveOptimalPairs(tiles) {
+            const okeys = [];
+            const normals = [];
+            tiles.forEach(t => {
+                if (isTileRealOkey(t)) okeys.push(t);
+                else normals.push(t);
+            });
+
+            const map = new Map();
+            normals.forEach(t => {
+                const eff = getEffectiveTile(t);
+                const key = `${eff.color}_${eff.number}`;
+                if (!map.has(key)) map.set(key, []);
+                map.get(key).push(t);
+            });
+
+            const pairs = [];
+            const singles = [];
+
+            map.forEach(list => {
+                while (list.length >= 2) {
+                    pairs.push([list.pop(), list.pop()]);
+                }
+                if (list.length === 1) {
+                    singles.push(list[0]);
+                }
+            });
+
+            // Kalan tek taşları büyük sayıdan başlayarak Okey ile çiftle
+            singles.sort((a, b) => getEffectiveTile(b).number - getEffectiveTile(a).number);
+            while (okeys.length > 0 && singles.length > 0) {
+                pairs.push([singles.shift(), okeys.pop()]);
+            }
+            while (okeys.length >= 2) {
+                pairs.push([okeys.pop(), okeys.pop()]);
+            }
+            okeys.forEach(o => singles.unshift(o));
+
+            return {
+                pairs,
+                singles,
+                pairCount: pairs.length
+            };
+        }
+
+        // =========================================================================
+        // 8. 2 KATLI AHŞAP ISTAKAYA OTOMATİK GÖRSEL YERLEŞTİRME
+        // =========================================================================
+        function renderEmptyRack() {
+            const cols = gameMode === '101' ? 12 : 10;
+            arrangedTopRow = new Array(cols).fill(null);
+            arrangedBottomRow = new Array(cols).fill(null);
+            drawWoodenRackDOM(cols);
+        }
+
+        function placeGroupsOntoWoodenRack(groups, leftovers) {
+            const cols = gameMode === '101' ? 12 : 10;
+            arrangedTopRow = new Array(cols).fill(null);
+            arrangedBottomRow = new Array(cols).fill(null);
+
+            let row = 0; // 0: Üst, 1: Alt
+            let col = 0;
+
+            // 1. ÖNCE TÜM GEÇERLİ PERLERİ / ÇİFTLERİ YERLEŞTİR (Aralarında 1 boşluk bırakarak)
+            groups.forEach(grp => {
+                if (col + grp.length > cols && row === 0) {
+                    row = 1;
+                    col = 0;
+                }
+                grp.forEach(tile => {
+                    if (row === 0 && col < cols) {
+                        arrangedTopRow[col++] = { tile, inMeld: true };
+                    } else if (col < cols) {
+                        arrangedBottomRow[col++] = { tile, inMeld: true };
+                    }
+                });
+                col++; // Gruplar arası ahşap boşluk
+            });
+
+            // 2. ARTAN TAŞLARI ASLA PERLERİN ARASINA KOYMA — HER ZAMAN EN SONA AYRI GRUP OLARAK DİZ
+            if (leftovers.length > 0) {
+                if (row === 0) {
+                    // Üst sırada kaldıysak artan taşları alt sıranın en sağına veya başına ayrı grup olarak at
+                    if (col + leftovers.length <= cols) {
+                        // Üst sırada yer varsa araya en az 1 boşluk bırakıp en sağa yasla
+                        const startCol = Math.max(col, cols - leftovers.length);
+                        leftovers.forEach((tile, i) => {
+                            arrangedTopRow[startCol + i] = { tile, inMeld: false };
+                        });
+                    } else {
+                        // Alt sıraya geç ve en sağa yasla
+                        row = 1;
+                        const startCol = Math.max(0, cols - leftovers.length);
+                        leftovers.forEach((tile, i) => {
+                            if (startCol + i < cols) {
+                                arrangedBottomRow[startCol + i] = { tile, inMeld: false };
+                            }
+                        });
+                    }
+                } else {
+                    // Alt sıradaysak mevcut perlerden sonra 1 boşluk bırakıp kalanları yerleştir
+                    leftovers.forEach(tile => {
+                        if (col < cols) {
+                            arrangedBottomRow[col++] = { tile, inMeld: false };
+                        } else {
+                            // Alt sıra dolduysa üst sıradaki boş son yuvalara koy
+                            for (let c = cols - 1; c >= 0; c--) {
+                                if (arrangedTopRow[c] === null) {
+                                    arrangedTopRow[c] = { tile, inMeld: false };
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            drawWoodenRackDOM(cols);
+        }
+
+        function drawWoodenRackDOM(cols) {
+            const topEl = document.getElementById('rack-top-row');
+            const botEl = document.getElementById('rack-bottom-row');
+            topEl.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+            botEl.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+
+            topEl.innerHTML = '';
+            botEl.innerHTML = '';
+
+            for (let i = 0; i < cols; i++) {
+                topEl.appendChild(createRackSlotElement(arrangedTopRow[i]));
+                botEl.appendChild(createRackSlotElement(arrangedBottomRow[i]));
+            }
+        }
+
+        function createRackSlotElement(slotData) {
+            const slot = document.createElement('div');
+            slot.className = 'rack-empty-slot h-9 sm:h-11 flex items-center justify-center';
+
+            if (!slotData || !slotData.tile) return slot;
+
+            const t = slotData.tile;
+            const isOkey = isTileRealOkey(t);
+            const colMeta = TILE_COLORS.find(c => c.id === t.color);
+
+            const tileDiv = document.createElement('div');
+            tileDiv.className = `okey-tile w-full h-full cursor-pointer ${slotData.inMeld ? 'tile-in-meld' : ''} ${isOkey ? 'tile-is-okey' : ''}`;
+            tileDiv.title = 'Çıkarmak için dokunun';
+
+            if (t.isSahte) {
+                tileDiv.innerHTML = `
+                    <span class="c-sahte text-[10px] sm:text-xs font-extrabold leading-none">★</span>
+                    <span class="w-1 h-1 rounded-full bg-purple-600 mt-0.5"></span>
+                `;
+            } else {
+                tileDiv.innerHTML = `
+                    <span class="${colMeta.textClass} text-xs sm:text-sm font-bold leading-none">${t.number}</span>
+                    <span class="w-1 h-1 rounded-full mt-0.5" style="background:${isOkey ? '#f59e0b' : colMeta.dotBg}"></span>
+                `;
+            }
+
+            tileDiv.onclick = () => {
+                currentTiles = currentTiles.filter(item => item.id !== t.id);
+                recalculateAndRender();
+                showToast('Taş ıstakadan çıkarıldı');
+            };
+
+            slot.appendChild(tileDiv);
+            return slot;
+        }
+
+        // =========================================================================
+        // 9. MANUEL TAŞ PALETİ & DEMO TEST ELİ
+        // =========================================================================
+        function buildManualPalette() {
+            const container = document.getElementById('manual-palette-grid');
+            container.innerHTML = '';
+
+            TILE_COLORS.forEach(col => {
+                const row = document.createElement('div');
+                row.className = 'grid grid-cols-13 gap-1';
+                for (let n = 1; n <= 13; n++) {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'okey-tile h-9 text-xs font-bold';
+                    btn.innerHTML = `<span class="${col.textClass}">${n}</span><span class="w-1 h-1 rounded-full mt-0.5" style="background:${col.dotBg}"></span>`;
+                    btn.onclick = () => addManualTile(col.id, n, false);
+                    row.appendChild(btn);
+                }
+                container.appendChild(row);
+            });
+
+            // Sahte Okey Butonu
+            const sahteBtn = document.createElement('button');
+            sahteBtn.type = 'button';
+            sahteBtn.className = 'w-full py-2 rounded-xl bg-purple-600/25 border border-purple-400/40 text-purple-200 text-xs font-extrabold mt-1';
+            sahteBtn.textContent = '+ Sahte Okey (★) Ekle';
+            sahteBtn.onclick = () => addManualTile('sahte', 0, true);
+            container.appendChild(sahteBtn);
+        }
+
+        function addManualTile(color, number, isSahte) {
+            const maxLimit = gameMode === '101' ? 22 : 15;
+            if (currentTiles.length >= maxLimit) {
+                showToast(`En fazla ${maxLimit} taş ekleyebilirsiniz.`);
+                return;
+            }
+            const sameCount = currentTiles.filter(t => isSahte ? t.isSahte : (!t.isSahte && t.color === color && t.number === number)).length;
+            if (sameCount >= 2) {
+                showToast('Bir taştan destede en fazla 2 adet bulunur.');
+                return;
+            }
+            currentTiles.push({
+                id: `m_${Date.now()}_${Math.random()}`,
+                color,
+                number,
+                isSahte,
+                row: 'top',
+                col: currentTiles.length
+            });
+            recalculateAndRender();
+        }
+
+        function clearAllTiles() {
+            currentTiles = [];
+            document.getElementById('hud-sub-banner').classList.add('hidden');
+            recalculateAndRender();
+        }
+
+        function toggleManualDrawer(show) {
+            document.getElementById('manual-drawer').classList.toggle('hidden', !show);
+        }
+
+        function loadDemoHand() {
+            // Referans ekran görüntüsündeki 21 taşlık eli birebir yükler ve çözer!
+            indicator = { color: 'mavi', number: 4 }; // Okey: Mavi 5
+            updateIndicatorUI();
+
+            const sample21 = [
+                { color: 'kirmizi', number: 13 }, { color: 'mavi', number: 13 }, { color: 'siyah', number: 13 },
+                { color: 'siyah', number: 4 }, { color: 'siyah', number: 5 }, { color: 'siyah', number: 6 }, { color: 'siyah', number: 7 }, { color: 'siyah', number: 8 },
+                { color: 'kirmizi', number: 7 }, { color: 'kirmizi', number: 8 }, { color: 'kirmizi', number: 9 },
+                { color: 'sari', number: 6 }, { color: 'mavi', number: 6 }, { color: 'siyah', number: 10 }, { color: 'sari', number: 8 },
+                { color: 'sari', number: 4 }, { color: 'mavi', number: 3 }, { color: 'sari', number: 3 },
+                { color: 'siyah', number: 7 }, { color: 'mavi', number: 10 }, { color: 'siyah', number: 12 }
+            ];
+
+            const count = gameMode === '101' ? 21 : 14;
+            currentTiles = sample21.slice(0, count).map((t, idx) => ({
+                id: `demo_${idx}_${Date.now()}`,
+                color: t.color,
+                number: t.number,
+                isSahte: false,
+                row: idx < 11 ? 'top' : 'bottom',
+                col: idx < 11 ? idx : idx - 11
+            }));
+
+            document.getElementById('viewfinder-box').classList.add('reticle-detected');
+            document.getElementById('viewfinder-hint').textContent = `${count} taşlık örnek el dizildi (SERİ / ÇİFT geçişini deneyin)`;
+            recalculateAndRender();
+            showToast(`${count} taşlık örnek el yüklendi ve dizildi!`);
         }
     </script>
 </body>
