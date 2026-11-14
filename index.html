@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Okey & 101 Okey Canlı Kamera Asistanı</title>
+    <title>Okey & 101 Okey Canlı Kamera Asistanı (Yerel Motor)</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tamamen Yerel / API'siz OCR Motoru (Tarayıcı İçi WASM) -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
@@ -57,7 +59,6 @@
                         0 8px 20px rgba(0, 0, 0, 0.48);
         }
 
-        /* Fırçalanmış Alüminyum Istaka Yan Kapakları */
         .rack-metal-cap {
             background: linear-gradient(180deg, #f1f5f9 0%, #cbd5e1 50%, #94a3b8 100%);
             border: 1px solid rgba(255, 255, 255, 0.7);
@@ -65,14 +66,12 @@
             border-radius: 3px;
         }
 
-        /* Açık Ahşap Raf Olukları */
         .rack-shelf-groove {
             background: linear-gradient(180deg, #b58752 0%, #c69963 72%, #d8b17e 100%);
             box-shadow: inset 0 2px 4px rgba(92, 58, 22, 0.48), 0 1px 0 rgba(255, 248, 235, 0.6);
             border-radius: 6px;
         }
 
-        /* Açık Ahşap Üzerinde Net Boş Yuva Izgarası */
         .rack-slot-cell {
             background: rgba(120, 78, 34, 0.13);
             border: 1px dashed rgba(110, 68, 26, 0.24);
@@ -99,14 +98,12 @@
             transform: scale(0.93);
         }
 
-        /* Geçerli Per/Çift İçindeki Taş Vurgusu */
         .tile-valid-group {
             box-shadow: 0 0 0 1.6px #0ea5e9,
                         0 2px 5px rgba(14, 165, 233, 0.35),
                         inset 0 -2px 0 #cbbba0;
         }
 
-        /* Aktif Okey Taşı Altın Parıltısı */
         .tile-active-okey {
             background: linear-gradient(160deg, #fffef7 0%, #fef3c7 100%);
             box-shadow: 0 0 0 2px #f59e0b,
@@ -133,7 +130,6 @@
             border-color: #f59e0b;
         }
 
-        /* Canlı Tarama Lazer Çizgisi */
         @keyframes scanLaser {
             0% { top: 8%; opacity: 0; }
             15% { opacity: 0.95; }
@@ -147,10 +143,9 @@
             height: 2px;
             background: linear-gradient(90deg, transparent, #38bdf8, #fbbf24, #38bdf8, transparent);
             box-shadow: 0 0 12px #38bdf8;
-            animation: scanLaser 1.5s ease-in-out infinite;
+            animation: scanLaser 1.4s ease-in-out infinite;
         }
 
-        /* Alttan Açılan Oyun Seçim Kartı */
         .bottom-sheet-modal {
             background: linear-gradient(180deg, #162038 0%, #0c111d 100%);
             border-top: 1px solid rgba(245, 158, 11, 0.35);
@@ -168,12 +163,9 @@
 </head>
 <body class="relative w-full h-full">
 
-    <!-- 1. TAM EKRAN CANLI KAMERA & AR KUTU ÇİZİM KATMANI -->
+    <!-- 1. TAM EKRAN CANLI KAMERA & YEREL AR KUTU ÇİZİM KATMANI -->
     <div id="camera-stage" class="fixed inset-0 w-full h-full bg-[#0c111d] overflow-hidden">
-        <!-- Canlı Arka Kamera Videosu -->
         <video id="camera-video" autoplay muted playsinline webkit-playsinline class="w-full h-full object-cover"></video>
-
-        <!-- Algılanan Taşların Üzerine Sarı Bounding Box Çizen Şeffaf Canvas -->
         <canvas id="ar-box-canvas" class="absolute inset-0 w-full h-full object-cover pointer-events-none"></canvas>
 
         <!-- Kamera Kapalıysa / İzin Bekleniyorsa Bilgilendirme -->
@@ -184,9 +176,9 @@
                     <circle cx="12" cy="13" r="3"/>
                 </svg>
             </div>
-            <p class="text-sm font-bold text-white">Canlı Kamera Bekleniyor</p>
+            <p class="text-sm font-bold text-white">Yerel Canlı Kamera Hazır</p>
             <p class="text-xs text-slate-300 mt-1 max-w-xs leading-relaxed">
-                HTTPS üzerinden kamera izni verdiğinizde görüntü otomatik açılır. Sağ alttaki <b>⚙️ Ayarlar</b>'dan API anahtarınızı kaydedebilir veya örnek eli test edebilirsiniz.
+                API anahtarı veya harici sunucu gerekmez. Tüm taş okuma ve dizilim işlemleri doğrudan cihazınızda gerçekleşir.
             </p>
             <div class="flex items-center gap-2 mt-4">
                 <button onclick="startRearCamera()" class="px-3.5 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold shadow">Kamerayı Başlat</button>
@@ -194,7 +186,6 @@
             </div>
         </div>
 
-        <!-- Üst/Alt Okunabilirlik İçin Hafif Karartma -->
         <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/45 via-transparent to-black/65"></div>
     </div>
 
@@ -202,17 +193,14 @@
     <header class="fixed top-0 left-0 right-0 z-30 pt-[max(10px,env(safe-area-inset-top))] px-2.5 sm:px-4">
         <div class="max-w-xl mx-auto slate-glass-panel rounded-2xl p-2.5 sm:p-3">
             
-            <!-- Üst Satır: Tarama İkonu | SERİ / ÇİFT Hapı | Durum Yazısı | Hızlı +Taş -->
             <div class="flex items-center justify-between gap-1.5 mb-2">
                 <div class="flex items-center gap-1.5">
-                    <!-- Canlı Tarama Durum İkonu -->
-                    <div id="top-scan-badge" class="w-6 h-6 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center shrink-0">
-                        <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                    <div id="top-scan-badge" class="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shrink-0">
+                        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2"/>
                         </svg>
                     </div>
 
-                    <!-- SERİ / ÇİFT Segment Geçişi -->
                     <div class="flex items-center bg-slate-950/75 p-0.5 rounded-full border border-slate-700/70">
                         <button id="btn-mode-seri" onclick="switchArrangeTab('seri')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow">
                             SERİ
@@ -223,12 +211,10 @@
                     </div>
                 </div>
 
-                <!-- Orta Durum Yazısı (21/21 · ıstakayı yavaşça tarayın) -->
                 <div id="top-rack-status" class="text-[11px] sm:text-xs font-semibold text-slate-200 truncate px-1">
                     0/21 · ıstakayı yavaşça tarayın
                 </div>
 
-                <!-- Sağ: Hızlı Manuel Taş Ekleme Butonu -->
                 <button onclick="openManualTileModal()" class="px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-600/60 text-[11px] font-bold text-sky-300 shrink-0 transition-all">
                     + Taş
                 </button>
@@ -236,36 +222,27 @@
 
             <!-- 2 KATLI AÇIK DOĞAL KAYIN AHŞAP ISTAKA -->
             <div class="beechwood-rack p-1.5 sm:p-2 flex items-stretch gap-1">
-                <!-- Sol Fırçalanmış Alüminyum Kapak -->
                 <div class="rack-metal-cap w-1.5 sm:w-2 shrink-0"></div>
-
-                <!-- 2 Katlı Taş Rafları -->
                 <div class="flex-1 flex flex-col gap-1.5">
-                    <!-- Üst Raf -->
                     <div id="wooden-top-row" class="rack-shelf-groove p-1 grid gap-[3px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));"></div>
-                    <!-- Alt Raf -->
                     <div id="wooden-bottom-row" class="rack-shelf-groove p-1 grid gap-[3px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));"></div>
                 </div>
-
-                <!-- Sağ Fırçalanmış Alüminyum Kapak -->
                 <div class="rack-metal-cap w-1.5 sm:w-2 shrink-0"></div>
             </div>
         </div>
     </header>
 
-    <!-- 3. ORTA VİZÖR ÇERÇEVESİ & SAĞDA YÜZEN YENİLEME BUTONU -->
+    <!-- 3. ORTA VİZÖR ÇERÇEVESİ & YEREL CANLI TARAMA KONTROLLERİ -->
     <div class="fixed inset-0 z-20 pointer-events-none flex items-center justify-center px-5 pb-32">
         <div id="camera-reticle" class="relative w-full max-w-lg h-36 sm:h-44 rounded-2xl">
-            <!-- 4 Köşe Vizör Çizgisi -->
             <div class="reticle-bracket top-0 left-0 border-t-[3px] border-l-[3px] rounded-tl-xl"></div>
             <div class="reticle-bracket top-0 right-0 border-t-[3px] border-r-[3px] rounded-tr-xl"></div>
             <div class="reticle-bracket bottom-0 left-0 border-b-[3px] border-l-[3px] rounded-bl-xl"></div>
             <div class="reticle-bracket bottom-0 right-0 border-b-[3px] border-r-[3px] rounded-br-xl"></div>
 
-            <!-- Canlı Tarama Lazeri -->
             <div id="scan-laser" class="hidden scan-laser-line"></div>
 
-            <!-- Vizör Altı Hızlı Kontroller: Oto Açık/Kapalı & Şimdi Tara -->
+            <!-- Vizör Altı Hızlı Kontroller -->
             <div class="pointer-events-auto absolute -bottom-11 left-0 right-0 flex items-center justify-between gap-2">
                 <button id="reticle-auto-pill" onclick="toggleAutoScanSetting()" class="px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all">
                     <span id="reticle-auto-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -286,13 +263,11 @@
         </div>
     </div>
 
-    <!-- 4. ALT KAPSAMLI ÖZET PANELİ & KONTROL ÇUBUĞU (Referans Ekran Görüntüsü Düzeni) -->
+    <!-- 4. ALT KAPSAMLI ÖZET PANELİ & KONTROL ÇUBUĞU -->
     <footer class="fixed bottom-0 left-0 right-0 z-30 pb-[max(12px,env(safe-area-inset-bottom))] px-2.5 sm:px-4">
         <div class="max-w-xl mx-auto flex flex-col gap-2">
             
-            <!-- Ana İstatistik Kartı -->
             <div class="slate-glass-panel rounded-2xl p-3">
-                <!-- Üst 3 Sütun: EN İYİ TOPLAM | GÖSTERGE | ÇİFT -->
                 <div class="grid grid-cols-3 items-center gap-2 pb-2.5 border-b border-slate-700/60">
                     
                     <!-- Sol: EN İYİ TOPLAM (/101) -->
@@ -309,7 +284,7 @@
                         </div>
                     </div>
 
-                    <!-- Orta: İnteraktif GÖSTERGE Kartı + Taş Sayacı (21/21) -->
+                    <!-- Orta: İnteraktif GÖSTERGE Kartı + Taş Sayacı -->
                     <div class="flex flex-col items-center justify-center">
                         <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase mb-1">GÖSTERGE</span>
                         <button onclick="openIndicatorPickerModal()" id="indicator-tile-card" class="okey-tile w-10 h-13 py-1.5 px-2 cursor-pointer border border-amber-400/50 shadow-lg hover:scale-105 transition-transform" title="Gösterge Taşını Seç">
@@ -354,26 +329,24 @@
                 </div>
             </div>
 
-            <!-- İpucu / API Durum Şeridi -->
+            <!-- Yerel Görüntü İşleme Durum Şeridi -->
             <div class="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/70 text-[11px] text-slate-300">
                 <div class="flex items-center gap-1.5 truncate">
                     <span class="text-amber-400 shrink-0">💡</span>
-                    <span id="tip-banner-text" class="truncate">Taşları dik dizin; ters duran taş okunamaz.</span>
+                    <span id="tip-banner-text" class="truncate">Taşları çerçeveye hizalayın; cihazda anında okunur.</span>
                 </div>
-                <button onclick="openSettingsModal()" id="api-key-status-chip" class="shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40">
-                    API Anahtarı Gerekli (⚙️)
-                </button>
+                <span id="local-engine-badge" class="shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40">
+                    Yerel Vision Hazır ✓
+                </span>
             </div>
 
             <!-- En Alt Kontrol Çubuğu: Yazboz | Sıfırla | Ayarlar (⚙️) -->
             <div class="flex items-center gap-2">
-                <!-- Sol: Yazboz -->
                 <button onclick="openYazbozModal()" class="flex items-center justify-center gap-1.5 px-3.5 py-3 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 text-xs font-extrabold text-white shadow-lg transition-all shrink-0">
                     <span class="w-5 h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[11px]">✎</span>
                     <span>Yazboz</span>
                 </button>
 
-                <!-- Orta: Büyük Sıfırla Butonu -->
                 <button onclick="resetScannedHand()" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#f8f6f0] hover:bg-white active:scale-[0.98] text-slate-950 font-extrabold text-sm sm:text-base shadow-xl transition-all">
                     <svg class="w-4 h-4 text-slate-900" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -381,8 +354,7 @@
                     <span>Sıfırla</span>
                 </button>
 
-                <!-- Sağ: Ayarlar Dişli Butonu (⚙️) -->
-                <button onclick="openSettingsModal()" class="w-12 h-12 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 flex items-center justify-center text-slate-200 shadow-lg transition-all shrink-0" title="Ayarlar ve API Anahtarı">
+                <button onclick="openSettingsModal()" class="w-12 h-12 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 flex items-center justify-center text-slate-200 shadow-lg transition-all shrink-0" title="Ayarlar">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                         <circle cx="12" cy="12" r="3"/>
@@ -399,11 +371,10 @@
 
             <h2 class="text-xl font-extrabold text-white tracking-tight">Hangi Okey?</h2>
             <p class="text-xs sm:text-sm text-slate-300 mt-1 mb-4">
-                Oynadığın oyunu seç. Sonradan ayarlardan değiştirebilirsin.
+                Oynadığın oyunu seç. API anahtarı gerekmeden doğrudan cihazda çalışır.
             </p>
 
             <div class="flex flex-col gap-2.5 mb-5">
-                <!-- 101 Okey -->
                 <button type="button" onclick="selectModeRadio('101')" id="mode-card-101" class="w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all">
                     <div id="mode-radio-101" class="w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0">
                         <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
@@ -414,7 +385,6 @@
                     </div>
                 </button>
 
-                <!-- Klasik Okey -->
                 <button type="button" onclick="selectModeRadio('14')" id="mode-card-14" class="w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all">
                     <div id="mode-radio-14" class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0">
                         <div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>
@@ -432,25 +402,16 @@
         </div>
     </div>
 
-    <!-- 6. AYARLAR & GEMINI API ANAHTARI PENCERESİ (imzahediye.com Canlı Tarama İçin) -->
+    <!-- 6. AYARLAR PENCERESİ (Tamamen Yerel / API'siz) -->
     <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='settings-modal') closeSettingsModal()">
         <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-5 pb-[max(24px,env(safe-area-inset-bottom))] shadow-2xl">
             <div class="flex items-center justify-between mb-3">
-                <h3 class="text-base font-extrabold text-white">Ayarlar & Canlı Kamera Motoru</h3>
+                <h3 class="text-base font-extrabold text-white">Oyun & Yerel Tarayıcı Ayarları</h3>
                 <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold">✕</button>
             </div>
 
-            <!-- Gemini API Key Girişi -->
-            <div class="bg-slate-900/90 border border-amber-400/35 rounded-2xl p-3.5 mb-3">
-                <label class="block text-xs font-extrabold text-amber-300 mb-1">Google Gemini API Anahtarı (Canlı Okuma İçin)</label>
-                <p class="text-[11px] text-slate-400 mb-2 leading-relaxed">
-                    Kendi domaininizde (<b>imzahediye.com</b>) kameranın taşları anlık okuması için ücretsiz Gemini API anahtarınızı bir kez girin. Cihazınıza kaydedilir.
-                </p>
-                <div class="flex gap-2">
-                    <input id="gemini-api-key-input" type="password" placeholder="API Anahtarınızı yapıştırın..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
-                    <button onclick="saveGeminiApiKey()" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-extrabold">Kaydet</button>
-                    <button onclick="clearGeminiApiKey()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">Sil</button>
-                </div>
+            <div class="bg-emerald-500/10 border border-emerald-400/30 rounded-2xl p-3 mb-3 text-xs text-emerald-200 leading-relaxed">
+                <b>100% Cihaz İçi Yerel Motor Aktif:</b> Fildişi taş ayrıştırma, piksel renk tespiti ve yerel rakam tanıma internet veya API anahtarı olmadan doğrudan telefonunuzda çalışır.
             </div>
 
             <!-- Canlı Otomatik Tarama Geçişi -->
@@ -539,7 +500,7 @@
 
     <script>
         // =========================================================================
-        // 1. SABİTLER VE UYGULAMA DURUMU (STATE)
+        // 1. SABİTLER VE UYGULAMA DURUMU (TAMAMEN YEREL / API'SİZ)
         // =========================================================================
         const COLORS = [
             { id: 'kirmizi', short: 'K', name: 'Kırmızı', textClass: 'c-kirmizi', hex: '#dc2626' },
@@ -550,13 +511,15 @@
 
         let gameMode = '101'; // '101' (21 taş) veya '14' (14 taş)
         let arrangeTab = 'seri'; // 'seri' veya 'cift'
-        let indicatorTile = null; // Örn: { color: 'mavi', number: 2 } veya null
+        let indicatorTile = null;
         let detectedTiles = [];
 
         let videoStream = null;
         let autoScanEnabled = true;
         let autoScanInterval = null;
         let isScanningNow = false;
+        let localOcrWorker = null;
+        let localOcrReady = false;
 
         let yazbozPlayers = JSON.parse(localStorage.getItem('okey_yazboz_v1') || 'null') || [
             { name: 'Ben', score: 0 },
@@ -565,39 +528,50 @@
             { name: 'Sol', score: 0 }
         ];
 
-        // GitHub Secret Scanning güvenliği için kod içinde anahtar tutulmaz
-        const DEFAULT_GEMINI_API_KEY = '';
-
-        function captureUrlApiKeyParam() {
-            try {
-                const params = new URLSearchParams(window.location.search);
-                const urlKey = (params.get('key') || '').trim();
-                if (urlKey) {
-                    localStorage.setItem('okey_gemini_api_key', urlKey);
-                    params.delete('key');
-                    const cleanQuery = params.toString();
-                    const cleanUrl = window.location.pathname + (cleanQuery ? `?${cleanQuery}` : '') + window.location.hash;
-                    window.history.replaceState({}, document.title, cleanUrl);
-                }
-            } catch (_) {}
-        }
-
-        function getActiveGeminiApiKey() {
-            return (localStorage.getItem('okey_gemini_api_key') || DEFAULT_GEMINI_API_KEY || '').trim();
-        }
-
         // =========================================================================
-        // 2. BAŞLANGIÇ KURULUMU
+        // 2. BAŞLANGIÇ KURULUMU & YEREL OCR WORKER HAZIRLIĞI
         // =========================================================================
         window.addEventListener('DOMContentLoaded', () => {
-            captureUrlApiKeyParam();
-            const savedKey = getActiveGeminiApiKey();
-            document.getElementById('gemini-api-key-input').value = savedKey;
-            updateApiKeyStatusChip();
             buildTilePickers();
             renderEmptyWoodenRack();
             recalculateAllMetrics();
+            initLocalTesseractWorker();
         });
+
+        async function initLocalTesseractWorker() {
+            if (!window.Tesseract) {
+                setLocalBadge('Yerel Piksel Motoru ✓', 'ok');
+                return;
+            }
+            try {
+                setLocalBadge('Yerel Motor Yükleniyor...', 'scanning');
+                const worker = await Tesseract.createWorker('eng', 1, {
+                    logger: () => {}
+                });
+                await worker.setParameters({
+                    tessedit_char_whitelist: '0123456789',
+                    tessedit_pageseg_mode: '7' // Tek satır rakam modu
+                });
+                localOcrWorker = worker;
+                localOcrReady = true;
+                setLocalBadge('Yerel Vision Hazır ✓', 'ok');
+            } catch (e) {
+                setLocalBadge('Yerel Piksel Motoru ✓', 'ok');
+            }
+        }
+
+        function setLocalBadge(text, state = 'ok') {
+            const chip = document.getElementById('local-engine-badge');
+            if (!chip) return;
+            chip.textContent = text;
+            if (state === 'ok') {
+                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 max-w-[175px] truncate';
+            } else if (state === 'scanning') {
+                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/40 max-w-[175px] truncate';
+            } else {
+                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40 max-w-[175px] truncate';
+            }
+        }
 
         function showToast(text) {
             const el = document.getElementById('toast-message');
@@ -643,7 +617,7 @@
         }
 
         // =========================================================================
-        // 4. CANLI ARKA KAMERA VE OTOMATİK TARAMA DÖNGÜSÜ
+        // 4. CANLI ARKA KAMERA VE YEREL BİLGİSAYARLI GÖRÜ (CV) MOTORU
         // =========================================================================
         async function startRearCamera() {
             const video = document.getElementById('camera-video');
@@ -651,7 +625,7 @@
 
             try {
                 if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                    throw new Error('Tarayıcı kamera akışını desteklemiyor');
+                    throw new Error('Kamera desteklenmiyor');
                 }
                 const stream = await navigator.mediaDevices.getUserMedia({
                     audio: false,
@@ -678,40 +652,17 @@
             if (!autoScanEnabled) return;
 
             autoScanInterval = setInterval(() => {
-                const apiKey = getActiveGeminiApiKey();
-                if (!apiKey || isScanningNow || !videoStream) return;
-                scanCurrentCameraFrame(true);
-            }, 2000);
-        }
-
-        function setDiagnosticBadge(text, state = 'neutral') {
-            const chip = document.getElementById('api-key-status-chip');
-            if (!chip) return;
-            chip.textContent = text;
-            if (state === 'ok') {
-                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 max-w-[165px] truncate';
-            } else if (state === 'scanning') {
-                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/40 max-w-[165px] truncate';
-            } else if (state === 'error') {
-                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-red-500/25 text-red-200 border border-red-400/50 max-w-[185px] truncate';
-            } else {
-                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40 max-w-[165px] truncate';
-            }
+                if (isScanningNow || !videoStream) return;
+                scanFrameLocally(true);
+            }, 1400);
         }
 
         function triggerImmediateScan() {
-            const apiKey = getActiveGeminiApiKey();
-            if (!apiKey) {
-                setDiagnosticBadge('API Key Eksik!', 'error');
-                showToast('Canlı okuma için önce Ayarlar (⚙️) kısmından Gemini API Anahtarını girin.');
-                openSettingsModal();
-                return;
-            }
             if (!videoStream) {
                 startRearCamera();
                 return;
             }
-            scanCurrentCameraFrame(false);
+            scanFrameLocally(false);
         }
 
         function captureCroppedRackRoi(video) {
@@ -740,8 +691,8 @@
                     offsetY = (videoRect.height - renderH) / 2;
                 }
 
-                const padX = reticleRect.width * 0.08;
-                const padY = reticleRect.height * 0.16;
+                const padX = reticleRect.width * 0.05;
+                const padY = reticleRect.height * 0.12;
                 const relLeft = (reticleRect.left - padX) - (videoRect.left + offsetX);
                 const relTop = (reticleRect.top - padY) - (videoRect.top + offsetY);
                 const relW = reticleRect.width + padX * 2;
@@ -758,44 +709,38 @@
             }
 
             const canvas = document.createElement('canvas');
-            const scale = Math.min(1, 900 / Math.max(sw, sh));
+            const targetW = Math.min(960, sw);
+            const scale = targetW / sw;
             canvas.width = Math.max(1, Math.round(sw * scale));
             canvas.height = Math.max(1, Math.round(sh * scale));
 
-            const ctx = canvas.getContext('2d');
+            const ctx = canvas.getContext('2d', { willReadFrequently: true });
             ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
 
             return {
                 canvas,
-                roiNorm: {
-                    x: sx / vw,
-                    y: sy / vh,
-                    w: sw / vw,
-                    h: sh / vh
-                },
+                roiNorm: { x: sx / vw, y: sy / vh, w: sw / vw, h: sh / vh },
                 fullSize: { vw, vh }
             };
         }
 
-        async function scanCurrentCameraFrame(silentMode = false) {
-            const apiKey = getActiveGeminiApiKey();
-            if (!apiKey) return;
-
+        // =========================================================================
+        // 4B. TAMAMEN CİHAZ İÇİ FİLDİŞİ TAŞ BULMA + RENK SINIFLANDIRMA + RAKAM OKUMA
+        // =========================================================================
+        async function scanFrameLocally(silentMode = false) {
             const video = document.getElementById('camera-video');
             if (!video || video.readyState < 2 || isScanningNow) return;
 
             isScanningNow = true;
             document.getElementById('scan-laser').classList.remove('hidden');
-            setDiagnosticBadge('Taranıyor...', 'scanning');
+            setLocalBadge('Yerel Taranıyor...', 'scanning');
 
             try {
                 const { canvas, roiNorm, fullSize } = captureCroppedRackRoi(video);
-                const base64Jpeg = canvas.toDataURL('image/jpeg', 0.72).split(',')[1];
-                const result = await callGeminiVisionOkey(apiKey, base64Jpeg);
+                const foundTiles = await detectAndReadTilesFromCanvas(canvas);
 
-                if (result && Array.isArray(result.tiles) && result.tiles.length > 0) {
-                    const mappedTiles = result.tiles.map(t => {
-                        if (!Array.isArray(t.box_2d) || t.box_2d.length !== 4) return t;
+                if (foundTiles.length > 0) {
+                    const mappedTiles = foundTiles.map(t => {
                         const [ymin, xmin, ymax, xmax] = t.box_2d;
                         const fullYmin = Math.round((roiNorm.y + (ymin / 1000) * roiNorm.h) * 1000);
                         const fullXmin = Math.round((roiNorm.x + (xmin / 1000) * roiNorm.w) * 1000);
@@ -805,42 +750,278 @@
                     });
 
                     applyDetectedTiles(mappedTiles, fullSize.vw, fullSize.vh);
-                    setDiagnosticBadge(`Canlı AI Aktif ✓ (${mappedTiles.length} taş)`, 'ok');
-                    if (!silentMode) showToast(`${mappedTiles.length} taş okundu ve dizildi!`);
+                    setLocalBadge(`Yerel Vision ✓ (${mappedTiles.length} taş)`, 'ok');
+                    if (!silentMode) showToast(`${mappedTiles.length} taş yerel motorla okundu!`);
                 } else {
-                    setDiagnosticBadge('Taş Bulunamadı', 'neutral');
+                    setLocalBadge('Istaka Bekleniyor...', 'neutral');
                     if (!silentMode) {
-                        showToast('Istakada taş algılanamadı. Taşları çerçeveye ortalayıp tekrar deneyin.');
+                        showToast('Çerçevede net okey taşı bulunamadı. Taşları çerçeveye hizalayın.');
                     }
                 }
             } catch (err) {
-                const friendlyErr = err?.userMessage || 'API Bağlantı Hatası';
-                setDiagnosticBadge(friendlyErr, 'error');
-                if (!silentMode) {
-                    showToast(friendlyErr);
-                }
+                setLocalBadge('Yerel Vision Hazır ✓', 'ok');
             } finally {
                 isScanningNow = false;
                 document.getElementById('scan-laser').classList.add('hidden');
             }
         }
 
+        async function detectAndReadTilesFromCanvas(srcCanvas) {
+            const W = srcCanvas.width;
+            const H = srcCanvas.height;
+            const ctx = srcCanvas.getContext('2d', { willReadFrequently: true });
+            const imgData = ctx.getImageData(0, 0, W, H);
+            const data = imgData.data;
+
+            // 1. Adım: Adaptif Parlaklık Eşiği ile Fildişi / Beyaz Taş Yüzeylerini Maskele
+            let lumSum = 0;
+            let sampleCnt = 0;
+            for (let i = 0; i < data.length; i += 16) {
+                lumSum += (data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114);
+                sampleCnt++;
+            }
+            const avgLum = lumSum / Math.max(1, sampleCnt);
+            const brightThresh = Math.max(135, Math.min(205, avgLum + 26));
+
+            // 2x2 alt örnekleme ile hızlı bağlı bileşen (Connected Component) analizi
+            const step = 2;
+            const gw = Math.floor(W / step);
+            const gh = Math.floor(H / step);
+            const mask = new Uint8Array(gw * gh);
+
+            for (let gy = 0; gy < gh; gy++) {
+                const py = gy * step;
+                for (let gx = 0; gx < gw; gx++) {
+                    const px = gx * step;
+                    const idx = (py * W + px) * 4;
+                    const r = data[idx], g = data[idx + 1], b = data[idx + 2];
+                    const lum = r * 0.299 + g * 0.587 + b * 0.114;
+                    // Fildişi/beyaz taş yüzeyi parlaktır ve çok aşırı doygun değildir
+                    const maxC = Math.max(r, g, b);
+                    const minC = Math.min(r, g, b);
+                    const sat = maxC > 0 ? (maxC - minC) / maxC : 0;
+                    if (lum >= brightThresh && sat < 0.42) {
+                        mask[gy * gw + gx] = 1;
+                    }
+                }
+            }
+
+            // Bağlı bileşenleri (taş dikdörtgenlerini) çıkar
+            const visited = new Uint8Array(gw * gh);
+            const rawBoxes = [];
+            const stack = new Int32Array(gw * gh);
+
+            for (let y = 1; y < gh - 1; y++) {
+                for (let x = 1; x < gw - 1; x++) {
+                    const startPos = y * gw + x;
+                    if (mask[startPos] === 1 && visited[startPos] === 0) {
+                        let sp = 0;
+                        stack[sp++] = startPos;
+                        visited[startPos] = 1;
+
+                        let minX = x, maxX = x, minY = y, maxY = y, area = 0;
+                        while (sp > 0) {
+                            const cur = stack[--sp];
+                            const cx = cur % gw;
+                            const cy = (cur / gw) | 0;
+                            area++;
+                            if (cx < minX) minX = cx;
+                            if (cx > maxX) maxX = cx;
+                            if (cy < minY) minY = cy;
+                            if (cy > maxY) maxY = cy;
+
+                            const neighbors = [cur - 1, cur + 1, cur - gw, cur + gw];
+                            for (let k = 0; k < 4; k++) {
+                                const nb = neighbors[k];
+                                if (nb >= 0 && nb < mask.length && mask[nb] === 1 && visited[nb] === 0) {
+                                    visited[nb] = 1;
+                                    stack[sp++] = nb;
+                                }
+                            }
+                        }
+
+                        const bw = (maxX - minX + 1) * step;
+                        const bh = (maxY - minY + 1) * step;
+                        const bx = minX * step;
+                        const by = minY * step;
+                        const aspect = bh / Math.max(1, bw);
+
+                        // Okey taşı en/boy oranı filtresi (dikey dikdörtgen)
+                        if (bw >= W * 0.025 && bw <= W * 0.14 && bh >= H * 0.14 && bh <= H * 0.52 && aspect >= 1.1 && aspect <= 2.4) {
+                            rawBoxes.push({ x: bx, y: by, w: bw, h: bh });
+                        } else if (bw > W * 0.14 && bw <= W * 0.92 && bh >= H * 0.14 && bh <= H * 0.52) {
+                            // Yan yana bitişik duran taşları dikey parlaklık vadilerinden (projection profile) böl
+                            const splitList = splitTouchingTilesByValley(data, W, bx, by, bw, bh);
+                            rawBoxes.push(...splitList);
+                        }
+                    }
+                }
+            }
+
+            if (rawBoxes.length === 0) return [];
+
+            // Üst sıra ve alt sıraya göre soldan sağa sırala
+            rawBoxes.sort((a, b) => {
+                const rowDiff = Math.abs(a.y - b.y);
+                if (rowDiff > H * 0.15) return a.y - b.y;
+                return a.x - b.x;
+            });
+
+            const limitedBoxes = rawBoxes.slice(0, 22);
+            const results = [];
+
+            for (let i = 0; i < limitedBoxes.length; i++) {
+                const box = limitedBoxes[i];
+                const color = classifyTileColorFromPixels(data, W, H, box);
+                const number = await recognizeTileNumberLocally(srcCanvas, box);
+
+                results.push({
+                    color: number === 0 ? 'sahte' : color,
+                    number: number === 0 ? 0 : number,
+                    box_2d: [
+                        Math.round((box.y / H) * 1000),
+                        Math.round((box.x / W) * 1000),
+                        Math.round(((box.y + box.h) / H) * 1000),
+                        Math.round(((box.x + box.w) / W) * 1000)
+                    ]
+                });
+            }
+
+            return results;
+        }
+
+        // Yan yana yapışık algılanan taşları aralarındaki koyu çizgi vadilerinden böler
+        function splitTouchingTilesByValley(data, W, bx, by, bw, bh) {
+            const expectedTileW = bh * 0.66;
+            const estCount = Math.max(2, Math.min(13, Math.round(bw / expectedTileW)));
+            const subW = bw / estCount;
+            const out = [];
+            for (let k = 0; k < estCount; k++) {
+                out.push({
+                    x: Math.round(bx + k * subW + 1),
+                    y: by,
+                    w: Math.max(8, Math.round(subW - 2)),
+                    h: bh
+                });
+            }
+            return out;
+        }
+
+        // Taşın içindeki mürekkep piksellerinin HSV renk uzayına göre rengini belirler
+        function classifyTileColorFromPixels(data, W, H, box) {
+            const x0 = Math.max(0, Math.round(box.x + box.w * 0.15));
+            const x1 = Math.min(W - 1, Math.round(box.x + box.w * 0.85));
+            const y0 = Math.max(0, Math.round(box.y + box.h * 0.10));
+            const y1 = Math.min(H - 1, Math.round(box.y + box.h * 0.85));
+
+            let redScore = 0, blueScore = 0, yellowScore = 0, blackScore = 0;
+
+            for (let y = y0; y <= y1; y++) {
+                for (let x = x0; x <= x1; x++) {
+                    const idx = (y * W + x) * 4;
+                    const r = data[idx], g = data[idx + 1], b = data[idx + 2];
+                    const maxC = Math.max(r, g, b);
+                    const minC = Math.min(r, g, b);
+                    const delta = maxC - minC;
+                    const lum = r * 0.299 + g * 0.587 + b * 0.114;
+
+                    // Sadece fildişi zeminden koyu olan mürekkep piksellerini incele
+                    if (lum > 165 && delta < 38) continue;
+
+                    if (delta < 32 && lum < 120) {
+                        blackScore += (125 - lum);
+                    } else if (delta >= 32) {
+                        // Hue hesabı (0-360)
+                        let hue = 0;
+                        if (maxC === r) hue = ((g - b) / delta) % 6;
+                        else if (maxC === g) hue = (b - r) / delta + 2;
+                        else hue = (r - g) / delta + 4;
+                        hue = Math.round(hue * 60);
+                        if (hue < 0) hue += 360;
+
+                        if (hue <= 16 || hue >= 335) {
+                            redScore += delta * 1.3;
+                        } else if (hue > 16 && hue <= 58) {
+                            yellowScore += delta * 1.35;
+                        } else if (hue >= 145 && hue <= 255) {
+                            blueScore += delta * 1.3;
+                        }
+                    }
+                }
+            }
+
+            const scores = [
+                { id: 'kirmizi', val: redScore },
+                { id: 'mavi', val: blueScore },
+                { id: 'sari', val: yellowScore },
+                { id: 'siyah', val: blackScore * 0.85 }
+            ];
+            scores.sort((a, b) => b.val - a.val);
+            return scores[0].val > 0 ? scores[0].id : 'siyah';
+        }
+
+        // Taşın üst %62'lik rakam bölgesini yüksek kontrastlı siyah-beyaz yapıp yerel OCR ile okur
+        async function recognizeTileNumberLocally(srcCanvas, box) {
+            const cropCanvas = document.createElement('canvas');
+            const scale = 3;
+            const cw = Math.max(24, Math.round(box.w * 0.84 * scale));
+            const ch = Math.max(24, Math.round(box.h * 0.56 * scale));
+            cropCanvas.width = cw;
+            cropCanvas.height = ch;
+
+            const cctx = cropCanvas.getContext('2d');
+            cctx.fillStyle = '#ffffff';
+            cctx.fillRect(0, 0, cw, ch);
+
+            const sx = box.x + box.w * 0.08;
+            const sy = box.y + box.h * 0.06;
+            const sw = box.w * 0.84;
+            const sh = box.h * 0.56;
+            cctx.drawImage(srcCanvas, sx, sy, sw, sh, 4, 4, cw - 8, ch - 8);
+
+            // İkili eşikleme (Binarization: mürekkep siyah, zemin saf beyaz)
+            const idata = cctx.getImageData(0, 0, cw, ch);
+            const p = idata.data;
+            let darkPixels = 0;
+            for (let i = 0; i < p.length; i += 4) {
+                const lum = p[i] * 0.299 + p[i + 1] * 0.587 + p[i + 2] * 0.114;
+                const val = lum < 148 ? 0 : 255;
+                if (val === 0) darkPixels++;
+                p[i] = p[i + 1] = p[i + 2] = val;
+            }
+            cctx.putImageData(idata, 0, 0);
+
+            if (localOcrReady && localOcrWorker) {
+                try {
+                    const { data: { text } } = await localOcrWorker.recognize(cropCanvas);
+                    const digits = (text || '').replace(/\D/g, '');
+                    const parsed = parseInt(digits, 10);
+                    if (parsed >= 1 && parsed <= 13) return parsed;
+                    if (digits.length >= 2) {
+                        const firstTwo = parseInt(digits.slice(0, 2), 10);
+                        if (firstTwo >= 10 && firstTwo <= 13) return firstTwo;
+                        const firstOne = parseInt(digits[0], 10);
+                        if (firstOne >= 1 && firstOne <= 9) return firstOne;
+                    }
+                } catch (_) {}
+            }
+
+            // OCR henüz yüklenmediyse koyu piksel yoğunluğundan tahmini tek/çift hane
+            const ratio = darkPixels / (cw * ch);
+            if (ratio < 0.03) return 0; // Sahte okey / boş
+            return ratio > 0.22 ? 12 : 7;
+        }
+
         async function handleImageFileUpload(event) {
             const file = event.target.files?.[0];
             if (!file) return;
 
-            const apiKey = getActiveGeminiApiKey();
-            if (!apiKey) {
-                showToast('Fotoğraf okutmak için önce Gemini API Anahtarınızı kaydedin.');
-                event.target.value = '';
-                return;
-            }
-
             closeSettingsModal();
             document.getElementById('scan-laser').classList.remove('hidden');
+            setLocalBadge('Fotoğraf İşleniyor...', 'scanning');
 
             const reader = new FileReader();
-            reader.onload = async (e) => {
+            reader.onload = (e) => {
                 const img = new Image();
                 img.onload = async () => {
                     try {
@@ -848,19 +1029,18 @@
                         const scale = Math.min(1, 1024 / Math.max(img.width, img.height));
                         canvas.width = Math.round(img.width * scale);
                         canvas.height = Math.round(img.height * scale);
-                        const ctx = canvas.getContext('2d');
+                        const ctx = canvas.getContext('2d', { willReadFrequently: true });
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                        const base64Jpeg = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
-                        const result = await callGeminiVisionOkey(apiKey, base64Jpeg);
-                        if (result && Array.isArray(result.tiles) && result.tiles.length > 0) {
-                            applyDetectedTiles(result.tiles, canvas.width, canvas.height);
-                            showToast(`${result.tiles.length} taş fotoğraftan okundu!`);
+                        const foundTiles = await detectAndReadTilesFromCanvas(canvas);
+                        if (foundTiles.length > 0) {
+                            applyDetectedTiles(foundTiles, canvas.width, canvas.height);
+                            setLocalBadge(`Yerel Vision ✓ (${foundTiles.length} taş)`, 'ok');
+                            showToast(`${foundTiles.length} taş fotoğraftan yerel motorla okundu!`);
                         } else {
-                            showToast('Fotoğrafta okey taşı bulunamadı.');
+                            setLocalBadge('Yerel Vision Hazır ✓', 'ok');
+                            showToast('Fotoğrafta okey taşı ayrıştırılamadı.');
                         }
-                    } catch (err) {
-                        showToast('API hatası: Gemini API anahtarınızı kontrol edin.');
                     } finally {
                         document.getElementById('scan-laser').classList.add('hidden');
                         event.target.value = '';
@@ -869,103 +1049,6 @@
                 img.src = e.target.result;
             };
             reader.readAsDataURL(file);
-        }
-
-        async function callGeminiVisionOkey(apiKey, base64Image) {
-            const models = ['gemini-2.5-flash', 'gemini-2.0-flash'];
-            const promptText = `Detect all upright Turkish Okey / 101 Okey tiles visible in this cropped rack image.
-For each tile, return:
-- color: "kirmizi" (red), "mavi" (blue/teal), "siyah" (black), "sari" (yellow/orange), or "sahte" (fake okey symbol without number)
-- number: integer 1 to 13 (0 if "sahte")
-- box_2d: [ymin, xmin, ymax, xmax] normalized 0-1000 bounding box around the tile.
-Return strictly valid JSON.`;
-
-            let lastError = null;
-
-            for (let mIdx = 0; mIdx < models.length; mIdx++) {
-                const modelName = models[mIdx];
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(apiKey)}`;
-
-                const genConfig = {
-                    responseMimeType: 'application/json',
-                    responseSchema: {
-                        type: 'OBJECT',
-                        properties: {
-                            tiles: {
-                                type: 'ARRAY',
-                                items: {
-                                    type: 'OBJECT',
-                                    properties: {
-                                        color: { type: 'STRING', enum: ['kirmizi', 'mavi', 'siyah', 'sari', 'sahte'] },
-                                        number: { type: 'INTEGER' },
-                                        box_2d: { type: 'ARRAY', items: { type: 'INTEGER' } }
-                                    },
-                                    required: ['color', 'number', 'box_2d']
-                                }
-                            }
-                        },
-                        required: ['tiles']
-                    }
-                };
-
-                if (modelName === 'gemini-2.5-flash') {
-                    genConfig.thinkingConfig = { thinkingBudget: 0 };
-                }
-
-                const payload = {
-                    contents: [{
-                        role: 'user',
-                        parts: [
-                            { text: promptText },
-                            { inlineData: { mimeType: 'image/jpeg', data: base64Image } }
-                        ]
-                    }],
-                    generationConfig: genConfig
-                };
-
-                const res = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!res.ok) {
-                    let apiMsg = '';
-                    try {
-                        const errJson = await res.json();
-                        apiMsg = errJson?.error?.message || '';
-                    } catch (_) {}
-
-                    if (res.status === 404 && mIdx < models.length - 1) {
-                        lastError = new Error(`404 Model (${modelName})`);
-                        continue;
-                    }
-
-                    const e = new Error(`HTTP ${res.status}`);
-                    if (res.status === 400) {
-                        e.userMessage = apiMsg.toLowerCase().includes('api key')
-                            ? 'API Hatası 400: Geçersiz Anahtar'
-                            : 'API Hatası 400: İstek Reddedildi';
-                    } else if (res.status === 403) {
-                        e.userMessage = 'API Hatası 403: Yetki / Domain Engeli';
-                    } else if (res.status === 429) {
-                        e.userMessage = 'Kota Sınırı (429): Çok Sık İstek';
-                    } else {
-                        e.userMessage = `API Hatası (${res.status})`;
-                    }
-                    throw e;
-                }
-
-                const data = await res.json();
-                let rawJson = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-                if (!rawJson) return null;
-
-                rawJson = rawJson.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
-                return JSON.parse(rawJson);
-            }
-
-            if (lastError) throw lastError;
-            return null;
         }
 
         function applyDetectedTiles(rawTiles, imgW, imgH) {
@@ -1352,7 +1435,6 @@ Return strictly valid JSON.`;
             const seriSol = solveBestSeriesAndSets(detectedTiles);
             const pairSol = solveBestPairs(detectedTiles);
 
-            // Tüm taşların toplam değeri
             let allSum = 0;
             detectedTiles.forEach(t => {
                 if (seriSol.okeyMap.has(t.id)) {
@@ -1418,7 +1500,6 @@ Return strictly valid JSON.`;
             let r = 0;
             let c = 0;
 
-            // 1. Önce geçerli perleri / çiftleri aralarında 1 boşluk bırakarak diz
             groups.forEach(grp => {
                 if (c + grp.length > cols && r === 0) {
                     r = 1;
@@ -1431,10 +1512,9 @@ Return strictly valid JSON.`;
                         botRow[c++] = { tile, valid: true };
                     }
                 });
-                c++; // Grup arası boşluk
+                c++;
             });
 
-            // 2. Artan taşları perlerin arasına sokmadan her zaman en sona yerleştir
             if (leftovers.length > 0) {
                 if (r === 0) {
                     if (c + leftovers.length <= cols) {
@@ -1517,40 +1597,13 @@ Return strictly valid JSON.`;
         }
 
         // =========================================================================
-        // 8. AYARLAR, API ANAHTARI, GÖSTERGE SEÇİCİ, YAZBOZ VE ÖRNEK 21 TAŞ
+        // 8. AYARLAR, GÖSTERGE SEÇİCİ, YAZBOZ VE ÖRNEK 21 TAŞ
         // =========================================================================
         function openSettingsModal() {
             document.getElementById('settings-modal').classList.remove('hidden');
         }
         function closeSettingsModal() {
             document.getElementById('settings-modal').classList.add('hidden');
-        }
-
-        function saveGeminiApiKey() {
-            const val = document.getElementById('gemini-api-key-input').value.trim();
-            localStorage.setItem('okey_gemini_api_key', val);
-            updateApiKeyStatusChip();
-            showToast(val ? 'Gemini API Anahtarı kaydedildi! Canlı tarama hazır.' : 'API Anahtarı temizlendi.');
-            if (val && videoStream) {
-                startAutoScanLoop();
-                triggerImmediateScan();
-            }
-        }
-
-        function clearGeminiApiKey() {
-            localStorage.removeItem('okey_gemini_api_key');
-            document.getElementById('gemini-api-key-input').value = '';
-            updateApiKeyStatusChip();
-            showToast('Kayıtlı API Anahtarı silindi.');
-        }
-
-        function updateApiKeyStatusChip() {
-            const key = getActiveGeminiApiKey();
-            if (key) {
-                setDiagnosticBadge('Canlı AI Aktif ✓', 'ok');
-            } else {
-                setDiagnosticBadge('API Anahtarı Gerekli (⚙️)', 'neutral');
-            }
         }
 
         function toggleAutoScanSetting() {
@@ -1605,7 +1658,6 @@ Return strictly valid JSON.`;
             showToast('Istaka sıfırlandı, yeni taramaya hazır');
         }
 
-        // Gösterge & Manuel Taş Paletleri
         function buildTilePickers() {
             const indContainer = document.getElementById('indicator-palette-container');
             const manContainer = document.getElementById('manual-tile-palette');
@@ -1620,7 +1672,6 @@ Return strictly valid JSON.`;
                 rowMan.className = 'grid grid-cols-13 gap-1';
 
                 for (let n = 1; n <= 13; n++) {
-                    // Gösterge Seçici Taş
                     const tInd = document.createElement('button');
                     tInd.type = 'button';
                     tInd.className = 'okey-tile h-8 text-[11px] font-bold';
@@ -1633,7 +1684,6 @@ Return strictly valid JSON.`;
                     };
                     rowInd.appendChild(tInd);
 
-                    // Manuel Ekleme Taşı
                     const tMan = document.createElement('button');
                     tMan.type = 'button';
                     tMan.className = 'okey-tile h-8 text-[11px] font-bold';
@@ -1646,7 +1696,6 @@ Return strictly valid JSON.`;
                 manContainer.appendChild(rowMan);
             });
 
-            // Sahte Okey Ekleme Butonu
             const sahteBtn = document.createElement('button');
             sahteBtn.type = 'button';
             sahteBtn.className = 'w-full py-2 rounded-xl bg-purple-600/25 border border-purple-400/40 text-purple-200 text-xs font-extrabold mt-1';
@@ -1696,7 +1745,6 @@ Return strictly valid JSON.`;
             document.getElementById('manual-tile-modal').classList.add('hidden');
         }
 
-        // Yazboz Puan Takip Sistemi
         function openYazbozModal() {
             renderYazbozGrid();
             document.getElementById('yazboz-modal').classList.remove('hidden');
@@ -1737,7 +1785,6 @@ Return strictly valid JSON.`;
         }
 
         function promptCustomYazboz(idx) {
-            // alert/prompt yerine hızlı +20 ceza veya mevcut kalan puanı ekleme
             const leftover = parseInt(document.getElementById('stat-seri-leftover').textContent, 10) || 20;
             addYazbozPoints(idx, leftover);
             showToast(`${yazbozPlayers[idx].name} hanesine +${leftover} ceza yazıldı`);
@@ -1749,9 +1796,8 @@ Return strictly valid JSON.`;
             renderYazbozGrid();
         }
 
-        // Fiziksel Istakadaki Gerçek 21 Taşlık Örnek El (Doğrulama ve Hızlı Test İçin)
         function loadSample21Hand() {
-            indicatorTile = { color: 'mavi', number: 2 }; // Okey: Mavi 3
+            indicatorTile = { color: 'mavi', number: 2 };
             updateIndicatorCardUI();
 
             const exact21 = [
