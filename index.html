@@ -1,10 +1,18 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Okey Hesabı</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="101 Okey ve klasik Okey için en yüksek per ve seri toplamını, 101'e kalan puanı ve yazbozu tarayıcıda hesaplayan ücretsiz okey hesaplayıcı.">
+<meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
 <style>
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img { max-width: 100%; }
 /* Düzen: sol sütunda ıstaka ve taş seçici, sağda sonuç; telefonda tek sütun, üstte yapışkan toplam çubuğu. */
 :root {
   --bg: #eef1f4;
@@ -146,11 +154,21 @@ input[type="text"], input[type="number"] { background: var(--surface); color: va
 .scan select { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 7px 8px; font: inherit; font-size: 14px; }
 .scan .status { font-size: 14px; min-height: 20px; }
 .scan .status.err { color: var(--warn); }
+.scan .camvideo { width: 100%; max-height: 340px; border-radius: 10px; background: #000; object-fit: cover; display: block; }
 .scan .thumb { max-width: 140px; max-height: 100px; border-radius: 8px; border: 1px solid var(--line); object-fit: cover; }
 [hidden] { display: none !important; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } button.tile:hover, .pk:hover { transform: none !important; } }
 </style>
 
+
+<script>
+/* Kamera ve fotoğraf taraması için scan-proxy.mjs sunucusunun adresi.
+   Örnek: window.OKEY_SCAN_ENDPOINT = "https://tarama.siten.com/scan";
+   Boş bırakırsan tarama bölümü kurulum uyarısı gösterir, hesaplayıcı yine çalışır. */
+window.OKEY_SCAN_ENDPOINT = "";
+</script>
+</head>
+<body>
 <div class="wrap">
   <header class="top">
     <div class="brand"><div class="mark" aria-hidden="true">★</div><h1>Okey Hesabı</h1></div>
@@ -173,13 +191,22 @@ input[type="text"], input[type="number"] { background: var(--surface); color: va
     <div class="layout">
       <div class="stack">
         <div class="card" id="scanCard" hidden>
-          <div class="cardhead"><h2>Fotoğrafla tara</h2></div>
+          <div class="cardhead"><h2>Taşları tara</h2></div>
           <div class="scan">
-            <div class="row">
-              <button id="btnScan" class="btn primary" type="button">Istakanın fotoğrafını çek</button>
+            <div id="scanSetup" class="status err" hidden>Kamera ve fotoğraf taraması henüz kurulmadı. scan-proxy.mjs dosyasını çalıştırıp adresini bu dosyanın başındaki OKEY_SCAN_ENDPOINT satırına yaz. Taşları şimdilik elle ekleyebilirsin.</div>
+            <div class="row" id="scanBtns">
+              <button id="btnCam" class="btn primary" type="button" hidden>Canlı kamera</button>
+              <button id="btnPhoto" class="btn primary" type="button">Fotoğraf çek / seç</button>
               <button id="btnStop" class="btn" type="button" hidden>Durdur</button>
               <input id="scanFile" type="file" accept="image/*" capture="environment" hidden>
               <img id="scanThumb" class="thumb" alt="Taranan ıstaka" hidden>
+            </div>
+            <div id="camBox" hidden>
+              <video id="camVideo" class="camvideo" playsinline muted></video>
+              <div class="row" style="margin-top:8px">
+                <button id="btnSnap" class="btn primary" type="button">Yakala ve oku</button>
+                <button id="btnCamOff" class="btn" type="button">Kamerayı kapat</button>
+              </div>
             </div>
             <div class="row">
               <label for="okeyColor" style="font-size:13px;color:var(--muted)">Okey taşı</label>
@@ -190,7 +217,7 @@ input[type="text"], input[type="number"] { background: var(--surface); color: va
               <select id="okeyNum" aria-label="Okey taşının sayısı"></select>
             </div>
             <div id="scanStatus" class="status" role="status"></div>
-            <p class="hint" style="margin:0">Fotoğraf, Claude hesabın üzerinden okunur ve cihazının dışına gönderilir. Telefonda düğme kamerayı açar. Taşlar ıstakada tek sıra ya da iki sıra, düz ve net görünsün. Okunan eli aşağıdaki ıstakadan düzeltebilirsin. Okey taşını seçersen o yüzdeki taşlar okey (joker) olur, sahte okey de o taşın yüzü olarak eklenir.</p>
+            <p id="scanHint" class="hint" style="margin:0">Istakayı düz ve net göster, taşların hepsi kadrajda olsun. Okunan eli aşağıdaki ıstakadan düzeltebilirsin. Okey taşını seçersen o yüzdeki taşlar okey (joker) olur, sahte okey de o taşın yüzü olarak eklenir.</p>
           </div>
         </div>
 
@@ -645,9 +672,9 @@ function countPairs(counts, wilds) {
     sheet = { names: sheet.names, rounds: [['', '', '', '']] }; saveSheet(); renderSheet();
   });
 
-  /* fotoğrafla tarama (sample + images) */
+  /* tarama: fotoğraf + canlı kamera. Tanıma: claude.ai içinde sample, kendi sitende OKEY_SCAN_ENDPOINT */
   var COLOR_KEYS = { red: 0, blue: 1, black: 2, yellow: 3 };
-  var scanCtl = null;
+  var scanCtl = null, recognizer = null, camStream = null;
   function setScanStatus(msg, err) { var s = $('scanStatus'); s.textContent = msg; s.className = 'status' + (err ? ' err' : ''); }
   var ERR_COPY = {
     not_granted: 'Fotoğraf okuma izni verilmedi. Taşları elle ekleyebilirsin.',
@@ -656,7 +683,8 @@ function countPairs(counts, wilds) {
     image_rejected: 'Bu fotoğraf kabul edilmedi. Başka bir fotoğraf dene.',
     invalid_json: 'Taşlar okunamadı. Daha net ve yakından bir fotoğraf dene.',
     refused: 'Bu fotoğraf okunamadı. Başka bir fotoğraf dene.',
-    empty_completion: 'Taşlar okunamadı. Daha net bir fotoğraf dene.'
+    empty_completion: 'Taşlar okunamadı. Daha net bir fotoğraf dene.',
+    network: 'Tarama sunucusuna ulaşılamadı. scan-proxy çalışıyor mu ve adres doğru mu?'
   };
   function buildOkeySelect() {
     var s = $('okeyNum');
@@ -674,22 +702,59 @@ function countPairs(counts, wilds) {
       '{"tiles":[{"color":"red|blue|black|yellow","number":1-13}], "fake_jokers": sahte okey sayısı, "unreadable": okunamayan taş sayısı}. ' +
       'Örnek: {"tiles":[{"color":"red","number":5},{"color":"blue","number":12}],"fake_jokers":0,"unreadable":0}';
   }
-  async function runScan(file) {
-    var sample = window.__sample;
+
+  /* görüntüyü küçült (telefon fotoğrafları büyük olur) */
+  async function downscale(blob, maxSide) {
+    try {
+      var bmp = await createImageBitmap(blob);
+      var k = Math.min(1, maxSide / Math.max(bmp.width, bmp.height));
+      var c = document.createElement('canvas');
+      c.width = Math.round(bmp.width * k); c.height = Math.round(bmp.height * k);
+      c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+      return await new Promise(function (res) { c.toBlob(function (b) { res(b || blob); }, 'image/jpeg', 0.88); });
+    } catch (e) { return blob; }
+  }
+  function toDataUrl(blob) {
+    return new Promise(function (res, rej) { var r = new FileReader(); r.onload = function () { res(r.result); }; r.onerror = rej; r.readAsDataURL(blob); });
+  }
+
+  function makeSampleRecognizer(sample) {
+    return function (blob, signal) { return sample.json(scanPrompt(), { images: blob, signal: signal, cache: false }); };
+  }
+  function makeEndpointRecognizer(url) {
+    return async function (blob, signal) {
+      var small = await downscale(blob, 1600);
+      var dataUrl = await toDataUrl(small);
+      var resp;
+      try {
+        resp = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ image: dataUrl }), signal: signal });
+      } catch (e) {
+        if (e && e.name === 'AbortError') throw { code: 'cancelled' };
+        throw { code: 'network' };
+      }
+      if (resp.status === 429) throw { code: 'rate_limited' };
+      if (!resp.ok) throw { code: 'upstream_error' };
+      try { return await resp.json(); } catch (e) { throw { code: 'invalid_json' }; }
+    };
+  }
+
+  async function runScan(blob) {
     scanCtl = new AbortController();
-    $('btnScan').disabled = true; $('btnStop').hidden = false;
-    var th = $('scanThumb'); try { th.src = URL.createObjectURL(file); th.hidden = false; } catch (e) {}
+    $('btnPhoto').disabled = true; $('btnCam').disabled = true; $('btnSnap').disabled = true; $('btnStop').hidden = false;
+    var th = $('scanThumb'); try { th.src = URL.createObjectURL(blob); th.hidden = false; } catch (e) {}
     setScanStatus('Taşlar okunuyor, birkaç saniye sürebilir...');
     try {
-      var out = await sample.json(scanPrompt(), { images: file, signal: scanCtl.signal, cache: false });
+      var out = await recognizer(blob, scanCtl.signal);
+      closeCam();
       applyScan(out);
     } catch (e) {
       if (e && e.code === 'cancelled') setScanStatus('Tarama durduruldu.');
       else setScanStatus(ERR_COPY[e && e.code] || 'Tarama şu an çalışmadı. Taşları elle ekleyebilirsin.', true);
     } finally {
-      $('btnScan').disabled = false; $('btnStop').hidden = true; scanCtl = null; $('scanFile').value = '';
+      $('btnPhoto').disabled = false; $('btnCam').disabled = false; $('btnSnap').disabled = false; $('btnStop').hidden = true; scanCtl = null; $('scanFile').value = '';
     }
   }
+
   function applyScan(out) {
     var tiles = out && Array.isArray(out.tiles) ? out.tiles : null;
     if (!tiles) { setScanStatus('Taşlar okunamadı. Daha net bir fotoğraf dene.', true); return; }
@@ -722,21 +787,59 @@ function countPairs(counts, wilds) {
     msg += fakeNote + ' Okumayı kontrol et: yanlış taşa dokunup çıkar, doğrusunu ekle.';
     setScanStatus(msg, !!(unread || dup || over || fakeNote));
   }
-  async function initScan() {
+
+  /* canlı kamera */
+  async function openCam() {
     try {
-      if (!window.claude || !window.claude.use) return;
-      var sample = await window.claude.use('sample');
-      if (!sample) return;
-      var lim = await sample.limits().catch(function () { return null; });
-      if (!lim || !lim.images) return;
-      window.__sample = sample;
-      if (lim.images.mediaTypes && lim.images.mediaTypes.length) $('scanFile').accept = lim.images.mediaTypes.join(',');
-      buildOkeySelect();
-      $('scanCard').hidden = false;
-      $('btnScan').addEventListener('click', function () { $('scanFile').click(); });
-      $('btnStop').addEventListener('click', function () { if (scanCtl) scanCtl.abort(); });
-      $('scanFile').addEventListener('change', function (e) { var f = e.target.files && e.target.files[0]; if (f) runScan(f); });
-    } catch (e) {}
+      camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
+      var v = $('camVideo'); v.srcObject = camStream; await v.play();
+      $('camBox').hidden = false;
+      setScanStatus('Istakayı kadraja al, taşlar net görününce "Yakala ve oku"ya bas.');
+    } catch (e) {
+      closeCam();
+      setScanStatus('Kamera açılamadı. Tarayıcıda kamera iznini ver; sayfa https:// ile açılmalı. İstersen fotoğraf çekip seçebilirsin.', true);
+    }
+  }
+  function closeCam() {
+    if (camStream) { camStream.getTracks().forEach(function (t) { t.stop(); }); camStream = null; }
+    var v = $('camVideo'); try { v.srcObject = null; } catch (e) {}
+    $('camBox').hidden = true;
+  }
+  function snap() {
+    var v = $('camVideo');
+    if (!v.videoWidth) { setScanStatus('Kamera görüntüsü henüz hazır değil, bir saniye bekle.', true); return; }
+    var k = Math.min(1, 1600 / Math.max(v.videoWidth, v.videoHeight));
+    var c = document.createElement('canvas'); c.width = Math.round(v.videoWidth * k); c.height = Math.round(v.videoHeight * k);
+    c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+    c.toBlob(function (b) { if (b) runScan(b); }, 'image/jpeg', 0.9);
+  }
+
+  async function initScan() {
+    var inClaude = !!(window.claude && window.claude.use);
+    var canCam = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) && !inClaude;
+    try {
+      if (inClaude) {
+        var sample = await window.claude.use('sample');
+        if (!sample) return;
+        var lim = await sample.limits().catch(function () { return null; });
+        if (!lim || !lim.images) return;
+        if (lim.images.mediaTypes && lim.images.mediaTypes.length) $('scanFile').accept = lim.images.mediaTypes.join(',');
+        recognizer = makeSampleRecognizer(sample);
+        $('scanHint').textContent += ' Fotoğraf Claude hesabın üzerinden okunur ve cihazının dışına gönderilir.';
+      } else if (window.OKEY_SCAN_ENDPOINT) {
+        recognizer = makeEndpointRecognizer(window.OKEY_SCAN_ENDPOINT);
+      }
+    } catch (e) { return; }
+    buildOkeySelect();
+    $('scanCard').hidden = false;
+    if (!recognizer) { $('scanSetup').hidden = false; $('scanBtns').hidden = true; return; }
+    $('btnCam').hidden = !canCam;
+    $('btnPhoto').addEventListener('click', function () { $('scanFile').click(); });
+    $('btnCam').addEventListener('click', openCam);
+    $('btnSnap').addEventListener('click', snap);
+    $('btnCamOff').addEventListener('click', closeCam);
+    $('btnStop').addEventListener('click', function () { if (scanCtl) scanCtl.abort(); });
+    $('scanFile').addEventListener('change', function (e) { var f = e.target.files && e.target.files[0]; if (f) runScan(f); });
   }
 
   buildPicker();
@@ -746,5 +849,5 @@ function countPairs(counts, wilds) {
   if (location.hash === '#yazboz') setTab(true);
 })();
 </script>
-
-</body></html>
+</body>
+</html>
