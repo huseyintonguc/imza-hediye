@@ -436,37 +436,41 @@
                 </p>
                 <div class="flex gap-2">
                     <input id="gemini-api-key-input" type="password" placeholder="AIzaSy..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
-                    <button onclick="saveGeminiApiKey()" class="px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-extrabold shrink-0">Kaydet</button>
+                    <button onclick="saveGeminiApiKey()" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-extrabold">Kaydet</button>
                 </div>
             </div>
 
-            <!-- Otomatik Canlı Tarama & Oyun Modu -->
-            <div class="flex flex-col gap-2.5 mb-4">
-                <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl px-3.5 py-2.5">
-                    <div>
-                        <div class="text-xs font-bold text-white">Otomatik Canlı Tarama</div>
-                        <div class="text-[10px] text-slate-400">Kamera ıstakaya tutulunca her 1.8 sn'de otomatik okur</div>
-                    </div>
-                    <button id="toggle-autoscan-btn" onclick="toggleAutoScanSetting()" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold">AÇIK</button>
+            <!-- Canlı Otomatik Tarama Geçişi -->
+            <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
+                <div>
+                    <div class="text-xs font-bold text-white">Otomatik Canlı Tarama</div>
+                    <div class="text-[11px] text-slate-400">Kamerayı ıstakaya tutunca otomatik okur</div>
                 </div>
+                <button id="toggle-autoscan-btn" onclick="toggleAutoScanSetting()" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold">
+                    AÇIK
+                </button>
+            </div>
 
-                <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl px-3.5 py-2.5">
-                    <div class="text-xs font-bold text-white">Oyun Modu</div>
-                    <div class="flex gap-1.5">
-                        <button onclick="changeGameModeFromSettings('101')" id="set-mode-101" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">101 (21 Taş)</button>
-                        <button onclick="changeGameModeFromSettings('14')" id="set-mode-14" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">Klasik (14)</button>
-                    </div>
+            <!-- Oyun Modu Geçişi -->
+            <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
+                <div>
+                    <div class="text-xs font-bold text-white">Oyun Türü</div>
+                    <div class="text-[11px] text-slate-400">101 Okey (21 Taş) veya Klasik (14 Taş)</div>
+                </div>
+                <div class="flex gap-1">
+                    <button id="set-mode-101" onclick="changeGameModeFromSettings('101')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">101</button>
+                    <button id="set-mode-14" onclick="changeGameModeFromSettings('14')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">14 Taş</button>
                 </div>
             </div>
 
-            <!-- Fotoğraf Yükle / Örnek El Test Et -->
-            <div class="grid grid-cols-2 gap-2">
-                <label class="cursor-pointer flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-sky-500/20 border border-sky-400/40 text-sky-200 text-xs font-extrabold text-center">
-                    <span>📷 Fotoğraf Seç / Çek</span>
-                    <input type="file" accept="image/*" capture="environment" onchange="handleImageFileUpload(event)" class="hidden">
+            <!-- Fotoğraf Yükle & Örnek 21 Taş Test -->
+            <div class="grid grid-cols-2 gap-2 mt-3">
+                <label class="cursor-pointer py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-center text-xs font-bold text-white">
+                    📷 Fotoğraftan Oku
+                    <input type="file" accept="image/*" class="hidden" onchange="handleImageFileUpload(event)">
                 </label>
-                <button onclick="loadSample21Hand(); closeSettingsModal();" class="py-2.5 px-3 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-200 text-xs font-extrabold">
-                    🧪 Örnek 21 Taş Test
+                <button onclick="loadSample21Hand(); closeSettingsModal();" class="py-2.5 px-3 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-xs font-extrabold text-sky-300">
+                    🧪 Örnek 21 Taş Testi
                 </button>
             </div>
         </div>
@@ -642,12 +646,28 @@
                 const apiKey = (localStorage.getItem('okey_gemini_api_key') || '').trim();
                 if (!apiKey || isScanningNow || !videoStream) return;
                 scanCurrentCameraFrame(true);
-            }, 1800);
+            }, 2000);
+        }
+
+        function setDiagnosticBadge(text, state = 'neutral') {
+            const chip = document.getElementById('api-key-status-chip');
+            if (!chip) return;
+            chip.textContent = text;
+            if (state === 'ok') {
+                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 max-w-[165px] truncate';
+            } else if (state === 'scanning') {
+                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-sky-500/20 text-sky-300 border border-sky-400/40 max-w-[165px] truncate';
+            } else if (state === 'error') {
+                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-red-500/25 text-red-200 border border-red-400/50 max-w-[185px] truncate';
+            } else {
+                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40 max-w-[165px] truncate';
+            }
         }
 
         function triggerImmediateScan() {
             const apiKey = (localStorage.getItem('okey_gemini_api_key') || '').trim();
             if (!apiKey) {
+                setDiagnosticBadge('API Key Eksik!', 'error');
                 showToast('Canlı okuma için önce Ayarlar (⚙️) kısmından Gemini API Anahtarını girin.');
                 openSettingsModal();
                 return;
@@ -659,6 +679,69 @@
             scanCurrentCameraFrame(false);
         }
 
+        function captureCroppedRackRoi(video) {
+            const vw = video.videoWidth || 1280;
+            const vh = video.videoHeight || 720;
+            const videoRect = video.getBoundingClientRect();
+            const reticleEl = document.getElementById('camera-reticle');
+            const reticleRect = reticleEl ? reticleEl.getBoundingClientRect() : null;
+
+            let sx = 0, sy = 0, sw = vw, sh = vh;
+
+            if (reticleRect && videoRect.width > 0 && videoRect.height > 0) {
+                const videoAspect = vw / vh;
+                const elemAspect = videoRect.width / videoRect.height;
+                let renderW, renderH, offsetX, offsetY;
+
+                if (videoAspect > elemAspect) {
+                    renderH = videoRect.height;
+                    renderW = renderH * videoAspect;
+                    offsetX = (videoRect.width - renderW) / 2;
+                    offsetY = 0;
+                } else {
+                    renderW = videoRect.width;
+                    renderH = renderW / videoAspect;
+                    offsetX = 0;
+                    offsetY = (videoRect.height - renderH) / 2;
+                }
+
+                const padX = reticleRect.width * 0.08;
+                const padY = reticleRect.height * 0.16;
+                const relLeft = (reticleRect.left - padX) - (videoRect.left + offsetX);
+                const relTop = (reticleRect.top - padY) - (videoRect.top + offsetY);
+                const relW = reticleRect.width + padX * 2;
+                const relH = reticleRect.height + padY * 2;
+
+                sx = Math.max(0, Math.round((relLeft / renderW) * vw));
+                sy = Math.max(0, Math.round((relTop / renderH) * vh));
+                sw = Math.min(vw - sx, Math.round((relW / renderW) * vw));
+                sh = Math.min(vh - sy, Math.round((relH / renderH) * vh));
+            }
+
+            if (sw < 80 || sh < 50) {
+                sx = 0; sy = 0; sw = vw; sh = vh;
+            }
+
+            const canvas = document.createElement('canvas');
+            const scale = Math.min(1, 900 / Math.max(sw, sh));
+            canvas.width = Math.max(1, Math.round(sw * scale));
+            canvas.height = Math.max(1, Math.round(sh * scale));
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+
+            return {
+                canvas,
+                roiNorm: {
+                    x: sx / vw,
+                    y: sy / vh,
+                    w: sw / vw,
+                    h: sh / vh
+                },
+                fullSize: { vw, vh }
+            };
+        }
+
         async function scanCurrentCameraFrame(silentMode = false) {
             const apiKey = (localStorage.getItem('okey_gemini_api_key') || '').trim();
             if (!apiKey) return;
@@ -668,30 +751,38 @@
 
             isScanningNow = true;
             document.getElementById('scan-laser').classList.remove('hidden');
+            setDiagnosticBadge('Taranıyor...', 'scanning');
 
             try {
-                const canvas = document.createElement('canvas');
-                const vw = video.videoWidth || 1280;
-                const vh = video.videoHeight || 720;
-                const scale = Math.min(1, 960 / Math.max(vw, vh));
-                canvas.width = Math.round(vw * scale);
-                canvas.height = Math.round(vh * scale);
-
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-                const base64Jpeg = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
+                const { canvas, roiNorm, fullSize } = captureCroppedRackRoi(video);
+                const base64Jpeg = canvas.toDataURL('image/jpeg', 0.72).split(',')[1];
                 const result = await callGeminiVisionOkey(apiKey, base64Jpeg);
 
                 if (result && Array.isArray(result.tiles) && result.tiles.length > 0) {
-                    applyDetectedTiles(result.tiles, canvas.width, canvas.height);
-                    if (!silentMode) showToast(`${result.tiles.length} taş okundu ve dizildi!`);
-                } else if (!silentMode) {
-                    showToast('Istakada taş algılanamadı. Taşları dik tutup tekrar deneyin.');
+                    const mappedTiles = result.tiles.map(t => {
+                        if (!Array.isArray(t.box_2d) || t.box_2d.length !== 4) return t;
+                        const [ymin, xmin, ymax, xmax] = t.box_2d;
+                        const fullYmin = Math.round((roiNorm.y + (ymin / 1000) * roiNorm.h) * 1000);
+                        const fullXmin = Math.round((roiNorm.x + (xmin / 1000) * roiNorm.w) * 1000);
+                        const fullYmax = Math.round((roiNorm.y + (ymax / 1000) * roiNorm.h) * 1000);
+                        const fullXmax = Math.round((roiNorm.x + (xmax / 1000) * roiNorm.w) * 1000);
+                        return { ...t, box_2d: [fullYmin, fullXmin, fullYmax, fullXmax] };
+                    });
+
+                    applyDetectedTiles(mappedTiles, fullSize.vw, fullSize.vh);
+                    setDiagnosticBadge(`Canlı AI Aktif ✓ (${mappedTiles.length} taş)`, 'ok');
+                    if (!silentMode) showToast(`${mappedTiles.length} taş okundu ve dizildi!`);
+                } else {
+                    setDiagnosticBadge('Taş Bulunamadı', 'neutral');
+                    if (!silentMode) {
+                        showToast('Istakada taş algılanamadı. Taşları çerçeveye ortalayıp tekrar deneyin.');
+                    }
                 }
             } catch (err) {
+                const friendlyErr = err?.userMessage || 'API Bağlantı Hatası';
+                setDiagnosticBadge(friendlyErr, 'error');
                 if (!silentMode) {
-                    showToast('API bağlantı hatası: Anahtarınızı Ayarlar (⚙️) kısmından kontrol edin.');
+                    showToast(friendlyErr);
                 }
             } finally {
                 isScanningNow = false;
@@ -746,25 +837,21 @@
         }
 
         async function callGeminiVisionOkey(apiKey, base64Image) {
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
-
-            const promptText = `Detect all Turkish Okey / 101 Okey tiles on the rack in this image.
-For each upright tile, return:
+            const models = ['gemini-2.5-flash', 'gemini-2.0-flash'];
+            const promptText = `Detect all upright Turkish Okey / 101 Okey tiles visible in this cropped rack image.
+For each tile, return:
 - color: "kirmizi" (red), "mavi" (blue/teal), "siyah" (black), "sari" (yellow/orange), or "sahte" (fake okey symbol without number)
 - number: integer 1 to 13 (0 if "sahte")
 - box_2d: [ymin, xmin, ymax, xmax] normalized 0-1000 bounding box around the tile.
 Return strictly valid JSON.`;
 
-            const payload = {
-                contents: [{
-                    role: 'user',
-                    parts: [
-                        { text: promptText },
-                        { inlineData: { mimeType: 'image/jpeg', data: base64Image } }
-                    ]
-                }],
-                generationConfig: {
-                    thinkingConfig: { thinkingBudget: 0 },
+            let lastError = null;
+
+            for (let mIdx = 0; mIdx < models.length; mIdx++) {
+                const modelName = models[mIdx];
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+                const genConfig = {
                     responseMimeType: 'application/json',
                     responseSchema: {
                         type: 'OBJECT',
@@ -784,20 +871,66 @@ Return strictly valid JSON.`;
                         },
                         required: ['tiles']
                     }
+                };
+
+                if (modelName === 'gemini-2.5-flash') {
+                    genConfig.thinkingConfig = { thinkingBudget: 0 };
                 }
-            };
 
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
+                const payload = {
+                    contents: [{
+                        role: 'user',
+                        parts: [
+                            { text: promptText },
+                            { inlineData: { mimeType: 'image/jpeg', data: base64Image } }
+                        ]
+                    }],
+                    generationConfig: genConfig
+                };
 
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const data = await res.json();
-            const rawJson = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (!rawJson) return null;
-            return JSON.parse(rawJson);
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) {
+                    let apiMsg = '';
+                    try {
+                        const errJson = await res.json();
+                        apiMsg = errJson?.error?.message || '';
+                    } catch (_) {}
+
+                    if (res.status === 404 && mIdx < models.length - 1) {
+                        lastError = new Error(`404 Model (${modelName})`);
+                        continue;
+                    }
+
+                    const e = new Error(`HTTP ${res.status}`);
+                    if (res.status === 400) {
+                        e.userMessage = apiMsg.toLowerCase().includes('api key')
+                            ? 'API Hatası 400: Geçersiz Anahtar'
+                            : 'API Hatası 400: İstek Reddedildi';
+                    } else if (res.status === 403) {
+                        e.userMessage = 'API Hatası 403: Yetki / Domain Engeli';
+                    } else if (res.status === 429) {
+                        e.userMessage = 'Kota Sınırı (429): Çok Sık İstek';
+                    } else {
+                        e.userMessage = `API Hatası (${res.status})`;
+                    }
+                    throw e;
+                }
+
+                const data = await res.json();
+                let rawJson = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (!rawJson) return null;
+
+                rawJson = rawJson.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+                return JSON.parse(rawJson);
+            }
+
+            if (lastError) throw lastError;
+            return null;
         }
 
         function applyDetectedTiles(rawTiles, imgW, imgH) {
@@ -1371,26 +1504,37 @@ Return strictly valid JSON.`;
 
         function updateApiKeyStatusChip() {
             const key = (localStorage.getItem('okey_gemini_api_key') || '').trim();
-            const chip = document.getElementById('api-key-status-chip');
             if (key) {
-                chip.textContent = 'Canlı AI Aktif ✓';
-                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40';
+                setDiagnosticBadge('Canlı AI Aktif ✓', 'ok');
             } else {
-                chip.textContent = 'API Key Gir';
-                chip.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40';
+                setDiagnosticBadge('API Key Gir', 'neutral');
             }
         }
 
         function toggleAutoScanSetting() {
             autoScanEnabled = !autoScanEnabled;
             const btn = document.getElementById('toggle-autoscan-btn');
+            const pill = document.getElementById('reticle-auto-pill');
+            const dot = document.getElementById('reticle-auto-dot');
+            const lbl = document.getElementById('reticle-auto-label');
+
             if (autoScanEnabled) {
-                btn.textContent = 'AÇIK';
-                btn.className = 'px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold';
+                if (btn) {
+                    btn.textContent = 'AÇIK';
+                    btn.className = 'px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold';
+                }
+                if (pill) pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all';
+                if (dot) dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+                if (lbl) lbl.textContent = 'Oto: Açık';
                 startAutoScanLoop();
             } else {
-                btn.textContent = 'KAPALI';
-                btn.className = 'px-3 py-1.5 rounded-lg bg-slate-700 text-slate-200 text-xs font-extrabold';
+                if (btn) {
+                    btn.textContent = 'KAPALI';
+                    btn.className = 'px-3 py-1.5 rounded-lg bg-slate-700 text-slate-200 text-xs font-extrabold';
+                }
+                if (pill) pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-600/70 text-[11px] font-extrabold text-slate-300 shadow-lg flex items-center gap-1.5 transition-all';
+                if (dot) dot.className = 'w-2 h-2 rounded-full bg-slate-500';
+                if (lbl) lbl.textContent = 'Oto: Kapalı';
                 clearInterval(autoScanInterval);
             }
         }
