@@ -265,12 +265,24 @@
             <!-- Canlı Tarama Lazeri -->
             <div id="scan-laser" class="hidden scan-laser-line"></div>
 
-            <!-- Sağ Alt Yüzen Anlık Yenile / Tara Butonu (Referans Görseldeki Gibi) -->
-            <button onclick="triggerImmediateScan()" title="Anlık Tara" class="pointer-events-auto absolute -bottom-11 right-0 w-10 h-10 rounded-full bg-slate-900/90 hover:bg-slate-800 active:scale-95 border border-slate-600/70 flex items-center justify-center text-amber-400 shadow-xl transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                </svg>
-            </button>
+            <!-- Vizör Altı Hızlı Kontroller: Oto Açık/Kapalı & Şimdi Tara -->
+            <div class="pointer-events-auto absolute -bottom-11 left-0 right-0 flex items-center justify-between gap-2">
+                <button id="reticle-auto-pill" onclick="toggleAutoScanSetting()" class="px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all">
+                    <span id="reticle-auto-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="reticle-auto-label">Oto: Açık</span>
+                </button>
+
+                <div class="flex items-center gap-1.5">
+                    <button onclick="triggerImmediateScan()" class="px-3.5 py-2 rounded-full bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 text-[11px] font-extrabold shadow-lg transition-all">
+                        Şimdi Tara
+                    </button>
+                    <button onclick="triggerImmediateScan()" title="Yeniden Tara" class="w-9 h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 active:scale-95 border border-slate-600/70 flex items-center justify-center text-amber-400 shadow-xl transition-all">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -349,7 +361,7 @@
                     <span id="tip-banner-text" class="truncate">Taşları dik dizin; ters duran taş okunamaz.</span>
                 </div>
                 <button onclick="openSettingsModal()" id="api-key-status-chip" class="shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40">
-                    API Key Gir
+                    API Anahtarı Gerekli (⚙️)
                 </button>
             </div>
 
@@ -435,8 +447,9 @@
                     Kendi domaininizde (<b>imzahediye.com</b>) kameranın taşları anlık okuması için ücretsiz Gemini API anahtarınızı bir kez girin. Cihazınıza kaydedilir.
                 </p>
                 <div class="flex gap-2">
-                    <input id="gemini-api-key-input" type="password" placeholder="AIzaSy..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+                    <input id="gemini-api-key-input" type="password" placeholder="API Anahtarınızı yapıştırın..." class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
                     <button onclick="saveGeminiApiKey()" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-extrabold">Kaydet</button>
+                    <button onclick="clearGeminiApiKey()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">Sil</button>
                 </div>
             </div>
 
@@ -552,11 +565,33 @@
             { name: 'Sol', score: 0 }
         ];
 
+        // GitHub Secret Scanning güvenliği için kod içinde anahtar tutulmaz
+        const DEFAULT_GEMINI_API_KEY = '';
+
+        function captureUrlApiKeyParam() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const urlKey = (params.get('key') || '').trim();
+                if (urlKey) {
+                    localStorage.setItem('okey_gemini_api_key', urlKey);
+                    params.delete('key');
+                    const cleanQuery = params.toString();
+                    const cleanUrl = window.location.pathname + (cleanQuery ? `?${cleanQuery}` : '') + window.location.hash;
+                    window.history.replaceState({}, document.title, cleanUrl);
+                }
+            } catch (_) {}
+        }
+
+        function getActiveGeminiApiKey() {
+            return (localStorage.getItem('okey_gemini_api_key') || DEFAULT_GEMINI_API_KEY || '').trim();
+        }
+
         // =========================================================================
         // 2. BAŞLANGIÇ KURULUMU
         // =========================================================================
         window.addEventListener('DOMContentLoaded', () => {
-            const savedKey = localStorage.getItem('okey_gemini_api_key') || '';
+            captureUrlApiKeyParam();
+            const savedKey = getActiveGeminiApiKey();
             document.getElementById('gemini-api-key-input').value = savedKey;
             updateApiKeyStatusChip();
             buildTilePickers();
@@ -643,7 +678,7 @@
             if (!autoScanEnabled) return;
 
             autoScanInterval = setInterval(() => {
-                const apiKey = (localStorage.getItem('okey_gemini_api_key') || '').trim();
+                const apiKey = getActiveGeminiApiKey();
                 if (!apiKey || isScanningNow || !videoStream) return;
                 scanCurrentCameraFrame(true);
             }, 2000);
@@ -665,7 +700,7 @@
         }
 
         function triggerImmediateScan() {
-            const apiKey = (localStorage.getItem('okey_gemini_api_key') || '').trim();
+            const apiKey = getActiveGeminiApiKey();
             if (!apiKey) {
                 setDiagnosticBadge('API Key Eksik!', 'error');
                 showToast('Canlı okuma için önce Ayarlar (⚙️) kısmından Gemini API Anahtarını girin.');
@@ -743,7 +778,7 @@
         }
 
         async function scanCurrentCameraFrame(silentMode = false) {
-            const apiKey = (localStorage.getItem('okey_gemini_api_key') || '').trim();
+            const apiKey = getActiveGeminiApiKey();
             if (!apiKey) return;
 
             const video = document.getElementById('camera-video');
@@ -794,7 +829,7 @@
             const file = event.target.files?.[0];
             if (!file) return;
 
-            const apiKey = (localStorage.getItem('okey_gemini_api_key') || '').trim();
+            const apiKey = getActiveGeminiApiKey();
             if (!apiKey) {
                 showToast('Fotoğraf okutmak için önce Gemini API Anahtarınızı kaydedin.');
                 event.target.value = '';
@@ -1502,12 +1537,19 @@ Return strictly valid JSON.`;
             }
         }
 
+        function clearGeminiApiKey() {
+            localStorage.removeItem('okey_gemini_api_key');
+            document.getElementById('gemini-api-key-input').value = '';
+            updateApiKeyStatusChip();
+            showToast('Kayıtlı API Anahtarı silindi.');
+        }
+
         function updateApiKeyStatusChip() {
-            const key = (localStorage.getItem('okey_gemini_api_key') || '').trim();
+            const key = getActiveGeminiApiKey();
             if (key) {
                 setDiagnosticBadge('Canlı AI Aktif ✓', 'ok');
             } else {
-                setDiagnosticBadge('API Key Gir', 'neutral');
+                setDiagnosticBadge('API Anahtarı Gerekli (⚙️)', 'neutral');
             }
         }
 
