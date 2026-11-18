@@ -1,1934 +1,502 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="tr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Okey & 101 Okey Canlı Kamera Asistanı (Yerel Motor)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3 Katlı 304 Paslanmaz Çelik Termal Sefer Tası & Çatal-Kaşık Seti</title>
+    <meta name="description" content="304 Paslanmaz Çelik iç hazneli, 3 katlı sızdırmaz termal sefer tası ve özel kutulu çelik çatal-kaşık seti. 1.490 TL - Ücretsiz Kargo.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        sand: '#F6F3EE',
+                        cream: '#FAF8F5',
+                        taupe: '#8C7D70',
+                        taupeDark: '#65584D',
+                        charcoal: '#1F1D1B',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        * {
-            -webkit-tap-highlight-color: transparent;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            width: 100%;
-            height: 100dvh;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #0c111d;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: #f8fafc;
-            user-select: none;
-        }
-
-        video::-webkit-media-controls,
-        video::-webkit-media-controls-enclosure,
-        video::-webkit-media-controls-panel,
-        video::-webkit-media-controls-play-button,
-        video::-webkit-media-controls-start-playback-button {
-            display: none !important;
-            -webkit-appearance: none !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-
-        .slate-glass-panel {
-            background: linear-gradient(180deg, rgba(19, 27, 46, 0.94) 0%, rgba(12, 17, 29, 0.97) 100%);
-            border: 1px solid rgba(71, 95, 145, 0.42);
-            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.62), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-        }
-
-        .beechwood-rack {
-            background: linear-gradient(180deg, #ebd0a8 0%, #dfc091 20%, #cfa66f 58%, #dcba89 88%, #be9158 100%);
-            border: 1.5px solid #f4e2c3;
-            border-radius: 12px;
-            box-shadow: inset 0 2px 3px rgba(255, 252, 245, 0.72),
-                        inset 0 -3px 5px rgba(120, 78, 34, 0.45),
-                        0 8px 20px rgba(0, 0, 0, 0.48);
-        }
-
-        .rack-metal-cap {
-            background: linear-gradient(180deg, #f1f5f9 0%, #cbd5e1 50%, #94a3b8 100%);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 1px 3px rgba(51, 65, 85, 0.38);
-            border-radius: 3px;
-        }
-
-        .rack-shelf-groove {
-            background: linear-gradient(180deg, #b58752 0%, #c69963 72%, #d8b17e 100%);
-            box-shadow: inset 0 2px 4px rgba(92, 58, 22, 0.48), 0 1px 0 rgba(255, 248, 235, 0.6);
-            border-radius: 6px;
-        }
-
-        .rack-slot-cell {
-            background: rgba(120, 78, 34, 0.13);
-            border: 1px dashed rgba(110, 68, 26, 0.24);
-            border-radius: 4px;
-        }
-
-        .okey-tile {
-            font-family: 'Oswald', sans-serif;
-            background: linear-gradient(160deg, #ffffff 0%, #faf6ed 78%, #eee6d5 100%);
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(68, 42, 14, 0.42),
-                        inset 0 1px 0.5px rgba(255, 255, 255, 1),
-                        inset 0 -2px 0 #cbbba0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            transition: transform 0.12s ease;
-        }
-
-        .okey-tile:active {
-            transform: scale(0.93);
-        }
-
-        .tile-valid-group {
-            box-shadow: 0 0 0 1.6px #0ea5e9,
-                        0 2px 5px rgba(14, 165, 233, 0.35),
-                        inset 0 -2px 0 #cbbba0;
-        }
-
-        .tile-active-okey {
-            background: linear-gradient(160deg, #fffef7 0%, #fef3c7 100%);
-            box-shadow: 0 0 0 2px #f59e0b,
-                        0 0 10px rgba(245, 158, 11, 0.7),
-                        inset 0 -2px 0 #d97706 !important;
-        }
-
-        .c-kirmizi { color: #dc2626; }
-        .c-mavi    { color: #0284c7; }
-        .c-siyah   { color: #0f172a; }
-        .c-sari    { color: #d97706; }
-        .c-sahte   { color: #7c3aed; }
-
-        .reticle-bracket {
-            position: absolute;
-            width: 26px;
-            height: 26px;
-            border-color: rgba(248, 250, 252, 0.78);
-            transition: border-color 0.25s ease;
-        }
-        .reticle-active .reticle-bracket {
-            border-color: #f59e0b;
-        }
-
-        @keyframes scanLaser {
-            0% { top: 8%; opacity: 0; }
-            15% { opacity: 0.95; }
-            85% { opacity: 0.95; }
-            100% { top: 92%; opacity: 0; }
-        }
-        .scan-laser-line {
-            position: absolute;
-            left: 3%;
-            right: 3%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #38bdf8, #fbbf24, #38bdf8, transparent);
-            box-shadow: 0 0 12px #38bdf8;
-            animation: scanLaser 1.4s ease-in-out infinite;
-        }
-
-        .bottom-sheet-modal {
-            background: linear-gradient(180deg, #162038 0%, #0c111d 100%);
-            border-top: 1px solid rgba(245, 158, 11, 0.35);
-            border-top-left-radius: 26px;
-            border-top-right-radius: 26px;
-            box-shadow: 0 -18px 46px rgba(0, 0, 0, 0.85);
-            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
-        }
-        .bottom-sheet-modal.hidden-sheet {
-            transform: translateY(105%);
-            opacity: 0;
-            pointer-events: none;
-        }
+        body { background-color: #FAF8F5; color: #1F1D1B; }
+        .glass-nav { background: rgba(250, 248, 245, 0.88); backdrop-filter: blur(14px); }
+        .luxury-shadow { box-shadow: 0 24px 48px -12px rgba(101, 88, 77, 0.14); }
+        .img-zoom { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .group:hover .img-zoom { transform: scale(1.04); }
     </style>
 </head>
-<body class="relative w-full h-full">
+<body class="antialiased selection:bg-taupe selection:text-white">
 
-    <!-- 1. TAM EKRAN CANLI KAMERA & AR KUTU KATMANI -->
-    <div id="camera-stage" class="fixed inset-0 w-full h-full bg-[#0c111d] overflow-hidden">
-        <video id="camera-video" autoplay muted playsinline webkit-playsinline class="w-full h-full object-cover"></video>
-        <canvas id="ar-box-canvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
-
-        <div id="camera-fallback-screen" class="absolute inset-0 flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_center,_#1a2642_0%,_#0c111d_100%)] text-center px-6">
-            <div class="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-400/35 flex items-center justify-center mb-3 shadow-lg">
-                <svg class="w-8 h-8 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                    <circle cx="12" cy="13" r="3"/>
-                </svg>
-            </div>
-            <p class="text-sm font-bold text-white">Yerel Canlı Kamera Hazır</p>
-            <p class="text-xs text-slate-300 mt-1 max-w-xs leading-relaxed">
-                API anahtarı gerekmeden tüm taş okuma ve dizilim işlemleri doğrudan cihazınızda gerçekleşir.
-            </p>
-            <div class="flex items-center gap-2 mt-4">
-                <button onclick="startRearCamera(true)" class="px-3.5 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold shadow">Kamerayı Başlat</button>
-                <button onclick="loadSample21Hand()" class="px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-600 text-slate-100 text-xs font-bold">Örnek 21 Taş Yükle</button>
-            </div>
-        </div>
-
-        <div class="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/45 via-transparent to-black/65"></div>
+    <!-- Üst Duyuru Bandı -->
+    <div class="bg-charcoal text-sand text-xs py-2.5 px-4 text-center tracking-wide font-medium">
+        304 Kalite Gıda Sınıfı Paslanmaz Çelik İç Hazne • Özel Kutulu Metal Çatal-Kaşık Seti Dahil • <span class="underline decoration-sand/50">1.490 TL & Ücretsiz Kargo</span>
     </div>
 
-    <!-- 2. ÜST HUD PANELİ: SERİ/ÇİFT + CANLI DURUM + AÇIK KAYIN AHŞAP 2 KATLI ISTAKA -->
-    <header class="fixed top-0 left-0 right-0 z-30 pt-[max(10px,env(safe-area-inset-top))] px-2.5 sm:px-4">
-        <div class="max-w-xl mx-auto slate-glass-panel rounded-2xl p-2.5 sm:p-3">
-            <div class="flex items-center justify-between gap-1.5 mb-2">
-                <div class="flex items-center gap-1.5">
-                    <div id="top-scan-badge" class="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center shrink-0">
-                        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2"/>
-                        </svg>
-                    </div>
-
-                    <div class="flex items-center bg-slate-950/75 p-0.5 rounded-full border border-slate-700/70">
-                        <button id="btn-mode-seri" onclick="switchArrangeTab('seri')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow">
-                            SERİ
-                        </button>
-                        <button id="btn-mode-cift" onclick="switchArrangeTab('cift')" class="px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white">
-                            ÇİFT
-                        </button>
-                    </div>
+    <!-- Üst Menü -->
+    <header class="sticky top-0 z-40 glass-nav border-b border-taupe/15">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-charcoal text-sand flex items-center justify-center font-serif text-lg font-bold tracking-tighter">304</div>
+                <div>
+                    <span class="font-bold tracking-tight text-lg block leading-none">PURE THERMO</span>
+                    <span class="text-[10px] uppercase tracking-[0.22em] text-taupe font-semibold">3-Tier Steel Series</span>
                 </div>
+            </a>
 
-                <div id="top-rack-status" class="text-[11px] sm:text-xs font-semibold text-slate-200 truncate px-1">
-                    0/21 · ıstakayı yavaşça tarayın
-                </div>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-charcoal/80">
+                <a href="#koleksiyon" class="hover:text-taupe transition">Renk Seçenekleri</a>
+                <a href="#detaylar" class="hover:text-taupe transition">304 Çelik & Detaylar</a>
+                <a href="#catal-kasik" class="hover:text-taupe transition">Çatal-Kaşık Seti</a>
+                <a href="#okul-serisi" class="hover:text-taupe transition">Okul Serisi</a>
+                <a href="#olculer" class="hover:text-taupe transition">Ölçüler</a>
+            </nav>
 
-                <button onclick="openManualTileModal()" class="px-2.5 py-1 rounded-lg bg-slate-800/90 hover:bg-slate-700 border border-slate-600/60 text-[11px] font-bold text-sky-300 shrink-0 transition-all">
-                    + Taş
-                </button>
-            </div>
-
-            <div class="beechwood-rack p-1.5 sm:p-2 flex items-stretch gap-1">
-                <div class="rack-metal-cap w-1.5 sm:w-2 shrink-0"></div>
-                <div class="flex-1 flex flex-col gap-1.5">
-                    <div id="wooden-top-row" class="rack-shelf-groove p-1 grid gap-[3px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));"></div>
-                    <div id="wooden-bottom-row" class="rack-shelf-groove p-1 grid gap-[3px]" style="grid-template-columns: repeat(13, minmax(0, 1fr));"></div>
-                </div>
-                <div class="rack-metal-cap w-1.5 sm:w-2 shrink-0"></div>
+            <div class="flex items-center gap-3">
+                <span class="hidden sm:inline-block font-bold text-base text-charcoal">1.490 TL</span>
+                <a href="#siparis" class="bg-charcoal text-sand hover:bg-taupeDark transition px-5 py-2.5 rounded-full text-sm font-semibold shadow-sm">
+                    Hemen Sipariş Ver
+                </a>
             </div>
         </div>
     </header>
 
-    <!-- 3. ORTA VİZÖR ÇERÇEVESİ & YEREL CANLI TARAMA KONTROLLERİ -->
-    <div class="fixed inset-0 z-20 pointer-events-none flex items-center justify-center px-5 pb-32">
-        <div id="camera-reticle" class="relative w-full max-w-lg h-36 sm:h-44 rounded-2xl">
-            <div class="reticle-bracket top-0 left-0 border-t-[3px] border-l-[3px] rounded-tl-xl"></div>
-            <div class="reticle-bracket top-0 right-0 border-t-[3px] border-r-[3px] rounded-tr-xl"></div>
-            <div class="reticle-bracket bottom-0 left-0 border-b-[3px] border-l-[3px] rounded-bl-xl"></div>
-            <div class="reticle-bracket bottom-0 right-0 border-b-[3px] border-r-[3px] rounded-br-xl"></div>
+    <!-- HERO ALANI -->
+    <section class="pt-10 pb-20 lg:pt-14 lg:pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+                
+                <!-- Sol Açıklama & Fiyat Kartı -->
+                <div class="lg:col-span-6 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sand border border-taupe/20 text-xs font-semibold text-taupeDark">
+                        <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                        Komple Set: 3 Katlı Çelik Sefer Tası + Kutulu Çatal-Kaşık
+                    </div>
 
-            <div id="scan-laser" class="hidden scan-laser-line"></div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-[54px] font-serif font-semibold leading-[1.1] text-charcoal">
+                        Sağlıklı Öğünler, <br>
+                        <span class="italic font-normal text-taupeDark">Zarif & Modüler Tasarım.</span>
+                    </h1>
 
-            <!-- Üst Sağ Vizör Kontrolleri: 0.5x Ultra Geniş / 1x Zoom + Fener (Loş Işık) -->
-            <div class="pointer-events-auto absolute -top-10 right-0 flex items-center gap-1.5">
-                <button id="btn-torch-toggle" onclick="toggleCameraTorch()" class="hidden px-2.5 py-1.5 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-600/70 text-[11px] font-extrabold text-slate-200 shadow-lg flex items-center gap-1 transition-all" title="Fener / Işık">
-                    <span>🔦</span>
-                    <span id="torch-label">Işık</span>
-                </button>
-                <button id="btn-zoom-toggle" onclick="cycleCameraZoomMode()" class="px-3 py-1.5 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-amber-400/50 text-[11px] font-extrabold text-amber-300 shadow-lg transition-all" title="Kamera Açısı">
-                    0.5× Geniş
-                </button>
+                    <p class="text-base sm:text-lg text-charcoal/75 leading-relaxed max-w-xl">
+                        Gıdaya temas eden iç yüzeyi tamamen <strong>304 paslanmaz çelik</strong>, dış yüzeyi ısı yalıtımlı mat gövdeden oluşan 3 katlı kompakt sefer tası. Yanında özel taşıma kutulu paslanmaz çelik çatal-kaşık setiyle ofiste ve okulda tam konfor.
+                    </p>
+
+                    <!-- Fiyat & Avantaj Kutusu -->
+                    <div class="bg-white p-5 sm:p-6 rounded-3xl border border-taupe/20 shadow-sm max-w-lg flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs line-through text-charcoal/40 font-medium">1.890 TL</span>
+                                <span class="text-[11px] font-bold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full">Lansman Fiyatı</span>
+                            </div>
+                            <div class="text-3xl font-extrabold text-charcoal tracking-tight mt-0.5">1.490 TL</div>
+                            <div class="text-xs text-charcoal/60 mt-0.5">KDV Dahil • Ücretsiz Hızlı Kargo</div>
+                        </div>
+                        <a href="#siparis" class="bg-charcoal text-sand hover:bg-taupeDark transition px-6 py-3.5 rounded-2xl text-sm font-semibold shadow-md">
+                            Renk Seç & Sipariş Ver →
+                        </a>
+                    </div>
+
+                    <!-- 3 Temel Teknik Değer -->
+                    <div class="grid grid-cols-3 gap-3 pt-1 max-w-lg">
+                        <div class="bg-sand/70 p-3.5 rounded-2xl border border-taupe/15">
+                            <div class="text-sm font-bold text-charcoal">304 Çelik</div>
+                            <div class="text-xs text-charcoal/65 mt-0.5">Çıkarılabilir İç Hazne</div>
+                        </div>
+                        <div class="bg-sand/70 p-3.5 rounded-2xl border border-taupe/15">
+                            <div class="text-sm font-bold text-charcoal">12 × 7 cm</div>
+                            <div class="text-xs text-charcoal/65 mt-0.5">3 Bağımsız Bölme</div>
+                        </div>
+                        <div class="bg-sand/70 p-3.5 rounded-2xl border border-taupe/15">
+                            <div class="text-sm font-bold text-charcoal">%100 Sızdırmaz</div>
+                            <div class="text-xs text-charcoal/65 mt-0.5">Silikon Conta & Valf</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sağ Ana Vitrin Görseli (Değiştirilebilir Canlı Önizleme) -->
+                <div class="lg:col-span-6">
+                    <div class="relative bg-sand rounded-[2.5rem] p-4 sm:p-6 border border-taupe/15 luxury-shadow">
+                        <div class="relative aspect-[3/4] rounded-[2rem] overflow-hidden bg-white">
+                            <img id="hero-main-img" 
+                                 src="Thermal_lunch_box_set_photography_d72f9bed_2K.jpg" 
+                                 alt="3 Katlı 304 Paslanmaz Çelik Termal Sefer Tası" 
+                                 class="w-full h-full object-cover transition-all duration-500">
+                            
+                            <!-- Görsel Üzeri Küçük Bilgi Etiketi -->
+                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-charcoal shadow-sm border border-taupe/15">
+                                <span id="hero-badge-text">Kırık Beyaz & Vizon Serisi</span>
+                            </div>
+
+                            <!-- Küçük Önizleme Seçiciler -->
+                            <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur p-2.5 rounded-2xl shadow-lg border border-taupe/15 flex items-center justify-between gap-2">
+                                <button onclick="changeHeroImage('Thermal_lunch_box_set_photography_d72f9bed_2K.jpg', 'Kırık Beyaz & Vizon Serisi')" class="w-12 h-14 rounded-xl overflow-hidden border-2 border-charcoal flex-shrink-0">
+                                    <img src="Thermal_lunch_box_set_photography_d72f9bed_2K.jpg" class="w-full h-full object-cover">
+                                </button>
+                                <button onclick="changeHeroImage('Food_containers_on_kitchen_island_6a84f247_2K.jpg', '3 Hazne Tam Porsiyon Kapasitesi')" class="w-12 h-14 rounded-xl overflow-hidden border border-taupe/20 hover:border-charcoal flex-shrink-0">
+                                    <img src="Food_containers_on_kitchen_island_6a84f247_2K.jpg" class="w-full h-full object-cover">
+                                </button>
+                                <button onclick="changeHeroImage('Disassembled_lunch_container_set_15f1e9a9_2K.jpg', '304 Paslanmaz Çelik İç Hazne')" class="w-12 h-14 rounded-xl overflow-hidden border border-taupe/20 hover:border-charcoal flex-shrink-0">
+                                    <img src="Disassembled_lunch_container_set_15f1e9a9_2K.jpg" class="w-full h-full object-cover">
+                                </button>
+                                <button onclick="changeHeroImage('Travel_cutlery_set_on_countertop_51e98d9f_2K.jpg', 'Özel Kutulu Çelik Çatal-Kaşık Seti')" class="w-12 h-14 rounded-xl overflow-hidden border border-taupe/20 hover:border-charcoal flex-shrink-0">
+                                    <img src="Travel_cutlery_set_on_countertop_51e98d9f_2K.jpg" class="w-full h-full object-cover">
+                                </button>
+                                <button onclick="changeHeroImage('Lunch_box_set_on_countertop_6dfe1552_2K.jpg', 'Termal Çantalı Tam Set Görünümü')" class="w-12 h-14 rounded-xl overflow-hidden border border-taupe/20 hover:border-charcoal flex-shrink-0">
+                                    <img src="Lunch_box_set_on_countertop_6dfe1552_2K.jpg" class="w-full h-full object-cover">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- RENK KOLEKSİYONU (GERÇEK ÜRÜN GÖRSELLERİYLE) -->
+    <section id="koleksiyon" class="py-20 bg-white border-y border-taupe/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-taupe">Renk Seçenekleri</span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-semibold mt-2">Yetişkin & Okul Serisi Koleksiyonu</h2>
+                </div>
+                <p class="text-sm text-charcoal/70 max-w-md">
+                    Tüm renk seçeneklerinde <strong>3 adet 12×7 cm çelik hazneli kap</strong> ve <strong>özel kutulu paslanmaz çelik çatal-kaşık seti</strong> standart olarak gönderilir.
+                </p>
             </div>
 
-            <div class="pointer-events-auto absolute -bottom-11 left-0 right-0 flex items-center justify-between gap-2">
-                <button id="reticle-auto-pill" onclick="toggleAutoScanSetting()" class="px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all">
-                    <span id="reticle-auto-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="reticle-auto-label">Oto: Açık</span>
-                </button>
-
-                <div class="flex items-center gap-1.5">
-                    <button onclick="triggerImmediateScan()" class="px-3.5 py-2 rounded-full bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-950 text-[11px] font-extrabold shadow-lg transition-all">
-                        Şimdi Tara
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Varyant 1: Kırık Beyaz & Vizon -->
+                <div class="group bg-cream rounded-3xl p-4 border border-taupe/15 hover:border-charcoal transition flex flex-col justify-between">
+                    <div>
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-white mb-4 relative cursor-pointer" onclick="openLightbox('Thermal_lunch_box_set_photography_d72f9bed_2K.jpg')">
+                            <img src="Thermal_lunch_box_set_photography_d72f9bed_2K.jpg" alt="Kırık Beyaz Vizon Sefer Tası" class="w-full h-full object-cover img-zoom">
+                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-bold text-charcoal">En Çok Satan</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-base">Kırık Beyaz & Vizon</h3>
+                            <span class="font-bold text-sm text-taupeDark">1.490 TL</span>
+                        </div>
+                        <p class="text-xs text-charcoal/65 mt-1.5 leading-relaxed">Ofis ve günlük kullanım için zamansız mat bej gövde ve vizon kapak uyumu.</p>
+                    </div>
+                    <button onclick="selectAndScroll('Kırık Beyaz & Vizon')" class="mt-4 w-full py-2.5 rounded-xl bg-white border border-taupe/25 group-hover:bg-charcoal group-hover:text-sand group-hover:border-charcoal text-xs font-bold transition">
+                        Bu Rengi Seç
                     </button>
-                    <button onclick="triggerImmediateScan()" title="Yeniden Tara" class="w-9 h-9 rounded-full bg-slate-900/90 hover:bg-slate-800 active:scale-95 border border-slate-600/70 flex items-center justify-center text-amber-400 shadow-xl transition-all">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
+                </div>
+
+                <!-- Varyant 2: Adaçayı Yeşili & Güneş Sarısı -->
+                <div class="group bg-cream rounded-3xl p-4 border border-taupe/15 hover:border-charcoal transition flex flex-col justify-between">
+                    <div>
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-white mb-4 relative cursor-pointer" onclick="openLightbox('Lunch_box_meal_preparation_235a4db6_2K.jpg')">
+                            <img src="Lunch_box_meal_preparation_235a4db6_2K.jpg" alt="Adaçayı Yeşili ve Sarı Beslenme Seti" class="w-full h-full object-cover img-zoom">
+                            <span class="absolute top-3 left-3 bg-emerald-50/95 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-bold text-emerald-800">Unisex / Diyet</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-base">Adaçayı Yeşili & Sarı</h3>
+                            <span class="font-bold text-sm text-taupeDark">1.490 TL</span>
+                        </div>
+                        <p class="text-xs text-charcoal/65 mt-1.5 leading-relaxed">Hem sağlıklı öğün hazırlığı hem de çocuk beslenmesi için enerjik renk kombinasyonu.</p>
+                    </div>
+                    <button onclick="selectAndScroll('Adaçayı Yeşili & Sarı')" class="mt-4 w-full py-2.5 rounded-xl bg-white border border-taupe/25 group-hover:bg-charcoal group-hover:text-sand group-hover:border-charcoal text-xs font-bold transition">
+                        Bu Rengi Seç
+                    </button>
+                </div>
+
+                <!-- Varyant 3: Pastel Pembe & Lavanta (Okul) -->
+                <div class="group bg-cream rounded-3xl p-4 border border-taupe/15 hover:border-charcoal transition flex flex-col justify-between">
+                    <div>
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-white mb-4 relative cursor-pointer" onclick="openLightbox('Thermal_lunch_box_set_2f600b36_2K.jpg')">
+                            <img src="Thermal_lunch_box_set_2f600b36_2K.jpg" alt="Pastel Pembe Lavanta Okul Beslenme Kabı" class="w-full h-full object-cover img-zoom">
+                            <span class="absolute top-3 left-3 bg-pink-50/95 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-bold text-pink-700">Okul Serisi</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-base">Pastel Pembe & Lavanta</h3>
+                            <span class="font-bold text-sm text-taupeDark">1.490 TL</span>
+                        </div>
+                        <p class="text-xs text-charcoal/65 mt-1.5 leading-relaxed">Kız çocukları için okul çantasına sığan 12×7 cm kompakt ve sevimli tasarım.</p>
+                    </div>
+                    <button onclick="selectAndScroll('Pastel Pembe & Lavanta (Okul)')" class="mt-4 w-full py-2.5 rounded-xl bg-white border border-taupe/25 group-hover:bg-charcoal group-hover:text-sand group-hover:border-charcoal text-xs font-bold transition">
+                        Bu Rengi Seç
+                    </button>
+                </div>
+
+                <!-- Varyant 4: Gökyüzü Mavisi & Turuncu / Gri (Okul) -->
+                <div class="group bg-cream rounded-3xl p-4 border border-taupe/15 hover:border-charcoal transition flex flex-col justify-between">
+                    <div>
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-white mb-4 relative cursor-pointer" onclick="openLightbox('Kids_thermal_lunch_box_set_3d4c18d9_2K.jpg')">
+                            <img src="Kids_thermal_lunch_box_set_3d4c18d9_2K.jpg" alt="Gökyüzü Mavisi Okul Beslenme Kabı" class="w-full h-full object-cover img-zoom">
+                            <span class="absolute top-3 left-3 bg-sky-50/95 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-bold text-sky-800">Okul Serisi</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-base">Gökyüzü Mavisi & Turuncu</h3>
+                            <span class="font-bold text-sm text-taupeDark">1.490 TL</span>
+                        </div>
+                        <p class="text-xs text-charcoal/65 mt-1.5 leading-relaxed">Canlı mavi gövde ve turuncu kapak detaylarıyla okul beslenme saatini keyfe dönüştürür.</p>
+                    </div>
+                    <button onclick="selectAndScroll('Gökyüzü Mavisi & Turuncu (Okul)')" class="mt-4 w-full py-2.5 rounded-xl bg-white border border-taupe/25 group-hover:bg-charcoal group-hover:text-sand group-hover:border-charcoal text-xs font-bold transition">
+                        Bu Rengi Seç
                     </button>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- 4. ALT KAPSAMLI ÖZET PANELİ & KONTROL ÇUBUĞU -->
-    <footer class="fixed bottom-0 left-0 right-0 z-30 pb-[max(12px,env(safe-area-inset-bottom))] px-2.5 sm:px-4">
-        <div class="max-w-xl mx-auto flex flex-col gap-2">
-            <div class="slate-glass-panel rounded-2xl p-3">
-                <div class="grid grid-cols-3 items-center gap-2 pb-2.5 border-b border-slate-700/60">
-                    <!-- Sol: EN İYİ TOPLAM (/101) -->
-                    <div class="flex flex-col items-start">
-                        <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">EN İYİ TOPLAM</span>
-                        <div class="flex items-baseline gap-1 mt-0.5">
-                            <span id="stat-best-total" class="text-3xl sm:text-4xl font-black text-white leading-none tracking-tight">0</span>
-                            <span id="stat-threshold-suffix" class="text-sm sm:text-base font-bold text-slate-400">/101</span>
+    <!-- 304 ÇELİK & PORSİYON DETAYLARI (BÜYÜK GÖRSEL KARŞILAŞTIRMA) -->
+    <section id="detaylar" class="py-20 bg-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+            
+            <!-- Satır 1: 304 Paslanmaz Çelik İç Hazne -->
+            <div class="grid lg:grid-cols-12 gap-10 items-center">
+                <div class="lg:col-span-6">
+                    <div class="rounded-[2rem] overflow-hidden bg-white p-3 border border-taupe/15 luxury-shadow cursor-pointer" onclick="openLightbox('Disassembled_lunch_container_set_15f1e9a9_2K.jpg')">
+                        <img src="Disassembled_lunch_container_set_15f1e9a9_2K.jpg" alt="304 Paslanmaz Çelik Çıkarılabilir İç Hazne" class="w-full aspect-[4/4] object-cover rounded-[1.5rem]">
+                    </div>
+                </div>
+                <div class="lg:col-span-6 space-y-5">
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-taupe">Çift Katmanlı Koruma</span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-semibold">Çıkarılabilir 304 Kalite Paslanmaz Çelik İç Hazne</h2>
+                    <p class="text-charcoal/75 leading-relaxed text-sm sm:text-base">
+                        Gıdanız kesinlikle plastiğe temas etmez. Her bir haznenin içerisinde yer alan <strong>304 kalite paslanmaz çelik kâse</strong>, dış ısı yalıtımlı mat gövdeden kolayca çıkarılabilir.
+                    </p>
+                    <ul class="space-y-3 text-sm text-charcoal/80 pt-2">
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-charcoal text-sand flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+                            <span><strong>Koku ve Leke Tutmaz:</strong> Salça, baharat veya zeytinyağlı yemeklerden sonra bile kolayca temizlenir.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-charcoal text-sand flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+                            <span><strong>Yıldız Silikon Hava Valfi:</strong> Sıcak yemek koyduğunuzda oluşan buhar basıncını kapağın ortasındaki yıldız tapayı çekerek kolayca tahliye edebilirsiniz.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="w-6 h-6 rounded-full bg-charcoal text-sand flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+                            <span><strong>Tam Sızdırmaz Silikon Conta:</strong> Kapak içindeki kalın silikon halka çanta içinde sızdırmayı önler.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Satır 2: Özel Kutulu Çatal-Kaşık Seti -->
+            <div id="catal-kasik" class="grid lg:grid-cols-12 gap-10 items-center">
+                <div class="lg:col-span-6 order-2 lg:order-1 space-y-5">
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-taupe">Sete Dahil Aksesuar</span>
+                    <h2 class="text-3xl sm:text-4xl font-serif font-semibold">Doğal Dokulu Kutusunda Paslanmaz Çelik Çatal & Kaşık</h2>
+                    <p class="text-charcoal/75 leading-relaxed text-sm sm:text-base">
+                        Dışarıda veya okulda yemek yerken tek kullanımlık plastik çatal-kaşıklara ihtiyaç duymazsınız. Setle birlikte gelen <strong>doğal buğday samanı benekli taşıma kutusu</strong> içerisinde 1 adet metal kaşık ve 1 adet metal çatal yer alır.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 pt-2">
+                        <div class="bg-white p-4 rounded-2xl border border-taupe/15">
+                            <div class="font-bold text-sm text-charcoal">Hijyenik Kapaklı Kutu</div>
+                            <p class="text-xs text-charcoal/65 mt-1">Çanta içinde toz ve kirden korur, kullanım sonrası kirli çatal-kaşığı çantanıza bulaştırmadan geri koymanızı sağlar.</p>
                         </div>
-                        <div class="flex items-center gap-1 mt-1.5">
-                            <span id="pill-open-badge" class="px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300">
-                                101 Bekliyor
-                            </span>
+                        <div class="bg-white p-4 rounded-2xl border border-taupe/15">
+                            <div class="font-bold text-sm text-charcoal">Kompakt 17,5 cm Ölçü</div>
+                            <p class="text-xs text-charcoal/65 mt-1">Hem çocukların hem yetişkinlerin rahat tutabileceği ergonomik metal form.</p>
                         </div>
                     </div>
-
-                    <!-- Orta: İnteraktif GÖSTERGE Kartı + Taş Sayacı -->
-                    <div class="flex flex-col items-center justify-center">
-                        <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase mb-1">GÖSTERGE</span>
-                        <button onclick="openIndicatorPickerModal()" id="indicator-tile-card" class="okey-tile w-10 h-13 py-1.5 px-2 cursor-pointer border border-amber-400/50 shadow-lg hover:scale-105 transition-transform" title="Gösterge Taşını Seç">
-                            <span id="indicator-card-num" class="text-base font-black text-slate-700 leading-none">?</span>
-                            <span id="indicator-card-dot" class="w-1.5 h-1.5 rounded-full bg-slate-400 mt-1"></span>
-                        </button>
-                        <div class="mt-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/15 border border-amber-400/40 flex items-center gap-1 text-[11px] font-extrabold text-amber-300">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V6a2 2 0 012-2h2M4 16v2a2 2 0 002 2h2m8-16h2a2 2 0 012 2v2m0 8v2a2 2 0 01-2 2h-2"/>
-                            </svg>
-                            <span id="stat-tile-ratio">0/21</span>
-                        </div>
+                </div>
+                <div class="lg:col-span-6 order-1 lg:order-2">
+                    <div class="rounded-[2rem] overflow-hidden bg-white p-3 border border-taupe/15 luxury-shadow cursor-pointer" onclick="openLightbox('Travel_cutlery_set_on_countertop_51e98d9f_2K.jpg')">
+                        <img src="Travel_cutlery_set_on_countertop_51e98d9f_2K.jpg" alt="Özel Kutulu Paslanmaz Çelik Çatal Kaşık Seti" class="w-full aspect-[4/4] object-cover rounded-[1.5rem]">
                     </div>
+                </div>
+            </div>
 
-                    <!-- Sağ: ÇİFT (X / 5) -->
-                    <div class="flex flex-col items-end">
-                        <span class="text-[10px] font-extrabold tracking-wider text-slate-400 uppercase">ÇİFT</span>
-                        <div class="flex items-baseline gap-0.5 mt-0.5">
-                            <span id="stat-pair-count" class="text-3xl sm:text-4xl font-black text-white leading-none">0</span>
-                            <span class="text-sm sm:text-base font-bold text-slate-400">/5</span>
-                        </div>
-                        <span id="pill-pair-status" class="mt-1.5 text-[10px] font-bold text-amber-300/90">
-                            5 Çift Gerekir
-                        </span>
+        </div>
+    </section>
+
+    <!-- OKUL SERİSİ & GERÇEK KULLANIM -->
+    <section id="okul-serisi" class="py-20 bg-white border-y border-taupe/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-taupe">Okul Beslenme Çözümü</span>
+                <h2 class="text-3xl sm:text-4xl font-serif font-semibold mt-2">Çocukların Okul Çantasına Tam Uyumlu Kompakt Ölçü</h2>
+                <p class="text-charcoal/70 mt-3 text-sm sm:text-base">
+                    Her bir hazne <strong>12 cm çapında ve 7 cm yüksekliğindedir</strong>. Çocuklar okul sırasında kapakları tek başına kolayca açıp kapatabilir.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="rounded-3xl overflow-hidden bg-cream border border-taupe/15 cursor-pointer group" onclick="openLightbox('Children_eating_lunch_at_desk_69b64cf7_2K.jpg')">
+                    <div class="aspect-[3/4] overflow-hidden">
+                        <img src="Children_eating_lunch_at_desk_69b64cf7_2K.jpg" alt="Kız ve Erkek Öğrenci Okul Beslenme Saati" class="w-full h-full object-cover img-zoom">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-base">Ana Yemek, Salata ve Meyve Ayrı</h3>
+                        <p class="text-xs text-charcoal/70 mt-1">3 bağımsız hazne sayesinde yiyeceklerin suyu ve kokusu birbirine karışmaz.</p>
                     </div>
                 </div>
 
-                <!-- Alt 3 Sütun: ORTALAR TOPLAMI | EL TOPLAMI | ÇİFT KALAN ×2 -->
-                <div class="grid grid-cols-3 gap-2 pt-2 text-center">
+                <div class="rounded-3xl overflow-hidden bg-cream border border-taupe/15 cursor-pointer group" onclick="openLightbox('Boy_eating_lunch_at_desk_215fbfeb_2K.jpg')">
+                    <div class="aspect-[3/4] overflow-hidden">
+                        <img src="Boy_eating_lunch_at_desk_215fbfeb_2K.jpg" alt="Okul Sırasında Paslanmaz Çelik Beslenme Kabı" class="w-full h-full object-cover img-zoom">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-base">Sağlıklı 304 Çelik Güvencesi</h3>
+                        <p class="text-xs text-charcoal/70 mt-1">Evde hazırladığınız sıcak yemekleri güvenle okul saatine kadar muhafaza eder.</p>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl overflow-hidden bg-cream border border-taupe/15 cursor-pointer group" onclick="openLightbox('Food_containers_on_kitchen_island_6a84f247_2K.jpg')">
+                    <div class="aspect-[3/4] overflow-hidden">
+                        <img src="Food_containers_on_kitchen_island_6a84f247_2K.jpg" alt="3 Hazneli Porsiyon Kapasitesi" class="w-full h-full object-cover img-zoom">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-base">Doyurucu Porsiyon Kapasitesi</h3>
+                        <p class="text-xs text-charcoal/70 mt-1">Hem çocuklar hem de yetişkinlerin günlük öğün ihtiyacı için ideal hacim.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEKNİK ÖLÇÜLER & KUTU İÇERİĞİ TABLOSU -->
+    <section id="olculer" class="py-20 bg-cream">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <span class="text-xs font-bold uppercase tracking-[0.2em] text-taupe">Teknik Özellikler</span>
+                <h2 class="text-3xl font-serif font-semibold mt-2">Paket İçeriği ve Ölçü Tablosu</h2>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-taupe/15 overflow-hidden shadow-sm">
+                <table class="w-full text-left border-collapse">
+                    <tbody class="divide-y divide-taupe/10 text-sm">
+                        <tr>
+                            <td class="py-4 px-6 font-semibold text-charcoal/70 w-1/2">Tek Hazne Ölçüsü</td>
+                            <td class="py-4 px-6 font-bold text-charcoal">12 cm Genişlik (Çap) × 7 cm Yükseklik</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-semibold text-charcoal/70">3 Katlı Üst Üste Toplam Yükseklik</td>
+                            <td class="py-4 px-6 font-bold text-charcoal">~ 21 cm</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-semibold text-charcoal/70">İç Hazne Malzemesi</td>
+                            <td class="py-4 px-6 font-bold text-charcoal">304 Kalite Gıda Sınıfı Paslanmaz Çelik (Çıkarılabilir)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-semibold text-charcoal/70">Dış Gövde & Kapak</td>
+                            <td class="py-4 px-6 font-bold text-charcoal">BPA İçermeyen Mat PP + Sızdırmaz Silikon Conta & Yıldız Valf</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-semibold text-charcoal/70">Çatal-Kaşık Seti</td>
+                            <td class="py-4 px-6 font-bold text-charcoal">1 Adet Metal Çatal + 1 Adet Metal Kaşık + 17,5 cm Taşıma Kutusu</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-semibold text-charcoal/70">Paket İçeriği (Toplam)</td>
+                            <td class="py-4 px-6 font-bold text-charcoal">3 Adet Çelik Hazneli Kap + 3 Adet Contalı Kapak + 1 Adet Kutulu Çatal-Kaşık Seti</td>
+                        </tr>
+                        <tr class="bg-sand/50">
+                            <td class="py-4 px-6 font-bold text-charcoal">Satış Fiyatı</td>
+                            <td class="py-4 px-6 font-extrabold text-lg text-emerald-700">1.490 TL (Ücretsiz Kargo)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- SİPARİŞ ALANI -->
+    <section id="siparis" class="py-20 bg-charcoal text-sand">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="text-xs font-bold uppercase tracking-[0.2em] text-sand/60">Hızlı & Güvenli Sipariş</span>
+            <h2 class="text-3xl sm:text-4xl font-serif font-semibold mt-2 mb-3">3 Katlı Çelik Sefer Tası + Çatal-Kaşık Seti</h2>
+            <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mb-6">1.490 TL <span class="text-xs font-normal text-sand/70">/ Komple Set (Ücretsiz Kargo)</span></div>
+
+            <div class="bg-white/5 border border-white/10 p-6 sm:p-8 rounded-3xl max-w-xl mx-auto text-left space-y-4">
+                <div>
+                    <label class="block text-xs uppercase tracking-wider text-sand/70 mb-1.5">Renk Seçiminiz</label>
+                    <select id="selected-color-input" class="w-full bg-charcoal border border-white/20 rounded-xl px-4 py-3.5 text-sm text-sand focus:outline-none focus:border-sand">
+                        <option value="Kırık Beyaz & Vizon">Kırık Beyaz & Vizon (1.490 TL)</option>
+                        <option value="Adaçayı Yeşili & Sarı">Adaçayı Yeşili & Sarı (1.490 TL)</option>
+                        <option value="Pastel Pembe & Lavanta (Okul)">Pastel Pembe & Lavanta - Okul Serisi (1.490 TL)</option>
+                        <option value="Gökyüzü Mavisi & Turuncu (Okul)">Gökyüzü Mavisi & Turuncu - Okul Serisi (1.490 TL)</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">ORTALAR TOPLAMI</div>
-                        <div id="stat-seri-leftover" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div>
-                    </div>
-                    <div class="border-x border-slate-700/50">
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">EL TOPLAMI</div>
-                        <div id="stat-all-tiles-sum" class="text-sm sm:text-base font-black text-white mt-0.5">0</div>
+                        <label class="block text-xs uppercase tracking-wider text-sand/70 mb-1.5">Adet</label>
+                        <input type="number" id="order-qty" value="1" min="1" onchange="updateTotal()" class="w-full bg-charcoal border border-white/20 rounded-xl px-4 py-3 text-sm text-sand focus:outline-none">
                     </div>
                     <div>
-                        <div class="text-[10px] font-bold text-slate-400 uppercase">ÇİFT KALAN <span class="text-[9px] text-slate-500">×2</span></div>
-                        <div id="stat-pair-leftover-x2" class="text-sm sm:text-base font-black text-amber-400 mt-0.5">0</div>
+                        <label class="block text-xs uppercase tracking-wider text-sand/70 mb-1.5">Toplam Tutar</label>
+                        <div id="total-price-display" class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold text-emerald-400">
+                            1.490 TL
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Durum Şeridi -->
-            <div class="flex items-center justify-between gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/70 text-[11px] text-slate-300">
-                <div class="flex items-center gap-1.5 truncate">
-                    <span class="text-amber-400 shrink-0">💡</span>
-                    <span id="tip-banner-text" class="truncate">Istakayı köşe çizgilerinin içine ortalayın.</span>
-                </div>
-                <span id="local-engine-badge" class="shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40">
-                    Yerel Vision Hazır ✓
-                </span>
-            </div>
-
-            <!-- En Alt Kontrol Çubuğu -->
-            <div class="flex items-center gap-2">
-                <button onclick="openYazbozModal()" class="flex items-center justify-center gap-1.5 px-3.5 py-3 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 text-xs font-extrabold text-white shadow-lg transition-all shrink-0">
-                    <span class="w-5 h-5 rounded-full bg-amber-400 text-slate-950 flex items-center justify-center text-[11px]">✎</span>
-                    <span>Yazboz</span>
+                <button onclick="sendWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition flex items-center justify-center gap-2 shadow-lg mt-2 text-sm sm:text-base">
+                    <span>WhatsApp ile Hemen Sipariş Oluştur</span>
                 </button>
-
-                <button onclick="resetScannedHand()" class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl bg-[#f8f6f0] hover:bg-white active:scale-[0.98] text-slate-950 font-extrabold text-sm sm:text-base shadow-xl transition-all">
-                    <svg class="w-4 h-4 text-slate-900" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                    <span>Sıfırla</span>
-                </button>
-
-                <button onclick="openSettingsModal()" class="w-12 h-12 rounded-2xl bg-slate-900/95 hover:bg-slate-800 active:scale-95 border border-slate-700/80 flex items-center justify-center text-slate-200 shadow-lg transition-all shrink-0" title="Ayarlar">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.1" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                        <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                </button>
+                <p class="text-[11px] text-center text-sand/50 pt-1">
+                    Siparişiniz aynı gün özenle paketlenerek ücretsiz kargo ile gönderilir.
+                </p>
             </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-charcoal border-t border-white/10 py-8 text-center text-xs text-sand/50">
+        <div class="max-w-7xl mx-auto px-4">
+            PURE THERMO • 3 Katlı 304 Paslanmaz Çelik Sefer Tası & Kutulu Çatal-Kaşık Seti
         </div>
     </footer>
 
-    <!-- 5. AÇILIŞ OYUN SEÇİM KARTI -->
-    <div id="opening-mode-sheet" class="fixed inset-x-0 bottom-0 z-40 bottom-sheet-modal px-5 pt-3 pb-[max(24px,env(safe-area-inset-bottom))]">
-        <div class="max-w-lg mx-auto">
-            <div class="w-10 h-1 rounded-full bg-slate-500/40 mx-auto mb-4"></div>
-
-            <h2 class="text-xl font-extrabold text-white tracking-tight">Hangi Okey?</h2>
-            <p class="text-xs sm:text-sm text-slate-300 mt-1 mb-4">
-                Oynadığın oyunu seç. Doğrudan cihazda yerel görüntü işleme ile çalışır.
-            </p>
-
-            <div class="flex flex-col gap-2.5 mb-5">
-                <button type="button" onclick="selectModeRadio('101')" id="mode-card-101" class="w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all">
-                    <div id="mode-radio-101" class="w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0">
-                        <div class="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
-                    </div>
-                    <div>
-                        <div class="text-sm sm:text-base font-bold text-white">101 Okey</div>
-                        <div class="text-xs text-slate-300 mt-0.5">21 taş. Perlerin toplamı 101'i bulunca açarsın.</div>
-                    </div>
-                </button>
-
-                <button type="button" onclick="selectModeRadio('14')" id="mode-card-14" class="w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all">
-                    <div id="mode-radio-14" class="w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0">
-                        <div class="w-2.5 h-2.5 rounded-full bg-transparent"></div>
-                    </div>
-                    <div>
-                        <div class="text-sm sm:text-base font-bold text-white">Okey</div>
-                        <div class="text-xs text-slate-300 mt-0.5">14 taş. Açma eşiği yok: elin tamamı tutana kadar beklersin.</div>
-                    </div>
-                </button>
-            </div>
-
-            <button type="button" onclick="confirmModeAndBegin()" class="w-full py-3.5 rounded-2xl bg-[#f8f6f0] hover:bg-white active:scale-[0.99] text-slate-950 font-extrabold text-base shadow-xl transition-all">
-                Devam
-            </button>
-        </div>
+    <!-- TAM EKRAN GÖRSEL ÖNİZLEME (LIGHTBOX) -->
+    <div id="lightbox" onclick="closeLightbox()" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden items-center justify-center p-4">
+        <img id="lightbox-img" src="" class="max-h-[90vh] max-w-[92vw] rounded-2xl shadow-2xl object-contain">
     </div>
-
-    <!-- 6. AYARLAR PENCERESİ -->
-    <div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='settings-modal') closeSettingsModal()">
-        <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-5 pb-[max(24px,env(safe-area-inset-bottom))] shadow-2xl">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-base font-extrabold text-white">Oyun & Yerel Tarayıcı Ayarları</h3>
-                <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-full bg-slate-800 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold">✕</button>
-            </div>
-
-            <div class="bg-emerald-500/10 border border-emerald-400/30 rounded-2xl p-3 mb-3 text-xs text-emerald-200 leading-relaxed">
-                <b>100% Cihaz İçi Yerel Motor Aktif:</b> Vizör çerçevesi hizalı fildişi taş ayrıştırma, mürekkep yoğunluk filtresi, renk tespiti ve gömülü OkeyVision sinir ağı doğrudan telefonunuzda çalışır.
-            </div>
-
-            <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
-                <div>
-                    <div class="text-xs font-bold text-white">Otomatik Canlı Tarama</div>
-                    <div class="text-[11px] text-slate-400">Kamerayı ıstakaya tutunca otomatik okur</div>
-                </div>
-                <button id="toggle-autoscan-btn" onclick="toggleAutoScanSetting()" class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold">
-                    AÇIK
-                </button>
-            </div>
-
-            <div class="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-xl p-3 mb-2.5">
-                <div>
-                    <div class="text-xs font-bold text-white">Oyun Türü</div>
-                    <div class="text-[11px] text-slate-400">101 Okey (21 Taş) veya Klasik (14 Taş)</div>
-                </div>
-                <div class="flex gap-1">
-                    <button id="set-mode-101" onclick="changeGameModeFromSettings('101')" class="px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">101</button>
-                    <button id="set-mode-14" onclick="changeGameModeFromSettings('14')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">14 Taş</button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-2 mt-3">
-                <label class="cursor-pointer py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-center text-xs font-bold text-white">
-                    📷 Fotoğraftan Oku
-                    <input type="file" accept="image/*" class="hidden" onchange="handleImageFileUpload(event)">
-                </label>
-                <button onclick="loadSample21Hand(); closeSettingsModal();" class="py-2.5 px-3 rounded-xl bg-sky-500/20 hover:bg-sky-500/30 border border-sky-400/40 text-xs font-extrabold text-sky-300">
-                    🧪 Örnek 21 Taş Testi
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 7. GÖSTERGE TAŞI SEÇİCİ PENCERESİ -->
-    <div id="indicator-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='indicator-modal') closeIndicatorPickerModal()">
-        <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(20px,env(safe-area-inset-bottom))] shadow-2xl">
-            <div class="flex items-center justify-between mb-2">
-                <div>
-                    <h3 class="text-sm font-extrabold text-white">Gösterge Taşını Seçin</h3>
-                    <p class="text-[11px] text-amber-300" id="modal-okey-preview">Seçili Gösterge Yok</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button onclick="clearIndicatorTile()" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold">Temizle</button>
-                    <button onclick="closeIndicatorPickerModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Tamam</button>
-                </div>
-            </div>
-            <div id="indicator-palette-container" class="flex flex-col gap-2 mt-2"></div>
-        </div>
-    </div>
-
-    <!-- 8. MANUEL TAŞ EKLEME PENCERESİ -->
-    <div id="manual-tile-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='manual-tile-modal') closeManualTileModal()">
-        <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(20px,env(safe-area-inset-bottom))] shadow-2xl">
-            <div class="flex items-center justify-between mb-2">
-                <div>
-                    <h3 class="text-sm font-extrabold text-white">Istakaya Taş Ekle</h3>
-                    <p class="text-[11px] text-slate-400">Eksik taşı dokunarak anında ekleyin</p>
-                </div>
-                <button onclick="closeManualTileModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Kapat</button>
-            </div>
-            <div id="manual-tile-palette" class="flex flex-col gap-2 mt-2"></div>
-        </div>
-    </div>
-
-    <!-- 9. YAZBOZ PENCERESİ -->
-    <div id="yazboz-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4" onclick="if(event.target.id==='yazboz-modal') closeYazbozModal()">
-        <div class="w-full max-w-md bg-[#131b2e] border border-slate-700 rounded-t-3xl sm:rounded-3xl p-4 pb-[max(24px,env(safe-area-inset-bottom))] shadow-2xl">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-base font-extrabold text-white">✎ 101 / Okey Yazboz</h3>
-                <div class="flex items-center gap-2">
-                    <button onclick="resetYazbozScores()" class="px-2.5 py-1 rounded-lg bg-red-500/20 text-red-300 text-xs font-bold">Sıfırla</button>
-                    <button onclick="closeYazbozModal()" class="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold">Kapat</button>
-                </div>
-            </div>
-            <div id="yazboz-players-grid" class="grid grid-cols-2 gap-2.5"></div>
-        </div>
-    </div>
-
-    <!-- Bildirim Toast -->
-    <div id="toast-message" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-200 bg-slate-950/95 border border-amber-400/50 text-white text-xs font-bold px-4 py-2.5 rounded-2xl shadow-2xl text-center max-w-xs"></div>
 
     <script>
-        // =========================================================================
-        // 1. SABİTLER VE UYGULAMA DURUMU (TAMAMEN YEREL / API'SİZ)
-        // =========================================================================
-        const COLORS = [
-            { id: 'kirmizi', short: 'K', name: 'Kırmızı', textClass: 'c-kirmizi', hex: '#dc2626' },
-            { id: 'mavi',    short: 'M', name: 'Mavi',    textClass: 'c-mavi',    hex: '#0284c7' },
-            { id: 'siyah',   short: 'S', name: 'Siyah',   textClass: 'c-siyah',   hex: '#0f172a' },
-            { id: 'sari',    short: 'Sr', name: 'Sarı',   textClass: 'c-sari',    hex: '#d97706' }
-        ];
-
-        let gameMode = '101';
-        let arrangeTab = 'seri';
-        let indicatorTile = null;
-        let detectedTiles = [];
-
-        let videoStream = null;
-        let autoScanEnabled = true;
-        let autoScanInterval = null;
-        let isScanningNow = false;
-        let currentZoomMode = '0.5'; // '0.5' (Ultra Geniş / Minimum Zoom) veya '1.0'
-        let torchEnabled = false;
-
-        let scanVoteBucket = new Map();
-
-        let yazbozPlayers = JSON.parse(localStorage.getItem('okey_yazboz_v1') || 'null') || [
-            { name: 'Oyuncu 1', score: 0 },
-            { name: 'Oyuncu 2', score: 0 },
-            { name: 'Oyuncu 3', score: 0 },
-            { name: 'Oyuncu 4', score: 0 }
-        ];
-
-        function setLocalBadge(text, state = 'ok') {
-            const badge = document.getElementById('local-engine-badge');
-            if (!badge) return;
-            badge.textContent = text;
-            if (state === 'ok') {
-                badge.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40';
-            } else if (state === 'scanning') {
-                badge.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-400/40';
-            } else {
-                badge.className = 'shrink-0 text-[10px] font-extrabold px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-600/60';
-            }
+        function changeHeroImage(src, badgeText) {
+            document.getElementById('hero-main-img').src = src;
+            document.getElementById('hero-badge-text').innerText = badgeText;
         }
 
-        // =========================================================================
-        // 2. GÖMÜLÜ OkeyVision SİNİR AĞI + LOŞ ORTAM TELAFİSİ + RENK SINIFLANDIRICI
-        // =========================================================================
-        const OkeyVision = (function () {
-            const MODEL = {
-                fw: 12,
-                fh: 18,
-                w1: [[0.22,0.12,0.16,0.07,0.12,0.41,0.13,-0.02,0.07,0.01,-0.15,0.01,-0.39,0.07,0.0,-0.23,-0.46,-0.03,0.11,0.02,0.29,0.14,-0.03,0.28,-0.13,-0.03,0.14,0.27,0.06,0.36,0.21,-0.49,0.3,-0.07,0.13,0.19,-0.09,0.1,0.21,0.49,0.11,-0.31,-0.1,0.31,0.06,0.14,0.09,-0.26],[0.13,0.04,0.43,0.29,-0.06,0.1,0.32,-0.22,0.37,0.11,-0.11,-0.08,-0.52,-0.33,-0.07,-0.12,-0.41,0.19,0.19,-0.26,0.43,0.16,0.1,-0.25,0.08,-0.12,0.36,-0.11,-0.17,-0.08,0.23,-0.79,0.15,-0.23,0.13,0.48,0.13,-0.17,0.0,0.15,0.33,-0.15,-0.01,-0.1,-0.13,0.25,-0.41,-0.09],[0.17,-0.04,0.38,0.13,0.1,-0.21,0.44,0.17,0.13,0.01,-0.12,-0.27,-0.44,-0.09,-0.06,0.12,-0.22,-0.04,0.32,-0.19,0.25,0.22,-0.05,-0.22,0.11,-0.08,0.39,-0.07,-0.21,0.19,-0.09,-0.21,0.11,-0.34,0.41,0.19,-0.0,-0.03,-0.01,0.19,0.13,-0.2,0.15,-0.01,0.1,-0.11,-0.25,0.26],[0.15,0.01,0.09,0.24,0.13,0.09,0.0,0.21,0.06,-0.08,-0.05,0.13,-0.04,-0.2,-0.03,-0.1,-0.01,-0.03,0.38,-0.06,0.18,0.1,-0.4,-0.17,0.33,-0.35,0.23,-0.33,0.04,0.13,-0.09,-0.14,-0.08,-0.18,0.3,-0.1,-0.11,-0.04,0.15,0.02,0.51,0.06,0.34,0.04,0.15,-0.12,-0.06,-0.07],[-0.06,0.02,0.02,-0.1,-0.04,0.0,-0.35,0.11,-0.26,-0.02,-0.18,-0.06,-0.01,0.09,-0.19,-0.18,0.09,0.01,0.18,-0.22,0.24,-0.11,-0.25,0.22,0.49,-0.29,0.38,-0.32,0.14,0.31,-0.35,0.43,-0.44,0.02,0.18,-0.13,0.04,0.35,-0.06,0.14,0.31,0.12,0.28,0.01,-0.17,-0.23,-0.04,-0.03],[0.28,-0.18,-0.15,-0.35,0.18,-0.16,-0.08,0.16,-0.4,-0.04,-0.31,0.18,0.25,0.39,-0.13,-0.33,-0.01,-0.21,0.17,-0.09,0.11,-0.04,-0.21,0.28,0.26,-0.17,0.28,-0.38,0.16,0.1,-0.35,0.59,-0.5,0.17,0.05,0.05,0.05,0.45,0.04,0.23,0.14,0.24,0.27,-0.09,-0.27,-0.25,0.21,-0.05],[0.23,0.13,-0.1,-0.21,0.17,-0.15,0.03,-0.09,-0.27,0.15,-0.08,0.17,0.33,0.24,-0.33,-0.11,-0.02,-0.11,-0.05,-0.01,0.22,-0.02,0.1,-0.12,-0.09,-0.25,0.38,-0.33,0.14,-0.11,-0.44,0.32,-0.27,-0.0,-0.2,-0.04,-0.01,0.06,0.27,0.03,0.06,-0.0,0.09,0.14,-0.27,0.1,0.18,0.21],[0.29,0.19,0.02,0.05,0.12,-0.2,0.21,-0.16,-0.03,-0.09,-0.27,-0.23,0.18,0.21,-0.14,-0.01,-0.15,-0.03,0.08,0.21,0.03,0.05,0.06,0.04,-0.2,0.13,0.33,-0.15,0.06,-0.16,-0.33,0.06,0.2,0.22,-0.0,0.06,0.2,-0.06,0.03,-0.13,0.06,0.04,0.0,0.17,0.05,-0.0,0.27,0.25],[0.22,0.29,0.11,0.02,0.26,-0.13,0.06,-0.07,-0.22,0.21,-0.27,-0.08,0.02,-0.11,-0.21,0.16,0.05,0.23,-0.09,0.12,0.02,-0.03,0.08,-0.01,0.06,-0.06,-0.01,0.07,-0.3,-0.05,-0.43,0.05,0.05,-0.02,-0.22,0.11,0.11,0.04,-0.14,-0.05,-0.06,-0.11,0.2,0.16,0.23,-0.1,-0.03,0.27],[-0.12,0.28,0.06,0.23,0.17,-0.03,0.3,-0.21,0.06,0.1,0.07,-0.25,-0.05,-0.09,0.11,0.19,0.24,0.2,-0.03,0.15,-0.12,-0.05,0.25,-0.11,0.19,0.04,0.3,0.19,-0.21,0.0,-0.47,0.04,0.34,0.01,0.1,-0.01,0.13,-0.01,-0.16,0.03,-0.01,0.05,0.04,0.22,0.1,0.15,0.11,0.17],[0.13,0.07,-0.17,0.25,-0.21,0.21,0.19,-0.2,0.31,-0.04,-0.1,-0.29,-0.01,-0.07,0.05,-0.51,-0.05,-0.13,-0.04,0.11,0.15,-0.07,0.31,-0.05,0.4,0.31,0.32,-0.28,-0.08,-0.01,-0.79,-0.01,0.3,0.06,0.27,-0.02,-0.05,0.35,-0.13,0.33,-0.22,-0.11,0.17,0.02,-0.26,-0.36,0.02,0.33],[0.28,-0.04,-0.21,-0.01,0.01,0.59,0.23,-0.14,0.43,0.16,-0.25,-0.37,-0.65,-0.34,0.19,-0.46,0.35,0.03,0.08,0.3,0.47,-0.24,0.39,-0.67,0.27,0.35,0.28,-0.33,0.06,0.24,-0.27,-0.16,0.04,0.04,0.1,0.44,0.39,0.46,-0.06,0.59,0.04,-0.38,0.67,0.01,-0.32,-0.05,-0.05,-0.04],[0.05,0.13,0.37,0.29,-0.31,-0.04,0.7,-0.05,0.03,-0.19,-0.04,0.0,-0.53,-0.05,0.29,0.14,-0.21,-0.04,0.15,-0.16,0.05,0.09,-0.39,0.33,0.04,-0.18,0.01,0.1,0.04,0.2,0.15,-0.61,0.14,-0.52,0.65,-0.01,-0.0,-0.14,-0.19,0.32,0.26,-0.02,0.27,0.16,0.22,0.07,-0.13,-0.2],[0.3,0.18,0.48,0.27,-0.19,-0.25,0.22,-0.01,0.06,-0.05,0.27,0.27,-0.38,-0.32,0.11,0.17,-0.05,0.18,0.31,-0.36,-0.0,-0.0,-0.26,0.12,0.26,-0.28,0.09,0.18,-0.09,0.05,0.16,-0.69,0.05,-0.5,0.49,0.32,-0.09,-0.01,-0.19,0.1,0.03,-0.07,0.06,-0.01,0.25,0.14,-0.07,-0.23],[0.21,-0.12,0.37,0.29,-0.1,-0.05,-0.0,0.07,0.14,-0.11,-0.02,0.04,-0.32,-0.22,0.17,0.13,0.08,-0.15,0.32,-0.45,0.02,-0.07,-0.24,-0.14,0.12,-0.15,0.22,0.28,-0.17,0.1,-0.19,-0.57,-0.05,-0.44,0.34,0.02,-0.06,0.01,-0.07,0.15,0.21,-0.02,0.03,-0.03,0.15,-0.01,-0.03,-0.01],[0.21,0.09,0.07,0.32,-0.12,-0.06,0.18,0.2,0.16,-0.21,0.09,-0.0,-0.12,-0.25,0.09,0.11,-0.1,-0.04,0.17,-0.41,-0.11,0.09,-0.43,-0.08,0.38,-0.14,0.18,0.07,0.14,0.08,-0.23,-0.01,0.16,-0.31,0.24,0.13,-0.07,-0.2,0.04,0.05,0.37,0.19,0.25,-0.05,0.33,0.04,0.17,-0.15],[0.12,0.0,0.24,0.02,-0.27,-0.08,0.14,0.03,-0.07,-0.1,0.11,0.1,-0.16,-0.04,0.05,0.02,-0.15,-0.15,0.22,-0.27,0.12,-0.04,-0.17,-0.03,0.37,-0.31,0.23,-0.15,0.12,-0.17,-0.24,0.24,-0.47,-0.16,0.18,0.06,0.08,0.25,0.27,0.18,0.36,0.21,0.32,0.0,-0.25,-0.03,-0.08,-0.16],[-0.05,-0.07,0.09,-0.03,-0.11,-0.2,-0.01,-0.01,-0.18,0.1,-0.11,0.15,0.16,0.01,-0.14,-0.29,0.05,-0.14,0.24,-0.13,0.31,-0.09,-0.1,0.1,0.18,-0.33,0.11,-0.21,0.25,0.11,-0.33,0.32,-0.4,-0.04,0.21,0.01,-0.18,0.37,0.12,0.21,0.06,0.09,0.22,-0.07,-0.18,0.01,-0.03,-0.11],[0.17,0.26,-0.18,-0.18,0.13,0.02,0.18,-0.08,-0.17,0.08,-0.21,-0.0,0.18,0.12,-0.09,0.04,0.05,-0.19,0.11,0.15,0.23,0.04,0.25,0.11,-0.03,-0.13,0.25,-0.26,0.22,0.08,-0.39,0.28,-0.21,0.12,-0.01,-0.13,-0.01,0.12,-0.12,-0.07,0.2,0.02,0.05,0.05,-0.37,-0.15,0.18,0.09],[0.26,0.08,0.15,0.06,0.04,0.09,0.12,-0.07,-0.11,0.11,-0.09,0.1,0.25,0.19,-0.1,0.01,0.06,-0.14,0.22,-0.08,-0.01,-0.06,0.13,0.06,-0.07,-0.19,0.29,-0.01,-0.07,0.03,-0.52,0.11,-0.19,0.0,0.13,-0.01,0.01,0.02,-0.21,0.16,-0.05,-0.2,-0.04,0.18,-0.11,0.01,0.19,0.34],[0.0,0.13,0.16,0.2,-0.0,-0.08,0.17,-0.06,-0.21,0.16,0.02,-0.18,0.19,-0.06,0.27,0.28,-0.08,0.01,0.19,0.02,-0.1,0.13,0.08,-0.01,0.12,-0.04,0.17,0.2,-0.1,0.03,-0.5,-0.11,-0.07,-0.03,0.14,-0.01,-0.01,0.01,-0.15,0.02,0.13,-0.31,0.09,0.3,-0.06,0.06,0.01,0.05],[-0.14,0.25,0.11,0.07,0.01,0.05,0.09,-0.15,-0.01,0.0,-0.12,-0.04,-0.11,-0.02,0.16,0.32,0.1,0.23,0.1,-0.03,-0.01,-0.08,0.1,-0.11,0.21,0.22,0.1,0.07,-0.13,-0.07,-0.58,-0.19,0.15,0.03,0.11,0.2,-0.13,0.05,-0.09,0.08,0.06,-0.06,-0.06,0.07,0.08,-0.04,0.06,0.12],[0.03,0.14,-0.09,0.07,0.13,0.24,0.07,-0.38,0.13,0.04,-0.27,0.09,0.09,-0.1,-0.07,0.1,0.02,-0.11,0.13,0.06,-0.06,0.11,0.3,-0.01,0.02,0.35,-0.12,0.12,0.24,0.16,-0.9,-0.08,0.34,0.16,-0.03,-0.17,0.13,0.23,-0.25,0.09,-0.17,0.06,0.22,0.08,-0.13,0.16,-0.11,0.36],[0.45,0.13,-0.12,-0.01,0.11,0.41,0.26,-0.23,0.26,-0.17,-0.08,-0.41,-0.31,-0.37,0.3,-0.23,0.04,0.22,0.2,-0.12,0.29,-0.05,0.32,-0.21,0.22,0.37,-0.2,-0.08,0.13,0.07,-0.34,-0.23,0.41,0.09,-0.01,0.2,0.12,0.26,-0.38,0.43,-0.17,-0.25,0.34,0.1,-0.03,-0.04,-0.27,0.02],[-0.1,-0.07,0.39,0.22,-0.01,0.11,0.29,0.08,0.19,-0.09,0.13,0.29,-0.43,-0.47,0.29,0.13,-0.04,-0.02,0.12,-0.24,-0.13,0.0,-0.21,0.22,-0.0,-0.15,-0.02,0.27,0.28,0.39,0.15,-0.7,0.03,-0.44,0.5,0.04,0.02,-0.04,-0.05,0.18,-0.03,-0.15,0.17,0.13,0.35,0.1,-0.33,-0.26],[0.1,-0.0,0.34,0.24,-0.07,-0.04,0.01,0.14,0.06,0.15,0.13,0.34,-0.02,-0.35,0.23,0.21,-0.08,-0.19,0.24,-0.22,-0.0,-0.02,-0.06,0.01,0.23,-0.05,-0.08,0.41,-0.0,0.15,-0.16,-0.55,-0.09,-0.36,0.14,-0.03,-0.01,-0.24,-0.09,-0.1,-0.2,0.07,0.23,-0.1,0.39,0.1,0.05,-0.27],[0.31,-0.08,0.29,0.25,-0.18,0.15,0.12,0.02,0.26,-0.01,0.15,0.23,-0.27,-0.21,0.28,0.06,0.11,0.05,0.32,-0.29,0.07,-0.02,-0.31,-0.2,0.19,0.2,0.1,0.42,0.1,0.03,0.08,-0.55,0.21,-0.21,0.32,0.06,0.09,0.04,0.04,0.06,-0.01,-0.01,0.13,0.09,0.3,0.08,-0.05,-0.17],[0.21,-0.17,0.38,0.03,-0.07,-0.19,0.29,0.17,0.15,0.05,0.04,-0.04,-0.11,-0.19,0.36,-0.1,-0.06,-0.14,0.39,-0.16,0.17,0.14,-0.23,0.18,0.26,-0.02,-0.21,0.17,0.25,0.13,0.16,-0.28,-0.14,-0.13,0.3,0.19,0.23,-0.01,0.19,0.14,0.34,0.01,0.16,-0.06,0.07,0.09,0.12,-0.06],[0.11,0.03,0.19,0.04,-0.2,-0.04,0.1,0.01,-0.02,-0.13,0.13,-0.05,-0.32,-0.16,0.28,-0.1,-0.05,0.11,0.27,-0.17,0.17,0.21,-0.17,-0.08,0.44,-0.22,0.13,-0.18,0.43,-0.25,-0.15,0.24,-0.37,-0.16,0.23,0.19,0.2,0.16,0.16,0.29,0.32,0.04,0.32,-0.02,-0.48,-0.07,-0.04,-0.22],[0.03,0.22,0.22,0.02,-0.07,-0.0,0.21,0.05,-0.08,-0.07,-0.03,0.15,0.24,0.15,-0.3,-0.42,0.16,-0.14,-0.01,-0.16,0.29,-0.04,-0.11,-0.09,0.18,-0.5,0.24,-0.21,0.13,-0.04,-0.43,0.11,-0.32,-0.14,0.27,0.12,-0.03,0.44,-0.25,0.07,0.14,0.02,0.22,0.04,-0.38,0.16,0.16,-0.04],[0.15,0.05,-0.1,-0.17,0.01,-0.13,0.21,0.06,-0.05,0.34,-0.03,0.19,0.36,0.26,-0.31,0.16,0.06,-0.18,0.23,-0.06,0.28,0.15,0.15,0.09,0.03,-0.11,0.17,-0.35,0.38,0.34,-0.62,0.17,-0.37,0.31,-0.03,-0.06,-0.05,-0.08,-0.01,0.17,0.01,-0.1,-0.04,0.24,-0.15,0.22,0.04,0.3],[0.05,0.19,-0.06,0.09,0.04,0.18,0.25,-0.07,-0.08,0.03,-0.34,-0.09,0.15,0.21,-0.16,0.09,0.02,0.0,0.23,0.13,0.29,0.14,0.04,-0.23,-0.15,0.18,0.29,-0.15,0.24,0.2,-0.4,0.09,-0.08,0.27,0.19,0.1,0.14,0.09,-0.04,-0.02,0.08,0.05,0.0,0.2,0.03,-0.12,0.06,0.27],[0.22,0.22,0.3,0.17,-0.08,0.25,0.0,-0.14,0.01,0.04,-0.04,-0.11,-0.15,0.04,0.26,0.37,-0.03,0.13,0.09,0.19,-0.16,0.03,0.24,0.04,-0.01,0.23,-0.0,0.1,0.04,-0.06,-0.48,-0.31,-0.08,-0.02,0.18,0.22,0.02,-0.01,-0.13,-0.08,0.07,-0.16,0.2,0.28,0.08,0.05,0.06,0.34],[0.09,-0.03,0.22,0.03,0.08,0.23,0.12,-0.04,0.0,-0.02,-0.04,-0.06,-0.23,-0.08,0.32,0.13,0.12,0.29,0.1,0.13,-0.04,-0.14,0.12,-0.11,0.17,0.2,0.03,0.1,-0.03,-0.04,-0.5,-0.08,0.2,-0.11,-0.11,0.15,0.0,0.21,-0.09,0.15,0.25,-0.13,0.33,0.34,0.18,0.02,-0.11,0.23],[-0.24,-0.12,0.04,0.09,0.02,0.31,0.19,-0.12,0.09,0.13,0.21,-0.05,-0.05,-0.02,0.27,0.11,0.13,0.04,0.08,-0.04,-0.29,0.01,0.16,0.04,0.06,0.03,-0.1,0.27,0.15,0.03,-0.57,-0.15,0.28,-0.01,-0.03,0.19,-0.07,0.0,-0.04,0.15,0.08,-0.27,0.2,0.28,0.02,0.02,-0.25,0.2],[0.29,0.05,0.1,0.04,-0.18,0.23,0.06,-0.14,0.23,-0.3,0.3,-0.14,-0.19,-0.3,0.31,-0.36,-0.1,0.09,0.13,-0.14,0.15,-0.01,0.03,0.14,0.16,0.14,-0.32,0.15,0.26,0.2,-0.39,-0.06,0.33,-0.18,0.26,-0.19,-0.14,0.52,-0.26,0.53,0.24,0.04,0.1,-0.03,0.09,-0.14,-0.17,-0.41],[0.14,-0.11,0.01,-0.2,0.24,-0.31,-0.13,-0.01,0.27,0.23,0.02,0.3,0.0,-0.08,0.17,0.3,0.23,-0.02,0.08,-0.25,-0.19,-0.06,-0.26,-0.07,-0.17,-0.04,-0.05,0.19,0.41,0.3,0.18,-0.42,0.1,0.09,0.07,0.11,-0.01,-0.08,0.14,-0.14,-0.01,-0.07,-0.01,0.03,0.11,0.45,-0.12,-0.36],[0.01,-0.27,-0.04,0.16,0.11,0.05,0.04,0.0,0.34,-0.02,0.15,0.33,0.16,-0.21,0.29,0.16,0.07,-0.04,0.2,-0.12,-0.0,-0.14,-0.06,0.07,0.12,-0.14,0.16,0.23,0.08,0.11,0.12,-0.52,0.19,-0.14,0.33,-0.12,0.06,-0.05,0.2,-0.06,-0.11,0.07,0.09,0.05,0.34,0.14,-0.11,-0.24],[0.13,0.14,0.26,0.23,-0.1,-0.09,0.15,0.17,0.3,0.08,0.29,0.09,-0.07,-0.3,0.36,0.0,0.05,0.02,0.17,-0.27,-0.01,0.04,-0.21,-0.05,0.06,0.05,-0.09,0.3,0.1,0.07,0.15,-0.55,0.17,-0.22,0.54,-0.04,0.25,-0.27,0.12,-0.07,-0.02,-0.02,0.16,0.02,0.3,0.19,0.12,-0.14],[-0.02,-0.17,0.11,0.1,-0.22,-0.28,0.27,-0.02,0.18,-0.1,0.02,0.07,0.04,-0.25,0.18,0.14,0.0,0.13,0.32,-0.19,0.15,0.02,-0.31,0.1,0.28,0.1,-0.17,0.33,0.35,0.14,0.07,-0.15,0.02,-0.09,0.42,0.16,0.18,0.09,0.01,0.08,0.15,0.03,0.15,-0.02,0.14,0.15,-0.08,-0.31],[-0.11,0.14,0.13,-0.01,0.09,-0.12,0.06,0.14,0.3,-0.29,0.04,0.11,-0.2,-0.08,0.18,-0.17,-0.16,0.09,0.25,-0.4,0.28,0.35,-0.4,0.09,0.16,-0.32,0.09,-0.17,0.26,0.04,0.26,-0.09,0.13,-0.1,0.24,0.32,0.2,0.38,-0.18,0.24,0.14,0.12,0.17,-0.06,-0.23,0.18,-0.03,-0.4],[0.27,0.12,0.22,0.05,-0.06,-0.29,-0.04,0.05,0.09,0.01,0.23,0.0,0.11,-0.08,-0.19,-0.41,0.1,-0.12,-0.06,-0.25,0.39,0.31,-0.11,0.09,-0.2,-0.17,0.34,-0.05,0.11,-0.02,0.14,-0.07,0.17,-0.03,0.27,-0.07,0.05,0.26,-0.32,0.07,-0.03,-0.07,-0.03,-0.11,-0.45,0.01,-0.1,-0.14],[0.06,0.07,-0.03,-0.05,-0.19,-0.07,0.25,-0.06,0.09,0.16,-0.08,0.03,0.11,-0.04,-0.07,0.15,-0.05,-0.1,0.22,0.07,0.34,0.02,0.2,-0.05,-0.05,-0.16,0.03,0.01,0.19,0.27,0.1,0.06,-0.19,-0.03,0.2,-0.04,0.18,-0.06,0.04,0.06,-0.03,0.04,0.14,-0.06,-0.12,0.06,0.09,0.08],[-0.07,0.09,-0.1,-0.1,0.15,0.26,0.18,-0.06,0.08,0.09,-0.21,-0.06,0.0,-0.01,0.13,0.2,0.08,-0.02,0.24,0.18,0.21,0.05,0.3,-0.12,0.09,0.17,-0.05,-0.01,0.1,0.27,0.01,-0.11,-0.13,0.02,-0.0,0.16,-0.02,0.01,0.15,0.07,0.12,-0.05,0.38,0.23,0.02,-0.08,-0.03,0.07],[-0.08,-0.03,0.18,0.27,0.05,0.46,-0.15,-0.21,0.16,0.11,-0.15,-0.13,-0.07,-0.23,0.12,0.3,0.04,0.12,0.01,0.17,0.0,0.1,0.1,-0.08,0.3,0.08,-0.05,0.25,0.12,0.11,-0.13,-0.28,0.13,-0.09,0.04,-0.11,0.05,0.07,0.01,0.29,0.03,-0.12,0.18,0.08,0.13,-0.13,-0.05,0.12],[-0.0,0.02,0.18,0.34,0.06,0.57,-0.08,-0.18,0.27,0.14,0.12,0.0,-0.27,-0.15,0.04,0.25,0.05,0.15,0.3,0.06,-0.02,-0.19,0.09,0.01,0.24,0.11,-0.08,0.21,0.05,0.01,0.06,-0.18,0.33,-0.01,0.01,0.11,-0.02,0.25,-0.25,0.09,0.04,-0.12,0.27,0.19,0.12,-0.03,-0.07,0.11],[-0.15,0.02,0.23,0.09,0.03,0.56,0.07,-0.25,0.1,-0.04,0.27,0.09,-0.11,-0.24,0.12,0.33,0.02,-0.0,0.08,-0.03,-0.08,0.12,-0.02,0.03,-0.04,0.16,-0.15,0.15,0.05,-0.07,-0.24,-0.03,0.38,-0.17,-0.0,0.07,-0.06,0.1,-0.07,0.29,0.14,-0.15,0.28,0.22,-0.02,-0.08,-0.21,0.25],[-0.29,0.12,0.18,0.14,-0.11,0.51,0.19,-0.08,0.18,0.03,0.29,0.3,-0.3,-0.36,0.27,-0.05,0.11,-0.16,0.22,0.04,-0.03,0.09,0.03,0.19,-0.11,0.1,-0.14,0.17,0.34,0.06,-0.1,0.11,0.26,-0.19,0.37,-0.18,-0.12,0.1,-0.02,0.21,0.24,-0.31,0.15,-0.09,-0.31,0.28,-0.13,-0.03],[0.34,-0.17,0.05,-0.26,0.37,-0.24,-0.35,0.3,0.24,0.01,-0.02,0.28,0.03,-0.03,0.33,0.0,0.41,-0.16,0.16,-0.07,0.04,-0.15,-0.19,0.02,-0.14,0.15,0.13,0.23,0.14,0.12,0.29,-0.54,0.38,0.04,0.14,0.2,0.03,-0.21,0.13,-0.12,-0.04,0.06,-0.16,0.08,0.1,0.22,-0.07,-0.44],[0.18,-0.21,0.13,-0.09,0.31,0.17,0.08,0.09,0.21,0.05,0.01,0.35,0.05,-0.03,0.39,0.01,0.12,-0.32,0.15,-0.33,0.03,0.03,-0.3,0.0,0.11,0.02,0.12,0.4,0.13,0.14,0.06,-0.64,0.13,-0.17,0.33,0.07,0.03,-0.18,0.29,-0.05,0.03,0.05,0.11,-0.15,0.13,0.31,0.04,-0.3],[0.2,0.14,-0.06,0.18,0.16,0.13,0.11,0.11,0.31,-0.15,0.31,0.28,0.03,-0.39,0.18,-0.03,-0.04,-0.18,0.11,-0.24,-0.05,0.09,-0.21,-0.03,-0.03,-0.04,0.04,0.36,-0.02,0.17,0.23,-0.7,0.36,-0.0,0.29,0.28,0.17,-0.18,0.0,-0.05,-0.06,-0.02,0.19,0.1,0.05,0.37,0.04,-0.12],[-0.05,-0.15,0.1,0.13,0.04,-0.17,0.22,-0.03,0.26,-0.1,0.09,0.25,-0.01,-0.03,0.09,0.13,0.15,0.18,-0.03,-0.26,0.15,0.03,-0.18,-0.0,0.26,-0.11,0.09,0.31,0.06,-0.06,0.29,-0.13,-0.07,-0.06,0.25,0.22,0.05,0.02,0.08,0.14,0.12,0.08,0.17,-0.07,0.22,0.02,-0.02,-0.14],[0.05,0.13,0.04,0.2,0.14,-0.18,0.23,0.04,0.41,-0.16,0.25,0.07,-0.27,-0.2,0.3,-0.09,-0.04,0.24,0.23,-0.18,0.29,0.08,-0.27,-0.13,-0.25,-0.21,0.21,0.24,0.11,-0.09,0.53,-0.18,0.12,-0.2,0.04,0.16,0.2,0.15,-0.11,0.36,0.09,-0.06,0.26,-0.09,-0.0,0.13,-0.07,0.02],[0.1,0.12,0.27,0.14,-0.13,-0.05,0.23,0.2,0.5,0.16,0.4,0.02,-0.16,-0.48,0.01,-0.34,0.22,0.23,-0.08,-0.24,0.34,0.03,-0.17,-0.24,-0.51,-0.14,0.08,0.25,0.13,-0.14,0.6,-0.19,0.06,-0.09,0.0,0.2,0.18,0.26,-0.25,0.32,-0.06,-0.19,-0.01,-0.03,-0.35,0.21,-0.18,0.0],[0.04,-0.02,-0.01,-0.23,-0.29,0.01,0.46,0.06,-0.12,0.26,0.1,0.19,-0.42,-0.23,0.14,0.21,0.21,0.3,0.22,0.16,0.28,0.03,0.04,-0.11,-0.37,-0.01,-0.03,0.12,0.01,0.08,0.44,0.01,-0.26,0.24,0.15,0.39,0.3,-0.11,0.26,0.19,0.2,-0.3,-0.04,0.23,0.02,0.22,0.13,-0.11],[-0.01,0.03,0.23,-0.17,-0.04,0.39,0.17,-0.14,0.03,0.21,0.17,0.2,-0.28,-0.28,0.29,0.25,0.04,0.11,0.42,0.35,-0.04,-0.0,0.02,0.04,-0.0,-0.08,-0.17,0.13,0.33,0.13,0.2,-0.02,-0.37,0.17,0.16,0.26,0.2,-0.23,0.32,0.21,0.13,-0.08,0.1,0.12,0.24,0.19,0.06,0.21],[0.25,-0.18,0.13,0.26,-0.04,0.28,-0.27,-0.22,0.06,0.12,0.26,-0.03,-0.22,-0.05,0.31,0.17,0.0,0.07,0.13,0.23,-0.22,-0.01,0.17,0.24,0.19,-0.03,-0.23,0.09,0.2,0.09,-0.04,-0.09,0.05,-0.2,0.24,-0.28,-0.08,-0.1,0.16,0.18,-0.03,-0.06,0.18,0.01,0.14,-0.27,0.15,0.06],[0.16,-0.23,0.02,0.28,-0.12,0.26,0.02,-0.09,0.04,0.03,0.49,0.08,-0.11,0.01,0.08,0.09,-0.13,-0.11,0.23,-0.11,-0.33,-0.21,0.28,0.14,-0.03,0.1,-0.11,0.21,0.1,-0.03,-0.09,-0.12,0.17,-0.29,0.15,-0.34,-0.24,0.04,-0.16,0.04,0.17,-0.0,0.03,0.03,-0.01,-0.07,0.05,0.02],[-0.26,0.02,-0.08,0.14,0.11,0.41,0.02,-0.03,0.06,-0.06,0.31,0.21,-0.1,-0.01,0.29,0.15,-0.13,-0.24,-0.01,-0.14,-0.04,0.08,-0.07,0.39,-0.05,-0.12,-0.21,0.35,0.28,0.05,0.08,-0.13,0.08,-0.27,0.18,-0.01,-0.05,0.09,-0.3,0.21,0.19,-0.17,0.06,0.13,0.07,0.18,-0.13,-0.0],[-0.23,-0.01,-0.15,0.14,0.17,0.25,0.13,-0.13,0.1,0.18,0.29,0.31,-0.08,-0.04,0.38,0.04,-0.02,-0.23,0.3,0.26,-0.11,0.02,-0.07,0.07,-0.12,0.11,-0.1,0.21,0.42,0.17,-0.03,-0.06,0.12,-0.24,0.29,-0.01,-0.08,-0.21,-0.05,-0.05,0.0,-0.37,-0.18,0.01,-0.58,0.1,-0.07,0.11],[0.48,-0.24,0.03,-0.04,-0.01,-0.21,-0.14,0.31,0.14,-0.23,-0.12,0.23,0.2,0.22,0.4,0.03,0.22,-0.11,0.17,-0.16,-0.12,-0.2,-0.01,0.12,0.13,0.15,0.21,0.1,0.16,0.18,0.11,-0.51,0.29,-0.11,0.24,-0.24,0.18,0.11,0.13,-0.12,-0.09,0.28,0.24,-0.06,0.2,0.01,0.05,-0.42],[0.15,-0.06,-0.15,-0.02,0.19,-0.1,0.21,0.22,0.16,-0.02,0.13,0.3,0.07,0.19,0.23,0.0,0.25,-0.25,0.02,-0.22,-0.08,-0.18,0.03,-0.03,0.07,-0.19,0.01,0.33,0.29,0.28,0.3,-0.65,0.08,0.11,0.32,-0.15,-0.11,-0.08,0.02,0.01,-0.27,0.26,0.16,0.23,0.24,0.09,-0.14,-0.27],[0.04,0.14,-0.05,0.3,0.21,-0.18,0.15,0.08,0.15,-0.02,0.33,0.05,0.12,-0.08,0.12,0.1,-0.04,-0.04,0.02,-0.06,-0.16,-0.19,0.01,0.03,0.09,-0.11,0.15,0.52,0.12,0.03,0.29,-0.58,0.16,-0.02,0.16,0.07,0.04,-0.07,0.05,-0.24,-0.17,0.14,0.02,0.07,0.36,0.03,0.01,-0.08],[0.01,0.13,-0.1,0.09,0.18,-0.07,0.29,0.0,0.13,-0.12,0.2,0.2,-0.04,-0.18,0.19,0.15,0.0,0.05,0.19,-0.17,-0.2,-0.09,-0.05,-0.07,-0.05,-0.08,0.04,0.28,0.14,0.21,0.47,-0.05,0.18,0.01,0.02,-0.02,-0.02,0.06,0.15,-0.15,0.02,0.11,0.21,-0.02,0.25,-0.13,-0.17,-0.05],[0.01,-0.12,0.01,0.08,0.12,-0.32,0.19,0.04,0.39,-0.14,0.39,-0.12,-0.35,-0.36,0.24,0.03,0.2,0.17,0.06,0.0,0.15,-0.02,-0.06,-0.13,-0.27,0.32,-0.21,0.11,-0.06,0.1,0.21,0.26,0.32,0.12,-0.16,0.11,0.38,0.1,-0.14,0.19,-0.3,0.11,0.13,-0.02,-0.08,-0.07,0.07,-0.16],[0.29,0.03,-0.31,-0.02,0.17,-0.26,0.16,0.02,0.14,-0.02,0.11,-0.32,-0.34,-0.29,0.1,0.05,0.27,0.26,-0.05,-0.26,0.17,-0.1,-0.1,-0.33,-0.39,0.42,-0.06,0.33,-0.05,0.09,0.29,0.09,0.04,0.27,-0.33,0.07,0.33,0.39,-0.18,0.38,-0.25,-0.34,-0.0,0.03,-0.24,0.13,0.12,0.07],[0.09,-0.14,-0.03,-0.19,-0.14,0.06,0.26,-0.04,-0.01,0.19,-0.21,-0.26,-0.46,-0.27,0.04,0.1,0.21,0.39,-0.2,0.3,0.14,-0.18,0.1,-0.18,-0.02,0.31,-0.05,0.12,0.15,0.12,0.04,0.03,-0.11,0.16,0.14,0.35,0.22,-0.01,0.09,0.42,-0.04,-0.41,0.0,0.17,-0.19,0.08,0.15,0.11],[-0.0,-0.32,0.22,-0.07,-0.4,0.25,0.12,-0.14,-0.25,0.16,-0.13,0.11,-0.09,-0.08,0.19,0.03,0.06,0.45,0.11,0.07,0.04,-0.02,0.08,0.4,0.2,-0.2,-0.15,0.2,0.29,-0.03,0.07,0.12,0.0,-0.31,0.47,-0.08,-0.04,-0.06,0.53,0.25,0.11,-0.1,0.07,0.03,0.32,-0.1,0.29,0.08],[0.08,-0.15,0.07,0.13,-0.0,0.12,-0.11,-0.22,0.06,-0.09,0.29,0.38,-0.12,0.03,0.51,0.02,-0.22,0.11,0.23,-0.12,-0.29,-0.03,0.07,0.27,0.31,0.21,-0.38,-0.04,0.19,-0.07,0.19,0.02,0.3,-0.17,0.29,-0.39,-0.29,-0.16,0.38,0.18,0.16,0.15,0.0,0.07,0.14,-0.09,0.11,-0.38],[0.48,-0.17,0.19,-0.04,-0.0,0.09,-0.18,-0.11,0.01,-0.01,0.38,0.33,0.05,0.12,0.29,0.1,-0.05,-0.22,0.31,0.03,-0.3,-0.04,-0.11,0.22,-0.03,0.12,-0.17,0.13,0.34,0.01,0.11,-0.17,0.24,-0.04,0.24,-0.44,-0.22,-0.01,-0.13,-0.07,0.3,-0.0,-0.19,0.04,0.23,0.06,-0.04,-0.13],[-0.05,0.04,-0.03,0.0,0.16,0.33,0.13,0.1,-0.12,0.22,0.14,0.45,0.13,-0.01,0.07,0.22,-0.11,-0.63,0.28,-0.12,-0.19,0.07,0.02,0.29,-0.31,-0.2,-0.13,0.22,0.35,0.29,0.41,-0.27,-0.09,-0.15,0.01,-0.0,-0.3,-0.13,-0.17,0.11,0.12,0.11,-0.14,0.06,-0.02,0.41,-0.11,0.22],[-0.17,-0.08,-0.03,-0.14,0.17,0.07,-0.2,-0.12,-0.04,0.2,0.28,0.3,0.21,0.23,0.24,0.27,-0.03,-0.46,0.27,0.01,-0.02,-0.15,-0.09,0.14,-0.15,-0.29,0.05,0.02,0.56,0.28,0.03,0.08,-0.04,-0.18,0.07,-0.38,-0.32,0.07,-0.2,-0.21,0.04,-0.23,-0.03,-0.05,-0.19,0.07,-0.05,-0.01],[-0.09,-0.13,0.15,-0.15,0.03,-0.55,0.05,0.24,0.12,0.09,-0.0,0.39,0.31,0.27,-0.02,0.05,0.0,-0.41,0.12,0.22,0.08,0.02,0.04,-0.21,0.32,-0.17,0.12,-0.16,0.4,0.26,0.5,-0.02,-0.32,-0.18,0.19,-0.28,-0.03,-0.03,0.33,-0.35,-0.51,0.32,0.24,-0.26,0.02,-0.16,0.1,-0.1],[0.02,0.09,-0.22,-0.23,0.3,-0.2,0.33,0.16,0.17,0.01,0.06,0.16,0.2,0.25,-0.06,0.37,0.09,-0.42,0.03,0.18,-0.25,-0.29,0.13,-0.01,0.3,-0.02,-0.1,-0.09,-0.0,0.42,0.18,-0.07,0.04,0.06,-0.3,-0.17,0.04,0.07,0.13,-0.11,-0.57,0.19,0.4,0.02,0.22,-0.24,-0.16,0.04],[-0.06,-0.0,-0.09,0.28,0.37,-0.16,0.04,0.01,0.29,-0.12,0.5,0.13,0.13,-0.08,0.2,0.32,-0.14,-0.01,0.12,-0.06,-0.27,-0.23,-0.07,0.01,0.28,0.01,-0.19,0.23,0.07,-0.03,0.1,-0.1,0.13,0.12,-0.05,-0.22,-0.04,0.04,0.16,-0.33,-0.32,0.07,0.07,0.01,0.11,-0.07,-0.01,0.01],[-0.16,0.24,-0.09,0.28,0.25,-0.53,0.34,0.01,0.21,-0.08,0.2,-0.16,0.15,0.12,0.08,-0.07,-0.17,-0.14,0.05,0.04,-0.29,0.01,-0.02,-0.11,0.2,0.18,0.0,-0.02,-0.06,0.1,0.26,0.19,0.26,0.1,-0.03,-0.14,0.09,0.3,-0.07,-0.16,-0.2,0.03,0.02,0.14,0.3,-0.17,-0.14,-0.02],[0.26,0.16,-0.22,0.2,0.26,-0.77,0.2,0.26,0.26,-0.19,-0.06,-0.25,-0.11,0.16,0.21,-0.16,0.07,0.07,-0.34,-0.28,0.13,-0.05,-0.05,0.16,-0.23,0.43,-0.13,0.24,-0.23,0.06,0.04,0.4,0.19,0.11,-0.22,-0.11,0.09,0.29,-0.3,0.13,-0.18,0.24,0.02,-0.01,0.21,-0.06,-0.06,-0.13],[0.19,0.2,-0.34,0.29,0.09,-0.76,0.03,0.18,0.18,0.06,-0.16,-0.41,-0.26,-0.0,0.05,-0.18,0.02,0.05,-0.36,-0.25,0.28,-0.14,0.04,-0.21,-0.4,0.51,0.19,-0.05,-0.52,-0.28,-0.12,0.05,0.03,0.29,-0.16,0.04,0.21,0.34,-0.3,0.34,-0.55,-0.03,0.06,0.13,-0.38,-0.09,-0.11,0.06],[-0.03,0.02,-0.36,-0.03,0.04,0.22,0.13,-0.03,-0.0,0.35,-0.5,-0.24,-0.29,-0.01,0.19,0.0,-0.1,0.23,-0.19,0.35,0.35,0.12,0.32,-0.13,0.02,0.27,0.31,0.04,-0.37,0.17,-0.24,-0.29,-0.13,0.19,0.26,0.2,0.29,0.26,0.01,0.17,-0.01,-0.46,0.18,0.21,-0.22,-0.16,0.24,0.32],[-0.25,-0.17,-0.08,0.28,-0.22,0.19,-0.06,-0.34,-0.26,0.0,-0.35,-0.13,-0.0,0.02,0.15,-0.24,-0.28,0.37,0.22,0.04,0.16,0.17,-0.05,0.19,0.56,-0.02,-0.01,-0.1,-0.06,0.01,-0.03,0.03,-0.05,-0.1,0.4,0.18,-0.04,0.15,0.39,0.26,0.22,-0.03,-0.06,0.01,0.12,-0.06,0.18,-0.25],[0.02,-0.48,0.22,0.22,-0.05,-0.1,0.23,-0.44,-0.14,-0.22,-0.03,0.37,-0.05,0.05,0.44,-0.36,-0.01,0.45,0.13,0.01,0.03,0.03,-0.17,0.2,0.09,0.11,-0.21,-0.03,0.46,-0.26,0.1,0.31,0.31,-0.3,0.37,-0.24,-0.28,-0.02,0.41,0.08,0.23,0.33,0.09,0.09,0.28,-0.01,0.02,-0.46],[0.08,-0.41,-0.08,-0.2,0.0,0.34,0.09,-0.26,-0.21,-0.2,0.24,0.4,0.21,0.13,0.22,0.02,-0.0,-0.19,0.21,-0.26,-0.1,-0.25,-0.24,0.29,-0.31,-0.28,-0.05,0.03,0.45,0.08,0.24,-0.09,-0.03,-0.06,-0.01,-0.48,-0.29,0.19,0.11,0.02,0.14,0.18,-0.2,0.12,0.24,0.18,0.06,-0.33],[-0.32,-0.16,-0.25,-0.36,0.14,0.46,-0.15,-0.15,-0.28,0.21,0.04,0.37,0.23,0.3,0.11,0.36,-0.11,-0.73,0.19,-0.18,-0.29,-0.33,-0.08,0.28,-0.18,-0.34,-0.07,0.28,0.27,0.5,0.26,-0.25,-0.21,0.04,-0.03,-0.09,-0.32,-0.03,-0.24,0.12,0.28,0.24,-0.37,0.08,0.15,0.27,-0.07,-0.13],[-0.38,-0.15,-0.24,-0.46,0.04,0.05,-0.24,-0.18,-0.19,0.1,0.19,0.43,0.27,0.29,0.26,0.23,-0.08,-0.49,0.14,-0.22,-0.36,-0.32,-0.2,-0.0,-0.17,-0.27,0.05,0.05,0.49,0.66,0.22,0.08,-0.19,0.04,-0.12,-0.2,-0.09,-0.0,-0.11,-0.06,0.27,0.06,-0.06,0.12,-0.01,0.27,-0.15,-0.0],[-0.27,-0.01,-0.03,0.16,-0.06,0.1,-0.12,-0.03,0.29,0.26,0.07,-0.32,-0.02,0.18,-0.37,0.32,-0.42,-0.11,0.25,0.43,0.04,0.22,0.11,-0.15,0.33,0.04,0.08,-0.03,0.16,-0.03,0.55,0.21,-0.41,0.02,-0.33,-0.02,0.17,0.11,0.55,-0.41,-0.54,0.08,0.27,-0.39,-0.29,-0.28,-0.17,0.38],[-0.25,-0.02,0.01,0.05,0.16,-0.44,0.12,0.28,0.25,-0.09,0.46,-0.12,-0.03,0.08,-0.18,0.3,-0.22,0.05,0.04,0.18,-0.29,-0.01,0.16,-0.32,0.61,0.04,-0.12,0.03,-0.06,-0.0,0.35,0.24,-0.08,0.32,-0.41,0.07,0.28,-0.01,0.41,-0.12,-0.48,0.18,0.08,-0.2,0.23,-0.33,-0.01,0.26],[-0.39,0.16,-0.05,0.16,0.5,-0.24,-0.02,0.07,0.3,-0.06,0.55,-0.18,0.11,0.19,-0.04,0.29,-0.16,0.01,0.0,0.31,-0.2,-0.02,0.04,-0.13,0.24,0.25,-0.06,0.12,-0.07,-0.23,-0.13,0.27,0.26,0.26,-0.45,0.06,0.22,-0.01,0.36,-0.34,-0.49,0.33,0.08,-0.22,0.24,-0.31,-0.02,0.1],[0.04,-0.02,-0.38,0.32,0.4,-0.27,0.11,0.02,0.22,-0.21,0.04,-0.23,0.18,0.23,0.23,0.01,-0.21,0.12,-0.26,0.14,-0.12,-0.07,0.12,-0.09,0.26,0.54,0.07,0.08,-0.32,0.07,0.06,0.26,0.45,0.34,-0.18,0.16,0.25,0.16,-0.07,-0.1,-0.28,0.26,0.16,-0.08,0.23,-0.15,0.07,0.14],[0.07,0.2,-0.21,0.26,0.42,-0.6,-0.0,0.02,0.13,-0.09,-0.03,-0.2,0.26,0.18,-0.09,-0.02,0.15,-0.04,-0.31,-0.03,0.28,-0.09,0.14,0.06,-0.21,0.44,0.11,-0.05,-0.29,-0.07,-0.31,0.2,0.38,0.31,-0.16,0.05,0.27,0.25,-0.23,0.02,-0.13,0.34,0.0,0.07,-0.2,-0.16,-0.06,-0.1],[0.3,0.01,-0.2,0.34,-0.16,-0.63,-0.48,0.08,0.02,-0.04,-0.24,-0.27,-0.18,0.06,-0.22,-0.41,0.23,-0.1,-0.4,-0.3,0.43,0.04,0.22,-0.01,-0.02,0.41,0.67,-0.16,-0.42,-0.27,-0.9,-0.04,0.34,0.34,-0.09,0.03,0.15,0.22,-0.7,0.43,-0.06,0.17,0.08,0.07,-0.28,-0.09,-0.05,-0.29],[0.12,-0.17,-0.24,0.09,-0.1,0.0,-0.34,-0.09,-0.08,0.16,-0.54,-0.18,0.0,0.33,-0.09,-0.49,-0.13,-0.06,-0.24,-0.03,0.19,0.15,0.25,0.16,0.01,0.09,0.89,-0.08,-0.22,0.19,-0.5,-0.34,-0.13,0.3,0.34,0.29,-0.09,0.43,-0.32,0.23,0.14,-0.23,-0.0,0.22,-0.13,0.04,0.06,0.12],[-0.19,-0.22,0.04,0.08,-0.21,0.09,-0.25,-0.17,-0.14,-0.1,-0.3,0.04,0.03,0.24,0.1,-0.3,-0.34,-0.0,0.03,0.06,0.15,0.17,0.15,0.17,0.06,0.22,0.07,-0.08,0.1,-0.12,-0.24,-0.03,0.02,0.0,0.36,0.43,-0.07,-0.11,0.28,0.19,0.13,-0.07,0.09,0.15,-0.09,-0.14,0.1,-0.18],[-0.11,0.02,-0.11,-0.24,0.14,0.04,0.48,-0.41,-0.09,-0.22,-0.32,0.35,0.04,0.28,0.15,-0.02,0.01,0.37,0.1,0.03,-0.05,0.21,-0.2,0.33,-0.14,0.07,-0.32,-0.21,0.53,-0.12,-0.01,0.3,0.39,0.11,0.14,-0.22,0.05,-0.07,0.39,0.18,0.36,0.14,0.16,0.06,-0.0,0.03,-0.0,-0.37],[0.09,-0.14,0.17,-0.26,0.13,0.24,0.25,-0.24,0.12,-0.0,0.01,0.64,0.1,0.21,0.42,0.14,0.2,-0.1,0.23,0.02,-0.06,0.04,-0.17,0.12,-0.39,0.01,-0.31,0.04,0.51,0.06,0.32,0.11,0.01,0.12,-0.27,-0.27,0.09,0.15,0.25,-0.08,0.28,0.15,0.08,-0.0,-0.06,0.18,0.03,-0.13],[-0.3,-0.27,-0.04,-0.21,-0.14,0.35,-0.0,-0.38,0.02,0.1,0.28,0.4,0.22,0.22,0.32,0.28,-0.11,-0.44,0.09,-0.04,-0.24,-0.36,-0.29,-0.02,-0.28,-0.23,-0.14,0.25,0.47,0.27,0.44,-0.07,0.09,0.0,-0.22,0.0,0.28,0.14,0.07,0.03,0.15,0.21,-0.01,0.08,0.19,0.17,-0.06,-0.11],[-1.13,-0.27,-0.11,-0.23,0.19,-0.01,-0.22,-0.16,-0.01,0.25,0.21,0.35,0.25,0.28,0.18,0.36,-0.22,-0.52,0.26,-0.07,-0.17,-0.48,0.02,-0.06,0.01,-0.28,0.29,0.21,0.33,0.52,0.14,0.02,0.03,0.13,-0.72,0.13,-0.03,-0.12,0.02,-0.12,0.16,0.35,-0.12,0.1,0.1,-0.18,-0.04,0.12],[-0.4,0.45,0.16,0.43,0.14,-0.23,-0.2,0.04,0.26,0.23,0.62,-0.42,0.0,-0.08,-0.52,0.03,-0.48,0.4,0.01,0.39,0.15,0.56,0.34,-0.27,0.15,0.37,-0.11,-0.24,-0.19,-0.53,0.26,0.58,-0.37,0.4,-0.54,0.06,0.25,0.02,0.23,-0.33,-0.61,-0.1,0.06,-0.41,-0.38,-0.27,-0.09,0.52],[-0.35,0.1,-0.04,0.05,0.41,-0.49,-0.19,0.26,0.36,-0.07,0.46,-0.37,0.11,0.09,-0.14,0.21,-0.33,0.25,-0.18,0.33,-0.36,0.08,0.17,-0.29,0.64,0.15,0.06,-0.17,-0.31,-0.31,0.02,0.54,0.0,0.4,-0.72,0.03,0.22,0.02,0.23,-0.05,-0.67,0.16,0.14,-0.13,-0.09,-0.39,0.15,0.09],[-0.17,-0.0,0.01,0.15,0.59,-0.53,-0.2,0.11,0.35,-0.2,0.46,-0.09,0.12,0.24,-0.02,0.09,-0.08,0.13,0.02,0.25,-0.22,-0.09,0.15,-0.05,0.44,0.35,-0.16,-0.09,-0.21,-0.16,-0.11,0.37,0.44,0.53,-0.35,-0.13,0.04,0.24,0.11,-0.4,-0.49,0.26,0.01,-0.06,0.02,-0.38,0.19,0.13],[0.07,0.09,-0.24,0.19,0.42,-0.05,-0.13,0.14,0.13,-0.06,0.11,-0.23,0.21,0.07,0.21,-0.03,-0.23,-0.02,-0.41,0.15,0.0,0.06,0.28,-0.06,0.07,0.54,-0.06,-0.15,-0.34,-0.13,-0.35,0.15,0.32,0.59,-0.43,0.12,0.31,0.26,0.14,-0.23,-0.33,0.1,0.13,-0.07,0.1,-0.37,-0.04,0.17],[0.23,0.32,-0.15,0.06,0.62,-0.37,-0.45,0.02,0.24,0.1,-0.06,0.03,0.04,0.17,0.07,-0.06,-0.04,-0.04,-0.33,-0.03,0.04,-0.09,-0.01,0.14,-0.23,0.2,0.19,0.03,-0.24,-0.01,-0.37,0.07,0.26,0.35,-0.16,-0.02,0.09,0.03,-0.27,-0.25,-0.22,0.19,-0.12,0.08,-0.29,-0.16,-0.07,0.09],[0.49,0.04,-0.23,0.14,-0.14,-0.51,-0.91,0.04,0.03,-0.02,-0.21,-0.29,0.07,0.25,0.08,-0.47,-0.08,-0.07,-0.29,-0.15,0.21,0.19,0.22,0.17,-0.09,0.17,0.21,-0.13,-0.13,-0.01,-0.43,0.19,0.0,0.47,0.12,-0.02,0.16,0.42,-0.31,0.35,0.03,-0.02,-0.1,0.09,-0.25,-0.35,-0.08,-0.14],[0.04,0.01,0.02,0.02,-0.06,-0.08,-0.74,-0.15,-0.25,-0.1,-0.36,-0.25,0.21,0.37,0.11,-0.18,-0.44,-0.15,-0.01,-0.17,0.11,0.39,-0.05,0.05,-0.42,0.19,0.57,-0.16,-0.2,0.21,-0.12,-0.2,0.03,0.22,0.45,0.1,0.16,0.29,-0.34,0.02,0.28,-0.05,-0.34,0.14,-0.12,-0.07,0.21,-0.01],[-0.47,0.14,-0.04,0.02,0.17,0.18,-0.2,-0.15,-0.26,-0.11,-0.44,-0.15,-0.02,0.11,0.25,-0.03,-0.37,-0.13,0.12,0.11,0.06,0.16,-0.16,-0.01,-0.46,0.22,0.45,-0.12,0.27,-0.05,-0.03,-0.14,0.21,0.3,0.24,0.45,0.33,0.1,0.1,0.2,0.42,0.1,-0.12,0.3,-0.19,-0.05,-0.0,-0.21],[-0.29,0.09,0.11,-0.08,0.35,0.09,0.43,0.04,0.15,-0.3,-0.23,0.05,0.01,0.17,0.01,-0.17,-0.24,0.12,0.3,0.29,0.1,0.21,-0.16,-0.07,-0.24,0.13,-0.2,-0.1,0.38,-0.29,0.06,0.13,0.23,0.18,-0.16,-0.21,0.13,-0.0,0.46,-0.11,0.27,0.04,0.09,-0.22,-0.19,0.15,-0.19,0.03],[-0.1,0.0,0.02,-0.16,0.21,0.28,0.3,-0.18,0.11,-0.11,-0.0,0.32,0.1,0.2,0.16,0.13,-0.04,0.16,0.33,0.26,-0.07,0.14,0.0,-0.27,-0.38,0.11,-0.28,-0.38,0.32,-0.12,0.1,0.16,-0.01,0.21,-0.21,-0.15,0.35,0.11,0.46,-0.36,-0.01,0.21,0.22,-0.18,-0.14,0.21,-0.2,0.08],[-0.17,-0.13,0.19,0.17,-0.06,-0.2,0.22,-0.22,0.28,0.0,0.13,0.29,0.19,0.15,0.26,0.28,-0.49,-0.5,0.2,0.32,-0.14,0.01,-0.09,-0.29,-0.12,0.12,0.02,0.07,0.3,-0.07,-0.01,0.04,-0.14,0.06,-0.36,0.13,0.31,0.06,0.32,-0.18,0.07,0.46,0.21,-0.27,0.01,0.05,0.01,-0.12],[-1.06,-0.18,0.16,0.2,-0.06,0.06,-0.34,-0.39,0.45,-0.06,0.14,0.24,0.13,0.09,0.15,0.2,-0.56,-0.55,0.15,0.29,-0.33,-0.42,0.06,-0.47,-0.14,0.01,0.35,-0.1,-0.02,0.05,0.24,-0.01,-0.06,0.14,-0.64,0.02,0.44,-0.05,0.18,-0.31,0.02,0.33,0.23,-0.11,0.06,-0.36,0.0,0.11],[-0.09,0.27,-0.28,-0.05,0.69,-0.21,-0.56,-0.08,-0.14,0.24,0.32,-0.32,0.28,0.23,-0.19,-0.12,-0.23,0.06,-0.42,0.27,-0.06,0.24,0.14,0.2,0.15,0.25,-0.43,-0.15,-0.13,-0.38,0.01,0.5,-0.32,0.32,-0.3,0.02,-0.27,0.1,0.02,-0.39,-0.55,-0.07,-0.14,0.08,-0.23,-0.12,0.13,0.45],[0.24,-0.13,-0.06,0.03,0.54,-0.58,-0.32,0.02,0.06,-0.08,0.31,-0.19,0.09,0.15,-0.05,0.1,-0.21,0.31,-0.41,0.42,-0.47,0.03,0.29,0.19,0.34,0.43,-0.27,-0.24,-0.13,-0.21,-0.52,0.55,-0.18,0.64,-0.21,-0.07,0.01,0.32,0.45,-0.16,-0.3,0.05,-0.15,0.27,-0.24,-0.28,0.18,0.29],[0.25,-0.0,-0.16,0.11,0.54,-0.48,-0.17,0.13,-0.1,-0.05,0.23,-0.16,0.22,0.41,0.19,0.22,-0.17,0.13,-0.34,0.36,-0.27,-0.16,0.25,0.17,0.37,0.49,-0.22,-0.2,-0.26,-0.12,-0.53,0.48,0.32,0.46,-0.1,-0.27,0.1,0.37,0.23,-0.1,-0.35,0.07,-0.07,0.17,-0.08,-0.46,0.14,0.32],[0.21,0.07,-0.22,0.04,0.57,-0.23,-0.08,0.13,-0.01,-0.06,0.17,-0.11,0.33,0.33,0.05,0.1,-0.17,-0.12,-0.26,0.38,-0.35,-0.24,0.42,0.18,0.01,0.37,-0.12,-0.17,-0.05,0.19,-0.26,0.48,0.31,0.34,-0.09,-0.31,-0.18,0.3,0.01,-0.33,-0.37,0.17,-0.1,0.08,0.23,-0.2,0.06,0.17],[0.32,0.25,-0.24,-0.07,0.55,-0.5,-0.54,-0.04,0.05,-0.17,0.18,-0.16,0.08,0.25,0.17,-0.06,0.07,-0.19,-0.25,0.03,-0.18,-0.14,0.0,0.14,0.12,0.23,-0.08,-0.2,-0.12,-0.06,-0.23,0.4,0.29,0.29,-0.18,-0.19,-0.02,0.32,-0.2,-0.09,-0.4,0.02,-0.24,0.19,-0.08,-0.33,-0.15,-0.09],[0.56,-0.15,0.01,-0.18,-0.02,-0.5,-1.13,0.05,0.01,-0.04,0.05,-0.25,0.06,0.1,-0.03,-0.15,-0.02,0.09,-0.13,-0.07,0.08,-0.05,0.16,0.07,-0.45,0.12,0.35,-0.25,0.06,0.17,-0.15,0.1,0.1,0.24,-0.2,0.14,0.22,0.35,-0.24,0.26,0.03,0.11,0.19,0.08,-0.48,-0.36,-0.16,-0.28],[-0.22,-0.05,0.08,-0.09,-0.12,-0.01,-0.88,0.01,-0.11,0.07,-0.17,-0.02,-0.04,0.2,0.22,0.08,-0.2,-0.16,0.27,-0.08,0.07,-0.08,0.06,0.01,-0.34,0.12,0.42,-0.29,0.08,0.28,0.37,-0.12,-0.32,0.28,-0.11,0.39,0.13,0.18,-0.42,0.14,0.24,-0.15,0.12,0.22,-0.14,-0.21,0.0,-0.03],[-0.54,0.04,-0.07,0.05,0.15,0.43,-0.12,0.0,-0.04,-0.12,-0.21,0.11,0.12,0.18,0.23,0.06,-0.23,0.05,0.39,0.11,0.08,0.38,-0.11,-0.18,-0.34,0.3,0.32,0.03,0.11,0.0,0.41,0.04,0.04,0.39,-0.12,0.33,0.43,-0.01,0.15,-0.07,0.47,-0.07,-0.11,0.04,-0.06,0.19,0.0,0.07],[-0.59,0.34,0.03,0.14,0.52,0.45,0.14,-0.15,0.22,-0.08,0.28,0.14,0.04,0.13,-0.09,-0.17,0.03,0.12,-0.05,0.32,-0.03,0.34,-0.03,-0.2,-0.02,0.03,-0.03,-0.22,0.2,-0.15,0.09,0.2,0.35,0.08,-0.16,0.03,0.26,-0.16,0.2,-0.22,0.26,0.15,0.26,-0.11,-0.35,0.18,0.02,-0.02],[-0.06,0.19,0.31,0.01,0.28,0.01,0.03,0.04,0.28,-0.18,0.14,0.15,0.24,0.09,0.18,-0.05,-0.32,0.18,0.3,0.22,-0.01,0.16,-0.16,-0.3,-0.39,0.02,0.13,-0.2,0.23,-0.26,-0.08,0.44,0.17,0.01,-0.09,-0.23,0.24,0.23,0.19,-0.13,0.32,0.09,-0.05,-0.07,-0.25,0.08,-0.18,0.2],[0.17,-0.08,0.35,0.27,0.15,-0.23,0.13,-0.32,0.25,-0.03,0.21,-0.1,-0.04,0.21,0.09,0.19,-0.76,-0.18,0.08,0.12,-0.11,0.25,-0.09,-0.32,-0.07,0.19,0.25,-0.2,0.04,-0.52,-0.47,0.17,0.11,0.15,-0.06,0.19,0.38,0.14,0.21,-0.01,0.09,0.19,-0.19,-0.37,-0.01,-0.13,-0.11,0.16],[-0.38,0.07,0.07,0.29,-0.2,-0.36,-0.1,-0.12,0.26,0.03,-0.05,0.02,0.22,0.08,-0.03,0.07,-0.94,-0.38,0.43,0.34,-0.25,0.12,0.21,-0.49,-0.2,0.19,0.45,-0.14,0.07,-0.51,-0.02,-0.16,-0.15,0.26,0.13,0.17,0.27,0.1,0.25,-0.11,0.34,0.23,-0.18,-0.21,-0.03,-0.31,-0.04,0.25],[0.19,-0.01,-0.25,-0.24,0.49,0.45,-0.45,-0.1,-0.36,0.42,-0.03,-0.18,0.24,0.02,-0.05,-0.11,0.14,0.07,-0.14,0.27,-0.29,0.12,0.26,0.52,0.32,0.22,-0.43,-0.12,0.02,-0.23,-0.12,0.5,-0.45,0.53,0.04,-0.31,-0.51,0.14,-0.18,-0.09,-0.11,-0.1,-0.11,0.34,0.07,-0.27,0.14,0.43],[0.31,0.03,-0.2,-0.15,0.26,-0.37,-0.06,0.15,-0.13,0.0,-0.29,-0.31,-0.03,0.2,-0.0,-0.02,-0.23,0.15,-0.4,0.41,-0.28,0.14,0.3,0.19,0.26,0.5,-0.44,-0.06,-0.45,-0.32,-0.79,0.26,-0.05,0.43,0.06,-0.15,-0.13,0.3,0.02,-0.02,-0.31,-0.12,-0.39,0.19,0.11,-0.45,-0.1,0.08],[0.35,0.09,-0.05,-0.06,0.26,-0.42,-0.07,0.22,-0.39,-0.02,0.04,-0.2,0.22,0.38,0.13,0.12,-0.14,-0.14,-0.46,0.26,-0.23,0.13,0.37,0.38,0.01,0.4,-0.29,-0.05,-0.43,-0.08,-0.71,0.42,0.14,0.26,0.3,-0.25,-0.11,0.12,0.09,-0.18,-0.3,0.24,-0.33,0.03,-0.05,-0.41,0.09,0.2],[0.19,0.02,-0.22,0.14,0.3,-0.06,-0.19,0.07,-0.43,0.18,-0.17,-0.01,0.35,0.25,-0.1,0.06,0.11,-0.12,-0.24,0.29,-0.11,-0.04,0.19,0.47,0.16,0.23,-0.13,0.02,0.0,0.25,-0.4,0.31,0.33,0.17,0.26,-0.33,-0.3,0.07,-0.09,-0.2,-0.41,0.23,-0.2,0.13,0.15,-0.22,0.1,0.23],[0.2,-0.03,-0.25,-0.17,0.35,-0.43,-0.34,0.1,-0.17,0.16,0.03,0.07,0.04,0.03,-0.15,0.07,0.14,-0.21,-0.23,-0.06,0.01,-0.24,0.05,0.28,0.1,0.17,-0.45,0.01,0.12,0.27,-0.15,0.41,0.23,0.2,-0.05,-0.39,-0.34,0.26,-0.23,-0.06,-0.54,0.11,-0.04,0.04,0.07,-0.22,-0.14,0.03],[0.67,-0.37,0.05,-0.19,-0.21,-0.6,-0.85,-0.03,-0.15,0.13,-0.0,0.15,0.02,0.26,0.1,0.24,0.21,-0.06,0.2,-0.26,-0.1,-0.28,-0.13,0.12,-0.48,-0.02,-0.14,-0.16,0.25,0.33,-0.02,0.19,-0.26,0.21,-0.22,-0.03,0.29,0.55,0.09,0.28,-0.19,-0.03,0.1,0.44,-0.21,-0.43,-0.08,-0.09],[-0.28,-0.34,0.02,-0.21,-0.0,0.01,-0.22,0.05,-0.17,0.17,-0.16,0.12,0.07,0.06,0.12,0.25,0.06,0.15,0.36,-0.12,-0.17,-0.34,-0.17,-0.14,0.03,-0.24,0.08,-0.15,0.41,0.54,0.35,0.03,-0.47,0.24,-0.54,0.33,0.34,0.08,0.11,0.21,0.2,0.01,-0.16,0.55,-0.0,-0.22,0.14,-0.07],[-0.91,0.11,0.07,-0.23,0.2,0.55,-0.1,0.04,-0.01,-0.13,0.21,0.12,0.03,0.11,0.18,0.22,-0.02,0.08,0.14,-0.08,-0.19,-0.1,-0.14,-0.2,0.11,-0.16,0.19,0.17,0.15,0.35,0.36,-0.01,0.07,0.34,-0.37,0.24,0.1,-0.16,-0.14,0.11,0.45,0.08,-0.1,0.5,-0.15,-0.06,0.29,-0.07],[-0.49,0.36,0.22,0.31,0.26,0.72,-0.33,-0.2,0.27,-0.08,0.34,-0.11,0.17,-0.05,-0.19,-0.15,0.04,0.42,-0.39,-0.09,-0.01,0.14,0.15,-0.14,0.32,-0.09,0.15,0.02,-0.18,-0.09,0.11,0.23,0.37,0.07,-0.33,0.02,0.17,0.14,-0.09,-0.11,0.41,0.01,-0.15,0.07,-0.22,-0.17,0.06,-0.13],[0.36,0.27,0.2,0.26,0.06,0.34,-0.22,-0.04,0.13,0.05,0.0,-0.04,0.2,0.09,-0.08,0.03,-0.25,0.06,-0.12,0.01,0.07,0.36,0.11,-0.17,-0.16,-0.01,0.5,-0.09,-0.2,-0.26,-0.02,0.02,0.26,0.25,-0.02,-0.17,0.06,0.36,-0.04,-0.26,0.11,0.12,-0.21,-0.08,-0.27,0.09,-0.16,0.17],[0.17,0.27,0.08,0.4,0.17,-0.19,0.2,-0.05,0.27,-0.03,0.17,-0.11,-0.05,0.11,0.03,0.02,-0.68,-0.15,0.04,0.13,0.08,0.29,-0.13,-0.14,-0.39,0.19,0.09,-0.08,-0.07,-0.31,-0.28,0.01,0.17,0.26,0.19,0.21,0.46,0.2,0.3,-0.04,0.31,0.03,-0.41,-0.05,-0.14,0.07,-0.09,0.02],[-0.83,0.18,0.04,0.23,-0.03,-0.37,0.05,-0.23,0.04,-0.24,-0.16,-0.21,0.3,0.33,0.06,-0.03,-0.4,-0.18,0.06,0.26,0.06,0.48,0.04,-0.19,-0.22,0.36,0.1,-0.17,-0.2,-0.48,-0.42,0.0,0.32,0.29,0.31,0.32,0.22,0.18,0.12,-0.06,0.13,-0.06,-0.35,-0.18,-0.23,-0.15,0.05,-0.03],[0.09,-0.06,-0.22,-0.28,0.13,0.23,-0.27,-0.02,-0.38,0.22,-0.53,-0.02,0.16,0.22,0.12,-0.25,0.39,0.16,-0.2,0.19,-0.19,0.02,0.25,0.35,0.52,0.28,-0.31,0.12,-0.19,-0.2,-0.02,0.22,-0.01,0.09,0.33,-0.35,-0.49,0.09,-0.03,0.3,-0.01,-0.07,-0.37,0.13,0.07,-0.11,0.08,0.19],[0.35,0.08,-0.16,-0.08,0.26,-0.21,0.18,0.2,-0.34,-0.01,-0.31,-0.09,0.3,0.21,-0.03,-0.25,-0.04,-0.05,-0.23,0.08,-0.22,0.06,0.21,0.34,0.27,0.22,-0.16,0.0,-0.33,-0.13,-0.19,0.11,-0.19,0.28,0.31,-0.14,-0.47,0.28,-0.02,0.26,0.15,-0.04,-0.38,0.23,0.17,-0.14,-0.06,0.11],[0.34,0.03,0.06,0.18,0.06,-0.37,0.2,-0.06,-0.36,0.14,-0.19,-0.14,0.27,0.18,0.03,0.24,-0.12,-0.25,-0.33,-0.03,0.0,0.02,0.31,0.22,-0.07,0.12,0.12,0.17,-0.27,-0.11,-0.32,0.28,0.08,0.01,0.28,-0.19,-0.31,0.17,0.11,-0.07,0.14,0.3,-0.14,0.05,0.19,-0.05,0.04,0.2],[-0.09,-0.1,-0.15,0.03,0.17,-0.37,-0.12,-0.05,-0.51,0.13,-0.2,0.11,0.31,0.16,0.01,-0.01,0.26,-0.21,-0.01,-0.03,-0.12,0.0,0.05,0.53,0.16,0.08,-0.13,0.31,-0.14,0.09,-0.3,0.09,0.09,-0.16,0.39,-0.28,-0.58,0.03,-0.1,-0.09,-0.24,0.37,-0.04,0.06,0.23,-0.05,-0.01,0.12],[0.21,-0.24,-0.09,0.03,-0.02,-0.01,-0.23,0.02,-0.18,0.21,0.21,-0.06,0.15,0.1,-0.06,0.1,0.3,-0.12,0.08,0.25,-0.2,-0.29,0.27,0.27,0.02,0.01,-0.49,0.01,0.07,0.16,-0.31,0.38,0.03,0.01,-0.16,-0.36,-0.51,0.13,-0.09,-0.07,-0.67,0.16,0.24,0.04,0.28,-0.3,-0.22,0.2],[0.61,-0.59,0.04,-0.26,-0.26,-0.52,-0.19,-0.07,-0.35,0.21,0.14,0.18,-0.25,0.06,0.29,0.13,0.31,-0.11,0.22,0.04,-0.18,-0.34,-0.1,0.05,-0.31,0.04,-0.72,-0.11,0.34,0.54,0.06,0.29,-0.43,0.17,-0.21,-0.16,-0.05,0.21,-0.07,0.12,-0.78,0.01,0.01,0.23,0.09,-0.29,-0.12,0.0],[-0.08,-0.28,0.17,-0.16,-0.2,0.04,0.25,-0.02,-0.03,0.36,0.04,0.35,-0.16,-0.02,0.18,0.26,0.37,-0.0,0.21,-0.12,-0.16,-0.25,-0.15,-0.24,-0.14,-0.09,-0.12,-0.05,0.27,0.29,0.36,0.09,-0.52,0.23,-0.41,0.44,0.33,-0.26,0.07,0.17,0.21,-0.36,-0.15,0.53,-0.11,0.22,-0.13,0.18],[-0.76,-0.15,0.04,-0.01,-0.0,0.87,-0.08,-0.04,0.07,0.11,0.36,0.22,0.11,-0.1,-0.03,0.32,0.45,0.41,-0.01,-0.17,-0.16,-0.18,0.28,-0.2,0.48,-0.25,0.33,0.21,0.02,0.24,0.22,-0.3,-0.32,0.36,-0.34,0.49,0.02,-0.23,-0.23,0.12,0.46,-0.1,-0.11,0.48,-0.01,0.16,-0.1,0.05],[-0.26,0.14,0.03,0.43,0.16,0.49,-0.18,-0.19,0.15,-0.16,0.48,-0.1,0.33,0.14,-0.16,-0.12,0.23,0.33,-0.47,-0.22,-0.04,-0.05,-0.06,0.09,0.28,-0.15,0.24,-0.04,-0.42,-0.05,0.12,0.32,0.48,0.11,-0.31,0.07,0.13,0.16,-0.13,-0.12,0.34,0.05,-0.27,0.21,0.05,-0.09,0.03,0.01],[0.23,0.19,0.06,0.38,0.16,0.43,-0.37,-0.04,0.05,-0.18,0.12,-0.06,0.33,0.32,-0.05,-0.25,-0.16,0.25,-0.32,0.04,0.28,0.16,0.11,-0.02,-0.02,0.07,0.39,0.02,-0.25,-0.28,0.07,0.09,0.3,0.14,0.2,-0.07,0.08,0.22,0.0,-0.01,0.32,-0.05,-0.48,-0.09,-0.12,-0.15,0.07,0.04],[-0.08,0.34,0.21,0.22,0.09,-0.08,-0.05,0.05,0.3,-0.21,-0.24,-0.01,-0.1,0.02,0.04,-0.28,-0.42,-0.18,-0.12,0.31,0.02,0.53,0.07,-0.0,-0.37,0.32,0.05,-0.12,-0.27,-0.35,-0.05,-0.24,0.32,0.09,0.45,0.4,0.14,0.15,0.23,-0.0,0.35,-0.23,-0.51,-0.04,-0.17,0.0,-0.14,0.19],[-0.83,0.37,0.03,0.27,-0.05,0.04,-0.2,-0.02,0.05,-0.2,-0.36,-0.07,0.41,0.42,-0.28,-0.16,-0.22,-0.23,-0.07,0.19,0.26,0.56,0.24,-0.08,-0.24,0.23,0.42,-0.13,-0.13,-0.27,0.17,-0.03,0.35,0.25,0.37,0.34,-0.03,0.2,0.01,-0.11,0.37,-0.06,-0.41,-0.04,-0.14,0.1,0.08,0.17],[0.13,0.14,-0.32,0.01,0.17,-0.2,-0.06,0.09,-0.06,-0.15,-0.54,-0.03,0.21,0.26,-0.07,-0.23,0.14,0.19,-0.37,-0.01,-0.01,0.17,0.06,0.43,0.15,0.2,-0.04,-0.1,-0.14,-0.34,0.03,0.33,0.02,0.03,0.36,-0.27,-0.54,0.13,-0.09,0.14,0.01,-0.12,-0.4,0.03,0.32,-0.09,0.04,-0.1],[0.27,-0.08,-0.11,-0.07,0.02,-0.15,0.09,0.15,-0.11,0.22,-0.35,-0.04,0.3,0.31,-0.27,0.04,0.16,-0.09,-0.16,0.12,0.28,-0.01,0.21,0.12,0.36,0.08,0.12,0.03,-0.31,0.02,0.23,0.26,-0.22,0.02,0.13,-0.31,-0.4,0.11,-0.05,0.08,0.15,0.16,-0.05,0.11,-0.03,0.02,-0.11,0.06],[0.45,0.04,0.0,0.02,-0.04,-0.38,0.18,-0.08,-0.41,0.23,-0.36,-0.01,0.18,0.37,0.01,0.0,0.14,-0.14,-0.25,0.04,-0.09,0.05,0.21,0.36,0.07,0.15,-0.01,-0.06,-0.45,-0.15,0.02,0.42,-0.13,-0.05,-0.0,-0.53,-0.44,-0.05,-0.05,0.03,-0.1,0.26,-0.16,0.0,0.09,-0.29,-0.24,0.04],[0.08,-0.02,-0.04,0.25,0.17,-0.41,-0.03,0.04,-0.11,0.22,-0.21,0.09,0.38,0.2,-0.02,0.07,0.18,0.02,-0.03,0.03,0.01,0.09,0.24,0.4,0.32,0.19,-0.33,0.08,0.03,-0.04,-0.16,-0.04,0.21,-0.17,0.19,-0.35,-0.24,-0.15,0.13,-0.07,-0.11,0.14,-0.05,-0.08,0.21,-0.2,-0.18,0.03],[0.02,-0.11,0.11,-0.06,-0.03,-0.18,-0.1,0.33,0.08,0.21,-0.05,0.14,0.2,-0.1,-0.2,0.25,0.07,-0.12,0.08,0.02,-0.05,-0.01,0.28,0.17,-0.28,0.0,-0.38,0.1,0.29,0.18,-0.09,0.27,0.03,0.04,-0.2,-0.33,-0.35,-0.29,0.03,-0.16,-0.42,0.21,0.25,-0.05,0.23,0.09,-0.04,0.27],[0.25,-0.49,0.34,-0.19,-0.29,-0.23,-0.01,-0.11,0.28,0.35,0.04,0.16,-0.28,-0.15,-0.08,0.32,0.26,0.05,0.19,-0.02,0.07,-0.1,0.03,0.02,-0.48,-0.11,-0.24,0.02,0.37,0.09,0.04,0.25,-0.06,-0.09,-0.4,-0.09,0.02,-0.11,-0.2,-0.02,-0.4,0.22,0.35,0.03,0.3,0.22,-0.02,0.28],[-0.14,-0.08,0.27,-0.29,-0.15,0.19,0.49,-0.26,0.13,0.51,0.15,0.21,-0.04,-0.19,-0.2,0.23,0.31,0.14,0.27,-0.06,-0.02,-0.18,0.25,-0.31,-0.11,0.01,0.08,0.02,0.05,0.24,-0.04,-0.06,-0.52,0.3,-0.24,0.05,0.28,-0.33,-0.1,0.1,-0.29,-0.01,0.13,0.17,0.07,0.21,-0.08,0.39],[-0.43,0.15,0.06,-0.23,-0.17,0.65,-0.11,-0.1,0.15,0.36,0.26,0.03,0.32,0.08,-0.34,0.14,0.5,0.22,-0.25,0.01,-0.01,0.03,0.45,-0.0,0.32,-0.12,0.42,0.18,-0.17,0.22,-0.14,-0.05,-0.41,0.2,-0.2,0.3,0.04,-0.56,-0.07,-0.02,0.05,-0.2,-0.31,0.23,0.01,0.17,0.09,0.26],[-0.14,0.3,-0.06,0.12,0.32,0.34,-0.04,-0.11,0.18,0.1,0.41,0.15,0.42,0.16,-0.25,0.0,0.33,0.44,-0.3,-0.04,0.02,0.18,0.24,0.16,0.5,-0.32,0.26,0.03,-0.24,0.04,0.05,0.21,0.36,0.09,-0.23,-0.08,-0.1,-0.22,-0.08,-0.05,0.22,0.22,-0.26,0.13,0.02,0.11,0.09,0.26],[0.05,0.27,0.07,0.33,-0.16,0.02,-0.26,-0.1,-0.03,-0.04,0.07,-0.07,0.31,0.34,-0.1,-0.32,-0.12,0.11,-0.4,0.03,0.32,0.4,0.2,0.12,-0.08,-0.0,0.4,-0.01,-0.17,-0.22,0.17,0.15,0.42,0.17,0.22,0.12,-0.09,0.22,0.13,0.08,0.28,0.22,-0.63,0.03,-0.08,-0.14,0.07,-0.11],[-0.47,0.06,0.1,0.33,-0.08,0.11,-0.08,0.06,-0.04,-0.16,-0.16,-0.26,-0.07,0.36,0.06,-0.22,0.16,-0.09,-0.25,0.03,0.05,0.39,0.12,0.32,-0.4,0.31,0.09,-0.03,-0.05,-0.42,-0.1,-0.1,0.35,0.14,0.08,0.16,0.29,0.42,0.26,0.07,0.17,0.24,-0.33,-0.09,0.04,0.16,0.07,-0.07],[-0.6,0.16,-0.09,0.18,-0.03,0.23,0.03,0.16,-0.22,-0.01,-0.18,-0.33,0.27,0.25,-0.05,-0.22,-0.06,-0.07,-0.18,0.18,0.22,0.25,-0.05,0.27,-0.27,0.18,0.29,-0.33,-0.05,-0.11,0.24,0.06,0.18,-0.02,0.24,0.12,-0.15,0.11,0.21,-0.18,-0.04,0.1,-0.36,-0.03,-0.17,0.19,0.01,0.17],[0.42,-0.05,-0.04,0.26,-0.1,-0.57,-0.16,0.14,-0.06,-0.22,-0.24,0.11,0.19,0.03,-0.09,-0.11,-0.07,0.23,-0.14,0.12,0.25,0.34,0.1,0.31,-0.01,0.11,0.06,-0.12,-0.1,-0.27,0.14,0.2,-0.04,-0.36,0.39,-0.17,-0.29,-0.02,-0.03,0.3,-0.16,0.03,-0.14,0.14,0.15,0.07,0.09,-0.08],[0.29,0.11,-0.01,0.07,-0.15,-0.15,-0.01,0.35,-0.28,0.2,-0.26,-0.07,0.19,0.27,-0.19,-0.06,0.2,0.19,-0.1,-0.15,0.23,-0.01,0.24,0.23,-0.0,-0.02,0.2,-0.05,-0.28,-0.19,0.11,0.17,-0.18,0.09,0.13,-0.04,-0.08,-0.04,-0.11,0.24,0.05,0.04,-0.21,0.18,0.03,-0.01,-0.01,-0.12],[0.55,-0.03,0.08,-0.1,-0.21,-0.03,-0.06,0.17,-0.13,0.17,-0.18,0.24,0.21,0.08,-0.31,0.17,0.19,0.04,0.14,-0.19,0.02,0.02,0.11,0.0,0.01,-0.06,0.06,0.09,-0.42,-0.06,0.08,0.06,-0.15,-0.04,-0.16,-0.03,0.08,-0.25,0.02,0.07,0.06,0.4,0.04,0.12,0.15,0.15,0.13,-0.09],[0.29,0.16,0.05,0.04,-0.18,-0.11,0.02,0.08,-0.12,0.07,0.03,0.18,0.12,0.23,0.01,0.24,0.02,-0.0,0.05,-0.17,0.06,0.03,0.05,0.23,0.05,0.03,-0.15,0.18,0.01,-0.17,0.06,-0.13,0.16,0.05,0.0,-0.06,-0.16,-0.33,-0.01,-0.18,0.11,0.25,0.13,0.06,0.17,0.22,-0.13,0.01],[0.13,0.04,0.1,0.03,-0.15,-0.07,0.11,0.12,0.07,0.1,-0.07,0.16,0.26,0.0,-0.11,0.05,0.23,0.09,0.25,0.04,0.13,0.22,-0.12,-0.03,-0.22,0.01,-0.28,-0.03,0.05,-0.1,-0.03,-0.03,0.14,-0.28,-0.12,-0.16,-0.01,-0.2,-0.15,-0.21,0.02,0.06,0.23,-0.23,0.05,0.39,-0.03,0.29],[0.03,-0.16,0.11,0.03,-0.23,-0.26,0.16,-0.06,0.15,-0.01,-0.1,0.42,0.18,-0.09,-0.21,0.19,0.12,-0.01,0.21,-0.36,-0.01,-0.07,-0.07,-0.0,-0.36,0.04,-0.02,0.01,0.3,0.11,0.04,0.15,-0.07,-0.03,0.0,-0.17,-0.05,-0.18,-0.2,0.03,-0.06,0.05,0.29,-0.18,0.36,0.24,-0.09,-0.04],[0.19,-0.01,-0.03,0.01,-0.22,0.07,0.28,-0.15,-0.03,0.39,-0.06,0.02,0.36,0.09,-0.27,0.13,0.16,-0.08,0.1,0.09,0.11,0.21,0.06,0.08,-0.02,0.04,0.09,0.08,-0.15,0.04,0.07,-0.04,-0.36,0.21,-0.12,0.04,-0.02,-0.28,-0.12,0.19,0.0,-0.06,-0.15,0.14,0.15,0.4,-0.14,0.3],[-0.23,0.24,0.08,-0.02,0.02,0.17,0.15,-0.06,0.12,0.51,0.14,0.2,0.32,0.16,-0.35,0.12,0.22,0.1,-0.28,0.19,0.12,0.15,0.32,0.16,0.2,0.01,0.25,0.02,-0.3,0.15,-0.33,-0.01,-0.19,0.42,-0.0,0.06,-0.1,-0.68,-0.25,0.03,0.16,0.04,-0.25,0.14,0.19,0.03,-0.01,0.35],[0.06,0.16,0.19,0.03,-0.05,0.09,0.06,-0.3,0.09,0.14,-0.14,0.16,0.21,0.13,-0.37,0.08,0.25,0.37,-0.08,0.26,0.07,0.19,0.09,0.2,0.14,-0.12,0.1,0.12,-0.09,-0.24,-0.07,0.01,0.13,0.2,0.07,-0.08,-0.19,-0.45,-0.11,-0.11,0.2,0.16,-0.31,0.05,0.32,0.24,0.2,0.28],[-0.15,0.08,-0.12,0.05,-0.09,-0.01,0.01,-0.27,0.02,-0.24,0.07,-0.18,0.04,0.11,0.18,-0.4,0.05,0.28,-0.22,-0.07,0.08,0.34,-0.04,0.41,-0.09,0.24,-0.03,0.1,-0.08,-0.24,0.34,0.13,0.34,0.17,-0.0,0.22,0.11,0.24,0.14,0.08,0.11,0.18,-0.45,-0.16,0.2,0.12,0.27,-0.03],[-0.8,-0.07,-0.23,0.11,-0.02,0.22,-0.25,-0.01,-0.05,0.01,-0.07,-0.02,-0.07,0.21,0.03,-0.2,0.37,0.11,-0.27,0.06,0.18,0.14,0.02,0.3,-0.18,0.33,0.03,0.23,0.07,-0.06,0.16,0.14,0.37,-0.02,-0.02,0.11,-0.11,0.18,0.13,0.01,0.05,0.23,-0.29,0.11,0.07,0.02,0.15,-0.02],[-0.61,0.15,-0.16,0.12,-0.09,0.13,0.36,0.36,-0.01,-0.16,-0.35,-0.1,-0.06,0.21,-0.01,-0.35,0.29,-0.09,-0.07,0.14,0.08,0.42,0.01,0.51,-0.5,0.53,0.03,-0.12,-0.12,-0.17,0.36,0.1,0.17,-0.27,0.14,0.19,0.09,0.11,0.31,-0.03,-0.14,-0.06,-0.16,-0.04,0.03,0.08,0.2,0.05],[0.01,0.05,0.05,0.11,-0.28,-0.68,-0.28,0.05,-0.02,0.09,0.19,0.29,0.19,0.09,-0.07,0.02,-0.2,0.38,-0.14,0.05,-0.03,0.11,0.12,0.25,0.05,-0.01,-0.09,0.04,-0.18,-0.25,0.24,0.28,0.1,-0.3,0.15,0.08,-0.18,-0.06,0.15,0.04,-0.3,0.22,-0.14,-0.27,0.22,0.13,-0.03,-0.24],[0.11,-0.06,0.04,0.14,-0.0,-0.22,-0.03,0.2,0.1,0.06,-0.06,0.2,-0.03,0.11,0.01,-0.04,0.21,0.41,0.1,-0.16,0.06,0.18,-0.03,0.01,0.06,-0.1,0.29,0.28,-0.18,-0.02,0.34,0.11,-0.19,-0.04,0.03,0.07,0.09,-0.17,-0.18,0.18,-0.17,-0.11,0.04,-0.04,0.19,0.16,-0.19,-0.2],[0.28,0.09,0.18,0.14,0.01,-0.02,-0.01,0.24,-0.1,0.12,-0.13,0.09,0.12,0.12,-0.05,0.12,0.03,0.21,0.08,-0.04,0.15,0.16,-0.08,-0.02,0.03,0.08,0.26,0.16,-0.18,0.03,0.17,-0.07,-0.03,-0.04,0.0,0.13,-0.02,-0.16,-0.07,0.16,-0.21,0.11,0.02,-0.02,0.22,0.37,0.26,-0.19],[0.14,0.12,0.03,0.13,-0.05,-0.11,-0.03,0.09,-0.01,-0.07,-0.06,0.26,0.18,0.02,0.0,0.23,0.14,0.32,0.25,-0.29,0.13,-0.0,-0.3,0.04,0.03,-0.0,0.18,0.14,-0.06,-0.0,0.13,-0.24,0.23,0.05,0.06,0.27,0.27,-0.23,0.23,-0.2,0.1,0.2,0.23,-0.15,0.09,0.52,0.03,-0.23],[-0.13,-0.02,0.19,0.12,-0.23,-0.06,0.11,-0.15,0.27,0.05,0.01,0.28,0.11,0.11,0.02,0.02,-0.03,0.0,0.07,-0.18,0.28,0.06,-0.05,-0.16,-0.13,-0.04,-0.07,0.01,0.18,-0.08,0.12,-0.02,0.17,-0.16,0.12,0.03,0.06,-0.09,-0.07,-0.27,0.25,0.12,0.25,-0.17,0.09,0.4,-0.07,-0.07],[-0.0,-0.06,0.09,-0.15,0.01,0.02,0.08,-0.13,0.1,-0.13,0.03,0.3,0.21,0.12,-0.12,0.09,0.04,-0.19,0.22,-0.07,0.32,0.19,-0.1,0.07,-0.23,0.07,0.14,-0.15,0.05,0.06,-0.11,-0.23,0.04,0.08,0.05,0.01,-0.07,0.04,-0.12,-0.21,0.21,0.24,0.18,-0.14,-0.07,0.23,-0.09,-0.06],[-0.16,0.2,-0.13,0.06,0.15,-0.13,0.17,0.01,0.1,0.15,-0.1,0.15,0.33,0.04,-0.4,0.06,-0.02,-0.35,0.07,0.18,0.02,0.16,0.1,-0.12,0.09,0.05,0.16,-0.23,-0.01,0.2,0.04,-0.04,-0.02,0.18,0.09,-0.06,0.05,-0.1,-0.03,-0.06,-0.03,0.18,0.06,-0.13,0.08,0.29,-0.23,0.31],[0.01,0.35,0.03,0.04,0.06,0.09,0.14,-0.06,-0.04,0.16,-0.0,0.04,0.34,0.08,-0.25,0.16,0.12,0.2,-0.08,0.17,-0.08,0.35,0.05,-0.08,0.11,-0.01,0.26,0.1,0.01,0.14,-0.04,0.0,0.06,0.16,-0.02,0.17,-0.1,-0.36,-0.03,-0.01,-0.09,0.16,-0.02,0.17,0.11,0.26,-0.15,0.39],[-0.0,0.05,0.06,0.06,-0.15,0.25,-0.05,-0.23,-0.32,0.31,-0.15,0.13,0.28,0.32,-0.19,0.3,0.19,0.22,-0.01,0.22,0.27,0.05,0.15,0.22,0.05,0.21,0.01,0.05,-0.03,0.1,0.06,0.16,-0.21,0.08,0.02,0.11,0.1,-0.2,0.25,0.07,-0.08,-0.0,-0.07,0.09,0.34,0.24,-0.03,0.31],[-0.64,0.02,-0.07,-0.08,-0.0,0.31,-0.03,-0.14,-0.19,0.08,-0.09,0.01,-0.09,0.34,-0.0,-0.21,0.38,0.35,-0.24,0.15,0.15,0.04,-0.1,0.41,-0.15,0.39,-0.11,0.24,-0.18,-0.12,0.18,0.23,0.04,0.14,-0.25,0.1,-0.1,0.09,0.41,0.31,0.07,0.09,-0.15,0.19,0.29,-0.03,0.21,-0.01],[-0.76,-0.0,-0.08,0.04,-0.17,0.31,-0.11,0.04,-0.18,0.2,0.13,0.06,-0.02,0.16,0.16,-0.1,0.58,0.02,-0.21,-0.02,0.06,-0.01,-0.02,0.46,-0.05,0.36,-0.12,0.21,0.0,-0.12,0.27,-0.05,0.38,-0.05,0.07,0.26,-0.08,-0.06,0.23,0.19,-0.04,0.28,0.04,0.12,0.33,0.27,0.15,-0.15],[-0.55,0.18,-0.29,0.21,0.0,0.56,0.04,0.31,-0.05,-0.05,-0.13,-0.17,-0.24,-0.05,0.06,-0.37,0.58,-0.03,-0.2,0.13,0.26,0.29,-0.13,0.34,-0.16,0.63,-0.28,0.49,-0.06,-0.21,0.31,-0.35,0.28,-0.14,-0.18,0.41,0.12,0.01,0.28,0.17,0.16,0.21,0.01,-0.06,0.06,0.16,0.45,-0.13],[0.3,-0.16,0.1,-0.07,-0.3,-0.68,-0.05,0.08,0.04,0.24,-0.19,0.17,0.11,-0.16,0.12,0.16,0.11,0.13,0.15,-0.03,0.02,-0.05,0.03,0.25,-0.22,0.02,-0.19,0.52,0.26,0.19,0.39,0.1,-0.25,-0.1,0.11,0.16,-0.19,0.01,0.32,-0.02,-0.29,-0.22,-0.11,-0.07,0.23,0.17,-0.2,-0.36],[0.08,-0.05,0.16,0.02,-0.22,-0.25,-0.11,0.12,0.36,0.23,0.01,0.3,0.1,-0.02,0.2,0.08,0.22,0.4,-0.08,-0.25,-0.01,0.08,0.06,0.04,0.11,-0.05,0.17,0.22,0.04,-0.23,0.3,-0.2,0.13,-0.2,0.04,0.18,0.17,-0.11,0.29,-0.03,0.07,-0.08,-0.05,-0.19,0.16,0.11,-0.01,-0.1],[0.02,0.17,0.24,0.16,-0.07,-0.3,-0.09,0.18,0.06,0.29,-0.05,0.0,0.17,0.03,-0.07,0.1,-0.02,0.35,0.2,-0.02,0.07,-0.04,0.07,0.1,-0.05,-0.04,0.18,0.32,-0.34,-0.24,0.04,-0.01,-0.13,-0.14,0.01,0.01,0.16,-0.11,0.12,0.13,-0.23,-0.06,0.16,0.01,0.24,0.0,-0.02,-0.2],[-0.04,0.01,0.05,0.06,-0.03,-0.34,-0.15,0.16,-0.06,0.1,0.08,0.23,0.21,0.05,0.04,-0.08,0.04,-0.08,0.03,-0.02,0.04,0.22,-0.07,-0.14,0.15,0.06,0.22,0.38,0.04,-0.05,0.47,-0.26,0.21,0.06,0.12,0.16,0.05,-0.23,-0.06,-0.02,-0.14,0.07,0.14,-0.09,0.12,0.37,0.04,-0.07],[-0.41,0.21,0.15,0.08,-0.14,-0.07,-0.12,-0.01,0.21,0.06,0.08,0.32,0.33,-0.07,0.13,0.07,0.08,0.1,-0.05,-0.2,0.27,-0.09,0.04,-0.08,0.1,0.0,0.3,0.06,-0.02,-0.09,0.11,-0.01,0.35,-0.1,-0.17,0.14,0.25,-0.08,-0.18,0.06,0.05,0.22,0.05,-0.1,-0.06,0.13,-0.09,-0.04],[-0.16,0.01,0.06,0.13,-0.08,-0.06,-0.11,-0.18,0.14,0.03,0.14,0.29,0.28,0.19,-0.08,-0.25,0.11,-0.04,0.15,-0.05,0.11,0.15,0.12,-0.15,0.01,-0.03,0.38,-0.33,0.04,-0.03,0.21,0.0,0.08,-0.12,0.11,-0.03,0.08,0.04,-0.12,0.02,0.2,0.29,0.25,-0.26,-0.28,0.23,-0.15,-0.19],[-0.05,0.22,0.15,-0.03,0.31,-0.01,0.04,0.03,0.03,0.09,0.26,0.19,0.26,0.06,-0.21,0.11,-0.17,-0.23,0.07,0.0,0.16,0.03,0.16,0.06,-0.04,0.02,0.14,-0.22,0.19,0.19,0.25,-0.06,-0.08,0.08,0.05,-0.03,0.01,-0.15,-0.11,0.03,-0.04,0.15,0.21,0.06,-0.1,0.2,-0.2,0.3],[0.06,0.24,-0.1,-0.2,0.06,0.04,0.19,-0.13,0.12,0.17,-0.01,0.11,0.27,0.12,-0.13,0.25,0.02,0.29,0.08,0.16,-0.09,-0.12,0.11,0.06,0.06,0.19,0.18,-0.1,-0.04,0.16,-0.06,0.19,-0.17,0.16,-0.07,0.13,0.17,-0.08,0.01,-0.02,-0.14,0.06,-0.04,-0.02,0.21,0.09,-0.01,0.31],[-0.46,-0.08,0.11,-0.24,-0.17,0.31,0.04,-0.08,-0.01,0.51,-0.18,-0.02,0.18,0.05,-0.25,0.43,0.08,0.38,0.07,0.28,0.04,-0.06,0.22,-0.09,0.13,0.26,0.07,0.3,0.13,0.15,0.04,0.14,-0.42,0.3,-0.29,0.18,0.08,-0.36,0.1,0.08,-0.02,0.12,-0.0,0.19,0.16,0.15,0.04,0.41],[-0.88,-0.13,-0.04,-0.04,-0.25,0.35,0.0,-0.06,-0.15,0.25,0.14,0.08,0.16,0.02,-0.05,0.13,0.03,0.39,-0.13,0.12,-0.06,0.06,-0.02,0.17,-0.01,0.22,-0.16,0.23,-0.13,-0.16,-0.12,0.16,0.03,0.21,-0.31,0.26,0.02,-0.14,0.15,0.05,-0.0,0.06,-0.25,0.0,0.27,0.02,-0.07,0.03],[-1.13,-0.06,-0.12,0.23,-0.32,0.2,0.0,0.27,0.02,0.24,0.18,0.07,-0.05,-0.11,-0.08,0.12,0.34,-0.05,0.02,0.01,0.19,0.08,0.23,0.27,0.12,0.4,-0.05,0.08,-0.13,-0.02,0.13,-0.03,0.17,-0.17,-0.16,0.09,-0.02,-0.14,0.24,0.02,0.06,0.02,-0.2,-0.16,-0.11,0.26,-0.14,0.26],[0.08,-0.09,0.08,0.27,-0.47,0.49,-0.19,0.11,0.21,0.19,0.19,0.2,-0.18,-0.0,0.15,-0.16,0.5,-0.12,-0.11,0.07,0.18,-0.03,0.05,0.08,0.03,0.36,0.04,0.05,0.12,0.02,0.07,-0.11,-0.08,-0.4,-0.13,0.07,0.06,0.13,0.13,0.08,-0.15,0.2,0.39,-0.29,-0.11,0.02,0.1,-0.02],[-0.03,-0.04,0.1,-0.14,-0.23,-0.42,-0.08,0.05,0.12,0.15,-0.18,0.36,0.06,0.05,0.08,0.05,0.2,0.1,-0.12,0.04,-0.01,-0.07,0.2,-0.06,-0.36,0.06,0.12,0.17,-0.04,0.18,0.18,-0.32,-0.2,0.09,-0.19,0.43,-0.05,-0.19,0.13,-0.1,-0.02,-0.16,-0.17,0.04,-0.03,0.18,0.29,-0.24],[-0.02,-0.11,0.14,0.24,-0.33,-0.34,-0.07,0.17,0.39,0.16,0.19,0.34,0.01,0.13,0.13,-0.17,0.14,0.25,0.16,-0.16,0.08,0.1,0.25,-0.04,0.08,0.01,0.27,0.05,-0.08,-0.3,0.4,0.04,0.02,-0.12,0.1,0.13,0.0,0.01,0.08,0.13,0.02,-0.33,0.04,-0.14,-0.13,0.06,-0.08,-0.32],[0.02,0.02,0.14,0.34,-0.06,0.15,0.04,0.17,0.38,0.16,0.02,0.07,-0.14,0.01,0.09,-0.03,0.04,0.32,-0.1,-0.18,0.22,0.23,0.11,0.04,-0.01,0.34,0.11,0.16,-0.1,-0.09,0.17,-0.04,0.19,0.12,0.34,0.09,0.03,-0.12,0.05,0.1,-0.27,-0.35,0.17,-0.2,0.07,0.22,-0.29,-0.25],[-0.24,0.04,0.17,0.15,-0.19,0.03,0.16,0.13,0.21,0.2,-0.09,0.36,0.08,0.12,0.06,-0.03,0.05,-0.02,-0.03,-0.28,0.26,0.06,0.08,-0.12,0.05,0.19,0.23,0.19,0.17,-0.04,0.27,-0.2,0.0,-0.08,-0.06,0.19,0.0,-0.03,-0.17,-0.16,-0.13,-0.17,0.16,-0.07,0.11,0.5,0.05,-0.03],[-0.23,-0.12,-0.08,0.28,-0.0,-0.09,-0.42,-0.07,-0.02,0.01,0.06,0.26,0.15,0.01,0.01,-0.01,0.07,-0.0,0.03,-0.13,0.29,0.12,-0.11,-0.21,0.11,0.17,0.46,-0.05,-0.06,-0.09,0.41,-0.06,0.22,-0.07,0.01,0.1,0.12,0.19,-0.27,-0.07,-0.02,-0.05,0.01,-0.25,-0.07,0.08,-0.15,-0.24],[-0.3,0.13,-0.03,0.08,0.11,0.08,-0.07,-0.15,0.01,-0.1,0.08,0.13,0.24,0.33,-0.3,-0.1,-0.07,-0.12,0.07,0.07,0.29,0.01,0.28,-0.17,0.05,0.14,0.41,-0.34,0.07,0.1,0.34,0.19,0.04,0.14,-0.0,-0.15,-0.08,0.34,-0.09,-0.09,-0.11,-0.01,0.12,-0.44,-0.41,0.13,-0.29,-0.02],[-0.01,0.2,-0.15,-0.18,0.3,-0.32,0.13,-0.09,-0.1,0.29,-0.05,0.23,0.28,0.12,-0.12,0.03,-0.03,-0.18,0.15,0.12,0.0,0.11,-0.03,-0.13,0.05,-0.08,0.32,-0.12,0.19,0.22,0.26,0.22,-0.07,0.16,0.12,-0.09,-0.08,0.06,-0.24,-0.01,0.0,0.17,-0.1,-0.18,-0.03,0.27,0.08,0.14],[-0.17,0.26,-0.01,-0.17,0.0,-0.09,0.03,0.12,0.01,0.2,0.06,0.02,0.12,0.14,-0.12,0.35,0.1,0.06,0.05,0.17,0.12,0.19,-0.16,0.08,-0.02,0.07,0.11,-0.03,0.03,0.06,0.18,0.22,-0.22,0.15,-0.22,0.24,0.05,-0.17,-0.08,-0.01,-0.18,-0.03,-0.03,-0.09,-0.09,0.12,0.09,0.09],[-0.26,-0.02,-0.02,-0.14,-0.16,-0.17,0.25,0.09,-0.12,0.31,-0.11,-0.09,0.09,-0.07,-0.16,0.52,-0.16,0.18,0.07,0.33,-0.01,0.04,0.02,-0.05,-0.19,0.15,-0.04,0.2,0.33,0.16,-0.01,0.02,-0.19,0.05,0.01,0.22,0.13,-0.4,0.09,0.11,0.08,-0.03,-0.18,0.09,0.12,0.25,-0.12,0.29],[-0.77,-0.01,0.0,-0.14,-0.23,-0.22,0.11,0.16,-0.23,0.27,-0.01,0.1,0.06,0.2,-0.27,0.3,0.2,0.1,0.05,0.08,-0.14,-0.02,-0.16,0.1,0.02,-0.0,0.01,0.24,0.0,0.37,-0.13,-0.1,-0.24,0.05,-0.22,0.27,-0.06,-0.04,0.1,0.3,0.04,-0.03,-0.11,0.38,0.11,0.09,-0.25,0.23],[-0.63,-0.04,-0.33,0.17,-0.04,-0.42,0.35,0.21,0.17,0.22,0.24,-0.0,0.12,0.06,-0.12,0.04,0.03,0.29,0.05,0.12,0.19,-0.09,0.12,0.15,0.19,0.06,0.16,0.04,0.01,0.24,-0.2,0.21,-0.2,-0.09,-0.34,-0.12,0.02,-0.16,0.07,-0.09,-0.04,0.23,0.16,-0.12,0.12,0.23,-0.12,0.2],[-0.13,-0.13,-0.22,-0.03,-0.52,-0.23,0.1,0.04,0.3,0.05,0.53,0.37,-0.02,-0.07,-0.04,-0.14,0.02,0.15,-0.28,0.05,0.38,-0.2,0.32,0.19,0.27,0.11,0.14,0.03,0.24,0.06,0.23,0.19,-0.12,-0.37,-0.19,-0.44,0.0,0.3,0.28,0.29,0.03,0.41,0.35,-0.24,0.08,-0.13,-0.03,-0.32],[0.05,-0.02,-0.05,0.05,0.14,-0.52,-0.0,-0.02,0.02,0.07,-0.04,0.44,0.23,-0.1,-0.12,0.09,0.14,0.14,-0.16,-0.3,0.43,0.18,-0.12,-0.19,-0.05,-0.3,0.39,0.07,-0.08,0.02,0.54,-0.66,0.3,0.09,-0.05,0.21,0.09,0.04,0.01,0.01,0.37,0.06,-0.02,-0.03,0.12,0.41,0.38,-0.21],[0.05,-0.37,0.13,-0.04,-0.41,-0.19,-0.42,0.03,0.1,0.28,0.18,0.62,-0.06,0.18,0.19,-0.15,0.07,0.48,0.04,-0.09,0.01,0.04,0.06,0.07,0.05,-0.03,0.24,-0.14,0.16,-0.17,0.48,-0.46,0.06,0.15,0.31,-0.06,-0.04,0.02,0.2,0.13,0.06,-0.2,0.1,-0.03,-0.18,0.26,-0.05,-0.28],[-0.03,-0.27,0.03,0.03,-0.25,0.17,-0.11,0.02,0.07,0.41,0.17,0.56,0.18,0.14,0.05,0.08,0.32,0.01,-0.07,-0.22,0.41,-0.02,0.07,-0.1,0.03,-0.15,0.25,-0.11,0.25,0.04,0.35,-0.25,-0.1,0.13,0.09,-0.07,0.07,0.01,0.14,-0.04,0.15,-0.04,0.07,-0.32,-0.03,0.25,-0.2,-0.39],[0.1,-0.29,-0.11,-0.16,-0.36,0.32,0.27,-0.11,-0.02,0.2,-0.38,0.55,-0.04,0.14,0.08,-0.2,-0.04,-0.01,0.05,-0.19,0.24,0.04,0.09,-0.11,-0.07,0.16,0.23,0.11,0.32,-0.11,0.28,-0.22,-0.02,0.19,0.12,0.29,-0.02,-0.03,0.27,0.05,-0.24,-0.24,0.13,-0.07,0.04,0.53,-0.06,-0.17],[0.04,-0.1,0.23,0.23,-0.03,0.09,-0.09,-0.12,0.04,-0.07,0.18,0.24,0.02,0.23,-0.23,-0.04,-0.03,-0.23,0.01,-0.14,0.16,0.26,-0.06,-0.22,-0.14,0.2,0.63,-0.26,0.12,-0.27,0.4,-0.1,0.01,-0.16,0.09,0.06,0.18,0.11,-0.1,0.01,-0.05,0.17,0.24,-0.3,-0.24,0.05,-0.04,-0.12],[0.05,0.2,-0.16,0.25,0.02,-0.17,-0.22,0.04,0.25,-0.19,0.15,0.23,0.13,0.2,-0.39,-0.29,-0.16,-0.09,-0.22,0.02,0.48,0.13,0.16,-0.07,-0.04,0.13,0.76,-0.25,0.03,0.04,0.32,0.12,0.11,0.06,-0.02,0.04,0.0,0.42,-0.37,-0.13,-0.08,0.13,0.09,-0.28,-0.23,0.18,-0.28,-0.23],[0.03,0.25,-0.11,-0.14,0.44,-0.33,0.1,-0.02,0.05,-0.07,0.03,0.15,0.11,0.23,-0.18,-0.36,0.01,-0.13,-0.26,0.1,0.34,0.26,-0.06,-0.17,-0.03,-0.04,0.71,-0.42,-0.09,-0.07,0.18,0.21,0.12,-0.05,-0.14,-0.06,0.08,0.09,-0.42,-0.14,-0.08,-0.0,0.23,0.04,-0.35,0.3,0.02,0.09],[0.11,0.34,-0.0,-0.23,0.11,-0.12,0.25,0.04,-0.0,0.3,-0.08,-0.17,0.05,0.27,-0.1,0.18,-0.08,0.15,-0.03,0.2,0.02,0.19,0.01,-0.13,-0.17,0.24,0.16,-0.22,0.1,-0.05,0.03,0.45,-0.21,0.12,0.03,0.04,0.09,-0.13,-0.07,-0.2,-0.17,-0.17,0.06,0.04,-0.27,0.25,-0.23,0.25],[-0.28,0.02,-0.2,-0.22,-0.22,-0.16,0.21,0.0,-0.15,0.34,-0.24,0.02,0.02,0.2,-0.25,0.36,-0.04,0.04,0.15,0.17,0.1,0.14,0.0,0.1,-0.08,0.3,-0.08,-0.04,0.04,0.12,-0.26,0.17,-0.49,0.1,-0.23,0.37,0.15,-0.21,-0.04,0.03,-0.18,-0.21,-0.18,0.16,-0.15,0.1,-0.22,0.49],[-0.2,-0.26,-0.42,-0.3,-0.37,-0.02,-0.02,0.2,-0.24,0.52,-0.03,0.18,-0.18,0.3,-0.08,0.37,0.09,0.14,-0.11,0.14,0.13,-0.37,-0.02,0.22,0.19,0.04,0.02,0.24,0.18,0.21,-0.49,-0.0,-0.65,0.17,-0.59,0.15,0.01,-0.26,0.17,0.01,-0.01,-0.08,-0.07,0.3,0.2,0.1,-0.05,0.36],[0.07,-0.21,-0.37,-0.49,-0.3,0.07,0.37,-0.06,0.06,0.36,0.22,0.3,-0.2,-0.11,-0.03,0.15,0.05,0.35,-0.29,-0.06,0.35,-0.25,0.02,0.18,0.14,-0.18,-0.13,0.07,0.25,0.21,-0.35,0.18,-0.29,-0.11,-0.99,-0.14,-0.11,-0.12,0.19,0.11,-0.11,0.18,0.3,0.14,0.2,0.24,-0.04,0.03],[-0.08,-0.34,-0.42,-0.03,0.02,-0.07,0.04,-0.01,-0.03,0.23,0.26,0.41,-0.16,-0.01,-0.07,-0.13,-0.13,0.22,-0.53,-0.1,0.37,-0.52,0.31,0.08,0.29,-0.12,0.03,0.05,0.09,0.21,-0.19,0.25,-0.1,-0.07,-0.59,-0.35,0.0,0.22,0.1,0.15,-0.15,0.24,0.6,-0.21,0.18,-0.15,0.23,-0.1],[0.19,0.38,0.48,0.52,0.15,-0.31,0.62,0.2,0.18,0.41,0.33,-0.15,0.05,-0.28,0.3,0.59,-0.47,-0.52,0.58,0.32,-0.87,0.06,0.01,0.12,-0.04,-0.05,-0.4,0.56,-0.19,0.27,0.03,0.21,0.23,-0.49,0.4,-0.44,-0.39,-0.48,0.07,-0.24,-0.38,-0.33,-0.45,0.37,0.44,-0.15,-0.04,0.53]],
-                b1: [0.44,0.19,0.12,0.14,0.15,0.25,0.24,0.29,-0.11,-0.05,-0.11,0.04,0.01,0.14,0.19,0.08,-0.01,-0.1,0.14,0.11,0.08,-0.08,-0.07,0.15,0.19,-0.18,0.13,0.31,0.17,0.44,-0.16,0.18,0.2,-0.18,0.3,0.05,-0.17,0.08,0.19,0.14,-0.12,0.01,0.07,0.17,0.18,0.07,0.27,0.03],
-                w2: [[0.64,0.43,-0.22,-0.44,-0.84,-1.08,0.84,-0.33,-0.36,0.93,-0.79,-1.12,0.83],[-0.58,-0.73,-0.06,-0.04,0.59,0.23,0.33,0.22,-0.11,-0.51,-0.46,0.26,0.3],[-0.27,0.26,0.52,0.18,0.34,-0.61,0.4,-0.62,0.34,0.12,0.15,-0.05,0.15],[-0.69,-0.68,0.28,-0.5,0.44,0.19,-0.08,-0.21,-0.4,0.1,0.48,-0.2,0.03],[-0.11,-1.18,-1.02,0.19,0.29,0.31,-0.51,0.36,0.54,-0.38,-0.14,0.38,0.25],[0.97,-0.26,-0.17,0.14,-1.27,-1.21,0.52,-1.2,-0.91,-0.23,-1.61,-0.07,-1.33],[-0.58,0.81,-0.61,-0.58,0.61,0.04,0.57,-0.79,-1.41,-1.59,-0.03,-0.0,0.83],[0.56,0.08,-0.85,-0.35,0.03,-0.16,0.28,0.18,-0.33,-0.61,-0.74,-0.55,0.42],[0.25,-0.62,0.01,-0.93,0.59,0.09,0.02,-0.63,0.31,-0.25,0.31,0.24,0.3],[0.33,0.27,0.14,0.36,-0.5,-0.08,-0.22,-0.47,-0.63,0.3,-0.63,0.5,0.08],[-0.56,-0.23,-0.11,-0.26,0.17,-0.29,0.26,-1.29,0.59,-0.52,0.53,0.62,-0.33],[0.07,0.59,0.32,-0.7,-0.5,-0.5,-0.24,0.04,0.55,-0.21,0.13,0.37,0.08],[-0.52,0.34,0.3,-0.13,-0.15,0.32,-0.83,0.29,0.38,-0.01,-0.42,0.38,-0.15],[-0.32,0.05,0.12,0.16,-0.34,0.42,-0.91,0.4,0.33,0.27,-0.34,-0.39,-0.29],[0.03,-0.55,-0.43,-0.35,-0.52,-0.6,0.42,0.03,0.23,0.33,0.54,-0.34,0.18],[-0.21,0.24,-0.48,0.09,-0.38,-0.49,-0.28,-0.68,0.25,0.63,-0.38,0.41,0.19],[0.52,0.11,-0.14,0.48,-0.5,-0.52,-0.28,-0.12,-0.72,-0.54,0.38,0.72,-0.95],[0.34,-0.58,0.05,0.6,0.16,-0.44,-0.37,-0.44,-0.22,-0.64,1.14,-0.45,-0.35],[-0.29,0.32,-0.24,-0.72,-0.48,-0.62,0.54,-0.73,0.28,0.02,-0.4,-0.34,0.34],[0.56,-0.62,-0.26,0.61,-0.39,0.56,-0.57,-0.73,0.01,-0.12,-0.41,-0.34,0.62],[0.53,0.35,0.41,-0.44,0.42,0.16,-0.03,0.15,-0.58,-0.87,0.06,-0.47,-0.6],[-0.36,-0.12,0.56,0.21,0.49,0.07,-0.27,0.06,-0.23,-0.58,-0.34,-0.72,0.44],[0.09,-0.63,0.08,0.24,-0.27,0.52,-0.61,-0.19,-0.58,0.14,-0.3,0.23,-0.17],[-0.55,0.38,0.05,0.65,-0.68,-0.01,-0.23,0.57,-0.67,-0.3,0.5,0.06,-0.01],[-1.16,-0.57,-0.27,0.05,-0.19,0.56,0.47,0.28,0.14,-1.01,0.82,0.32,-0.77],[0.13,-0.69,-0.53,0.05,0.11,0.34,-0.89,0.06,-0.59,0.51,0.24,-0.58,0.29],[0.11,-0.02,0.49,-0.64,0.4,0.09,-0.16,0.15,-0.01,0.18,-1.01,-0.18,-0.87],[-0.27,-0.03,-0.34,-0.43,-0.23,-0.87,0.29,-0.11,-0.87,0.6,0.43,0.65,0.21],[0.35,0.47,-0.06,-0.22,-1.18,-0.38,0.52,0.01,0.62,-0.45,0.04,-0.09,0.49],[0.31,0.21,-0.49,-0.29,-0.9,-0.02,0.5,0.3,0.06,0.16,-0.79,0.64,-0.34],[-1.3,0.57,0.77,-1.5,-0.19,-0.67,1.1,0.46,-0.53,-0.4,-0.83,-0.48,0.29],[-0.89,0.34,-0.71,0.73,-0.29,0.45,-0.08,-0.22,0.38,-0.73,0.32,-0.69,-0.13],[-0.35,-1.59,-0.29,-0.74,0.33,-0.05,-0.75,0.25,-0.28,-0.39,0.55,-0.08,0.07],[0.28,-0.66,-0.31,0.36,0.06,0.16,-0.92,0.1,0.16,0.24,-0.55,-0.09,-0.08],[-0.61,0.34,0.72,-1.34,-0.43,-0.53,0.71,0.53,-0.8,-0.47,0.0,-1.22,0.19],[0.46,-0.26,0.06,0.21,0.56,-0.75,-0.12,-0.17,-0.29,0.71,-0.51,-1.25,-0.38],[0.59,-0.36,-0.48,-0.35,0.71,-0.3,-0.31,-0.53,0.49,0.37,-0.46,-0.86,-0.15],[0.08,-0.83,-0.19,0.25,-0.01,0.44,0.24,0.35,0.18,-0.39,0.4,-0.58,-0.88],[0.74,0.18,-0.55,0.26,-0.21,-0.17,-0.88,-0.41,0.39,0.06,0.56,-0.71,0.49],[0.35,0.01,0.22,0.23,0.08,-0.19,0.55,0.24,-0.58,-0.1,0.5,-0.26,-0.88],[0.39,-0.23,0.64,-0.28,0.06,-1.46,0.16,0.0,0.51,0.12,-0.82,-0.8,-0.41],[-0.35,0.4,-0.22,-0.41,-0.12,0.1,-1.06,0.01,0.29,0.03,0.35,-0.05,-0.3],[0.56,0.32,-0.7,-0.72,0.14,0.25,0.6,-0.75,0.21,-0.6,0.4,-0.12,-0.67],[0.03,-0.46,-0.41,0.61,-0.31,-0.42,0.29,0.3,-0.17,0.45,-0.58,0.19,-0.41],[-0.55,0.41,-0.82,0.04,-0.18,-0.53,-0.47,0.34,-0.49,0.38,0.58,0.46,0.09],[0.24,0.49,0.33,-0.12,0.13,-0.96,-0.35,0.0,-0.5,-0.59,-0.47,0.14,0.24],[0.58,0.39,-0.57,-0.15,-0.12,-0.69,0.09,0.54,-0.33,0.09,0.04,-0.07,-0.2],[-0.15,-0.14,0.12,0.68,0.02,0.45,0.06,-0.44,-0.41,0.22,-1.21,0.48,0.41]],
-                b2: [-0.04,0.33,0.2,-0.07,0.05,0.35,0.32,0.21,-0.11,0.17,-0.27,-0.25,0.16]
-            };
-
-            const COLOR_TR_MAP = {
-                red: 'kirmizi',
-                blue: 'mavi',
-                black: 'siyah',
-                yellow: 'sari'
-            };
-
-            function hsvAt(d, i) {
-                const r = d[i], g = d[i + 1], b = d[i + 2];
-                const mx = Math.max(r, g, b), mn = Math.min(r, g, b), df = mx - mn;
-                let h = 0;
-                if (df > 0) {
-                    if (mx === r) h = 60 * (((g - b) / df) % 6);
-                    else if (mx === g) h = 60 * ((b - r) / df + 2);
-                    else h = 60 * ((r - g) / df + 4);
-                    if (h < 0) h += 360;
-                }
-                return [h / 2, mx === 0 ? 0 : (df / mx) * 255, mx];
-            }
-
-            function components(m, w, h, minArea) {
-                const seen = new Uint8Array(w * h), out = [], stack = [];
-                for (let s = 0; s < w * h; s++) {
-                    if (!m[s] || seen[s]) continue;
-                    let x0 = w, y0 = h, x1 = 0, y1 = 0;
-                    const px = [];
-                    stack.length = 0; stack.push(s); seen[s] = 1;
-                    while (stack.length) {
-                        const p = stack.pop(); px.push(p);
-                        const x = p % w, y = (p / w) | 0;
-                        if (x < x0) x0 = x; if (x > x1) x1 = x;
-                        if (y < y0) y0 = y; if (y > y1) y1 = y;
-                        if (x > 0 && m[p - 1] && !seen[p - 1]) { seen[p - 1] = 1; stack.push(p - 1); }
-                        if (x < w - 1 && m[p + 1] && !seen[p + 1]) { seen[p + 1] = 1; stack.push(p + 1); }
-                        if (y > 0 && m[p - w] && !seen[p - w]) { seen[p - w] = 1; stack.push(p - w); }
-                        if (y < h - 1 && m[p + w] && !seen[p + w]) { seen[p + w] = 1; stack.push(p + w); }
-                    }
-                    if (px.length >= minArea) out.push({ x: x0, y: y0, w: x1 - x0 + 1, h: y1 - y0 + 1, area: px.length, px });
-                }
-                return out;
-            }
-
-            function median(a) {
-                const b = a.slice().sort((p, q) => p - q);
-                return b.length ? b[b.length >> 1] : 0;
-            }
-
-            function boxResize(mask, w, h, W, H) {
-                const out = new Float32Array(W * H);
-                for (let j = 0; j < H; j++) {
-                    const y0 = Math.floor(j * h / H), y1 = Math.max(y0 + 1, Math.ceil((j + 1) * h / H));
-                    for (let i = 0; i < W; i++) {
-                        const x0 = Math.floor(i * w / W), x1 = Math.max(x0 + 1, Math.ceil((i + 1) * w / W));
-                        let s = 0;
-                        for (let y = y0; y < y1; y++) for (let x = x0; x < x1; x++) s += mask[y * w + x];
-                        out[j * W + i] = s / ((y1 - y0) * (x1 - x0));
-                    }
-                }
-                return out;
-            }
-
-            function classify(mask, w, h) {
-                let x0 = w, y0 = h, x1 = 0, y1 = 0;
-                for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (mask[y * w + x]) {
-                    if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
-                }
-                if (x1 < x0) return null;
-                const cw = x1 - x0 + 1, ch = y1 - y0 + 1, crop = new Float32Array(cw * ch);
-                for (let yy = 0; yy < ch; yy++) for (let xx = 0; xx < cw; xx++) crop[yy * cw + xx] = mask[(y0 + yy) * w + x0 + xx];
-                const f = boxResize(crop, cw, ch, MODEL.fw, MODEL.fh), n = f.length, inp = new Float32Array(n + 1);
-                inp.set(f); inp[n] = Math.min(cw / ch, 3) / 3;
-                const hid = MODEL.b1.length, hv = new Float32Array(hid);
-                for (let j = 0; j < hid; j++) {
-                    let s = MODEL.b1[j];
-                    for (let i = 0; i <= n; i++) s += inp[i] * MODEL.w1[i][j];
-                    hv[j] = s > 0 ? s : 0;
-                }
-                const logits = [];
-                let mx = -1e9;
-                for (let c = 0; c < 13; c++) {
-                    let z = MODEL.b2[c];
-                    for (let j2 = 0; j2 < hid; j2++) z += hv[j2] * MODEL.w2[j2][c];
-                    logits.push(z); if (z > mx) mx = z;
-                }
-                let sum = 0;
-                const ex = logits.map(z => { const e = Math.exp(z - mx); sum += e; return e; });
-                let best = 0;
-                for (let k = 1; k < 13; k++) if (ex[k] > ex[best]) best = k;
-                return { number: best + 1, conf: ex[best] / sum };
-            }
-
-            function otsu(hist, total) {
-                let sum = 0;
-                for (let i = 0; i < hist.length; i++) sum += i * hist[i];
-                let wB = 0, sB = 0, best = 0, th = 0;
-                for (let i = 0; i < hist.length; i++) {
-                    wB += hist[i]; if (!wB) continue;
-                    const wF = total - wB; if (!wF) break;
-                    sB += i * hist[i];
-                    const mB = sB / wB, mF = (sum - sB) / wF, v = wB * wF * (mB - mF) * (mB - mF);
-                    if (v > best) { best = v; th = i; }
-                }
-                return th;
-            }
-
-            function readGlyph(RGB, W, Hh, g) {
-                const gh = g.h, padY = Math.round(gh * 0.3), padX = Math.round(gh * (g.w > gh * 0.9 ? 0.12 : 0.3)), pad = 3;
-                const ex0 = Math.max(0, g.x - padX), ey0 = Math.max(0, g.y - padY), ex1 = Math.min(W, g.x + g.w + padX), ey1 = Math.min(Hh, g.y + g.h + padY);
-                const rs = [], gs = [], bs = [];
-                for (let y = ey0; y < ey1; y += 2) for (let x = ex0; x < ex1; x += 2) {
-                    if (x >= g.x && x < g.x + g.w && y >= g.y && y < g.y + g.h) continue;
-                    const p = (y * W + x) * 4;
-                    rs.push(RGB[p]); gs.push(RGB[p + 1]); bs.push(RGB[p + 2]);
-                }
-                if (rs.length < 20) return null;
-                const bg = [median(rs), median(gs), median(bs)];
-                if (bg[0] < 50 || bg[1] < 50 || bg[2] < 35) return null;
-                let near = 0;
-                for (let ri = 0; ri < rs.length; ri++) {
-                    const er = rs[ri] - bg[0], eg = gs[ri] - bg[1], eb = bs[ri] - bg[2];
-                    if (er * er + eg * eg + eb * eb < 48 * 48) near++;
-                }
-                if (near < rs.length * 0.68) return null;
-                const cx0 = Math.max(0, g.x - pad), cy0 = Math.max(0, g.y - pad), cx1 = Math.min(W, g.x + g.w + pad), cy1 = Math.min(Hh, g.y + g.h + pad);
-                const cw = cx1 - cx0, ch = cy1 - cy0, n = cw * ch;
-                const dist = new Float32Array(n), hist = new Array(128).fill(0);
-                let dmax = 0;
-                for (let y = 0; y < ch; y++) for (let x = 0; x < cw; x++) {
-                    const p = ((cy0 + y) * W + cx0 + x) * 4;
-                    const dr = RGB[p] - bg[0], dg = RGB[p + 1] - bg[1], db = RGB[p + 2] - bg[2];
-                    const dd = Math.sqrt(dr * dr + dg * dg + db * db);
-                    dist[y * cw + x] = dd; if (dd > dmax) dmax = dd;
-                }
-                if (dmax < 65) return null;
-                for (let i = 0; i < n; i++) hist[Math.min(127, Math.floor(dist[i] / dmax * 127))]++;
-                const th = Math.max(otsu(hist, n) / 127 * dmax, 0.28 * dmax);
-                const ink = new Uint8Array(n);
-                let cnt0 = 0;
-                for (let i = 0; i < n; i++) if (dist[i] > th) { ink[i] = 1; cnt0++; }
-                if (cnt0 < n * 0.05 || cnt0 > n * 0.8) return null;
-                const comps = components(ink, cw, ch, 6);
-                if (!comps.length) return null;
-                const maxH = Math.max(...comps.map(c => c.h));
-                const keep = comps.filter(c => c.h >= maxH * 0.5);
-                const mask = new Uint8Array(n), votes = { red: 0, yellow: 0, blue: 0, other: 0 };
-                let dark = 0, colored = 0;
-                const gain = [248 / bg[0], 243 / bg[1], 228 / bg[2]];
-                keep.forEach(c => {
-                    c.px.forEach(q => {
-                        mask[q] = 1;
-                        if (dist[q] < th * 1.3) return;
-                        const gp = ((cy0 + ((q / cw) | 0)) * W + cx0 + (q % cw)) * 4;
-                        const r = Math.min(255, RGB[gp] * gain[0]), gg = Math.min(255, RGB[gp + 1] * gain[1]), b = Math.min(255, RGB[gp + 2] * gain[2]);
-                        const mx = Math.max(r, gg, b), mn = Math.min(r, gg, b), df = mx - mn, ss = mx === 0 ? 0 : (df / mx) * 255;
-                        let hh = 0;
-                        if (df > 0) {
-                            if (mx === r) hh = 60 * (((gg - b) / df) % 6); else if (mx === gg) hh = 60 * ((b - r) / df + 2); else hh = 60 * ((r - gg) / df + 4);
-                            if (hh < 0) hh += 360;
-                        }
-                        hh /= 2;
-                        if (ss > 105 && mx > 55) {
-                            colored++;
-                            if (hh <= 9 || hh >= 158) votes.red++; else if (hh <= 42) votes.yellow++; else if (hh >= 72 && hh <= 138) votes.blue++; else votes.other++;
-                        } else dark++;
-                    });
-                });
-                const tot = colored + dark;
-                let col;
-                if (!tot) return null;
-                if (colored < tot * 0.38) col = 'black';
-                else {
-                    let bestc = 'red', bv = votes.red;
-                    if (votes.yellow > bv) { bestc = 'yellow'; bv = votes.yellow; }
-                    if (votes.blue > bv) { bestc = 'blue'; bv = votes.blue; }
-                    if (votes.other > bv) return null;
-                    col = bestc;
-                }
-                const cl = classify(mask, cw, ch);
-                if (!cl) return null;
-                return { color: COLOR_TR_MAP[col] || 'siyah', number: cl.number, conf: cl.conf };
-            }
-
-            function findGlyphs(S, V, w, h, factor) {
-                const hist = new Array(256).fill(0), n = w * h;
-                for (let i = 0; i < n; i++) hist[V[i] | 0]++;
-                let acc = 0, vRef = 255;
-                for (let i = 255; i >= 0; i--) { acc += hist[i]; if (acc >= n * 0.03) { vRef = i; break; } }
-                const thr = factor * vRef, ink = new Uint8Array(n);
-                for (let i = 0; i < n; i++) if (vRef - V[i] > thr || S[i] * 0.9 > thr) ink[i] = 1;
-                const long = Math.max(w, h);
-                const cs = components(ink, w, h, 10).filter(c => {
-                    const asp = c.w / c.h, fill = c.area / (c.w * c.h);
-                    return c.h >= long * 0.014 && c.h <= long * 0.14 && asp > 0.18 && asp < 1.5 && fill > 0.24 && fill < 0.88;
-                });
-                if (cs.length < 2) return [];
-                let best = null;
-                cs.forEach(c0 => {
-                    const members = cs.filter(c => Math.abs(c.h - c0.h) <= 0.20 * c0.h);
-                    if (!best || members.length > best.members.length * 1.25 || (members.length >= best.members.length * 0.75 && c0.h > best.h)) best = { h: c0.h, members };
-                });
-                let mem = best.members;
-                const mh = median(mem.map(c => c.h));
-                mem = mem.filter(c => Math.abs(c.h - mh) <= 0.22 * mh);
-                mem.sort((a, b) => a.x - b.x);
-                const used = new Array(mem.length).fill(false), groups = [];
-                for (let a = 0; a < mem.length; a++) {
-                    if (used[a]) continue;
-                    const g = { x: mem[a].x, y: mem[a].y, x2: mem[a].x + mem[a].w, y2: mem[a].y + mem[a].h }; used[a] = true;
-                    let grew = true, parts = 1;
-                    while (grew && parts < 2) {
-                        grew = false;
-                        for (let b = 0; b < mem.length; b++) {
-                            if (used[b]) continue;
-                            const c = mem[b], gap = c.x - g.x2, cyc = c.y + c.h / 2, gyc = (g.y + g.y2) / 2;
-                            if (gap < mh * 0.28 && gap > -mh * 0.2 && Math.abs(cyc - gyc) < mh * 0.3) {
-                                g.x2 = Math.max(g.x2, c.x + c.w); g.y = Math.min(g.y, c.y); g.y2 = Math.max(g.y2, c.y + c.h); used[b] = true; grew = true; parts++;
-                            }
-                        }
-                    }
-                    groups.push({ x: g.x, y: g.y, w: g.x2 - g.x, h: g.y2 - g.y });
-                }
-                const filtered = groups.filter(g => g.w <= mh * 2.6);
-                if (filtered.length < 2) return filtered;
-                const lim = mh * 3.5, parent = filtered.map((_, i) => i);
-                function find(i) { while (parent[i] !== i) { parent[i] = parent[parent[i]]; i = parent[i]; } return i; }
-                for (let u = 0; u < filtered.length; u++) for (let v = u + 1; v < filtered.length; v++) {
-                    const dx = (filtered[u].x + filtered[u].w / 2) - (filtered[v].x + filtered[v].w / 2);
-                    const dy = (filtered[u].y + filtered[u].h / 2) - (filtered[v].y + filtered[v].h / 2);
-                    if (Math.sqrt(dx * dx + dy * dy) < lim) parent[find(u)] = find(v);
-                }
-                const cl = {};
-                filtered.forEach((g, i) => { const r = find(i); (cl[r] = cl[r] || []).push(g); });
-                let bestCl = [];
-                Object.keys(cl).forEach(kx => { if (cl[kx].length > bestCl.length) bestCl = cl[kx]; });
-                bestCl.sort((a, b) => a.x - b.x);
-                return bestCl.length >= 2 ? bestCl : [];
-            }
-
-            function scan(source) {
-                const sw = source.naturalWidth || source.videoWidth || source.width;
-                const sh = source.naturalHeight || source.videoHeight || source.height;
-                const k = 1200 / Math.max(sw, sh);
-                const w = Math.round(sw * k), h = Math.round(sh * k);
-                const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
-                const ctx = cv.getContext('2d', { willReadFrequently: true });
-                ctx.imageSmoothingQuality = 'high';
-                ctx.drawImage(source, 0, 0, w, h);
-
-                // Loş / karanlık ortam telafisi: ortalama parlaklık düşükse dinamik aydınlatma ve kontrast uygula
-                const imgData = ctx.getImageData(0, 0, w, h);
-                const d = imgData.data, n = w * h;
-                let lumSum = 0;
-                for (let i = 0; i < n; i += 8) {
-                    const p = i * 4;
-                    lumSum += (d[p] * 0.299 + d[p + 1] * 0.587 + d[p + 2] * 0.114);
-                }
-                const avgLum = lumSum / (n / 8);
-                if (avgLum < 125) {
-                    const boost = Math.min(2.35, Math.max(1.25, 152 / Math.max(28, avgLum)));
-                    const lut = new Uint8ClampedArray(256);
-                    for (let v = 0; v < 256; v++) {
-                        const norm = v / 255;
-                        const lifted = Math.pow(norm, 1 / Math.sqrt(boost)) * 255;
-                        lut[v] = Math.min(255, Math.max(0, Math.round((lifted - 128) * 1.15 + 128)));
-                    }
-                    for (let i = 0; i < n; i++) {
-                        const p = i * 4;
-                        d[p] = lut[d[p]];
-                        d[p + 1] = lut[d[p + 1]];
-                        d[p + 2] = lut[d[p + 2]];
-                    }
-                }
-
-                const S = new Float32Array(n), V = new Float32Array(n);
-                for (let i = 0; i < n; i++) { const q = hsvAt(d, i * 4); S[i] = q[1]; V[i] = q[2]; }
-
-                const runs = [];
-                [0.28, 0.35, 0.42, 0.50].forEach(factor => {
-                    const gs = findGlyphs(S, V, w, h, factor);
-                    if (gs.length < 2) return;
-                    const tiles = [];
-                    gs.forEach(g => {
-                        const r = readGlyph(d, w, h, g);
-                        if (!r) return;
-                        tiles.push({ color: r.color, number: r.number, conf: r.conf, box: g });
-                    });
-                    runs.push({ tiles });
-                });
-                if (!runs.length) return { tiles: [] };
-
-                const clusters = [];
-                runs.forEach((run, ri) => {
-                    run.tiles.forEach(t => {
-                        const cx = t.box.x + t.box.w / 2, cy = t.box.y + t.box.h / 2;
-                        let hit = null;
-                        for (let c = 0; c < clusters.length; c++) {
-                            if (Math.abs(clusters[c].cx - cx) < t.box.h * 0.6 && Math.abs(clusters[c].cy - cy) < t.box.h * 0.6) {
-                                hit = clusters[c];
-                                break;
-                            }
-                        }
-                        if (!hit) { hit = { cx, cy, reads: [], runs: {} }; clusters.push(hit); }
-                        hit.reads.push(t); hit.runs[ri] = true;
-                    });
-                });
-
-                const need = Math.max(2, Math.ceil(runs.length * 0.5));
-                const tiles = [];
-                clusters.forEach(c => {
-                    if (Object.keys(c.runs).length < need) return;
-                    const vote = {};
-                    c.reads.forEach(t => { const key = t.color + ':' + t.number; vote[key] = (vote[key] || 0) + t.conf; });
-                    let bestK = null;
-                    Object.keys(vote).forEach(key => { if (bestK === null || vote[key] > vote[bestK]) bestK = key; });
-                    const parts = bestK.split(':');
-                    const g = c.reads[0].box;
-
-                    const padX = g.w * 0.35;
-                    const padTop = g.h * 0.25;
-                    const padBot = g.h * 1.15;
-                    const xmin = Math.max(0, Math.round(((g.x - padX) / w) * 1000));
-                    const xmax = Math.min(1000, Math.round(((g.x + g.w + padX) / w) * 1000));
-                    const ymin = Math.max(0, Math.round(((g.y - padTop) / h) * 1000));
-                    const ymax = Math.min(1000, Math.round(((g.y + g.h + padBot) / h) * 1000));
-
-                    tiles.push({
-                        color: parts[0],
-                        number: +parts[1],
-                        cx: c.cx,
-                        cy: c.cy,
-                        box_2d: [ymin, xmin, ymax, xmax]
-                    });
-                });
-
-                tiles.sort((a, b) => (Math.abs(a.cy - b.cy) > 35 ? a.cy - b.cy : a.cx - b.cx));
-                return { tiles };
-            }
-
-            return { scan };
-        })();
-
-        // =========================================================================
-        // 3. AÇILIŞ MOD SEÇİMİ VE 0.5x ULTRA GENİŞ / FENER DESTEKLİ CANLI KAMERA
-        // =========================================================================
-        function selectModeRadio(mode) {
-            gameMode = mode;
-            const c101 = document.getElementById('mode-card-101');
-            const c14 = document.getElementById('mode-card-14');
-            const r101 = document.getElementById('mode-radio-101');
-            const r14 = document.getElementById('mode-radio-14');
-
-            if (mode === '101') {
-                c101.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all';
-                r101.className = 'w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0';
-                r101.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-amber-400';
-
-                c14.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all';
-                r14.className = 'w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0';
-                r14.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-transparent';
-            } else {
-                c14.className = 'w-full text-left p-3.5 rounded-2xl border-2 border-amber-400 bg-amber-500/15 flex items-center gap-3.5 transition-all';
-                r14.className = 'w-5 h-5 rounded-full border-2 border-amber-400 flex items-center justify-center shrink-0';
-                r14.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-amber-400';
-
-                c101.className = 'w-full text-left p-3.5 rounded-2xl border border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 flex items-center gap-3.5 transition-all';
-                r101.className = 'w-5 h-5 rounded-full border-2 border-slate-500 flex items-center justify-center shrink-0';
-                r101.firstElementChild.className = 'w-2.5 h-2.5 rounded-full bg-transparent';
-            }
+        function selectAndScroll(colorName) {
+            document.getElementById('selected-color-input').value = colorName;
+            document.getElementById('siparis').scrollIntoView({ behavior: 'smooth' });
         }
 
-        async function confirmModeAndBegin() {
-            document.getElementById('opening-mode-sheet').classList.add('hidden-sheet');
-            updateGameModeButtonsUI();
-            recalculateAllMetrics();
-            await startRearCamera(true);
+        function updateTotal() {
+            const qty = Math.max(1, parseInt(document.getElementById('order-qty').value) || 1);
+            const total = (qty * 1490).toLocaleString('tr-TR');
+            document.getElementById('total-price-display').innerText = total + ' TL';
         }
 
-        async function startRearCamera(preferUltraWide = true) {
-            const video = document.getElementById('camera-video');
-            const fallback = document.getElementById('camera-fallback-screen');
-
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                fallback.classList.remove('hidden');
-                return;
-            }
-
-            try {
-                if (videoStream) {
-                    videoStream.getTracks().forEach(t => t.stop());
-                }
-
-                let selectedDeviceId = null;
-                try {
-                    const tempStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
-                    const devices = await navigator.mediaDevices.enumerateDevices();
-                    tempStream.getTracks().forEach(t => t.stop());
-
-                    const backCams = devices.filter(d => d.kind === 'videoinput' && /back|rear|environment|arka/i.test(d.label));
-                    if (preferUltraWide && backCams.length > 1) {
-                        const ultra = backCams.find(d => /ultra|wide|0\.5|geniş/i.test(d.label));
-                        selectedDeviceId = ultra ? ultra.deviceId : backCams[backCams.length - 1].deviceId;
-                    } else if (backCams.length > 0) {
-                        selectedDeviceId = backCams[0].deviceId;
-                    }
-                } catch (enumErr) {}
-
-                const videoConstraints = selectedDeviceId
-                    ? { deviceId: { exact: selectedDeviceId }, width: { ideal: 1920 }, height: { ideal: 1080 } }
-                    : { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } };
-
-                videoStream = await navigator.mediaDevices.getUserMedia({
-                    video: videoConstraints,
-                    audio: false
-                });
-
-                const track = videoStream.getVideoTracks()[0];
-                if (track && track.getCapabilities) {
-                    const caps = track.getCapabilities();
-                    if (caps.zoom && typeof caps.zoom.min === 'number') {
-                        try {
-                            await track.applyConstraints({ advanced: [{ zoom: caps.zoom.min }] });
-                        } catch (zErr) {}
-                    }
-                    const torchBtn = document.getElementById('btn-torch-toggle');
-                    if (torchBtn) {
-                        if (caps.torch) torchBtn.classList.remove('hidden');
-                        else torchBtn.classList.add('hidden');
-                    }
-                }
-
-                video.srcObject = videoStream;
-                video.setAttribute('playsinline', 'true');
-                video.setAttribute('webkit-playsinline', 'true');
-                await video.play();
-                fallback.classList.add('hidden');
-                startAutoScanLoop();
-            } catch (err) {
-                fallback.classList.remove('hidden');
-            }
+        function sendWhatsApp() {
+            const color = document.getElementById('selected-color-input').value;
+            const qty = Math.max(1, parseInt(document.getElementById('order-qty').value) || 1);
+            const total = (qty * 1490).toLocaleString('tr-TR');
+            const phone = "905532285951";
+            const message = `Merhaba, 3 Katlı 304 Paslanmaz Çelik Sefer Tası + Kutulu Çatal-Kaşık Seti sipariş vermek istiyorum.\n\n• Renk: ${color}\n• Adet: ${qty}\n• Toplam Tutar: ${total} TL`;
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        async function cycleCameraZoomMode() {
-            const btn = document.getElementById('btn-zoom-toggle');
-            if (currentZoomMode === '0.5') {
-                currentZoomMode = '1.0';
-                if (btn) btn.textContent = '1.0× Normal';
-                await startRearCamera(false);
-                showToast('1.0× Normal arka kameraya geçildi');
-            } else {
-                currentZoomMode = '0.5';
-                if (btn) btn.textContent = '0.5× Geniş';
-                await startRearCamera(true);
-                showToast('0.5× Ultra Geniş açıya geçildi');
-            }
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            const lb = document.getElementById('lightbox');
+            lb.classList.remove('hidden');
+            lb.classList.add('flex');
         }
 
-        async function toggleCameraTorch() {
-            if (!videoStream) return;
-            const track = videoStream.getVideoTracks()[0];
-            if (!track || !track.applyConstraints) return;
-            torchEnabled = !torchEnabled;
-            try {
-                await track.applyConstraints({ advanced: [{ torch: torchEnabled }] });
-                const btn = document.getElementById('btn-torch-toggle');
-                const lbl = document.getElementById('torch-label');
-                if (btn && lbl) {
-                    btn.className = torchEnabled
-                        ? 'px-2.5 py-1.5 rounded-full bg-amber-400 text-slate-950 text-[11px] font-extrabold shadow-lg flex items-center gap-1 transition-all'
-                        : 'px-2.5 py-1.5 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-600/70 text-[11px] font-extrabold text-slate-200 shadow-lg flex items-center gap-1 transition-all';
-                    lbl.textContent = torchEnabled ? 'Işık Açık' : 'Işık';
-                }
-            } catch (e) {
-                torchEnabled = false;
-                showToast('Bu cihazda fener açılamadı');
-            }
+        function closeLightbox() {
+            const lb = document.getElementById('lightbox');
+            lb.classList.add('hidden');
+            lb.classList.remove('flex');
         }
-
-        // =========================================================================
-        // 4A. VİZÖR ÇERÇEVESİ İLE BİREBİR HİZALI KIRPMA
-        // =========================================================================
-        function startAutoScanLoop() {
-            if (autoScanInterval) clearInterval(autoScanInterval);
-            if (!autoScanEnabled) return;
-            autoScanInterval = setInterval(() => {
-                if (autoScanEnabled && !isScanningNow) {
-                    scanFrameLocally(true);
-                }
-            }, 950);
-        }
-
-        function triggerImmediateScan() {
-            scanFrameLocally(false);
-        }
-
-        function toggleAutoScanSetting() {
-            autoScanEnabled = !autoScanEnabled;
-            const btn = document.getElementById('toggle-autoscan-btn');
-            const pill = document.getElementById('reticle-auto-pill');
-            const dot = document.getElementById('reticle-auto-dot');
-            const lbl = document.getElementById('reticle-auto-label');
-
-            if (btn) {
-                btn.textContent = autoScanEnabled ? 'AÇIK' : 'KAPALI';
-                btn.className = autoScanEnabled
-                    ? 'px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 text-xs font-extrabold'
-                    : 'px-3 py-1.5 rounded-lg bg-slate-700 text-slate-200 text-xs font-bold';
-            }
-            if (pill && dot && lbl) {
-                if (autoScanEnabled) {
-                    pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-emerald-400/45 text-[11px] font-extrabold text-emerald-300 shadow-lg flex items-center gap-1.5 transition-all';
-                    dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
-                    lbl.textContent = 'Oto: Açık';
-                    startAutoScanLoop();
-                } else {
-                    pill.className = 'px-3 py-2 rounded-full bg-slate-900/90 hover:bg-slate-800 border border-slate-600/70 text-[11px] font-bold text-slate-300 shadow-lg flex items-center gap-1.5 transition-all';
-                    dot.className = 'w-2 h-2 rounded-full bg-slate-500';
-                    lbl.textContent = 'Oto: Kapalı';
-                    if (autoScanInterval) clearInterval(autoScanInterval);
-                }
-            }
-        }
-
-        function captureAlignedReticleRoi(video) {
-            const vw = video.videoWidth || 1280;
-            const vh = video.videoHeight || 720;
-
-            const vRect = video.getBoundingClientRect();
-            const rRect = document.getElementById('camera-reticle').getBoundingClientRect();
-
-            const scale = Math.max(vRect.width / vw, vRect.height / vh);
-            const renderedW = vw * scale;
-            const renderedH = vh * scale;
-            const offsetX = (vRect.width - renderedW) / 2;
-            const offsetY = (vRect.height - renderedH) / 2;
-
-            const padY = rRect.height * 0.04;
-            const screenX1 = Math.max(vRect.left, rRect.left);
-            const screenY1 = Math.max(vRect.top, rRect.top - padY);
-            const screenX2 = Math.min(vRect.right, rRect.right);
-            const screenY2 = Math.min(vRect.bottom, rRect.bottom + padY);
-
-            const roiX = Math.max(0, Math.round((screenX1 - vRect.left - offsetX) / scale));
-            const roiY = Math.max(0, Math.round((screenY1 - vRect.top - offsetY) / scale));
-            const roiW = Math.min(vw - roiX, Math.max(40, Math.round((screenX2 - screenX1) / scale)));
-            const roiH = Math.min(vh - roiY, Math.max(40, Math.round((screenY2 - screenY1) / scale)));
-
-            const targetW = Math.min(840, roiW);
-            const targetH = Math.round((roiH / roiW) * targetW);
-
-            const canvas = document.createElement('canvas');
-            canvas.width = targetW;
-            canvas.height = targetH;
-            const ctx = canvas.getContext('2d', { willReadFrequently: true });
-            ctx.drawImage(video, roiX, roiY, roiW, roiH, 0, 0, targetW, targetH);
-
-            return {
-                canvas,
-                screenBox: {
-                    x: screenX1 - vRect.left,
-                    y: screenY1 - vRect.top,
-                    w: screenX2 - screenX1,
-                    h: screenY2 - screenY1
-                }
-            };
-        }
-
-        // =========================================================================
-        // 4B. GÖMÜLÜ OkeyVision SİNİR AĞI İLE CANLI TARAMA VE SARI AR KUTU ÇİZİMİ
-        // =========================================================================
-        async function scanFrameLocally(silentMode = false) {
-            const video = document.getElementById('camera-video');
-            if (!video || video.readyState < 2 || isScanningNow) return;
-
-            isScanningNow = true;
-            document.getElementById('scan-laser').classList.remove('hidden');
-            setLocalBadge('OkeyVision Taranıyor...', 'scanning');
-
-            try {
-                const { canvas, screenBox } = captureAlignedReticleRoi(video);
-                const scanRes = OkeyVision.scan(canvas);
-                const foundTiles = scanRes.tiles || [];
-
-                drawScreenAlignedBoxes(foundTiles, screenBox);
-
-                if (foundTiles.length > 0) {
-                    document.getElementById('camera-reticle').classList.add('reticle-active');
-                    accumulateScannedTiles(foundTiles, !silentMode);
-
-                    const targetCount = gameMode === '101' ? 21 : 14;
-                    setLocalBadge(`OkeyVision ✓ (${detectedTiles.length}/${targetCount})`, 'ok');
-                    if (!silentMode) {
-                        showToast(`${foundTiles.length} taş karede okundu (Toplam: ${detectedTiles.length}/${targetCount})`);
-                    }
-                } else {
-                    document.getElementById('camera-reticle').classList.remove('reticle-active');
-                    setLocalBadge('Istaka Bekleniyor...', 'neutral');
-                    if (!silentMode) {
-                        showToast('Çerçevede net okey taşı bulunamadı. Taşları köşelere ortalayın.');
-                    }
-                }
-            } catch (err) {
-                setLocalBadge('OkeyVision Hazır ✓', 'ok');
-            } finally {
-                isScanningNow = false;
-                document.getElementById('scan-laser').classList.add('hidden');
-            }
-        }
-
-        function drawScreenAlignedBoxes(tiles, screenBox) {
-            const overlay = document.getElementById('ar-box-canvas');
-            const rect = overlay.getBoundingClientRect();
-            overlay.width = rect.width;
-            overlay.height = rect.height;
-            const ctx = overlay.getContext('2d');
-            ctx.clearRect(0, 0, overlay.width, overlay.height);
-
-            tiles.forEach(t => {
-                if (!t.box_2d || t.box_2d.length !== 4) return;
-                const [ymin, xmin, ymax, xmax] = t.box_2d;
-                const x = screenBox.x + (xmin / 1000) * screenBox.w;
-                const y = screenBox.y + (ymin / 1000) * screenBox.h;
-                const w = ((xmax - xmin) / 1000) * screenBox.w;
-                const h = ((ymax - ymin) / 1000) * screenBox.h;
-
-                ctx.strokeStyle = '#facc15';
-                ctx.lineWidth = 2.4;
-                ctx.beginPath();
-                ctx.roundRect(x, y, w, h, 5);
-                ctx.stroke();
-
-                ctx.fillStyle = 'rgba(250, 204, 21, 0.14)';
-                ctx.fill();
-
-                const cObj = COLORS.find(c => c.id === t.color);
-                const label = `${cObj ? cObj.short : ''}${t.number}`;
-                ctx.fillStyle = 'rgba(12, 17, 29, 0.86)';
-                ctx.beginPath();
-                ctx.roundRect(x + 2, y + 2, Math.max(20, label.length * 7 + 6), 14, 3);
-                ctx.fill();
-
-                ctx.fillStyle = '#facc15';
-                ctx.font = 'bold 10px Inter, sans-serif';
-                ctx.fillText(label, x + 5, y + 12);
-            });
-        }
-
-        function accumulateScannedTiles(frameTiles, forceImmediateAccept = false) {
-            const targetLimit = gameMode === '101' ? 21 : 14;
-            if (detectedTiles.length >= targetLimit) return;
-
-            const frameCounts = new Map();
-            frameTiles.forEach(t => {
-                if (!t.number || t.number < 1 || t.number > 13) return;
-                const key = `${t.color}_${t.number}`;
-                frameCounts.set(key, (frameCounts.get(key) || 0) + 1);
-            });
-
-            let changed = false;
-            frameCounts.forEach((countInFrame, key) => {
-                if (detectedTiles.length >= targetLimit) return;
-                const [color, numStr] = key.split('_');
-                const number = parseInt(numStr, 10);
-
-                const entry = scanVoteBucket.get(key) || { hits: 0, color, number };
-                entry.hits += 1;
-                scanVoteBucket.set(key, entry);
-
-                const alreadyHave = detectedTiles.filter(x =>
-                    !x.isSahte && x.color === color && x.number === number
-                ).length;
-
-                const desiredCount = Math.min(2, Math.max(1, countInFrame));
-                if (alreadyHave < desiredCount && detectedTiles.length < targetLimit) {
-                    detectedTiles.push({
-                        id: `acc_${Date.now()}_${Math.random()}`,
-                        color,
-                        number,
-                        isSahte: false,
-                        box: null
-                    });
-                    changed = true;
-                }
-            });
-
-            if (changed) {
-                recalculateAllMetrics();
-            }
-        }
-
-        function handleImageFileUpload(event) {
-            const file = event.target.files && event.target.files[0];
-            if (!file) return;
-            closeSettingsModal();
-            setLocalBadge('Fotoğraf Taranıyor...', 'scanning');
-
-            const reader = new FileReader();
-            reader.onload = () => {
-                const img = new Image();
-                img.onload = () => {
-                    const scanRes = OkeyVision.scan(img);
-                    const found = scanRes.tiles || [];
-                    if (found.length > 0) {
-                        scanVoteBucket.clear();
-                        detectedTiles = found.slice(0, gameMode === '101' ? 21 : 14).map((t, idx) => ({
-                            id: `photo_${Date.now()}_${idx}`,
-                            color: t.color,
-                            number: t.number,
-                            isSahte: false,
-                            box: null
-                        }));
-                        recalculateAllMetrics();
-                        setLocalBadge(`Fotoğraftan ${detectedTiles.length} Taş Okundu ✓`, 'ok');
-                        showToast(`Fotoğraftan ${detectedTiles.length} taş OkeyVision ile okundu!`);
-                    } else {
-                        setLocalBadge('OkeyVision Hazır ✓', 'ok');
-                        showToast('Fotoğrafta okey taşı bulunamadı.');
-                    }
-                };
-                img.src = reader.result;
-            };
-            reader.readAsDataURL(file);
-            event.target.value = '';
-        }
-
-        // =========================================================================
-        // 5. OKEY / 101 OKEY ÇÖZÜCÜ MOTORU (BİREBİR KURAL UYUMLU TAM ARAMA)
-        // =========================================================================
-        function getOkeyTileInfo() {
-            if (!indicatorTile) return null;
-            return {
-                color: indicatorTile.color,
-                number: indicatorTile.number === 13 ? 1 : indicatorTile.number + 1
-            };
-        }
-
-        function isActualOkey(tile, okeyInfo) {
-            if (!okeyInfo || tile.isSahte) return false;
-            return tile.color === okeyInfo.color && tile.number === okeyInfo.number;
-        }
-
-        function solveHandOptimal(rawTiles) {
-            const okeyInfo = getOkeyTileInfo();
-            const okeys = [];
-            const normals = [];
-
-            rawTiles.forEach(t => {
-                if (isActualOkey(t, okeyInfo)) {
-                    okeys.push({ ...t, isOkeyJoker: true });
-                } else if (t.isSahte && okeyInfo) {
-                    normals.push({ ...t, effColor: okeyInfo.color, effNum: okeyInfo.number, isOkeyJoker: false });
-                } else {
-                    normals.push({ ...t, effColor: t.color, effNum: t.number, isOkeyJoker: false });
-                }
-            });
-
-            const pairGroups = [];
-            const pairUsed = new Set();
-            for (let i = 0; i < normals.length; i++) {
-                if (pairUsed.has(normals[i].id)) continue;
-                for (let j = i + 1; j < normals.length; j++) {
-                    if (pairUsed.has(normals[j].id)) continue;
-                    if (normals[i].effColor === normals[j].effColor && normals[i].effNum === normals[j].effNum) {
-                        pairUsed.add(normals[i].id);
-                        pairUsed.add(normals[j].id);
-                        pairGroups.push([
-                            { ...normals[i], assignedNum: normals[i].effNum },
-                            { ...normals[j], assignedNum: normals[j].effNum }
-                        ]);
-                        break;
-                    }
-                }
-            }
-            const leftoverForOkeyPair = normals
-                .filter(t => !pairUsed.has(t.id))
-                .sort((a, b) => b.effNum - a.effNum);
-
-            const remOkeysForPairs = [...okeys];
-            while (remOkeysForPairs.length > 0 && leftoverForOkeyPair.length > 0) {
-                const ok = remOkeysForPairs.shift();
-                const partner = leftoverForOkeyPair.shift();
-                pairUsed.add(partner.id);
-                pairGroups.push([
-                    { ...partner, assignedNum: partner.effNum },
-                    { ...ok, assignedNum: partner.effNum, effColor: partner.effColor }
-                ]);
-            }
-            while (remOkeysForPairs.length >= 2) {
-                const ok1 = remOkeysForPairs.shift();
-                const ok2 = remOkeysForPairs.shift();
-                pairGroups.push([
-                    { ...ok1, assignedNum: 13 },
-                    { ...ok2, assignedNum: 13 }
-                ]);
-            }
-
-            const pairLeftovers = [
-                ...normals.filter(t => !pairUsed.has(t.id)).map(t => ({ ...t, assignedNum: t.effNum })),
-                ...remOkeysForPairs.map(ok => ({ ...ok, assignedNum: okeyInfo ? okeyInfo.number : 13 }))
-            ];
-            const pairLeftoverSum = pairLeftovers.reduce((acc, t) => acc + t.assignedNum, 0);
-
-            function buildAllCandidates(pool) {
-                const list = [];
-
-                for (let num = 1; num <= 13; num++) {
-                    const byColor = new Map();
-                    pool.forEach(t => {
-                        if (t.effNum === num && !byColor.has(t.effColor)) {
-                            byColor.set(t.effColor, t);
-                        }
-                    });
-                    const distinct = Array.from(byColor.values());
-                    if (distinct.length >= 3) {
-                        const three = distinct.slice(0, 3);
-                        list.push({ tiles: three, score: num * 3, okeysUsed: 0, assignedNums: [num, num, num] });
-                    }
-                    if (distinct.length === 4) {
-                        list.push({ tiles: distinct, score: num * 4, okeysUsed: 0, assignedNums: [num, num, num, num] });
-                    }
-                    if (distinct.length >= 2 && okeys.length >= 1) {
-                        const two = distinct.slice(0, 2);
-                        list.push({ tiles: two, score: num * 3, okeysUsed: 1, assignedNums: [num, num, num] });
-                    }
-                }
-
-                COLORS.forEach(c => {
-                    const byNum = new Map();
-                    pool.forEach(t => {
-                        if (t.effColor === c.id && !byNum.has(t.effNum)) {
-                            byNum.set(t.effNum, t);
-                        }
-                    });
-
-                    for (let start = 1; start <= 13; start++) {
-                        for (let len = 3; len <= 13; len++) {
-                            if (gameMode === '101' && start + len - 1 > 13) continue;
-                            if (gameMode !== '101' && start + len - 1 > 14) continue;
-
-                            const seqNums = [];
-                            const scoreNums = [];
-                            for (let k = 0; k < len; k++) {
-                                const rawVal = start + k;
-                                const tileVal = rawVal === 14 ? 1 : rawVal;
-                                seqNums.push(tileVal);
-                                scoreNums.push(rawVal);
-                            }
-
-                            const matched = [];
-                            let missing = 0;
-                            for (const n of seqNums) {
-                                if (byNum.has(n)) matched.push(byNum.get(n));
-                                else missing++;
-                            }
-
-                            if (missing <= okeys.length && matched.length >= 2) {
-                                const score = scoreNums.reduce((s, n) => s + n, 0);
-                                list.push({
-                                    tiles: matched,
-                                    score,
-                                    okeysUsed: missing,
-                                    seqNums,
-                                    seqColor: c.id
-                                });
-                            }
-                        }
-                    }
-                });
-
-                list.sort((a, b) => (b.score - b.okeysUsed * 2) - (a.score - a.okeysUsed * 2));
-                return list.slice(0, 50);
-            }
-
-            const candidates = buildAllCandidates(normals);
-            let bestState = { score: 0, groups: [] };
-
-            function searchBestCombo(idx, usedIds, okeysLeft, currentScore, currentGroups) {
-                if (currentScore > bestState.score) {
-                    bestState = { score: currentScore, groups: [...currentGroups] };
-                }
-                if (idx >= candidates.length || currentGroups.length >= 7) return;
-
-                const cand = candidates[idx];
-                if (cand.okeysUsed <= okeysLeft && cand.tiles.every(t => !usedIds.has(t.id))) {
-                    const nextUsed = new Set(usedIds);
-                    cand.tiles.forEach(t => nextUsed.add(t.id));
-                    currentGroups.push(cand);
-                    searchBestCombo(idx + 1, nextUsed, okeysLeft - cand.okeysUsed, currentScore + cand.score, currentGroups);
-                    currentGroups.pop();
-                }
-
-                searchBestCombo(idx + 1, usedIds, okeysLeft, currentScore, currentGroups);
-            }
-
-            searchBestCombo(0, new Set(), okeys.length, 0, []);
-
-            const usedNormalIds = new Set();
-            let okeyPoolIdx = 0;
-            const finalSeriGroups = bestState.groups.map(grp => {
-                grp.tiles.forEach(t => usedNormalIds.add(t.id));
-                if (grp.seqNums) {
-                    const byN = new Map(grp.tiles.map(t => [t.effNum, t]));
-                    return grp.seqNums.map(n => {
-                        if (byN.has(n)) {
-                            const t = byN.get(n);
-                            return { ...t, assignedNum: n };
-                        }
-                        const ok = okeys[okeyPoolIdx++];
-                        return { ...ok, assignedNum: n, effColor: grp.seqColor };
-                    });
-                } else {
-                    const num = grp.assignedNums[0];
-                    const items = grp.tiles.map(t => ({ ...t, assignedNum: num }));
-                    for (let k = 0; k < grp.okeysUsed; k++) {
-                        const ok = okeys[okeyPoolIdx++];
-                        items.push({ ...ok, assignedNum: num });
-                    }
-                    return items;
-                }
-            });
-
-            while (okeyPoolIdx < okeys.length) {
-                const extraOk = okeys[okeyPoolIdx];
-                let attached = false;
-                for (let g = 0; g < finalSeriGroups.length; g++) {
-                    const grp = finalSeriGroups[g];
-                    const allSameNum = grp.every(x => x.assignedNum === grp[0].assignedNum);
-                    if (allSameNum && grp.length === 3) {
-                        grp.push({ ...extraOk, assignedNum: grp[0].assignedNum });
-                        bestState.score += grp[0].assignedNum;
-                        okeyPoolIdx++;
-                        attached = true;
-                        break;
-                    }
-                }
-                if (!attached) break;
-            }
-
-            const leftoverNormals = normals
-                .filter(t => !usedNormalIds.has(t.id))
-                .map(t => ({ ...t, assignedNum: t.effNum }));
-
-            const leftoverOkeys = okeys
-                .slice(okeyPoolIdx)
-                .map(ok => ({ ...ok, assignedNum: okeyInfo ? okeyInfo.number : 13 }));
-
-            const seriLeftovers = [...leftoverNormals, ...leftoverOkeys];
-            const seriLeftoverSum = seriLeftovers.reduce((acc, t) => acc + t.assignedNum, 0);
-            const allTilesSum = bestState.score + seriLeftoverSum;
-
-            return {
-                seriGroups: finalSeriGroups,
-                seriScore: bestState.score,
-                seriLeftovers,
-                seriLeftoverSum,
-                pairGroups,
-                pairCount: pairGroups.length,
-                pairLeftovers,
-                pairLeftoverSum,
-                allTilesSum
-            };
-        }
-
-        // =========================================================================
-        // 6. EKRAN METRİKLERİ VE AÇIK KAYIN AHŞAP ISTAKA ÇİZİMİ
-        // =========================================================================
-        function switchArrangeTab(tab) {
-            arrangeTab = tab;
-            const bSeri = document.getElementById('btn-mode-seri');
-            const bCift = document.getElementById('btn-mode-cift');
-            if (tab === 'seri') {
-                bSeri.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow';
-                bCift.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white';
-            } else {
-                bCift.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all bg-amber-400 text-slate-950 shadow';
-                bSeri.className = 'px-3 py-1 rounded-full text-[11px] font-extrabold tracking-wide transition-all text-slate-300 hover:text-white';
-            }
-            recalculateAllMetrics();
-        }
-
-        function recalculateAllMetrics() {
-            const targetCount = gameMode === '101' ? 21 : 14;
-            const totalCount = detectedTiles.length;
-            const solved = solveHandOptimal(detectedTiles);
-
-            document.getElementById('top-rack-status').textContent = totalCount === 0
-                ? `0/${targetCount} · ıstakayı yavaşça tarayın`
-                : `${totalCount}/${targetCount} · ${arrangeTab === 'seri' ? 'Seri Dizilimi' : 'Çift Dizilimi'}`;
-
-            document.getElementById('stat-tile-ratio').textContent = `${totalCount}/${targetCount}`;
-
-            document.getElementById('stat-best-total').textContent = solved.seriScore;
-            document.getElementById('stat-threshold-suffix').textContent = gameMode === '101' ? '/101' : '/Okey';
-
-            const openBadge = document.getElementById('pill-open-badge');
-            if (gameMode === '101') {
-                if (solved.seriScore >= 101) {
-                    openBadge.textContent = '101 Açıyor ✓';
-                    openBadge.className = 'px-2 py-0.5 rounded-full bg-emerald-500/25 border border-emerald-400/50 text-[10px] font-extrabold text-emerald-300';
-                } else {
-                    const rem = 101 - solved.seriScore;
-                    openBadge.textContent = `${rem} Puan Kaldı`;
-                    openBadge.className = 'px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300';
-                }
-            } else {
-                if (totalCount >= 14 && solved.seriLeftovers.length <= 1) {
-                    openBadge.textContent = 'El Biter ✓';
-                    openBadge.className = 'px-2 py-0.5 rounded-full bg-emerald-500/25 border border-emerald-400/50 text-[10px] font-extrabold text-emerald-300';
-                } else {
-                    openBadge.textContent = `${solved.seriLeftovers.length} Taş Kaldı`;
-                    openBadge.className = 'px-2 py-0.5 rounded-full bg-slate-800 border border-slate-600/70 text-[10px] font-extrabold text-slate-300';
-                }
-            }
-
-            document.getElementById('stat-pair-count').textContent = solved.pairCount;
-            const pairStatus = document.getElementById('pill-pair-status');
-            if (solved.pairCount >= 5) {
-                pairStatus.textContent = '5 Çift Tamam ✓';
-                pairStatus.className = 'mt-1.5 text-[10px] font-extrabold text-emerald-400';
-            } else {
-                pairStatus.textContent = `${5 - solved.pairCount} Çift Kaldı`;
-                pairStatus.className = 'mt-1.5 text-[10px] font-bold text-amber-300/90';
-            }
-
-            document.getElementById('stat-seri-leftover').textContent = `${solved.seriScore} Puan`;
-            document.getElementById('stat-all-tiles-sum').textContent = `${solved.allTilesSum} Puan`;
-            document.getElementById('stat-pair-leftover-x2').textContent = solved.pairLeftoverSum * 2;
-
-            const indNum = document.getElementById('indicator-card-num');
-            const indDot = document.getElementById('indicator-card-dot');
-            if (indicatorTile) {
-                const cObj = COLORS.find(c => c.id === indicatorTile.color);
-                indNum.textContent = indicatorTile.number;
-                indNum.className = `text-base font-black leading-none ${cObj ? cObj.textClass : 'text-slate-800'}`;
-                indDot.style.backgroundColor = cObj ? cObj.hex : '#64748b';
-            } else {
-                indNum.textContent = '?';
-                indNum.className = 'text-base font-black text-slate-700 leading-none';
-                indDot.style.backgroundColor = '#94a3b8';
-            }
-
-            renderArrangedWoodenRack(solved);
-        }
-
-        function renderEmptyWoodenRack() {
-            const topRow = document.getElementById('wooden-top-row');
-            const botRow = document.getElementById('wooden-bottom-row');
-            topRow.innerHTML = '';
-            botRow.innerHTML = '';
-            for (let i = 0; i < 13; i++) {
-                topRow.appendChild(createEmptySlotDiv());
-                botRow.appendChild(createEmptySlotDiv());
-            }
-        }
-
-        function createEmptySlotDiv() {
-            const div = document.createElement('div');
-            div.className = 'rack-slot-cell aspect-[3/4.1] w-full';
-            return div;
-        }
-
-        function renderArrangedWoodenRack(solved) {
-            const topRow = document.getElementById('wooden-top-row');
-            const botRow = document.getElementById('wooden-bottom-row');
-            topRow.innerHTML = '';
-            botRow.innerHTML = '';
-
-            const groups = arrangeTab === 'seri' ? solved.seriGroups : solved.pairGroups;
-            const leftovers = arrangeTab === 'seri' ? solved.seriLeftovers : solved.pairLeftovers;
-
-            const topSlots = new Array(13).fill(null);
-            const botSlots = new Array(13).fill(null);
-
-            let row = 0;
-            let col = 0;
-
-            groups.forEach(grp => {
-                if (row === 0 && col + grp.length > 13) {
-                    row = 1;
-                    col = 0;
-                }
-                grp.forEach(t => {
-                    if (row === 0 && col < 13) {
-                        topSlots[col++] = { tile: t, isValid: true };
-                    } else if (row === 1 && col < 13) {
-                        botSlots[col++] = { tile: t, isValid: true };
-                    }
-                });
-                if (col < 13) col++;
-            });
-
-            let remCol = 12;
-            for (let i = leftovers.length - 1; i >= 0; i--) {
-                while (remCol >= 0 && botSlots[remCol] !== null) remCol--;
-                if (remCol >= 0) {
-                    botSlots[remCol--] = { tile: leftovers[i], isValid: false };
-                } else {
-                    let topFree = 12;
-                    while (topFree >= 0 && topSlots[topFree] !== null) topFree--;
-                    if (topFree >= 0) topSlots[topFree] = { tile: leftovers[i], isValid: false };
-                }
-            }
-
-            for (let i = 0; i < 13; i++) {
-                topRow.appendChild(topSlots[i] ? createTileElement(topSlots[i].tile, topSlots[i].isValid) : createEmptySlotDiv());
-                botRow.appendChild(botSlots[i] ? createTileElement(botSlots[i].tile, botSlots[i].isValid) : createEmptySlotDiv());
-            }
-        }
-
-        function createTileElement(tile, isValidGroup) {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.onclick = () => removeSingleTileById(tile.id);
-            btn.title = 'Çıkarmak için dokunun';
-
-            const isOkey = Boolean(tile.isOkeyJoker);
-            const isSahte = Boolean(tile.isSahte);
-            const colorId = tile.effColor || tile.color;
-            const cObj = COLORS.find(c => c.id === colorId);
-
-            let classes = 'okey-tile aspect-[3/4.1] w-full cursor-pointer ';
-            if (isOkey) classes += 'tile-active-okey ';
-            else if (isValidGroup) classes += 'tile-valid-group ';
-            btn.className = classes;
-
-            const numSpan = document.createElement('span');
-            numSpan.className = `text-[11px] sm:text-xs font-bold leading-none ${isSahte ? 'c-sahte' : (cObj ? cObj.textClass : 'c-siyah')}`;
-            numSpan.textContent = isSahte ? '★' : (tile.assignedNum || tile.number);
-
-            const dotSpan = document.createElement('span');
-            dotSpan.className = 'w-1 h-1 rounded-full mt-0.5';
-            dotSpan.style.backgroundColor = isSahte ? '#7c3aed' : (cObj ? cObj.hex : '#0f172a');
-
-            btn.appendChild(numSpan);
-            btn.appendChild(dotSpan);
-
-            if (isOkey) {
-                const badge = document.createElement('span');
-                badge.className = 'absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-500 text-[7px] font-black text-slate-950 flex items-center justify-center';
-                badge.textContent = 'O';
-                btn.appendChild(badge);
-            }
-
-            return btn;
-        }
-
-        function removeSingleTileById(tileId) {
-            const idx = detectedTiles.findIndex(t => t.id === tileId);
-            if (idx !== -1) {
-                detectedTiles.splice(idx, 1);
-                recalculateAllMetrics();
-                showToast('Taş ıstakadan çıkarıldı');
-            }
-        }
-
-        function resetScannedHand() {
-            detectedTiles = [];
-            scanVoteBucket.clear();
-            const overlay = document.getElementById('ar-box-canvas');
-            const ctx = overlay.getContext('2d');
-            ctx.clearRect(0, 0, overlay.width, overlay.height);
-            document.getElementById('camera-reticle').classList.remove('reticle-active');
-            recalculateAllMetrics();
-            showToast('Istaka sıfırlandı, yeni taramaya hazır');
-        }
-
-        // =========================================================================
-        // 7. GÖSTERGE, MANUEL TAŞ, AYARLAR VE YAZBOZ PENCERELERİ
-        // =========================================================================
-        function buildTilePickers() {
-            const indCont = document.getElementById('indicator-palette-container');
-            const manCont = document.getElementById('manual-tile-palette');
-            indCont.innerHTML = '';
-            manCont.innerHTML = '';
-
-            COLORS.forEach(c => {
-                const rowInd = document.createElement('div');
-                rowInd.className = 'grid grid-cols-13 gap-1';
-                rowInd.style.gridTemplateColumns = 'repeat(13, minmax(0, 1fr))';
-
-                const rowMan = document.createElement('div');
-                rowMan.className = 'grid grid-cols-13 gap-1';
-                rowMan.style.gridTemplateColumns = 'repeat(13, minmax(0, 1fr))';
-
-                for (let n = 1; n <= 13; n++) {
-                    const b1 = document.createElement('button');
-                    b1.type = 'button';
-                    b1.className = `okey-tile py-1.5 text-xs font-extrabold ${c.textClass}`;
-                    b1.textContent = n;
-                    b1.onclick = () => selectIndicatorTile(c.id, n);
-                    rowInd.appendChild(b1);
-
-                    const b2 = document.createElement('button');
-                    b2.type = 'button';
-                    b2.className = `okey-tile py-1.5 text-xs font-extrabold ${c.textClass}`;
-                    b2.textContent = n;
-                    b2.onclick = () => addManualTile(c.id, n, false);
-                    rowMan.appendChild(b2);
-                }
-
-                indCont.appendChild(rowInd);
-                manCont.appendChild(rowMan);
-            });
-
-            const sahteBtn = document.createElement('button');
-            sahteBtn.type = 'button';
-            sahteBtn.className = 'w-full py-2 mt-1 rounded-xl bg-purple-500/20 border border-purple-400/40 text-xs font-extrabold text-purple-200';
-            sahteBtn.textContent = '★ Sahte Okey Ekle';
-            sahteBtn.onclick = () => addManualTile('sahte', 0, true);
-            manCont.appendChild(sahteBtn);
-        }
-
-        function openIndicatorPickerModal() {
-            updateIndicatorPreviewText();
-            document.getElementById('indicator-modal').classList.remove('hidden');
-        }
-        function closeIndicatorPickerModal() {
-            document.getElementById('indicator-modal').classList.add('hidden');
-        }
-        function selectIndicatorTile(color, number) {
-            indicatorTile = { color, number };
-            updateIndicatorPreviewText();
-            recalculateAllMetrics();
-        }
-        function clearIndicatorTile() {
-            indicatorTile = null;
-            updateIndicatorPreviewText();
-            recalculateAllMetrics();
-        }
-        function updateIndicatorPreviewText() {
-            const el = document.getElementById('modal-okey-preview');
-            if (!indicatorTile) {
-                el.textContent = 'Seçili Gösterge Yok';
-                return;
-            }
-            const cObj = COLORS.find(c => c.id === indicatorTile.color);
-            const okeyNum = indicatorTile.number === 13 ? 1 : indicatorTile.number + 1;
-            el.textContent = `Gösterge: ${cObj.name} ${indicatorTile.number} → Okey: ${cObj.name} ${okeyNum}`;
-        }
-
-        function openManualTileModal() {
-            document.getElementById('manual-tile-modal').classList.remove('hidden');
-        }
-        function closeManualTileModal() {
-            document.getElementById('manual-tile-modal').classList.add('hidden');
-        }
-        function addManualTile(color, number, isSahte) {
-            const limit = gameMode === '101' ? 22 : 15;
-            if (detectedTiles.length >= limit) {
-                showToast(`Maksimum ${limit} taş eklenebilir`);
-                return;
-            }
-            detectedTiles.push({
-                id: `man_${Date.now()}_${Math.random()}`,
-                color,
-                number,
-                isSahte,
-                box: null
-            });
-            recalculateAllMetrics();
-            showToast(isSahte ? 'Sahte Okey eklendi' : `${number} eklendi`);
-        }
-
-        function openSettingsModal() {
-            updateGameModeButtonsUI();
-            document.getElementById('settings-modal').classList.remove('hidden');
-        }
-        function closeSettingsModal() {
-            document.getElementById('settings-modal').classList.add('hidden');
-        }
-        function changeGameModeFromSettings(mode) {
-            gameMode = mode;
-            updateGameModeButtonsUI();
-            recalculateAllMetrics();
-        }
-        function updateGameModeButtonsUI() {
-            const b101 = document.getElementById('set-mode-101');
-            const b14 = document.getElementById('set-mode-14');
-            if (!b101 || !b14) return;
-            if (gameMode === '101') {
-                b101.className = 'px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold';
-                b14.className = 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold';
-            } else {
-                b14.className = 'px-2.5 py-1 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold';
-                b101.className = 'px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 text-xs font-bold';
-            }
-        }
-
-        function openYazbozModal() {
-            renderYazbozGrid();
-            document.getElementById('yazboz-modal').classList.remove('hidden');
-        }
-        function closeYazbozModal() {
-            document.getElementById('yazboz-modal').classList.add('hidden');
-        }
-        function renderYazbozGrid() {
-            const grid = document.getElementById('yazboz-players-grid');
-            grid.innerHTML = '';
-            yazbozPlayers.forEach((p, idx) => {
-                const card = document.createElement('div');
-                card.className = 'bg-slate-900/90 border border-slate-700/80 rounded-2xl p-3 flex flex-col gap-2';
-                card.innerHTML = `
-                    <div class="flex items-center justify-between">
-                        <input type="text" value="${p.name}" onchange="renameYazbozPlayer(${idx}, this.value)" class="bg-transparent text-xs font-extrabold text-amber-300 w-24 focus:outline-none border-b border-transparent focus:border-amber-400">
-                        <span class="text-lg font-black text-white">${p.score}</span>
-                    </div>
-                    <div class="grid grid-cols-3 gap-1">
-                        <button onclick="addYazbozDelta(${idx}, 101)" class="py-1 rounded-lg bg-red-500/20 text-red-300 text-[11px] font-extrabold">+101</button>
-                        <button onclick="addYazbozDelta(${idx}, -101)" class="py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[11px] font-extrabold">-101</button>
-                        <button onclick="promptCustomYazboz(${idx})" class="py-1 rounded-lg bg-slate-800 text-slate-200 text-[11px] font-bold">±Sayı</button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-        function renameYazbozPlayer(idx, val) {
-            yazbozPlayers[idx].name = val.trim() || `Oyuncu ${idx + 1}`;
-            localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers));
-        }
-        function addYazbozDelta(idx, delta) {
-            yazbozPlayers[idx].score += delta;
-            localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers));
-            renderYazbozGrid();
-        }
-        function promptCustomYazboz(idx) {
-            const val = window.prompt(`${yazbozPlayers[idx].name} için eklenecek/çıkarılacak puan (örn: 45 veya -202):`);
-            const num = parseInt(val, 10);
-            if (!isNaN(num)) {
-                addYazbozDelta(idx, num);
-            }
-        }
-        function resetYazbozScores() {
-            yazbozPlayers.forEach(p => { p.score = 0; });
-            localStorage.setItem('okey_yazboz_v1', JSON.stringify(yazbozPlayers));
-            renderYazbozGrid();
-        }
-
-        function loadSample21Hand() {
-            indicatorTile = { color: 'mavi', number: 4 };
-            const sample = [
-                { color: 'kirmizi', number: 13 }, { color: 'mavi', number: 13 }, { color: 'siyah', number: 13 },
-                { color: 'siyah', number: 4 }, { color: 'mavi', number: 5 }, { color: 'siyah', number: 6 },
-                { color: 'siyah', number: 7 }, { color: 'siyah', number: 8 },
-                { color: 'kirmizi', number: 7 }, { color: 'kirmizi', number: 8 }, { color: 'kirmizi', number: 9 },
-                { color: 'sari', number: 4 }, { color: 'siyah', number: 12 }, { color: 'mavi', number: 6 },
-                { color: 'mavi', number: 10 }, { color: 'siyah', number: 10 }, { color: 'sari', number: 6 },
-                { color: 'sari', number: 8 }, { color: 'mavi', number: 3 }, { color: 'kirmizi', number: 3 },
-                { color: 'siyah', number: 9 }
-            ];
-            detectedTiles = sample.map((t, idx) => ({
-                id: `sample_${idx}`,
-                color: t.color,
-                number: t.number,
-                isSahte: false,
-                box: null
-            }));
-            recalculateAllMetrics();
-            showToast('Örnek 21 taş eli yüklendi (Gösterge: Mavi 4 → Okey: Mavi 5)');
-        }
-
-        let toastTimer = null;
-        function showToast(msg) {
-            const el = document.getElementById('toast-message');
-            el.textContent = msg;
-            el.style.opacity = '1';
-            if (toastTimer) clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => {
-                el.style.opacity = '0';
-            }, 2400);
-        }
-
-        // =========================================================================
-        // 8. BAŞLANGIÇ KURULUMU
-        // =========================================================================
-        window.addEventListener('DOMContentLoaded', () => {
-            renderEmptyWoodenRack();
-            buildTilePickers();
-            recalculateAllMetrics();
-            setLocalBadge('OkeyVision Hazır ✓', 'ok');
-        });
     </script>
 </body>
 </html>
