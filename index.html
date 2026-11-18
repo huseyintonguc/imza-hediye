@@ -2,13 +2,13 @@
 <html lang="tr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>3 Katlı 304 Paslanmaz Çelik Termal Sefer Tası & Çatal-Kaşık Seti</title>
     <meta name="description" content="304 Paslanmaz Çelik iç hazneli, 3 katlı sızdırmaz termal sefer tası ve özel kutulu çelik çatal-kaşık seti. 1.490 TL - Ücretsiz Kargo.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -21,141 +21,140 @@
                         sand: '#F6F3EE',
                         cream: '#FAF8F5',
                         taupe: '#8C7D70',
-                        taupeDark: '#65584D',
-                        charcoal: '#1F1D1B',
+                        taupeDark: '#5E5146',
+                        charcoal: '#1C1A18',
                     }
                 }
             }
         }
     </script>
     <style>
-        body { background-color: #FAF8F5; color: #1F1D1B; }
-        .glass-nav { background: rgba(250, 248, 245, 0.88); backdrop-filter: blur(14px); }
-        .luxury-shadow { box-shadow: 0 24px 48px -12px rgba(101, 88, 77, 0.14); }
-        .img-zoom { transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-        .group:hover .img-zoom { transform: scale(1.04); }
+        body { background-color: #FAF8F5; color: #1C1A18; padding-bottom: 76px; }
+        @media (min-width: 768px) { body { padding-bottom: 0; } }
+        .glass-header { background: rgba(250, 248, 245, 0.9); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .snap-x-mandatory { scroll-snap-type: x mandatory; }
+        .snap-center { scroll-snap-align: center; }
+        .snap-start { scroll-snap-align: start; }
     </style>
 </head>
 <body class="antialiased selection:bg-taupe selection:text-white">
 
     <!-- Üst Duyuru Bandı -->
-    <div class="bg-charcoal text-sand text-xs py-2.5 px-4 text-center tracking-wide font-medium">
-        304 Kalite Gıda Sınıfı Paslanmaz Çelik İç Hazne • Özel Kutulu Metal Çatal-Kaşık Seti Dahil • <span class="underline decoration-sand/50">1.490 TL & Ücretsiz Kargo</span>
+    <div class="bg-charcoal text-sand text-[11px] sm:text-xs py-2 px-3 text-center tracking-wide font-medium">
+        304 Paslanmaz Çelik İç Hazne • Çatal-Kaşık Seti Dahil • <span class="text-emerald-300 font-semibold">Ücretsiz Kargo</span>
     </div>
 
-    <!-- Üst Menü -->
-    <header class="sticky top-0 z-40 glass-nav border-b border-taupe/15">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-2xl bg-charcoal text-sand flex items-center justify-center font-serif text-lg font-bold tracking-tighter">304</div>
+    <!-- Mobil Uyumlu Kompakt Header -->
+    <header class="sticky top-0 z-40 glass-header border-b border-taupe/15">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-charcoal text-sand flex items-center justify-center font-serif text-base font-bold">304</div>
                 <div>
-                    <span class="font-bold tracking-tight text-lg block leading-none">PURE THERMO</span>
-                    <span class="text-[10px] uppercase tracking-[0.22em] text-taupe font-semibold">3-Tier Steel Series</span>
+                    <span class="font-bold tracking-tight text-base block leading-none">PURE THERMO</span>
+                    <span class="text-[9px] uppercase tracking-[0.2em] text-taupe font-semibold">3-Tier Steel Series</span>
                 </div>
             </a>
 
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-charcoal/80">
-                <a href="#koleksiyon" class="hover:text-taupe transition">Renk Seçenekleri</a>
-                <a href="#detaylar" class="hover:text-taupe transition">304 Çelik & Detaylar</a>
-                <a href="#catal-kasik" class="hover:text-taupe transition">Çatal-Kaşık Seti</a>
-                <a href="#okul-serisi" class="hover:text-taupe transition">Okul Serisi</a>
+            <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-charcoal/80">
+                <a href="#renkler" class="hover:text-taupe transition">Renkler</a>
+                <a href="#detaylar" class="hover:text-taupe transition">304 Çelik Detay</a>
+                <a href="#okul" class="hover:text-taupe transition">Okul Serisi</a>
                 <a href="#olculer" class="hover:text-taupe transition">Ölçüler</a>
             </nav>
 
-            <div class="flex items-center gap-3">
-                <span class="hidden sm:inline-block font-bold text-base text-charcoal">1.490 TL</span>
-                <a href="#siparis" class="bg-charcoal text-sand hover:bg-taupeDark transition px-5 py-2.5 rounded-full text-sm font-semibold shadow-sm">
-                    Hemen Sipariş Ver
-                </a>
-            </div>
+            <a href="#siparis" class="bg-charcoal text-sand active:scale-95 transition px-4 py-2 rounded-full text-xs sm:text-sm font-semibold">
+                1.490 TL • Al
+            </a>
         </div>
     </header>
 
-    <!-- HERO ALANI -->
-    <section class="pt-10 pb-20 lg:pt-14 lg:pb-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-                
-                <!-- Sol Açıklama & Fiyat Kartı -->
-                <div class="lg:col-span-6 space-y-6">
-                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sand border border-taupe/20 text-xs font-semibold text-taupeDark">
-                        <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
-                        Komple Set: 3 Katlı Çelik Sefer Tası + Kutulu Çatal-Kaşık
+    <!-- HERO: MOBİLDE KAYDIRMALI VİTRİN + NET BİLGİ -->
+    <section class="pt-4 pb-12 lg:py-16">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+                <!-- Görsel Galeri (Mobilde üstte ve parmakla kaydırmalı, masaüstünde sağda) -->
+                <div class="lg:col-span-6 lg:order-2">
+                    <div class="relative rounded-[2rem] overflow-hidden bg-white border border-taupe/15 shadow-xl shadow-taupe/10">
+                        <!-- Kaydırmalı Görsel Alanı -->
+                        <div id="hero-slider" onscroll="updateDots()" class="flex overflow-x-auto snap-x-mandatory no-scrollbar aspect-[3/4] sm:aspect-[4/4]">
+                            <div class="w-full flex-shrink-0 snap-center relative">
+                                <img src="Food_containers_on_kitchen_island_6a84f247_2K.jpg" alt="3 Katlı Termal Sefer Tası" class="w-full h-full object-cover">
+                                <span class="absolute top-3.5 left-3.5 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-charcoal shadow-sm">3 Bağımsız Bölme</span>
+                            </div>
+                            <div class="w-full flex-shrink-0 snap-center relative">
+                                <img src="Disassembled_lunch_container_set_15f1e9a9_2K.jpg" alt="304 Paslanmaz Çelik İç Hazne" class="w-full h-full object-cover">
+                                <span class="absolute top-3.5 left-3.5 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-charcoal shadow-sm">304 Paslanmaz Çelik</span>
+                            </div>
+                            <div class="w-full flex-shrink-0 snap-center relative">
+                                <img src="Travel_cutlery_set_on_countertop_51e98d9f_2K.jpg" alt="Özel Kutulu Metal Çatal Kaşık Seti" class="w-full h-full object-cover">
+                                <span class="absolute top-3.5 left-3.5 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-charcoal shadow-sm">Çatal-Kaşık Seti Dahil</span>
+                            </div>
+                            <div class="w-full flex-shrink-0 snap-center relative">
+                                <img src="Lunch_box_set_on_countertop_6dfe1552_2K.jpg" alt="Komple Set Görünümü" class="w-full h-full object-cover">
+                                <span class="absolute top-3.5 left-3.5 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-charcoal shadow-sm">Komple Öğün Seti</span>
+                            </div>
+                        </div>
+
+                        <!-- Kaydırma Göstergesi (Noktalar & Bilgi) -->
+                        <div class="absolute bottom-3.5 inset-x-0 flex flex-col items-center gap-1.5 pointer-events-none">
+                            <div class="bg-charcoal/75 backdrop-blur px-3 py-1 rounded-full flex items-center gap-2">
+                                <span class="dot w-2 h-2 rounded-full bg-white transition-all"></span>
+                                <span class="dot w-1.5 h-1.5 rounded-full bg-white/40 transition-all"></span>
+                                <span class="dot w-1.5 h-1.5 rounded-full bg-white/40 transition-all"></span>
+                                <span class="dot w-1.5 h-1.5 rounded-full bg-white/40 transition-all"></span>
+                                <span class="text-[10px] text-white/90 font-medium ml-1">Kaydırın →</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ürün Başlık, Fiyat ve Özet (Mobilde görselin hemen altında) -->
+                <div class="lg:col-span-6 lg:order-1 space-y-5">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sand border border-taupe/20 text-[11px] font-semibold text-taupeDark">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                        Yetişkin & Okul Serisi • Tam Set
                     </div>
 
-                    <h1 class="text-4xl sm:text-5xl lg:text-[54px] font-serif font-semibold leading-[1.1] text-charcoal">
-                        Sağlıklı Öğünler, <br>
-                        <span class="italic font-normal text-taupeDark">Zarif & Modüler Tasarım.</span>
+                    <h1 class="text-3xl sm:text-5xl font-serif font-semibold leading-[1.14] text-charcoal">
+                        3 Katlı 304 Çelik <br>
+                        <span class="italic font-normal text-taupeDark">Termal Sefer Tası Seti</span>
                     </h1>
 
-                    <p class="text-base sm:text-lg text-charcoal/75 leading-relaxed max-w-xl">
-                        Gıdaya temas eden iç yüzeyi tamamen <strong>304 paslanmaz çelik</strong>, dış yüzeyi ısı yalıtımlı mat gövdeden oluşan 3 katlı kompakt sefer tası. Yanında özel taşıma kutulu paslanmaz çelik çatal-kaşık setiyle ofiste ve okulda tam konfor.
+                    <p class="text-sm sm:text-base text-charcoal/75 leading-relaxed">
+                        İç yüzeyi çıkarılabilir <strong>304 paslanmaz çelik</strong>, dış gövdesi ısı yalıtımlı 3 katlı kompakt yemek kabı. Yanında <strong>doğal dokulu saklama kutusunda metal çatal-kaşık seti</strong> ile birlikte gönderilir.
                     </p>
 
-                    <!-- Fiyat & Avantaj Kutusu -->
-                    <div class="bg-white p-5 sm:p-6 rounded-3xl border border-taupe/20 shadow-sm max-w-lg flex flex-wrap items-center justify-between gap-4">
+                    <!-- Fiyat Bloğu -->
+                    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-taupe/20 flex items-center justify-between">
                         <div>
                             <div class="flex items-center gap-2">
-                                <span class="text-xs line-through text-charcoal/40 font-medium">1.890 TL</span>
-                                <span class="text-[11px] font-bold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full">Lansman Fiyatı</span>
+                                <span class="text-xs line-through text-charcoal/40">1.890 TL</span>
+                                <span class="text-[10px] font-bold bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full">%21 İndirim</span>
                             </div>
-                            <div class="text-3xl font-extrabold text-charcoal tracking-tight mt-0.5">1.490 TL</div>
-                            <div class="text-xs text-charcoal/60 mt-0.5">KDV Dahil • Ücretsiz Hızlı Kargo</div>
+                            <div class="text-2xl sm:text-3xl font-extrabold text-charcoal mt-0.5">1.490 TL</div>
+                            <div class="text-[11px] text-charcoal/60">Ücretsiz Kargo • Aynı Gün Gönderim</div>
                         </div>
-                        <a href="#siparis" class="bg-charcoal text-sand hover:bg-taupeDark transition px-6 py-3.5 rounded-2xl text-sm font-semibold shadow-md">
-                            Renk Seç & Sipariş Ver →
+                        <a href="#siparis" class="bg-charcoal text-sand active:scale-95 transition px-5 py-3.5 rounded-xl text-xs sm:text-sm font-bold shadow-md">
+                            Renk Seç →
                         </a>
                     </div>
 
-                    <!-- 3 Temel Teknik Değer -->
-                    <div class="grid grid-cols-3 gap-3 pt-1 max-w-lg">
-                        <div class="bg-sand/70 p-3.5 rounded-2xl border border-taupe/15">
-                            <div class="text-sm font-bold text-charcoal">304 Çelik</div>
-                            <div class="text-xs text-charcoal/65 mt-0.5">Çıkarılabilir İç Hazne</div>
+                    <!-- 3 Kompakt Öne Çıkan Kart -->
+                    <div class="grid grid-cols-3 gap-2.5">
+                        <div class="bg-white p-3 rounded-2xl border border-taupe/15 text-center">
+                            <div class="text-xs sm:text-sm font-extrabold text-charcoal">304 Çelik</div>
+                            <div class="text-[10px] sm:text-xs text-charcoal/60 mt-0.5">Sağlıklı İç Hazne</div>
                         </div>
-                        <div class="bg-sand/70 p-3.5 rounded-2xl border border-taupe/15">
-                            <div class="text-sm font-bold text-charcoal">12 × 7 cm</div>
-                            <div class="text-xs text-charcoal/65 mt-0.5">3 Bağımsız Bölme</div>
+                        <div class="bg-white p-3 rounded-2xl border border-taupe/15 text-center">
+                            <div class="text-xs sm:text-sm font-extrabold text-charcoal">12 × 7 cm</div>
+                            <div class="text-[10px] sm:text-xs text-charcoal/60 mt-0.5">3 Kompakt Kat</div>
                         </div>
-                        <div class="bg-sand/70 p-3.5 rounded-2xl border border-taupe/15">
-                            <div class="text-sm font-bold text-charcoal">%100 Sızdırmaz</div>
-                            <div class="text-xs text-charcoal/65 mt-0.5">Silikon Conta & Valf</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sağ Ana Vitrin Görseli (Değiştirilebilir Canlı Önizleme) -->
-                <div class="lg:col-span-6">
-                    <div class="relative bg-sand rounded-[2.5rem] p-4 sm:p-6 border border-taupe/15 luxury-shadow">
-                        <div class="relative aspect-[3/4] rounded-[2rem] overflow-hidden bg-white">
-                            <img id="hero-main-img" 
-                                 src="Thermal_lunch_box_set_photography_d72f9bed_2K.jpg" 
-                                 alt="3 Katlı 304 Paslanmaz Çelik Termal Sefer Tası" 
-                                 class="w-full h-full object-cover transition-all duration-500">
-                            
-                            <!-- Görsel Üzeri Küçük Bilgi Etiketi -->
-                            <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-charcoal shadow-sm border border-taupe/15">
-                                <span id="hero-badge-text">Kırık Beyaz & Vizon Serisi</span>
-                            </div>
-
-                            <!-- Küçük Önizleme Seçiciler -->
-                            <div class="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur p-2.5 rounded-2xl shadow-lg border border-taupe/15 flex items-center justify-between gap-2">
-                                <button onclick="changeHeroImage('Thermal_lunch_box_set_photography_d72f9bed_2K.jpg', 'Kırık Beyaz & Vizon Serisi')" class="w-12 h-14 rounded-xl overflow-hidden border-2 border-charcoal flex-shrink-0">
-                                    <img src="Thermal_lunch_box_set_photography_d72f9bed_2K.jpg" class="w-full h-full object-cover">
-                                </button>
-                                <button onclick="changeHeroImage('Food_containers_on_kitchen_island_6a84f247_2K.jpg', '3 Hazne Tam Porsiyon Kapasitesi')" class="w-12 h-14 rounded-xl overflow-hidden border border-taupe/20 hover:border-charcoal flex-shrink-0">
-                                    <img src="Food_containers_on_kitchen_island_6a84f247_2K.jpg" class="w-full h-full object-cover">
-                                </button>
-                                <button onclick="changeHeroImage('Disassembled_lunch_container_set_15f1e9a9_2K.jpg', '304 Paslanmaz Çelik İç Hazne')" class="w-12 h-14 rounded-xl overflow-hidden border border-taupe/20 hover:border-charcoal flex-shrink-0">
-                                    <img src="Disassembled_lunch_container_set_15f1e9a9_2K.jpg" class="w-full h-full object-cover">
-                                </button>
-                                <button onclick="changeHeroImage('Travel_cutlery_set_on_countertop_51e98d9f_2K.jpg', 'Özel Kutulu Çelik Çatal-Kaşık Seti')" class="w-12 h-14 rounded-xl overflow-hidden border border-taupe/20 hover:border-charcoal flex-shrink-0">
-                                    <img src="Travel_cutlery_set_on_countertop_51e98d9f_2K.jpg" class="w-full h-full object-cover">
-                                </button>
-                                <button onclick="changeHeroImage('Lunch_box_set_on_countertop_6dfe1552_2K.jpg', 'Termal Çantalı Tam Set Görünümü')" class="w-12 h-14 rounded-xl overflow-hidden border border-taupe/20 hover:border-charcoal flex-shrink-0">
-                                    <img src="Lunch_box_set_on_countertop_6dfe1552_2K.jpg" class="w-full h-full object-cover">
-                                </button>
-                            </div>
+                        <div class="bg-white p-3 rounded-2xl border border-taupe/15 text-center">
+                            <div class="text-xs sm:text-sm font-extrabold text-charcoal">Sızdırmaz</div>
+                            <div class="text-[10px] sm:text-xs text-charcoal/60 mt-0.5">Silikon Conta</div>
                         </div>
                     </div>
                 </div>
@@ -164,151 +163,120 @@
         </div>
     </section>
 
-    <!-- RENK KOLEKSİYONU (GERÇEK ÜRÜN GÖRSELLERİYLE) -->
-    <section id="koleksiyon" class="py-20 bg-white border-y border-taupe/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+    <!-- RENK SEÇENEKLERİ (MOBİLDE YATAY KAYDIRMALI KARTLAR) -->
+    <section id="renkler" class="py-14 bg-white border-y border-taupe/10">
+        <div class="max-w-6xl mx-auto">
+            <div class="px-4 mb-6 flex items-end justify-between">
                 <div>
-                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-taupe">Renk Seçenekleri</span>
-                    <h2 class="text-3xl sm:text-4xl font-serif font-semibold mt-2">Yetişkin & Okul Serisi Koleksiyonu</h2>
+                    <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-taupe">Koleksiyon</span>
+                    <h2 class="text-2xl sm:text-3xl font-serif font-semibold mt-1">Renk Seçenekleri</h2>
                 </div>
-                <p class="text-sm text-charcoal/70 max-w-md">
-                    Tüm renk seçeneklerinde <strong>3 adet 12×7 cm çelik hazneli kap</strong> ve <strong>özel kutulu paslanmaz çelik çatal-kaşık seti</strong> standart olarak gönderilir.
-                </p>
+                <span class="text-xs text-taupe font-medium md:hidden">Sağa kaydırın →</span>
             </div>
 
-            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Varyant 1: Kırık Beyaz & Vizon -->
-                <div class="group bg-cream rounded-3xl p-4 border border-taupe/15 hover:border-charcoal transition flex flex-col justify-between">
+            <!-- Mobilde yatay kaydırma, masaüstünde 4'lü grid -->
+            <div class="flex md:grid md:grid-cols-4 gap-4 overflow-x-auto snap-x-mandatory no-scrollbar px-4 pb-2">
+                
+                <!-- Renk 1 -->
+                <div class="w-[72vw] sm:w-[45vw] md:w-auto flex-shrink-0 snap-start bg-cream rounded-3xl p-3.5 border border-taupe/15 flex flex-col justify-between">
                     <div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-white mb-4 relative cursor-pointer" onclick="openLightbox('Thermal_lunch_box_set_photography_d72f9bed_2K.jpg')">
-                            <img src="Thermal_lunch_box_set_photography_d72f9bed_2K.jpg" alt="Kırık Beyaz Vizon Sefer Tası" class="w-full h-full object-cover img-zoom">
-                            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-bold text-charcoal">En Çok Satan</span>
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-white mb-3 relative" onclick="openLightbox('Food_containers_on_kitchen_island_6a84f247_2K.jpg')">
+                            <img src="Food_containers_on_kitchen_island_6a84f247_2K.jpg" alt="Kırık Beyaz & Vizon" class="w-full h-full object-cover">
+                            <span class="absolute top-2.5 left-2.5 bg-white/95 px-2.5 py-1 rounded-full text-[10px] font-bold text-charcoal">Klasik Seri</span>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-bold text-base">Kırık Beyaz & Vizon</h3>
-                            <span class="font-bold text-sm text-taupeDark">1.490 TL</span>
-                        </div>
-                        <p class="text-xs text-charcoal/65 mt-1.5 leading-relaxed">Ofis ve günlük kullanım için zamansız mat bej gövde ve vizon kapak uyumu.</p>
+                        <h3 class="font-bold text-sm sm:text-base">Kırık Beyaz & Vizon</h3>
+                        <p class="text-xs text-charcoal/65 mt-1">Ofis ve günlük kullanım için zamansız mat bej tonu.</p>
                     </div>
-                    <button onclick="selectAndScroll('Kırık Beyaz & Vizon')" class="mt-4 w-full py-2.5 rounded-xl bg-white border border-taupe/25 group-hover:bg-charcoal group-hover:text-sand group-hover:border-charcoal text-xs font-bold transition">
-                        Bu Rengi Seç
+                    <button onclick="selectAndScroll('Kırık Beyaz & Vizon')" class="mt-3.5 w-full py-2.5 rounded-xl bg-charcoal text-sand active:scale-95 text-xs font-bold transition">
+                        Seç • 1.490 TL
                     </button>
                 </div>
 
-                <!-- Varyant 2: Adaçayı Yeşili & Güneş Sarısı -->
-                <div class="group bg-cream rounded-3xl p-4 border border-taupe/15 hover:border-charcoal transition flex flex-col justify-between">
+                <!-- Renk 2 -->
+                <div class="w-[72vw] sm:w-[45vw] md:w-auto flex-shrink-0 snap-start bg-cream rounded-3xl p-3.5 border border-taupe/15 flex flex-col justify-between">
                     <div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-white mb-4 relative cursor-pointer" onclick="openLightbox('Lunch_box_meal_preparation_235a4db6_2K.jpg')">
-                            <img src="Lunch_box_meal_preparation_235a4db6_2K.jpg" alt="Adaçayı Yeşili ve Sarı Beslenme Seti" class="w-full h-full object-cover img-zoom">
-                            <span class="absolute top-3 left-3 bg-emerald-50/95 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-bold text-emerald-800">Unisex / Diyet</span>
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-white mb-3 relative" onclick="openLightbox('Lunch_box_meal_preparation_235a4db6_2K.jpg')">
+                            <img src="Lunch_box_meal_preparation_235a4db6_2K.jpg" alt="Adaçayı Yeşili & Sarı" class="w-full h-full object-cover">
+                            <span class="absolute top-2.5 left-2.5 bg-emerald-50/95 px-2.5 py-1 rounded-full text-[10px] font-bold text-emerald-800">Unisex / Diyet</span>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-bold text-base">Adaçayı Yeşili & Sarı</h3>
-                            <span class="font-bold text-sm text-taupeDark">1.490 TL</span>
-                        </div>
-                        <p class="text-xs text-charcoal/65 mt-1.5 leading-relaxed">Hem sağlıklı öğün hazırlığı hem de çocuk beslenmesi için enerjik renk kombinasyonu.</p>
+                        <h3 class="font-bold text-sm sm:text-base">Adaçayı Yeşili & Sarı</h3>
+                        <p class="text-xs text-charcoal/65 mt-1">Sağlıklı öğünler ve okul beslenmesi için canlı tonlar.</p>
                     </div>
-                    <button onclick="selectAndScroll('Adaçayı Yeşili & Sarı')" class="mt-4 w-full py-2.5 rounded-xl bg-white border border-taupe/25 group-hover:bg-charcoal group-hover:text-sand group-hover:border-charcoal text-xs font-bold transition">
-                        Bu Rengi Seç
+                    <button onclick="selectAndScroll('Adaçayı Yeşili & Sarı')" class="mt-3.5 w-full py-2.5 rounded-xl bg-charcoal text-sand active:scale-95 text-xs font-bold transition">
+                        Seç • 1.490 TL
                     </button>
                 </div>
 
-                <!-- Varyant 3: Pastel Pembe & Lavanta (Okul) -->
-                <div class="group bg-cream rounded-3xl p-4 border border-taupe/15 hover:border-charcoal transition flex flex-col justify-between">
+                <!-- Renk 3 -->
+                <div class="w-[72vw] sm:w-[45vw] md:w-auto flex-shrink-0 snap-start bg-cream rounded-3xl p-3.5 border border-taupe/15 flex flex-col justify-between">
                     <div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-white mb-4 relative cursor-pointer" onclick="openLightbox('Thermal_lunch_box_set_2f600b36_2K.jpg')">
-                            <img src="Thermal_lunch_box_set_2f600b36_2K.jpg" alt="Pastel Pembe Lavanta Okul Beslenme Kabı" class="w-full h-full object-cover img-zoom">
-                            <span class="absolute top-3 left-3 bg-pink-50/95 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-bold text-pink-700">Okul Serisi</span>
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-white mb-3 relative" onclick="openLightbox('Thermal_lunch_box_set_2f600b36_2K.jpg')">
+                            <img src="Thermal_lunch_box_set_2f600b36_2K.jpg" alt="Pastel Pembe & Lavanta" class="w-full h-full object-cover">
+                            <span class="absolute top-2.5 left-2.5 bg-pink-50/95 px-2.5 py-1 rounded-full text-[10px] font-bold text-pink-700">Okul Serisi</span>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-bold text-base">Pastel Pembe & Lavanta</h3>
-                            <span class="font-bold text-sm text-taupeDark">1.490 TL</span>
-                        </div>
-                        <p class="text-xs text-charcoal/65 mt-1.5 leading-relaxed">Kız çocukları için okul çantasına sığan 12×7 cm kompakt ve sevimli tasarım.</p>
+                        <h3 class="font-bold text-sm sm:text-base">Pastel Pembe & Lavanta</h3>
+                        <p class="text-xs text-charcoal/65 mt-1">Kız çocukları için okul çantasına tam sığan 12×7 cm ölçü.</p>
                     </div>
-                    <button onclick="selectAndScroll('Pastel Pembe & Lavanta (Okul)')" class="mt-4 w-full py-2.5 rounded-xl bg-white border border-taupe/25 group-hover:bg-charcoal group-hover:text-sand group-hover:border-charcoal text-xs font-bold transition">
-                        Bu Rengi Seç
+                    <button onclick="selectAndScroll('Pastel Pembe & Lavanta (Okul)')" class="mt-3.5 w-full py-2.5 rounded-xl bg-charcoal text-sand active:scale-95 text-xs font-bold transition">
+                        Seç • 1.490 TL
                     </button>
                 </div>
 
-                <!-- Varyant 4: Gökyüzü Mavisi & Turuncu / Gri (Okul) -->
-                <div class="group bg-cream rounded-3xl p-4 border border-taupe/15 hover:border-charcoal transition flex flex-col justify-between">
+                <!-- Renk 4 -->
+                <div class="w-[72vw] sm:w-[45vw] md:w-auto flex-shrink-0 snap-start bg-cream rounded-3xl p-3.5 border border-taupe/15 flex flex-col justify-between">
                     <div>
-                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-white mb-4 relative cursor-pointer" onclick="openLightbox('Kids_thermal_lunch_box_set_3d4c18d9_2K.jpg')">
-                            <img src="Kids_thermal_lunch_box_set_3d4c18d9_2K.jpg" alt="Gökyüzü Mavisi Okul Beslenme Kabı" class="w-full h-full object-cover img-zoom">
-                            <span class="absolute top-3 left-3 bg-sky-50/95 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-bold text-sky-800">Okul Serisi</span>
+                        <div class="aspect-[3/4] rounded-2xl overflow-hidden bg-white mb-3 relative" onclick="openLightbox('Kids_thermal_lunch_box_set_3d4c18d9_2K.jpg')">
+                            <img src="Kids_thermal_lunch_box_set_3d4c18d9_2K.jpg" alt="Gökyüzü Mavisi & Turuncu" class="w-full h-full object-cover">
+                            <span class="absolute top-2.5 left-2.5 bg-sky-50/95 px-2.5 py-1 rounded-full text-[10px] font-bold text-sky-800">Okul Serisi</span>
                         </div>
-                        <div class="flex items-center justify-between">
-                            <h3 class="font-bold text-base">Gökyüzü Mavisi & Turuncu</h3>
-                            <span class="font-bold text-sm text-taupeDark">1.490 TL</span>
-                        </div>
-                        <p class="text-xs text-charcoal/65 mt-1.5 leading-relaxed">Canlı mavi gövde ve turuncu kapak detaylarıyla okul beslenme saatini keyfe dönüştürür.</p>
+                        <h3 class="font-bold text-sm sm:text-base">Gökyüzü Mavisi & Turuncu</h3>
+                        <p class="text-xs text-charcoal/65 mt-1">Enerjik mavi gövde ve kolay açılan contalı kapaklar.</p>
                     </div>
-                    <button onclick="selectAndScroll('Gökyüzü Mavisi & Turuncu (Okul)')" class="mt-4 w-full py-2.5 rounded-xl bg-white border border-taupe/25 group-hover:bg-charcoal group-hover:text-sand group-hover:border-charcoal text-xs font-bold transition">
-                        Bu Rengi Seç
+                    <button onclick="selectAndScroll('Gökyüzü Mavisi & Turuncu (Okul)')" class="mt-3.5 w-full py-2.5 rounded-xl bg-charcoal text-sand active:scale-95 text-xs font-bold transition">
+                        Seç • 1.490 TL
                     </button>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <!-- 304 ÇELİK & PORSİYON DETAYLARI (BÜYÜK GÖRSEL KARŞILAŞTIRMA) -->
-    <section id="detaylar" class="py-20 bg-cream">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+    <!-- ÜRÜN DETAYLARI: 304 ÇELİK & KUTULU ÇATAL-KAŞIK -->
+    <section id="detaylar" class="py-14 bg-cream">
+        <div class="max-w-6xl mx-auto px-4 space-y-12">
             
-            <!-- Satır 1: 304 Paslanmaz Çelik İç Hazne -->
-            <div class="grid lg:grid-cols-12 gap-10 items-center">
-                <div class="lg:col-span-6">
-                    <div class="rounded-[2rem] overflow-hidden bg-white p-3 border border-taupe/15 luxury-shadow cursor-pointer" onclick="openLightbox('Disassembled_lunch_container_set_15f1e9a9_2K.jpg')">
-                        <img src="Disassembled_lunch_container_set_15f1e9a9_2K.jpg" alt="304 Paslanmaz Çelik Çıkarılabilir İç Hazne" class="w-full aspect-[4/4] object-cover rounded-[1.5rem]">
-                    </div>
+            <!-- Kart 1: 304 Çelik -->
+            <div class="bg-white rounded-[2rem] p-4 sm:p-8 border border-taupe/15 shadow-sm grid md:grid-cols-12 gap-6 items-center">
+                <div class="md:col-span-5">
+                    <img src="Disassembled_lunch_container_set_15f1e9a9_2K.jpg" alt="304 Paslanmaz Çelik İç Hazne" onclick="openLightbox('Disassembled_lunch_container_set_15f1e9a9_2K.jpg')" class="w-full aspect-square object-cover rounded-2xl cursor-pointer">
                 </div>
-                <div class="lg:col-span-6 space-y-5">
-                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-taupe">Çift Katmanlı Koruma</span>
-                    <h2 class="text-3xl sm:text-4xl font-serif font-semibold">Çıkarılabilir 304 Kalite Paslanmaz Çelik İç Hazne</h2>
-                    <p class="text-charcoal/75 leading-relaxed text-sm sm:text-base">
-                        Gıdanız kesinlikle plastiğe temas etmez. Her bir haznenin içerisinde yer alan <strong>304 kalite paslanmaz çelik kâse</strong>, dış ısı yalıtımlı mat gövdeden kolayca çıkarılabilir.
+                <div class="md:col-span-7 space-y-3 px-1">
+                    <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-taupe">Sağlıklı İç Yüzey</span>
+                    <h2 class="text-2xl sm:text-3xl font-serif font-semibold">Çıkarılabilir 304 Paslanmaz Çelik Hazneler</h2>
+                    <p class="text-sm text-charcoal/75 leading-relaxed">
+                        Yemekleriniz plastiğe değmeden 304 kalite paslanmaz çelik içinde taşınır. İç çelik kâseler dış gövdeden ayrılıp bulaşık makinesinde rahatça yıkanabilir.
                     </p>
-                    <ul class="space-y-3 text-sm text-charcoal/80 pt-2">
-                        <li class="flex items-start gap-3">
-                            <span class="w-6 h-6 rounded-full bg-charcoal text-sand flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
-                            <span><strong>Koku ve Leke Tutmaz:</strong> Salça, baharat veya zeytinyağlı yemeklerden sonra bile kolayca temizlenir.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="w-6 h-6 rounded-full bg-charcoal text-sand flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
-                            <span><strong>Yıldız Silikon Hava Valfi:</strong> Sıcak yemek koyduğunuzda oluşan buhar basıncını kapağın ortasındaki yıldız tapayı çekerek kolayca tahliye edebilirsiniz.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="w-6 h-6 rounded-full bg-charcoal text-sand flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
-                            <span><strong>Tam Sızdırmaz Silikon Conta:</strong> Kapak içindeki kalın silikon halka çanta içinde sızdırmayı önler.</span>
-                        </li>
-                    </ul>
+                    <div class="grid grid-cols-2 gap-2.5 pt-2 text-xs">
+                        <div class="bg-cream p-3 rounded-xl font-semibold">★ Yıldız Buhar Tahliye Tapası</div>
+                        <div class="bg-cream p-3 rounded-xl font-semibold">💧 Sızdırmaz Silikon Conta</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Satır 2: Özel Kutulu Çatal-Kaşık Seti -->
-            <div id="catal-kasik" class="grid lg:grid-cols-12 gap-10 items-center">
-                <div class="lg:col-span-6 order-2 lg:order-1 space-y-5">
-                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-taupe">Sete Dahil Aksesuar</span>
-                    <h2 class="text-3xl sm:text-4xl font-serif font-semibold">Doğal Dokulu Kutusunda Paslanmaz Çelik Çatal & Kaşık</h2>
-                    <p class="text-charcoal/75 leading-relaxed text-sm sm:text-base">
-                        Dışarıda veya okulda yemek yerken tek kullanımlık plastik çatal-kaşıklara ihtiyaç duymazsınız. Setle birlikte gelen <strong>doğal buğday samanı benekli taşıma kutusu</strong> içerisinde 1 adet metal kaşık ve 1 adet metal çatal yer alır.
+            <!-- Kart 2: Çatal-Kaşık Seti -->
+            <div class="bg-white rounded-[2rem] p-4 sm:p-8 border border-taupe/15 shadow-sm grid md:grid-cols-12 gap-6 items-center">
+                <div class="md:col-span-5 md:order-2">
+                    <img src="Travel_cutlery_set_on_countertop_51e98d9f_2K.jpg" alt="Kutulu Paslanmaz Çelik Çatal Kaşık" onclick="openLightbox('Travel_cutlery_set_on_countertop_51e98d9f_2K.jpg')" class="w-full aspect-square object-cover rounded-2xl cursor-pointer">
+                </div>
+                <div class="md:col-span-7 md:order-1 space-y-3 px-1">
+                    <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-taupe">Set İçeriğine Dahil</span>
+                    <h2 class="text-2xl sm:text-3xl font-serif font-semibold">Özel Kutusunda Metal Çatal & Kaşık Seti</h2>
+                    <p class="text-sm text-charcoal/75 leading-relaxed">
+                        Doğal buğday samanı dokulu 17,5 cm hijyenik taşıma kutusu içerisinde 1 adet metal kaşık ve 1 adet metal çatal sete dahildir. Çanta içinde kirlenmeden güvenle taşınır.
                     </p>
-                    <div class="grid grid-cols-2 gap-4 pt-2">
-                        <div class="bg-white p-4 rounded-2xl border border-taupe/15">
-                            <div class="font-bold text-sm text-charcoal">Hijyenik Kapaklı Kutu</div>
-                            <p class="text-xs text-charcoal/65 mt-1">Çanta içinde toz ve kirden korur, kullanım sonrası kirli çatal-kaşığı çantanıza bulaştırmadan geri koymanızı sağlar.</p>
-                        </div>
-                        <div class="bg-white p-4 rounded-2xl border border-taupe/15">
-                            <div class="font-bold text-sm text-charcoal">Kompakt 17,5 cm Ölçü</div>
-                            <p class="text-xs text-charcoal/65 mt-1">Hem çocukların hem yetişkinlerin rahat tutabileceği ergonomik metal form.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="lg:col-span-6 order-1 lg:order-2">
-                    <div class="rounded-[2rem] overflow-hidden bg-white p-3 border border-taupe/15 luxury-shadow cursor-pointer" onclick="openLightbox('Travel_cutlery_set_on_countertop_51e98d9f_2K.jpg')">
-                        <img src="Travel_cutlery_set_on_countertop_51e98d9f_2K.jpg" alt="Özel Kutulu Paslanmaz Çelik Çatal Kaşık Seti" class="w-full aspect-[4/4] object-cover rounded-[1.5rem]">
+                    <div class="grid grid-cols-2 gap-2.5 pt-2 text-xs">
+                        <div class="bg-cream p-3 rounded-xl font-semibold">🥄 1 Metal Kaşık + 1 Çatal</div>
+                        <div class="bg-cream p-3 rounded-xl font-semibold">📦 Kapaklı Hijyenik Kutu</div>
                     </div>
                 </div>
             </div>
@@ -316,153 +284,130 @@
         </div>
     </section>
 
-    <!-- OKUL SERİSİ & GERÇEK KULLANIM -->
-    <section id="okul-serisi" class="py-20 bg-white border-y border-taupe/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <span class="text-xs font-bold uppercase tracking-[0.2em] text-taupe">Okul Beslenme Çözümü</span>
-                <h2 class="text-3xl sm:text-4xl font-serif font-semibold mt-2">Çocukların Okul Çantasına Tam Uyumlu Kompakt Ölçü</h2>
-                <p class="text-charcoal/70 mt-3 text-sm sm:text-base">
-                    Her bir hazne <strong>12 cm çapında ve 7 cm yüksekliğindedir</strong>. Çocuklar okul sırasında kapakları tek başına kolayca açıp kapatabilir.
-                </p>
+    <!-- OKUL SERİSİ GERÇEK KULLANIM -->
+    <section id="okul" class="py-14 bg-white border-y border-taupe/10">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="mb-8">
+                <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-taupe">Okul Beslenme Saati</span>
+                <h2 class="text-2xl sm:text-3xl font-serif font-semibold mt-1">Okul Çantasına Tam Uyumlu Kompakt Tasarım</h2>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="rounded-3xl overflow-hidden bg-cream border border-taupe/15 cursor-pointer group" onclick="openLightbox('Children_eating_lunch_at_desk_69b64cf7_2K.jpg')">
-                    <div class="aspect-[3/4] overflow-hidden">
-                        <img src="Children_eating_lunch_at_desk_69b64cf7_2K.jpg" alt="Kız ve Erkek Öğrenci Okul Beslenme Saati" class="w-full h-full object-cover img-zoom">
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-base">Ana Yemek, Salata ve Meyve Ayrı</h3>
-                        <p class="text-xs text-charcoal/70 mt-1">3 bağımsız hazne sayesinde yiyeceklerin suyu ve kokusu birbirine karışmaz.</p>
+            <div class="grid grid-cols-2 gap-3 sm:gap-6">
+                <div class="rounded-2xl sm:rounded-3xl overflow-hidden bg-cream border border-taupe/15" onclick="openLightbox('Children_eating_lunch_at_desk_69b64cf7_2K.jpg')">
+                    <img src="Children_eating_lunch_at_desk_69b64cf7_2K.jpg" alt="Okul Beslenme Saati" class="w-full aspect-[3/4] object-cover">
+                    <div class="p-3 sm:p-5">
+                        <h3 class="font-bold text-xs sm:text-base">Kız & Erkek Okul Serisi</h3>
+                        <p class="text-[11px] sm:text-xs text-charcoal/65 mt-0.5">Çocukların kolayca açabileceği vakum tapalı kapak.</p>
                     </div>
                 </div>
 
-                <div class="rounded-3xl overflow-hidden bg-cream border border-taupe/15 cursor-pointer group" onclick="openLightbox('Boy_eating_lunch_at_desk_215fbfeb_2K.jpg')">
-                    <div class="aspect-[3/4] overflow-hidden">
-                        <img src="Boy_eating_lunch_at_desk_215fbfeb_2K.jpg" alt="Okul Sırasında Paslanmaz Çelik Beslenme Kabı" class="w-full h-full object-cover img-zoom">
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-base">Sağlıklı 304 Çelik Güvencesi</h3>
-                        <p class="text-xs text-charcoal/70 mt-1">Evde hazırladığınız sıcak yemekleri güvenle okul saatine kadar muhafaza eder.</p>
-                    </div>
-                </div>
-
-                <div class="rounded-3xl overflow-hidden bg-cream border border-taupe/15 cursor-pointer group" onclick="openLightbox('Food_containers_on_kitchen_island_6a84f247_2K.jpg')">
-                    <div class="aspect-[3/4] overflow-hidden">
-                        <img src="Food_containers_on_kitchen_island_6a84f247_2K.jpg" alt="3 Hazneli Porsiyon Kapasitesi" class="w-full h-full object-cover img-zoom">
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-base">Doyurucu Porsiyon Kapasitesi</h3>
-                        <p class="text-xs text-charcoal/70 mt-1">Hem çocuklar hem de yetişkinlerin günlük öğün ihtiyacı için ideal hacim.</p>
+                <div class="rounded-2xl sm:rounded-3xl overflow-hidden bg-cream border border-taupe/15" onclick="openLightbox('Boy_eating_lunch_at_desk_215fbfeb_2K.jpg')">
+                    <img src="Boy_eating_lunch_at_desk_215fbfeb_2K.jpg" alt="Öğrenci Beslenme Kabı" class="w-full aspect-[3/4] object-cover">
+                    <div class="p-3 sm:p-5">
+                        <h3 class="font-bold text-xs sm:text-base">3 Bölme Tam Öğün</h3>
+                        <p class="text-[11px] sm:text-xs text-charcoal/65 mt-0.5">Ana yemek, salata ve meyve birbirine karışmaz.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- TEKNİK ÖLÇÜLER & KUTU İÇERİĞİ TABLOSU -->
-    <section id="olculer" class="py-20 bg-cream">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-10">
-                <span class="text-xs font-bold uppercase tracking-[0.2em] text-taupe">Teknik Özellikler</span>
-                <h2 class="text-3xl font-serif font-semibold mt-2">Paket İçeriği ve Ölçü Tablosu</h2>
-            </div>
-
-            <div class="bg-white rounded-3xl border border-taupe/15 overflow-hidden shadow-sm">
-                <table class="w-full text-left border-collapse">
-                    <tbody class="divide-y divide-taupe/10 text-sm">
-                        <tr>
-                            <td class="py-4 px-6 font-semibold text-charcoal/70 w-1/2">Tek Hazne Ölçüsü</td>
-                            <td class="py-4 px-6 font-bold text-charcoal">12 cm Genişlik (Çap) × 7 cm Yükseklik</td>
-                        </tr>
-                        <tr>
-                            <td class="py-4 px-6 font-semibold text-charcoal/70">3 Katlı Üst Üste Toplam Yükseklik</td>
-                            <td class="py-4 px-6 font-bold text-charcoal">~ 21 cm</td>
-                        </tr>
-                        <tr>
-                            <td class="py-4 px-6 font-semibold text-charcoal/70">İç Hazne Malzemesi</td>
-                            <td class="py-4 px-6 font-bold text-charcoal">304 Kalite Gıda Sınıfı Paslanmaz Çelik (Çıkarılabilir)</td>
-                        </tr>
-                        <tr>
-                            <td class="py-4 px-6 font-semibold text-charcoal/70">Dış Gövde & Kapak</td>
-                            <td class="py-4 px-6 font-bold text-charcoal">BPA İçermeyen Mat PP + Sızdırmaz Silikon Conta & Yıldız Valf</td>
-                        </tr>
-                        <tr>
-                            <td class="py-4 px-6 font-semibold text-charcoal/70">Çatal-Kaşık Seti</td>
-                            <td class="py-4 px-6 font-bold text-charcoal">1 Adet Metal Çatal + 1 Adet Metal Kaşık + 17,5 cm Taşıma Kutusu</td>
-                        </tr>
-                        <tr>
-                            <td class="py-4 px-6 font-semibold text-charcoal/70">Paket İçeriği (Toplam)</td>
-                            <td class="py-4 px-6 font-bold text-charcoal">3 Adet Çelik Hazneli Kap + 3 Adet Contalı Kapak + 1 Adet Kutulu Çatal-Kaşık Seti</td>
-                        </tr>
-                        <tr class="bg-sand/50">
-                            <td class="py-4 px-6 font-bold text-charcoal">Satış Fiyatı</td>
-                            <td class="py-4 px-6 font-extrabold text-lg text-emerald-700">1.490 TL (Ücretsiz Kargo)</td>
-                        </tr>
-                    </tbody>
-                </table>
+    <!-- ÖLÇÜLER VE TEKNİK TABLO -->
+    <section id="olculer" class="py-14 bg-cream">
+        <div class="max-w-3xl mx-auto px-4">
+            <h2 class="text-2xl sm:text-3xl font-serif font-semibold text-center mb-6">Teknik Ölçüler & Set İçeriği</h2>
+            <div class="bg-white rounded-3xl border border-taupe/15 overflow-hidden divide-y divide-taupe/10 text-xs sm:text-sm">
+                <div class="flex justify-between p-4">
+                    <span class="text-charcoal/65">Tek Hazne Ölçüsü</span>
+                    <span class="font-bold">12 cm Çap × 7 cm Yükseklik</span>
+                </div>
+                <div class="flex justify-between p-4">
+                    <span class="text-charcoal/65">3 Katlı Toplam Yükseklik</span>
+                    <span class="font-bold">~ 21 cm</span>
+                </div>
+                <div class="flex justify-between p-4">
+                    <span class="text-charcoal/65">İç Hazne Malzemesi</span>
+                    <span class="font-bold">304 Kalite Paslanmaz Çelik</span>
+                </div>
+                <div class="flex justify-between p-4">
+                    <span class="text-charcoal/65">Çatal-Kaşık Seti</span>
+                    <span class="font-bold">Metal Çatal & Kaşık + 17,5 cm Kutu</span>
+                </div>
+                <div class="flex justify-between p-4 bg-sand/50">
+                    <span class="font-bold">Komple Set Fiyatı</span>
+                    <span class="font-extrabold text-emerald-700 text-base">1.490 TL (Ücretsiz Kargo)</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- SİPARİŞ ALANI -->
-    <section id="siparis" class="py-20 bg-charcoal text-sand">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <span class="text-xs font-bold uppercase tracking-[0.2em] text-sand/60">Hızlı & Güvenli Sipariş</span>
-            <h2 class="text-3xl sm:text-4xl font-serif font-semibold mt-2 mb-3">3 Katlı Çelik Sefer Tası + Çatal-Kaşık Seti</h2>
-            <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 mb-6">1.490 TL <span class="text-xs font-normal text-sand/70">/ Komple Set (Ücretsiz Kargo)</span></div>
+    <!-- SİPARİŞ FORMU -->
+    <section id="siparis" class="py-16 bg-charcoal text-sand">
+        <div class="max-w-lg mx-auto px-4 text-center">
+            <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-sand/60">Hızlı WhatsApp Siparişi</span>
+            <h2 class="text-2xl sm:text-3xl font-serif font-semibold mt-1.5">Siparişinizi Oluşturun</h2>
+            <div class="text-2xl font-extrabold text-emerald-400 mt-2 mb-6">1.490 TL <span class="text-xs font-normal text-sand/70">• Ücretsiz Kargo</span></div>
 
-            <div class="bg-white/5 border border-white/10 p-6 sm:p-8 rounded-3xl max-w-xl mx-auto text-left space-y-4">
+            <div class="bg-white/5 border border-white/10 p-5 rounded-3xl text-left space-y-4">
                 <div>
-                    <label class="block text-xs uppercase tracking-wider text-sand/70 mb-1.5">Renk Seçiminiz</label>
-                    <select id="selected-color-input" class="w-full bg-charcoal border border-white/20 rounded-xl px-4 py-3.5 text-sm text-sand focus:outline-none focus:border-sand">
+                    <label class="block text-[11px] uppercase tracking-wider text-sand/70 mb-1.5">Renk Seçimi</label>
+                    <select id="selected-color-input" class="w-full bg-charcoal border border-white/20 rounded-xl px-4 py-3.5 text-sm text-sand focus:outline-none">
                         <option value="Kırık Beyaz & Vizon">Kırık Beyaz & Vizon (1.490 TL)</option>
                         <option value="Adaçayı Yeşili & Sarı">Adaçayı Yeşili & Sarı (1.490 TL)</option>
-                        <option value="Pastel Pembe & Lavanta (Okul)">Pastel Pembe & Lavanta - Okul Serisi (1.490 TL)</option>
-                        <option value="Gökyüzü Mavisi & Turuncu (Okul)">Gökyüzü Mavisi & Turuncu - Okul Serisi (1.490 TL)</option>
+                        <option value="Pastel Pembe & Lavanta (Okul)">Pastel Pembe & Lavanta - Okul (1.490 TL)</option>
+                        <option value="Gökyüzü Mavisi & Turuncu (Okul)">Gökyüzü Mavisi & Turuncu - Okul (1.490 TL)</option>
                     </select>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-sand/70 mb-1.5">Adet</label>
+                        <label class="block text-[11px] uppercase tracking-wider text-sand/70 mb-1.5">Adet</label>
                         <input type="number" id="order-qty" value="1" min="1" onchange="updateTotal()" class="w-full bg-charcoal border border-white/20 rounded-xl px-4 py-3 text-sm text-sand focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs uppercase tracking-wider text-sand/70 mb-1.5">Toplam Tutar</label>
-                        <div id="total-price-display" class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-sm font-bold text-emerald-400">
+                        <label class="block text-[11px] uppercase tracking-wider text-sand/70 mb-1.5">Toplam</label>
+                        <div id="total-price-display" class="w-full bg-white/10 rounded-xl px-4 py-3 text-sm font-extrabold text-emerald-400">
                             1.490 TL
                         </div>
                     </div>
                 </div>
 
-                <button onclick="sendWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition flex items-center justify-center gap-2 shadow-lg mt-2 text-sm sm:text-base">
-                    <span>WhatsApp ile Hemen Sipariş Oluştur</span>
+                <button onclick="sendWhatsApp()" class="w-full bg-emerald-600 active:scale-[0.99] hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition shadow-lg text-sm">
+                    WhatsApp ile Siparişi Tamamla
                 </button>
-                <p class="text-[11px] text-center text-sand/50 pt-1">
-                    Siparişiniz aynı gün özenle paketlenerek ücretsiz kargo ile gönderilir.
-                </p>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="bg-charcoal border-t border-white/10 py-8 text-center text-xs text-sand/50">
-        <div class="max-w-7xl mx-auto px-4">
-            PURE THERMO • 3 Katlı 304 Paslanmaz Çelik Sefer Tası & Kutulu Çatal-Kaşık Seti
+    <!-- MOBİL SABİT ALT SİPARİŞ ÇUBUĞU (SADECE MOBİLDE GÖRÜNÜR) -->
+    <div class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-taupe/20 px-4 py-3 flex items-center justify-between shadow-[0_-8px_24px_rgba(0,0,0,0.06)]">
+        <div>
+            <div class="text-[10px] text-charcoal/55 font-medium">Komple Set • Ücretsiz Kargo</div>
+            <div class="text-lg font-extrabold text-charcoal leading-tight">1.490 TL</div>
         </div>
-    </footer>
+        <a href="#siparis" class="bg-charcoal text-sand active:scale-95 transition px-6 py-3 rounded-xl text-xs font-bold shadow-md">
+            Sipariş Ver
+        </a>
+    </div>
 
-    <!-- TAM EKRAN GÖRSEL ÖNİZLEME (LIGHTBOX) -->
-    <div id="lightbox" onclick="closeLightbox()" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden items-center justify-center p-4">
-        <img id="lightbox-img" src="" class="max-h-[90vh] max-w-[92vw] rounded-2xl shadow-2xl object-contain">
+    <!-- TAM EKRAN GÖRSEL ÖNİZLEME -->
+    <div id="lightbox" onclick="closeLightbox()" class="fixed inset-0 z-50 bg-black/90 hidden items-center justify-center p-3">
+        <img id="lightbox-img" src="" class="max-h-[88vh] max-w-[95vw] rounded-2xl object-contain">
     </div>
 
     <script>
-        function changeHeroImage(src, badgeText) {
-            document.getElementById('hero-main-img').src = src;
-            document.getElementById('hero-badge-text').innerText = badgeText;
+        function updateDots() {
+            const slider = document.getElementById('hero-slider');
+            const index = Math.round(slider.scrollLeft / slider.clientWidth);
+            document.querySelectorAll('.dot').forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.remove('w-1.5', 'bg-white/40');
+                    dot.classList.add('w-3', 'bg-white');
+                } else {
+                    dot.classList.remove('w-3', 'bg-white');
+                    dot.classList.add('w-1.5', 'bg-white/40');
+                }
+            });
         }
 
         function selectAndScroll(colorName) {
@@ -472,8 +417,7 @@
 
         function updateTotal() {
             const qty = Math.max(1, parseInt(document.getElementById('order-qty').value) || 1);
-            const total = (qty * 1490).toLocaleString('tr-TR');
-            document.getElementById('total-price-display').innerText = total + ' TL';
+            document.getElementById('total-price-display').innerText = (qty * 1490).toLocaleString('tr-TR') + ' TL';
         }
 
         function sendWhatsApp() {
@@ -481,7 +425,7 @@
             const qty = Math.max(1, parseInt(document.getElementById('order-qty').value) || 1);
             const total = (qty * 1490).toLocaleString('tr-TR');
             const phone = "905532285951";
-            const message = `Merhaba, 3 Katlı 304 Paslanmaz Çelik Sefer Tası + Kutulu Çatal-Kaşık Seti sipariş vermek istiyorum.\n\n• Renk: ${color}\n• Adet: ${qty}\n• Toplam Tutar: ${total} TL`;
+            const message = `Merhaba, 3 Katlı 304 Paslanmaz Çelik Sefer Tası + Kutulu Çatal-Kaşık Seti sipariş vermek istiyorum.\n\n• Renk: ${color}\n• Adet: ${qty}\n• Toplam: ${total} TL`;
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
